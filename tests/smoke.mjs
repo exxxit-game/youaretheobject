@@ -276,15 +276,19 @@ async function playRoom(url, playtest, { leave = false } = {}) {
       cam.updateMatrixWorld();
       r.render(scene.object3D, cam);
       const w = gl.drawingBufferWidth, h = gl.drawingBufferHeight, lin = (c) => { c /= 255; return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; };
-      return Math.max(...[0.4, 0.5, 0.6].map((fx) => {
+      const lines = [0.4, 0.5, 0.6].map((fx) => {
         const y0 = Math.round(h * 0.05), n = Math.round(h * 0.9), px = new Uint8Array(4 * n);
         gl.readPixels(Math.round(w * fx), y0, 1, n, gl.RGBA, gl.UNSIGNED_BYTE, px);
         const L = Array.from({ length: n }, (_, i) => 200 * (0.2126 * lin(px[4 * i]) + 0.7152 * lin(px[4 * i + 1]) + 0.0722 * lin(px[4 * i + 2])));
         const peaks = L.map((v, i) => i).filter((i) => i > 1 && i < n - 2 && L[i] > L[i - 1] && L[i] >= L[i + 1] && L[i] > L[i - 2] && L[i] >= L[i + 2]);
-        return peaks.slice(1).filter((p, k) => { const seg = L.slice(peaks[k], p + 1); return Math.max(...seg) - Math.min(...seg) >= 20; }).length;
-      }));
+        return peaks.slice(1).map((p, k) => { const seg = L.slice(peaks[k], p + 1); return Math.max(...seg) - Math.min(...seg); });
+      });
+      // and each overlap still shows, under that, or the blind reads as a plain panel (measured 11.10:
+      // 15-16 lines of 2-19 cd/m2 down each line)
+      return { harsh: Math.max(...lines.map((s) => s.filter((v) => v >= 20).length)), faint: Math.min(...lines.map((s) => s.filter((v) => v >= 2 && v < 20).length)) };
     });
-    assert.ok(stripes <= 5, `the closed blinds seen close make ${stripes} light and dark stripes 20 cd/m2 apart (ITU-R BT.1702-3 allows five)`);
+    assert.ok(stripes.harsh <= 5, `the closed blinds seen close make ${stripes.harsh} light and dark stripes 20 cd/m2 apart (ITU-R BT.1702-3 allows five)`);
+    assert.ok(stripes.faint >= 10, `the closed blinds seen close show only ${stripes.faint} slat lines: they read as a plain panel`);
     // A computer's full screen is A-Frame's VR mode too (its enterVR adds the state without a
     // headset): the camera walked out through the walls in it (docs/mistakes.md). The camera is put
     // past the back wall, as the keys took it, and room-bounds must bring it back (wasd-controls

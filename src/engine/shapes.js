@@ -54,16 +54,24 @@ shapeComponent('rounded-box', {
 // length along z, centred on the entity. Lit as one flat face, every normal the crown's: with curved
 // normals each closed slat turned from light to dark across its width, and a blind seen close made
 // more than five such pairs of stripes, which ITU-R BT.1702-3 counts as a harmful pattern (measured on
-// room 101's blinds: 20-50 cd/m2 a slat; docs/research/vr/02-standards.md). The arc keeps the crown's
+// room 101's blinds: 20-50 cd/m2 a slat; docs/research/vr/02-standards.md). Only the two edges turn,
+// halfway to the arc's own normal, so each overlap still shows as a faint line under the 20 cd/m2 the
+// standard counts (a blind of one even colour read as a plain panel). The arc keeps the crown's
 // shape, so closed slats still rest on each other and show no gap.
+const EDGE_TURN = 0.5;
 function slatGeometry(w, crown, length, n) {
   const R = (w * w) / (8 * crown) + crown / 2, y = (u) => Math.sqrt(R * R - u * u) - (R - crown / 2);
+  const normal = (u) => {
+    if (Math.abs(u) < w / 2 - 1e-9) return [0, 1, 0];
+    const v = new THREE.Vector3(0, 1, 0).lerp(new THREE.Vector3(u / R, (y(u) + R - crown / 2) / R, 0), EDGE_TURN).normalize();
+    return [v.x, v.y, v.z];
+  };
   const pos = [], nor = [], uv = [];
   for (let i = 0; i < n; i++) {
     const a = -w / 2 + (w * i) / n, b = -w / 2 + (w * (i + 1)) / n;
-    const p = [[a, y(a), -length / 2, i / n, 0], [b, y(b), -length / 2, (i + 1) / n, 0], [b, y(b), length / 2, (i + 1) / n, 1], [a, y(a), length / 2, i / n, 1]];
+    const p = [[a, -length / 2, i / n, 0], [b, -length / 2, (i + 1) / n, 0], [b, length / 2, (i + 1) / n, 1], [a, length / 2, i / n, 1]];
     // wound so the face's front is its crown side, where the normals point
-    for (const k of [0, 2, 1, 0, 3, 2]) { pos.push(p[k][0], p[k][1], p[k][2]); nor.push(0, 1, 0); uv.push(p[k][3], p[k][4]); }
+    for (const k of [0, 2, 1, 0, 3, 2]) { const [u, z, s, t] = p[k]; pos.push(u, y(u), z); nor.push(...normal(u)); uv.push(s, t); }
   }
   const g = new THREE.BufferGeometry();
   g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
