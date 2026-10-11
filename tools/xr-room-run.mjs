@@ -16,6 +16,15 @@ const log = (...a) => console.log(new Date().toISOString().slice(11, 19), ...a);
 
 requireReview(path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'), 'the real-room session in the headset');
 if (!wornByPerson()) { console.log('not now: the headset is not on his head'); process.exit(1); }
+// The plan against the headset as it is, before he takes a step: the session has him walk, so the
+// link must be Wi-Fi and the power his strap. A run started on the cable lost him mid-walk when the
+// cable came out (docs/mistakes.md); a link or power that does not match stops the run here.
+const link = adb('devices').split('\n').slice(1).map((l) => l.trim().split('\t')).filter(([, s]) => s === 'device').map(([id]) => id);
+const power = adb('shell', 'dumpsys', 'battery');
+const onWifi = link.length === 1 && link[0].includes(':'), onStrap = /AC powered: true/.test(power);
+console.log(`link ${link.join(', ') || 'none'} (${onWifi ? 'Wi-Fi' : 'not Wi-Fi only'}), power ${onStrap ? 'strap' : 'not the strap'}`);
+if (!onWifi) { console.log('not now: the steps have him walk; first node tools/quest-wifi.mjs, then the cable out, then this again'); process.exit(1); }
+if (!onStrap) { console.log('not now: the headset is not on his strap'); process.exit(1); }
 // the folder is made before the run, so a long session never ends unsaved
 if (here) fs.mkdirSync(here, { recursive: true });
 
