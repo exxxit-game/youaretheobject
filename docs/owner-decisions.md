@@ -87,7 +87,10 @@ quoted; the time is when he said it (UTC). A risk list or a general method is no
   own guides, each on a piece of our game. The same day he settled the code's reference: «Тебе легче собрать все
   документации, которые нам необходимы, и просто каждый раз с ними сверяться по задачам… намного легче не
   выдумывать, а брать уже уроки готовые» 11.10. The engine's own documentation of the version we run (A-Frame 1.8.0,
-  a copy in objekt-files/docs-engine) is read for each task; lessons for him only when he wants one.
+  a copy in objekt-files/docs-engine) is read for each task; lessons for him only when he wants one («Оставить по
+  желанию… если от этого нет пользы, значит нет пользы» 11.10), then «при подготовке уроков находятся
+  новые ошибки… все равно будем проходить» 11.10: the lessons go on, on the extinguisher, each prepared from the
+  engine's docs, so preparing one checks our code against them (the label and hose fault surfaced so).
 - GitHub done properly, releases and all, now («давай сейчас каждый этот шаг сделаем правильно… Пусть оно
   там всем этим занимается» 9.10 07:23); the live site gets one thing only once it is polished
   («оттачиваем одну вещь… И только потом добавляем это в официальный наш репозиторий» 12:42).
