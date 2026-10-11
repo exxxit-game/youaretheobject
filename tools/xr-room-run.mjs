@@ -25,12 +25,18 @@ const tab = await page({ test: (u) => u.startsWith('http://localhost:3000/') });
 if (!tab) throw new Error('no tab on localhost:3000 in the headset');
 await tab.send('Page.navigate', { url });
 tab.close();
-await sleep(4000);
-const room = await page({ test: (u) => u.includes('xr-room') });
-if (!room) throw new Error('the room page did not open');
-log('page', await room.run("({ three: !!window.THREE, say: typeof window.__say })"));
-// what he is to do, each for its time, kept with the page's words (tools/xr-room.html)
-const STEPS = await room.run('window.__steps');
+// the page is ready once its steps are there: A-Frame loads first, over Wi-Fi, in no known time
+let room = null, STEPS = null;
+for (let i = 0; i < 60 && !Array.isArray(STEPS); i++) {
+  await sleep(1000);
+  if (room) room.close();
+  room = await page({ test: (u) => u.includes('xr-room') });
+  STEPS = room ? await room.run('window.__steps') : null;
+}
+// on any early exit the start button is turned off, so he cannot start a session nothing drives
+const stop = async (why) => { console.log(why); if (room) { await room.run("document.getElementById('start').disabled = true"); room.close(); } process.exit(1); };
+if (!Array.isArray(STEPS)) await stop('the room page did not load its steps');
+log('page ready', STEPS.length, 'steps');
 // he presses the start button and answers the browser's question about his space data; the session has
 // started, or the run stops: no steps are timed without it
 log('waiting for his press');
@@ -41,7 +47,7 @@ for (let i = 0; i < 120; i++) {
   if (!state || state.error || state.started) break;
 }
 log('start', state);
-if (!state || !state.started) { console.log('the mixed-reality session did not start:', state && state.error); room.close(); process.exit(1); }
+if (!state || !state.started) await stop(`the mixed-reality session did not start: ${state && state.error}`);
 
 const heat = [];
 const readHeat = () => {
@@ -53,13 +59,19 @@ const readHeat = () => {
       batteryC: +(b.match(/temperature: (\d+)/) || [])[1] / 10, cpuMaxC: cpu.length ? Math.max(...cpu) : null });
   } catch (e) { heat.push({ error: String(e).slice(0, 80) }); }
 };
-for (const [i, s] of STEPS.entries()) {
-  log('step', i + 1, await room.run(`window.__say(${JSON.stringify(s.main)}, ${JSON.stringify(s.small)})`));
-  const t0 = Date.now();
-  while (Date.now() - t0 < s.secs * 1000) {
-    readHeat();
-    await sleep(Math.min(10000, s.secs * 1000 - (Date.now() - t0)));
+try {
+  for (const [i, s] of STEPS.entries()) {
+    log('step', i + 1, await room.run(`window.__say(${JSON.stringify(s.main)}, ${JSON.stringify(s.small)})`));
+    const t0 = Date.now();
+    while (Date.now() - t0 < s.secs * 1000) {
+      readHeat();
+      await sleep(Math.min(10000, s.secs * 1000 - (Date.now() - t0)));
+    }
   }
+} catch (e) {
+  // a run that breaks in the middle still tells him, inside the headset, that he can stop
+  await room.run(`window.__say(${JSON.stringify(STEPS[STEPS.length - 1].main)}, '')`);
+  throw e;
 }
 const summary = await room.run('window.__roomSummary()');
 const result = JSON.stringify({ summary, heat }, null, 1);

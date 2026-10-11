@@ -114,7 +114,7 @@ async function start() {
   running = true;
   try { audio = audio || new AudioContext(); audio.resume(); } catch (e) { audio = null; }
   // the panel's words in the page's own face, loaded before the first step is drawn
-  try { await document.fonts.load('500 75px Inter', 'Аа'); } catch (e) { /* a stand-in face then */ }
+  try { await Promise.all(['500 75px Inter', '400 48px Inter'].map((f) => document.fonts.load(f, 'Aa Аа 1·'))); } catch (e) { /* a stand-in face then */ }
   solids.length = 0; lines.length = 0; panel.visible = false;
   r = window.__room = { started: new Date().toISOString(), path: [], planes: {}, meshes: {}, hands: {}, events: [], steps: [], sound: audio ? audio.state : 'none' };
   window.__rooms.push(r);
@@ -243,13 +243,16 @@ async function start() {
     // the planes: their outlines, sizes and, for the level ones, their height above the floor
     for (const p of frame.detectedPlanes || []) {
       const pose = frame.getPose(p.planeSpace, ref);
+      // a plane with no place yet is left for a later frame, as the meshes are
+      if (!pose) continue;
       const o = show(p, 'plane', () => {
         const pts = [...p.polygon].map((v) => new THREE.Vector3(v.x, v.y, v.z));
         const xs = pts.map((v) => v.x), zs = pts.map((v) => v.z);
         return { line: p.semanticLabel === 'floor' ? null : new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color: colour(p.semanticLabel), transparent: true, opacity: 0.5 })),
           info: { label: p.semanticLabel || 'plane', orientation: p.orientation, sizeM: [round(Math.max(...xs) - Math.min(...xs)), round(Math.max(...zs) - Math.min(...zs))] } };
       });
-      if (pose) { at(o, pose); r.planes[o.id] = { ...o.info, heightM: round(pose.transform.position.y) }; }
+      at(o, pose);
+      r.planes[o.id] = { ...o.info, heightM: round(pose.transform.position.y) };
     }
     if (place && viewer) {
       const eye = new THREE.Vector3().copy(viewer.transform.position), dir = new THREE.Vector3(0, 0, -1).applyQuaternion(new THREE.Quaternion().copy(viewer.transform.orientation));
