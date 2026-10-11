@@ -49,7 +49,9 @@ needed; where no source settles it, the options go to him.
 - The engine names its source in a link in 1 file of 37, and A-Frame's docs in 3.
 
 The two other AIs' advice the owner brought on 11.10 is checked claim by claim in
-[docs/research/other-ai-advice.md](../research/other-ai-advice.md); what it leaves for shelf 5 is listed there.
+[docs/research/other-ai-advice.md](../research/other-ai-advice.md); what it leaves for shelf 5 is listed there. What practitioners wrote, found
+the same day on his word: [docs/research/forums-aframe-quest.md](../research/forums-aframe-quest.md) (English) and
+[docs/research/forums-other-languages.md](../research/forums-other-languages.md) (the other languages).
 
 ## Order
 
