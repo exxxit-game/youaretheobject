@@ -1,19 +1,27 @@
 // Runs the real-room session in the owner's headset: opens tools/xr-room.html in the game's tab,
 // starts it, shows each step for its time, logs battery and heat meanwhile, saves the summary.
 // Usage: node tools/xr-room-run.mjs [folder]   the game tab open on localhost:3000 in the headset; the
-// result goes to <folder>/room-result.json, or is printed. Not to be run before the fixes listed in
-// docs/audit/room-probe-review.md, the wearer and gate checks among them.
+// result goes to <folder>/room-result.json, or is printed. As tools/quest-look.mjs vr, it starts only
+// while the owner wears the headset and once a practice review has seen the probe as it is
+// (docs/audit/room-probe-review.md).
 import fs from 'node:fs';
 import path from 'node:path';
-import { adb, serveToHeadset, page } from './headset.mjs';
+import { fileURLToPath } from 'node:url';
+import { adb, serveToHeadset, page, wornByPerson } from './headset.mjs';
+import { requireReview } from './review-gate.mjs';
 
 const here = process.argv[2] || null;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const log = (...a) => console.log(new Date().toISOString().slice(11, 19), ...a);
 
+requireReview(path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'), 'the real-room session in the headset', { look: true });
+if (!wornByPerson()) { console.log('not now: the headset is not on his head'); process.exit(1); }
+// the folder is made before the run, so a long session never ends unsaved
+if (here) fs.mkdirSync(here, { recursive: true });
+
 serveToHeadset(3100);
 const url = 'http://localhost:3000/tools/xr-room.html';
-let tab = await page({ test: (u) => u.startsWith('http://localhost:3000/') });
+const tab = await page({ test: (u) => u.startsWith('http://localhost:3000/') });
 if (!tab) throw new Error('no tab on localhost:3000 in the headset');
 await tab.send('Page.navigate', { url });
 tab.close();
@@ -23,8 +31,17 @@ if (!room) throw new Error('the room page did not open');
 log('page', await room.run("({ three: !!window.THREE, say: typeof window.__say })"));
 // what he is to do, each for its time, kept with the page's words (tools/xr-room.html)
 const STEPS = await room.run('window.__steps');
-log('start', await room.run("document.getElementById('start').click(), 'clicked'", true));
-await sleep(3000);
+await room.run("document.getElementById('start').click(), 'clicked'", true);
+// the session has started, or the run stops: no steps are timed without it (he may first answer the
+// browser's question about his space data)
+let state = null;
+for (let i = 0; i < 60; i++) {
+  await sleep(1000);
+  state = await room.run('window.__roomState()');
+  if (!state || state.error || state.started) break;
+}
+log('start', state);
+if (!state || !state.started) { console.log('the mixed-reality session did not start:', state && state.error); room.close(); process.exit(1); }
 
 const heat = [];
 const readHeat = () => {

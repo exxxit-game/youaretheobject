@@ -30,3 +30,5 @@ the review said not ready, so the run waits for these fixes. Read only; the revi
 
 Checked and fine: iterating frame.body, getJointPose for the hands, the hit-test source asked before setSession, the
 panel hidden until the first step, the plane and mesh fields.
+
+Fixed 11 Oct, morning (with CodeRabbit's seven remarks on the same files): the next room taken out; walking kept inside his boundary with the light on; the floor measured but not drawn, the lines faded while he walks; the two wrist joints by name; a tone with every step; the space-data question named on the page; each run kept apart, a second press ignored while one runs; depth reported as the browser chose it; the panel 0.5-1 m as quest-look say; the runner checks that he wears the headset and the practice-review gate, stops when the session does not start, and makes its folder first. The run waits for a practice review of these files.

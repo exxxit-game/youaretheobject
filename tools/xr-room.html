@@ -13,10 +13,13 @@
      cameras' view as its triangles and the planes (walls, floor, table) as outlines, coloured by what
      the headset calls them, while his walk, the planes' sizes and heights, each mesh's triangles, his
      hands and body, the boundary, depth, a hit on a real surface, the frame rates and the session's
-     events are recorded in window.__room (and localStorage) and read over
-     the debug link. What he is to do appears on a panel inside the headset (window.__say), as the
-     game's steps do (tools/quest-look.mjs say). Nothing from the cameras is recorded or sent. -->
-<p>Комната глазами очков. Нажмите «Начать»: вы увидите свою комнату и поверх неё — как очки её оцифровали. Ничего с камер не записывается и не отправляется.</p>
+     events are recorded in window.__room (each run kept apart in window.__rooms and localStorage) and
+     read over the debug link. What he is to do appears on a panel inside the headset (window.__say),
+     as the game's steps do (tools/quest-look.mjs say), with a sound and a buzz. Walking stays inside his
+     boundary with the room lit; the floor is not drawn and the lines fade while he moves (Meta: no
+     content on the floor that hides what could trip him, less of it while moving; boundaryless best
+     practices; docs/audit/room-probe-review.md). Nothing from the cameras is recorded or sent. -->
+<p>Комната глазами очков. Включи свет и освободи свою зону. Нажми «Начать»: очки спросят разрешение на данные комнаты — разреши. Ты увидишь свою комнату и поверх неё — как очки её оцифровали. Ничего с камер не записывается и не отправляется.</p>
 <button id="start">Начать</button>
 <pre id="out">Результатов пока нет.</pre>
 <script type="module">
@@ -29,8 +32,13 @@ const COLOUR = { table: 0xf0a040, wall: 0x9aa0a8, floor: 0x5a8f5a, ceiling: 0x6a
 const colour = (label) => COLOUR[label] ?? 0xffffff;
 const out = document.getElementById('out');
 const round = (n) => +n.toFixed(2);
-let r = null;
-try { window.__room = JSON.parse(localStorage.getItem('xr-room') || 'null'); } catch (e) { window.__room = null; }
+let r = null, running = false, audio = null;
+// every run kept apart, so a second press never wipes the first; the last few, to stay small
+const KEEP_RUNS = 5;
+try { window.__rooms = JSON.parse(localStorage.getItem('xr-room-runs') || '[]'); } catch (e) { window.__rooms = []; }
+window.__room = window.__rooms[window.__rooms.length - 1] || null;
+// for the runner: has the session started, or did it fail
+window.__roomState = () => ({ running, started: !!(r && r.enabledFeatures), error: (r && r.error) || null });
 
 // what was read, short: planes by kind with their sizes, meshes with their triangles, the walk
 window.__roomSummary = () => {
@@ -46,12 +54,12 @@ window.__roomSummary = () => {
 };
 const save = () => {
   out.textContent = JSON.stringify(window.__roomSummary(), null, 2);
-  try { localStorage.setItem('xr-room', JSON.stringify(window.__room)); } catch (e) { /* private mode */ }
+  try { localStorage.setItem('xr-room-runs', JSON.stringify(window.__rooms)); } catch (e) { /* private mode */ }
 };
 if (window.__room) save();
 
-// the step he is to do: two lines on a panel below his view, nearer than a close surface, never under
-// 0.4 m, scaled to keep the text's size (as tools/quest-look.mjs say places it)
+// the step he is to do: two lines on a panel below his view, 1 m away or nearer than a close surface,
+// never under 0.5 m, scaled to keep the text's size (as tools/quest-look.mjs say places it)
 const canvas = document.createElement('canvas');
 canvas.width = 1432; canvas.height = 487;
 const tex = new THREE.CanvasTexture(canvas);
@@ -72,20 +80,28 @@ function draw(main, small) {
   tex.needsUpdate = true;
 }
 
-// the steps tools/xr-room-run.mjs shows, each for its time; the run waits for the fixes in
-// docs/audit/room-probe-review.md (the next room and the walk along the walls among them)
+// the steps tools/xr-room-run.mjs shows, each for its time. Walking stays inside his boundary: the
+// next room waits for a procedure that is safe (docs/audit/room-probe-review.md, finding 1)
 window.__steps = [
-  { "main": "Это твоя комната глазами очков: треугольники — сетка, линии — стены, пол и мебель. Осмотрись", "small": "1 из 6 · 15 секунд", "secs": 15 },
-  { "main": "Медленно обойди комнату вдоль стен, на расстоянии шага от них", "small": "2 из 6 · около минуты; табличка сменится сама", "secs": 60 },
-  { "main": "Подойди к столу или шкафу и посмотри на них вблизи", "small": "3 из 6 · 20 секунд", "secs": 20 },
-  { "main": "Положи контроллеры и подними обе руки перед собой, раскрой ладони", "small": "4 из 6 · 15 секунд", "secs": 15 },
-  { "main": "Встань прямо и разведи руки в стороны", "small": "5 из 6 · 10 секунд", "secs": 10 },
-  { "main": "Выйди в соседнюю комнату, постой и вернись обратно", "small": "6 из 6 · до минуты; смотри под ноги", "secs": 60 },
-  { "main": "Готово, спасибо. Снимай очки и напиши «снял»", "small": "конец", "secs": 3 }
+  { "main": "Это твоя комната глазами очков: треугольники — сетка, линии — стены и мебель. Осмотрись, не сходя с места", "small": "1 из 5 · 15 секунд", "secs": 15 },
+  { "main": "Медленно пройдись внутри своей зоны, к стенам не подходи", "small": "2 из 5 · 40 секунд; пока идёшь, линии бледнее", "secs": 40 },
+  { "main": "Если стол или шкаф в твоей зоне — подойди и посмотри вблизи; если нет — издалека", "small": "3 из 5 · 20 секунд", "secs": 20 },
+  { "main": "Положи контроллеры и подними обе руки перед собой, раскрой ладони", "small": "4 из 5 · 15 секунд", "secs": 15 },
+  { "main": "Встань прямо и разведи руки в стороны", "small": "5 из 5 · 10 секунд", "secs": 10 },
+  { "main": "Готово, спасибо. Возьми контроллеры, сними очки и напиши «снял»", "small": "конец", "secs": 3 }
 ];
 
-const solids = [];
+const solids = [], lines = [];
 let place = null;
+// a short tone with each new step: with the controllers put down no buzz reaches him
+const beep = () => {
+  if (!audio) return;
+  const o = audio.createOscillator(), g = audio.createGain(), t = audio.currentTime;
+  o.frequency.value = 880;
+  g.gain.setValueAtTime(0.15, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.25);
+  o.connect(g).connect(audio.destination);
+  o.start(t); o.stop(t + 0.25);
+};
 window.__say = (main, small = '') => {
   draw(main, small);
   if (r) r.steps.push([Math.round(performance.now()), main]);
@@ -94,12 +110,20 @@ window.__say = (main, small = '') => {
 };
 
 async function start() {
+  if (running) return;
+  running = true;
+  try { audio = audio || new AudioContext(); } catch (e) { audio = null; }
+  solids.length = 0; lines.length = 0; panel.visible = false;
   r = window.__room = { started: new Date().toISOString(), path: [], planes: {}, meshes: {}, hands: {}, events: [], steps: [] };
+  window.__rooms.push(r);
+  window.__rooms.splice(0, Math.max(0, window.__rooms.length - KEEP_RUNS));
   const session = await navigator.xr.requestSession('immersive-ar', {
     optionalFeatures: FEATURES,
     depthSensing: { usagePreference: ['cpu-optimized', 'gpu-optimized'], dataFormatPreference: ['luminance-alpha', 'float32'] }
   });
   r.enabledFeatures = session.enabledFeatures ? [...session.enabledFeatures] : 'not reported';
+  // depth as the browser chose it: read on the CPU only when it gave the CPU path
+  r.depth = { usage: session.depthUsage || 'none', format: session.depthDataFormat || null };
   r.frameRates = { now: session.frameRate, offered: session.supportedFrameRates ? [...session.supportedFrameRates] : 'not reported' };
   let hits = null;
   try { hits = await session.requestHitTestSource({ space: await session.requestReferenceSpace('viewer') }); } catch (e) { r.hitTest = 'no: ' + e.message; }
@@ -116,17 +140,19 @@ async function start() {
   } catch (e) { r.bounds = 'no: ' + e.message; }
   session.addEventListener('visibilitychange', () => { r.events.push([Math.round(performance.now()), 'visibility ' + session.visibilityState]); save(); });
   session.addEventListener('inputsourceschange', () => r.events.push([Math.round(performance.now()), `hands ${[...session.inputSources].filter((s) => s.hand).length}, controllers ${[...session.inputSources].filter((s) => s.gamepad).length}`]));
-  session.addEventListener('end', () => { r.ended = new Date().toISOString(); save(); });
+  session.addEventListener('end', () => { r.ended = new Date().toISOString(); running = false; save(); });
 
   const shown = new Map();
-  let ids = 0, lastPath = 0, lastSave = 0;
+  let ids = 0, lastPath = 0, lastSave = 0, last = null, faded = false;
   const show = (thing, kind, build) => {
     let o = shown.get(thing);
     if (o && o.changed === thing.lastChangedTime) return o;
-    if (o) { scene.remove(o.line); o.line.geometry.dispose(); if (o.solid) { scene.remove(o.solid); solids.splice(solids.indexOf(o.solid), 1); } }
+    if (o && o.line) { scene.remove(o.line); o.line.geometry.dispose(); lines.splice(lines.indexOf(o.line.material), 1); }
+    if (o && o.solid) { scene.remove(o.solid); solids.splice(solids.indexOf(o.solid), 1); }
     o = { id: o ? o.id : `${kind}${++ids}`, changed: thing.lastChangedTime, ...build() };
     for (const m of [o.line, o.solid]) if (m) { m.matrixAutoUpdate = false; scene.add(m); }
     if (o.solid) solids.push(o.solid);
+    if (o.line) { lines.push(o.line.material); o.line.material.opacity = faded ? 0.12 : 0.5; }
     shown.set(thing, o);
     return o;
   };
@@ -138,9 +164,15 @@ async function start() {
     if (viewer && time - lastPath > 200) {
       const p = viewer.transform.position;
       r.path.push([Math.round(time), round(p.x), round(p.y), round(p.z)]);
+      // the lines fade while he walks faster than a slow step, and come back when he stands
+      if (last) {
+        const moving = Math.hypot(p.x - last.x, p.z - last.z) / ((time - last.t) / 1000) > 0.25;
+        if (moving !== faded) { faded = moving; for (const m of lines) m.opacity = faded ? 0.12 : 0.5; }
+      }
+      last = { x: p.x, z: p.z, t: time };
       lastPath = time;
-      if (r.depth === undefined && frame.getDepthInformation) {
-        try { const d = frame.getDepthInformation(viewer.views[0]); r.depth = d ? { size: [d.width, d.height], centreM: round(d.getDepthInMeters(0.5, 0.5)) } : 'none'; } catch (e) { r.depth = 'no: ' + e.message; }
+      if (r.depth.usage === 'cpu-optimized' && r.depth.centreM === undefined && frame.getDepthInformation) {
+        try { const d = frame.getDepthInformation(viewer.views[0]); if (d) { r.depth.size = [d.width, d.height]; r.depth.centreM = round(d.getDepthInMeters(0.5, 0.5)); } } catch (e) { r.depth.error = e.message; }
       }
     }
     // his hands without controllers: wrist to the middle finger's tip, the longest seen on each
@@ -160,7 +192,8 @@ async function start() {
         if (!p) continue;
         n++;
         lo = Math.min(lo, p.transform.position.y); hi = Math.max(hi, p.transform.position.y);
-        if (/wrist/.test(name)) wrists.push(new THREE.Vector3().copy(p.transform.position));
+        // the two wrists only: the body also reports each wrist's twist joint
+        if (name === 'left-hand-wrist' || name === 'right-hand-wrist') wrists.push(new THREE.Vector3().copy(p.transform.position));
       }
       const b = r.body || { joints: frame.body.size, names: [...frame.body.keys()] };
       if (n) { b.posed = Math.max(b.posed || 0, n); b.spanM = Math.max(b.spanM || 0, round(hi - lo)); }
@@ -181,7 +214,8 @@ async function start() {
         g.setIndex(new THREE.BufferAttribute(new Uint32Array(m.indices), 1));
         g.computeBoundingBox();
         const s = g.boundingBox.getSize(new THREE.Vector3());
-        return { line: new THREE.LineSegments(new THREE.WireframeGeometry(g), new THREE.LineBasicMaterial({ color: colour(m.semanticLabel), transparent: true, opacity: 0.5 })),
+        // the floor is measured but not drawn: lines over it would hide what could trip him
+        return { line: m.semanticLabel === 'floor' ? null : new THREE.LineSegments(new THREE.WireframeGeometry(g), new THREE.LineBasicMaterial({ color: colour(m.semanticLabel), transparent: true, opacity: 0.5 })),
           solid: new THREE.Mesh(g, new THREE.MeshBasicMaterial({ colorWrite: false, depthWrite: false })),
           info: { label: m.semanticLabel || 'mesh', triangles: m.indices.length / 3, sizeM: [round(s.x), round(s.y), round(s.z)] } };
       });
@@ -194,7 +228,7 @@ async function start() {
       const o = show(p, 'plane', () => {
         const pts = [...p.polygon].map((v) => new THREE.Vector3(v.x, v.y, v.z));
         const xs = pts.map((v) => v.x), zs = pts.map((v) => v.z);
-        return { line: new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color: colour(p.semanticLabel) })),
+        return { line: p.semanticLabel === 'floor' ? null : new THREE.LineLoop(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color: colour(p.semanticLabel), transparent: true, opacity: 0.5 })),
           info: { label: p.semanticLabel || 'plane', orientation: p.orientation, sizeM: [round(Math.max(...xs) - Math.min(...xs)), round(Math.max(...zs) - Math.min(...zs))] } };
       });
       if (pose) { at(o, pose); r.planes[o.id] = { ...o.info, heightM: round(pose.transform.position.y) }; }
@@ -205,20 +239,21 @@ async function start() {
       if (dir.lengthSq() < 1e-4) dir.set(0, 0, -1);
       dir.normalize().multiplyScalar(Math.cos(Math.PI / 12)).setY(-Math.sin(Math.PI / 12));
       scene.updateMatrixWorld();
-      const hit = new THREE.Raycaster(eye, dir, 0.05, 0.9).intersectObjects(solids, false)[0];
-      const d = Math.max(0.4, Math.min(0.8, hit ? hit.distance - 0.1 : 0.8));
+      const hit = new THREE.Raycaster(eye, dir, 0.05, 1.1).intersectObjects(solids, false)[0];
+      const d = Math.max(0.5, Math.min(1, hit ? hit.distance - 0.1 : 1));
       panel.position.copy(eye).addScaledVector(dir, d);
       panel.scale.setScalar(d);
       panel.lookAt(eye);
       panel.visible = true;
       place = false;
       for (const src of session.inputSources) { const h = src.gamepad && src.gamepad.hapticActuators && src.gamepad.hapticActuators[0]; if (h && h.pulse) h.pulse(0.6, 120); }
+      beep();
     }
     if (time - lastSave > 2000) { save(); lastSave = time; }
     renderer.render(scene, camera);
   });
 }
-document.getElementById('start').onclick = () => start().catch((e) => { if (r) r.error = e.name + ': ' + e.message; save(); });
+document.getElementById('start').onclick = () => start().catch((e) => { running = false; if (r) r.error = e.name + ': ' + e.message; save(); });
 </script>
 </body>
 </html>
