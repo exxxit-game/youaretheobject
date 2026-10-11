@@ -16,8 +16,9 @@ Verdicts in short:
   `pinchstarted`/`pinchended`; KTX2's setting is `basisTranscoderPath`; an import map with three@0.160
   loads three twice; Rapier is not supported by the A-Frame physics system.
 - For the engine shelf of the revision: our merge against aframe-geometry-merger-component and three's
-  merge; texture compression (glTF-Transform 4.5.1, KTX-Software's toktx, not on the laptop yet); what the
-  13 tick handlers call each frame; text sharpness on canvas panels; hands with the built-in
+  merge; texture compression (glTF-Transform 4.5.1, KTX-Software's toktx, not on the laptop yet); the new
+  objects 4 of the 13 tick handlers make in their body (lightbox, ink and controller-batch each frame, grab-press
+  once a second); text sharpness on canvas panels; hands with the built-in
   hand-tracking-controls; our hand press against super-hands.
 - Not taken: maige-3d-mcp (one 0.1.0 release, drives its own pages, needs an AI key), LMQL and DSPy
   (Python LLM tools), teleport, particle, environment and extras components (written for older A-Frame),
