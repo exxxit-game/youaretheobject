@@ -96,7 +96,8 @@ window.__steps = [
 ];
 
 const solids = [], lines = [];
-let place = null, clear = false;
+// panelOnly: he came back to a hidden session mid-walk, so the step's text shows again, still with no lines
+let place = null, clear = false, panelOnly = false;
 // a short tone with each new step: with the controllers put down no buzz reaches him
 const beep = () => {
   if (!audio) return;
@@ -127,7 +128,7 @@ async function hold(ms, session, step) {
   while (left > 0) {
     await wait(100);
     const seen = !session || session.visibilityState === 'visible';
-    if (seen && hidden) window.__say(step.main, step.small);
+    if (seen && hidden) { window.__say(step.main, step.small); panelOnly = clear; }
     hidden = !seen;
     if (seen) left -= 100 * window.__stepsSpeed;
     else if (r) r.hiddenMs = (r.hiddenMs || 0) + 100;
@@ -137,8 +138,11 @@ async function runSteps(session, { dry = false } = {}) {
   const said = [], mine = r;
   // this run's own steps only: a run started after another ended never takes over its panel
   const live = () => dry || (running && r === mine);
+  // the walk only with both controllers in hand (finding 1): not back in time, the walk is left out
+  let walk = true;
   for (const [i, s] of window.__steps.entries()) {
     if (!live()) return said;
+    if (s.clear && !walk) { if (!dry) { r.walkSkipped = true; save(); } continue; }
     window.__say(s.main, s.small);
     said.push(s.main);
     if (!dry) { r.stepAt = i + 1; save(); }
@@ -148,12 +152,13 @@ async function runSteps(session, { dry = false } = {}) {
       await hold(s.read * 1000, dry ? null : session, s);
       clear = true;
       await hold((s.secs - s.read) * 1000, dry ? null : session, s);
-      clear = false;
-    } else if (s.until === 'controllers' && !dry) {
+      clear = false; panelOnly = false;
+    } else if (s.until === 'controllers' && session) {
       // the step ends once the headset reports both controllers in his hands, or after its time
       const inHand = () => [...session.inputSources].filter((src) => src.gamepad && !src.hand).length >= 2;
       for (let t = 0; t < s.secs * 10 && !inHand(); t++) await hold(100, session, s);
-      if (r) r.controllersBack = inHand();
+      walk = inHand();
+      if (!dry) r.controllersBack = walk;
     } else await hold(s.secs * 1000, dry ? null : session, s);
   }
   if (!dry && live()) { r.done = new Date().toISOString(); save(); }
@@ -161,7 +166,9 @@ async function runSteps(session, { dry = false } = {}) {
   if (!dry && live() && session) session.end();
   return said;
 }
-window.__dryRun = () => runSteps(null, { dry: true });
+// a stand-in session (its inputSources) also runs the wait for the controllers, so a dry run shows
+// the walk left out when they do not come back
+window.__dryRun = (stand = null) => runSteps(stand, { dry: true });
 // a dry check of the pause: a stand-in session that is hidden for a while
 window.__dryHold = (ms, fakeSession) => hold(ms, fakeSession, { main: 'проверка паузы', small: '' });
 
@@ -352,7 +359,7 @@ async function start() {
       beep();
     }
     // during the walk to the next room nothing is drawn over his view
-    for (const c of scene.children) c.visible = c === panel ? panel.visible && !clear : !clear;
+    for (const c of scene.children) c.visible = c === panel ? panel.visible && (!clear || panelOnly) : !clear;
     if (time - lastSave > 2000) { save(); lastSave = time; }
     renderer.render(scene, camera);
   });
