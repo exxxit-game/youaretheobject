@@ -48,6 +48,11 @@ for (let i = 0; i < 60 && !ready; i++) {
   ready = await run(`location.href.includes('${marker}') && !!document.querySelector('#screen')?.components?.panel && !!document.querySelector('a-scene')?.hasLoaded`).catch(() => false);
 }
 if (!ready) { console.log('FAIL page did not load in 30 s'); process.exit(1); }
+// A headset asleep or showing its menu draws no frame of the page, and every step of the game waited
+// on frames that never came (two runs hung 120 s so): stop at once with the reason. Only its power
+// button wakes it (headset.mjs: a wake key press opens the quick menu and lets it sleep again).
+const frames = await run(`new Promise((r) => { let n = 0; const f = () => { n++; requestAnimationFrame(f); }; requestAnimationFrame(f); setTimeout(() => r(n), 1500); })`);
+if (!frames) { console.log('FAIL the headset draws no frame of the page: it is asleep or shows its menu; press its power button (or put it on), then run again'); process.exit(1); }
 // Runtime.enable replays console history of earlier page loads: count only this load.
 errors.length = 0;
 

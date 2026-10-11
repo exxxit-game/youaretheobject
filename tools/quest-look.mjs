@@ -10,7 +10,7 @@
 //   node tools/quest-look.mjs reload           reload it, skipping every cache (after publish-preview)
 //   node tools/quest-look.mjs vr               enter VR, as if the VR button were pressed; only while
 //                                              the owner wears the headset (headset.mjs, onHead)
-//   node tools/quest-look.mjs frame out.jpg    save what the left eye sees right now (in VR)
+//   node tools/quest-look.mjs frame out.png    save what the headset shows right now, both eyes (in VR)
 //   node tools/quest-look.mjs eval "<js>"      run JavaScript in the game page, print the result
 //   node tools/quest-look.mjs worn on|off      make the headset act as worn (on) or normal (off):
 //                                              worn, it stays awake while I check; a headset left
@@ -35,7 +35,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { adb, serveToHeadset, localPort, worn, sleepNow, openUrl, page, wornByPerson, restartBrowser, openGame } from './headset.mjs';
+import { adb, serveToHeadset, localPort, worn, sleepNow, openUrl, page, wornByPerson, restartBrowser, openGame, screencap } from './headset.mjs';
 import { requireReview } from './review-gate.mjs';
 
 const PREVIEW = 'https://exxxit-game.github.io/object-preview/';
@@ -168,9 +168,10 @@ if (cmd === 'reload') {
   // The owner's next step, inside the headset, so he does not take it off to read the chat (his
   // practice, docs/owner-decisions.md). The input probe's panel and type as they were reviewed
   // (tools/xr-probe-input.html, docs/audit/probe-review.md), cut to its two lines, and placed as Meta
-  // places captions: below the view he is looking at, not over it ("at the top or bottom of their
-  // 40-degree field of view", developers.meta.com/horizon/design/accessibility), here 15 degrees under
-  // the horizon; 1 m away, or nearer when a wall is closer, never under 0.5 m (Meta, design/display),
+  // places captions: at the edge of the view, not over what he looks at ("at the top or bottom of their
+  // 40-degree field of view", developers.meta.com/horizon/design/accessibility), here 15 degrees above
+  // the horizon, since what he is asked to look at mostly stands lower (the extinguisher, the desk, the
+  // clipboard; placed 15 degrees under it, a note covered the extinguisher he was to look at); 1 m away, or nearer when a wall is closer, never under 0.5 m (Meta, design/display),
   // scaled with its distance so the text keeps its size to the eye. Every new step buzzes both
   // controllers, as the probe does, so he knows one came ("Provide sounds and haptic feedback").
   // "say off" takes it away.
@@ -194,7 +195,7 @@ if (cmd === 'reload') {
       s.camera.getWorldPosition(at); s.camera.getWorldDirection(dir);
       dir.y = 0;
       if (dir.lengthSq() < 1e-4) dir.set(0, 0, -1);
-      dir.normalize().multiplyScalar(Math.cos(Math.PI / 12)).setY(-Math.sin(Math.PI / 12));
+      dir.normalize().multiplyScalar(Math.cos(Math.PI / 12)).setY(Math.sin(Math.PI / 12));
       p.object3D.visible = false;
       const near = new THREE.Raycaster(at, dir, 0.05, 1.1).intersectObjects(s.object3D.children, true)
         .find((h) => h.object.isMesh && (() => { for (let o = h.object; o; o = o.parent) if (!o.visible) return false; return true; })());
@@ -215,29 +216,16 @@ if (cmd === 'reload') {
   })`);
   console.log(JSON.stringify(v));
 } else if (cmd === 'frame') {
-  // read the left half of the frame the game has just drawn for both eyes
-  const v = await run(`new Promise((resolve) => {
-    const sc = document.querySelector('a-scene'), r = sc.renderer, gl = r.getContext(), draw = r.render.bind(r);
-    if (!sc.is('vr-mode')) { resolve({ error: 'not in VR: run "vr" first' }); return; }
-    setTimeout(() => { r.render = draw; resolve({ error: 'no frame drawn in 3 s: is the headset asleep?' }); }, 3000);
-    r.render = (s, c) => {
-      draw(s, c);
-      r.render = draw;
-      const t = r.getRenderTarget(), w = Math.floor(t.width / 2), h = t.height;
-      const px = new Uint8Array(w * h * 4);
-      gl.readPixels(0, 0, w, h, gl.RGBA, gl.UNSIGNED_BYTE, px);
-      const full = document.createElement('canvas'); full.width = w; full.height = h;
-      const img = full.getContext('2d').createImageData(w, h);
-      for (let y = 0; y < h; y++) img.data.set(px.subarray((h - 1 - y) * w * 4, (h - y) * w * 4), y * w * 4);
-      full.getContext('2d').putImageData(img, 0, 0);
-      const small = document.createElement('canvas'); small.width = 900; small.height = Math.round(900 * h / w);
-      small.getContext('2d').drawImage(full, 0, 0, small.width, small.height);
-      resolve({ data: small.toDataURL('image/jpeg', 0.85) });
-    };
-  })`);
-  if (!v || !v.data) { console.log(v ? v.error : 'no frame'); process.exit(1); }
-  fs.writeFileSync(arg || 'frame.jpg', Buffer.from(v.data.split(',')[1], 'base64'));
-  console.log('saved', arg || 'frame.jpg');
+  // What the headset shows, both eyes, taken by the headset itself (screencap): reading the page's own
+  // pixels came out black once both eyes were drawn in one pass (multiview draws into a texture
+  // array, not the page's canvas). Only while the game's VR session is on screen: otherwise the
+  // capture would show the cameras' view of a headset lying on a table.
+  const v = await run(`(() => { const sc = document.querySelector('a-scene'), s = sc.xrSession;
+    return !s ? { error: 'not in VR: run "vr" first' } : s.visibilityState !== 'visible' ? { error: 'the game is not on screen: the headset is off or asleep' } : { ok: true }; })()`);
+  if (!v || !v.ok) { console.log(v ? v.error : 'no answer from the page'); process.exit(1); }
+  const out = arg || 'frame.png';
+  fs.writeFileSync(out, screencap());
+  console.log('saved', out);
 } else if (cmd === 'perf') {
   // five seconds of the frames the game draws (in VR: the session's own frames): the rate, the
   // frames slower than 72 Hz, and what one frame costs. Meta: 72 Hz at least (90 recommended); fewer
@@ -264,6 +252,6 @@ if (cmd === 'reload') {
   console.log(`${ok ? 'ok  ' : 'OVER'} ${v.vr ? 'VR' : '2D'}: ${v.fps} fps, ${v.slow} frames slower than 72 Hz (worst ${v.worstMs} ms), ${v.calls} draw calls, ${v.triangles} triangles${v.vr ? `, multiview ${v.multiview ? 'on' : 'off'}` : ''}`);
   if (!ok) process.exitCode = 1;
 } else {
-  console.log('usage: node tools/quest-look.mjs open [local port] | sleep | reload | vr | frame out.jpg | eval "<js>" | say "<step>" | worn on|off | restart-browser | reboot | levels | perf');
+  console.log('usage: node tools/quest-look.mjs open [local port] | sleep | reload | vr | frame out.png | eval "<js>" | say "<step>" | worn on|off | restart-browser | reboot | levels | perf');
 }
 game.close();

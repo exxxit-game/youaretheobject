@@ -67,10 +67,17 @@ const inVR = (scene) => scene.renderer.xr.isPresenting;
 // When the sign may start: the rule is arrivalStep (sign.js), the wait in VR settleArrival.
 // The VR button lies outside the view, so pressing it is no press on the 3D view.
 function arrival(scene) {
-  const device = { headset: AFRAME.utils.device.checkHeadsetConnected(), questBrowser: AFRAME.utils.device.isOculusBrowser() };
+  // A test run (?speed above 1, never sent: session.js) is started by a press on any device, the
+  // headset's browser too: the tool that plays the game there (tools/quest-check.mjs) cannot enter VR
+  // without a wearer, and with the press refused it waited for ever. A player is never in a test run.
+  const device = { headset: AFRAME.utils.device.checkHeadsetConnected(), questBrowser: AFRAME.utils.device.isOculusBrowser() && SPEED === 1 };
   if (arrivalStep(device, 'load') === 'now') return Promise.resolve();
   return new Promise((resolve) => {
     const flat = () => { if (!inVR(scene) && arrivalStep(device, 'flat-press') === 'now') resolve(); };
+    // a press made while the clipboard was still being hung is that first press too: the browser keeps
+    // it (sticky activation, HTML's navigator.userActivation.hasBeenActive), where a listener added
+    // now would wait for a second one
+    if (navigator.userActivation && navigator.userActivation.hasBeenActive) flat();
     window.addEventListener('keydown', flat);
     scene.canvas.addEventListener('pointerdown', flat);
     const inside = () => settleArrival(delay, () => faces(scene)).then(resolve);

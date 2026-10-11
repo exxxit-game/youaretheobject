@@ -18,6 +18,9 @@ function device() {
   return serial;
 }
 export const adb = (...args) => run(args[0] === 'devices' || !device() ? args : ['-s', device(), ...args]);
+// What the headset shows, both eyes, as a PNG: Android's own screen capture of the headset
+export const screencap = () => execFileSync('adb', [...(device() ? ['-s', device()] : []), 'exec-out', 'screencap', '-p'],
+  { env: { ...process.env, MSYS_NO_PATHCONV: '1' }, maxBuffer: 64 * 1024 * 1024 });
 
 // The laptop's server: the port the app's preview starts it on (.claude/launch.json), else the
 // port of `npm run serve`.
