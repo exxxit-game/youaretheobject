@@ -54,7 +54,16 @@ needed; where no source settles it, the options go to him.
 The two other AIs' advice the owner brought on 11.10 is checked claim by claim in
 [docs/research/other-ai-advice.md](../research/other-ai-advice.md); what it leaves for shelf 5 is listed there. What practitioners wrote, found
 the same day on his word: [docs/research/forums-aframe-quest.md](../research/forums-aframe-quest.md) (English) and
-[docs/research/forums-other-languages.md](../research/forums-other-languages.md) (the other languages).
+[docs/research/forums-other-languages.md](../research/forums-other-languages.md) (the other languages), and the threads the owner downloaded from Reddit:
+[docs/research/reddit-2026-10-11.md](../research/reddit-2026-10-11.md).
+
+## Shelf 1, the rules and Claude Code (11.10)
+
+Against the docs saved that day: [instruction files and memory](revision-shelf1-rules.md),
+[hooks and settings](revision-shelf1-machinery.md), [subagents and the skill](revision-shelf1-agents.md); what
+experienced users wrote: [docs/research/forums-claude-code.md](../research/forums-claude-code.md). For the later
+shelves: [docs/research/forums-data.md](../research/forums-data.md) (shelf 9) and
+[docs/research/forums-rooms.md](../research/forums-rooms.md) (rooms) and [docs/research/forums-store-money.md](../research/forums-store-money.md) (shelf 14).
 
 ## Order
 
