@@ -48,7 +48,9 @@ const openRemarks = () => {
 };
 
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
-  const commits = JSON.parse(gh(['api', `repos/${REPO}/compare/${BASE}...room-polish`])).commits.map((c) => c.sha);
+  // only the commits' ids: the whole comparison carries every changed file's diff, and on 11.10 it grew to
+  // 1.24 MB, past spawnSync's 1 MB output buffer (ENOBUFS, an exit with no message, every run red)
+  const commits = gh(['api', `repos/${REPO}/compare/${BASE}...room-polish`, '--jq', '.commits[].sha']).split('\n').filter(Boolean);
   const open = openRemarks();
   const to = target(commits, isRead, open);
   if (!to) console.log(`${BASE} stays: ${commits.length} new commits, ${open} open remarks`);
