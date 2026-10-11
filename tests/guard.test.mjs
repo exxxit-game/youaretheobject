@@ -13,6 +13,7 @@ import { fileURLToPath } from 'node:url';
 import { refusal, ciLine, HEALTH_SHOWN, EXTRA_LINE } from '../tools/claude-guard.mjs';
 import { onHead } from '../tools/headset.mjs';
 import { BOARD, SHOWS, UNTIL, WAITS, top, split } from '../tools/board.mjs';
+import { leftovers, LIMIT_MS } from '../tools/leftovers.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PS = 'PowerShell';
@@ -177,6 +178,40 @@ assert.equal(ask('Bash', 'git commit -n -m x'), 2, 'the hook let a hook-skipping
 assert.equal(ask(PS, 'npm run test:smoke'), 2, 'the hook let the smoke test run in PowerShell');
 assert.equal(ask('Bash', 'grep -rn "git commit --no-verify" docs/'), 0, 'the hook refused a search');
 
+// Helpers' commands left running (tools/leftovers.mjs): the tree as measured on the laptop 11.10, a
+// command past its tool's time limit moved to the background under the session's bash, beside what
+// is no command: the session's console host, an MCP server it keeps, the desktop app's own servers,
+// and a process whose parent id was reused by the session after it began
+{
+  const T = 1791731000000, min = 60000;
+  const snap = 'source /c/Users/admin/.claude/shell-snapshots/snapshot-bash-1.sh && eval';
+  const tree = [
+    { pid: 9492, ppid: 6600, name: 'claude.exe', start: T - 600 * min, cmd: String.raw`"C:\Program Files\WindowsApps\Claude_2\app\Claude.exe"` },
+    { pid: 5864, ppid: 9492, name: 'claude.exe', start: T, cmd: String.raw`C:\Users\admin\AppData\Roaming\Claude\claude-code\2.1.295\d2e2\claude.exe --output-format stream-json` },
+    { pid: 4100, ppid: 5864, name: 'conhost.exe', start: T, cmd: String.raw`\??\C:\WINDOWS\system32\conhost.exe 0x4` },
+    { pid: 3916, ppid: 5864, name: 'bash.exe', start: T + 2 * min, cmd: String.raw`"C:\Program Files\Git\bin\bash.exe" -c "${snap} 'find / -name camera.md'"` },
+    { pid: 5912, ppid: 3916, name: 'bash.exe', start: T + 2 * min, cmd: `bash.exe -c "${snap} 'find / -name camera.md'"` },
+    { pid: 980, ppid: 5912, name: 'find.exe', start: T + 2 * min, cmd: 'find / -name camera.md' },
+    // a tool shell whose command names an MCP server is still a command
+    { pid: 3000, ppid: 5864, name: 'bash.exe', start: T + 2 * min, cmd: `bash.exe -c "${snap} 'grep -rn mcp /c'"` },
+    { pid: 3001, ppid: 3000, name: 'grep.exe', start: T + 2 * min, cmd: 'grep -rn mcp /c' },
+    { pid: 7000, ppid: 5864, name: 'cmd.exe', start: T, cmd: 'cmd.exe /d /s /c npx -y some-mcp-server' },
+    { pid: 7001, ppid: 7000, name: 'node.exe', start: T, cmd: 'node some-mcp-server' },
+    { pid: 10676, ppid: 9492, name: 'cmd.exe', start: T - 500 * min, cmd: 'cmd.exe /C npx.cmd -y metavr mcp server' },
+    { pid: 8000, ppid: 9492, name: 'node.exe', start: T - 60 * min, cmd: 'node tools/serve.mjs' },
+    { pid: 6000, ppid: 5864, name: 'node.exe', start: T - 30 * min, cmd: 'node older-than-its-parent-id' },
+  ];
+  const named = (now) => leftovers(tree, now).map((p) => p.pid).sort((a, b) => a - b);
+  assert.deepEqual(named(T + 2 * min + LIMIT_MS - min), [], 'a command younger than the limit was named as left running');
+  assert.deepEqual(named(T + 2 * min + LIMIT_MS + min), [980, 3001], 'a command left running under the session was not named, or something else was: its shells, the console host, a server, the app\'s own processes, a reused parent id');
+  // the hook itself, given the list: the turn does not end while it runs
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'leftovers-'));
+  fs.writeFileSync(path.join(dir, 'list.json'), JSON.stringify(tree.map((p) => ({ ...p, start: p.start - T + Date.now() - LIMIT_MS - 3 * min }))));
+  const hook = spawnSync(process.execPath, ['tools/claude-guard.mjs', 'stop'], { cwd: ROOT, encoding: 'utf8', env: { ...process.env, OBJECT_PROCESS_LIST: path.join(dir, 'list.json') }, input: JSON.stringify({ cwd: ROOT, stop_hook_active: false }) });
+  assert.ok(hook.status === 2 && /longer than 10 minutes[\s\S]*find \/ -name camera\.md/.test(hook.stderr), `the stop hook let the turn end with a command left running:\n${hook.stderr}`);
+  fs.rmSync(dir, { recursive: true, force: true });
+}
+
 // Every message the owner types is logged word for word, and nothing else is: the app's notices
 // (helpers' reports, the pull request watcher) logged as his read as his words. A home of the
 // test's own, so his real log is not touched.
@@ -236,4 +271,4 @@ const shownBoard = end + `(the rest of the board: ${BOARD})`.length;
 const worstStart = shownBoard + 2 + (1 + HEALTH_SHOWN + 1) * (EXTRA_LINE + 1) + 2 * (EXTRA_LINE + 2);
 assert.ok(end > 0 && worstStart < 10000, `on the worst day the start would print ${worstStart} characters (the board's top ${shownBoard}): shorten the board's top`);
 
-console.log(`guard: ok (${refused.length} refused, ${allowed.length} allowed, the hook wired, the headset's wearer seen, his messages logged and only his, his decisions imported by CLAUDE.md, the board's top and his brake shown at start)`);
+console.log(`guard: ok (${refused.length} refused, ${allowed.length} allowed, the hook wired, the headset's wearer seen, his messages logged and only his, his decisions imported by CLAUDE.md, the board's top and his brake shown at start, commands left running named)`);

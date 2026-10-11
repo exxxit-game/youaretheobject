@@ -44,9 +44,19 @@ const headsetTool = (args, record) => {
   return { ok: r.status === 0, out: `${r.stdout}${r.stderr}` };
 };
 // Claude Code hands its hook the event as JSON on stdin (code.claude.com/docs/en/hooks)
-const askGuard = (mode, event) => {
-  const r = spawnSync(process.execPath, ['tools/claude-guard.mjs', mode], { cwd: dir, env, encoding: 'utf8', input: JSON.stringify(event) });
+const askGuard = (mode, event, extra = {}) => {
+  const r = spawnSync(process.execPath, ['tools/claude-guard.mjs', mode], { cwd: dir, env: { ...env, ...extra }, encoding: 'utf8', input: JSON.stringify(event) });
   return { ok: r.status === 0, out: `${r.stdout}${r.stderr}` };
+};
+// a helper's command eleven minutes old under a Claude Code session, as the processes are listed on the
+// laptop (tools/leftovers.mjs); no runner can make a process that old in a test, so the list is planted
+const leftover = () => {
+  const now = Date.now(), at = (m) => now - m * 60000;
+  fs.writeFileSync(`${dir}-processes.json`, JSON.stringify([
+    { pid: 50, ppid: 1, name: 'claude.exe', start: at(30), cmd: String.raw`C:\Users\x\AppData\Roaming\Claude\claude-code\2.1.295\claude.exe` },
+    { pid: 51, ppid: 50, name: 'bash.exe', start: at(11), cmd: 'bash.exe -c "source ~/.claude/shell-snapshots/s.sh && eval find / -name camera.md"' },
+    { pid: 52, ppid: 51, name: 'find.exe', start: at(11), cmd: 'find / -name camera.md' },
+  ]));
 };
 const structure = test('structure.test.mjs');
 // player's words built from their codes: Russian letters belong only in the texts files
@@ -117,6 +127,8 @@ const CASES = [
     () => headsetTool(['tools/xr-probe-run.mjs', 'input'], `${dir}-reviews.jsonl`), 'waits for the practice reviewer'],
   ['claude-guard pre', 'the owner\'s automatic stop', 'the assistant writes the practice review record itself', () => {},
     () => askGuard('pre', { tool_name: 'Write', tool_input: { file_path: `${dir}-reviews.jsonl`.replace(/\.jsonl$/, '-practice-reviews.jsonl'), content: '{}' } }), 'REFUSED'],
+  ['claude-guard stop', 'helpers\' commands stopped', 'a turn ends with a helper\'s command running for 11 minutes', leftover,
+    () => askGuard('stop', { stop_hook_active: false }, { OBJECT_PROCESS_LIST: `${dir}-processes.json` }), 'longer than 10 minutes'],
   ['claude-guard stop', 'work saved and pushed', 'a turn ends with unsaved work', () => append('docs/roadmap.md', '\nunsaved\n'), () => askGuard('stop', { stop_hook_active: false }), 'work not saved'],
   // last: it leaves the clone on its own branch, which the reset between cases does not undo
   ['claude-guard stop', 'the next window has the work', 'a turn ends with the main folder behind this branch',
@@ -153,6 +165,7 @@ for (const [guard, rule, mistake, plant, check, words] of CASES) {
 }
 fs.rmSync(dir, { recursive: true, force: true });
 for (const f of ['reviews', 'look', 'record']) fs.rmSync(`${dir}-${f}.jsonl`, { force: true });
+fs.rmSync(`${dir}-processes.json`, { force: true });
 const blind = rows.filter((r) => !r.caught);
 console.log(blind.length ? `\n${blind.length} of ${rows.length} guards did not see their mistake` : `\nall ${rows.length} guards saw their mistake`);
 process.exitCode = blind.length ? 1 : 0;

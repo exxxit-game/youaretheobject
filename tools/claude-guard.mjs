@@ -10,7 +10,8 @@
 //         the practice review record
 //   subagent-start, subagent-stop: a practice reviewer's run is recorded for the owner's automatic
 //         stop before VR in the headset and the test copy (tools/review-gate.mjs)
-//   stop: a turn does not end while work is unsaved or not on GitHub, or the main folder lacks it
+//   stop: a turn does not end while work is unsaved or not on GitHub, or the main folder lacks it,
+//         or a command has run under Claude Code longer than ten minutes (tools/leftovers.mjs)
 //   start, prompt: the top of the board comes back at start and after every compaction, with
 //         yesterday's commits to the game and to the process (his brake); every owner message is logged
 // Imported with no mode (tests/guard.test.mjs), it only defines refusal() and readOnlySql().
@@ -23,6 +24,7 @@ import { withoutGitVars } from './secrets.mjs';
 import { typedText } from './owner-links.mjs';
 import { scan, named, entries, write, lastReport, REVIEWER, REPORT_END } from './review-gate.mjs';
 import { BOARD, top, split } from './board.mjs';
+import { leftoverLine } from './leftovers.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DECISIONS = 'docs/owner-decisions.md';
@@ -481,6 +483,9 @@ if (mode === 'stop') {
     const first = theirs ? `room-polish has ${theirs} commits of another window: first here run git merge room-polish, keeping both sides of every conflict in docs/board.md (the owner's words), then ` : '';
     problems.push(`the main folder (room-polish, where the next window starts) lacks ${gitHere('rev-list', '--count', 'room-polish..HEAD')} commits of this branch: ${first}in it run git merge --ff-only ${branch}, then git push origin room-polish`);
   }
+  // a helper's command left running (the owner's yes, 11.10): seen at every turn's end, not by my memory
+  const left = leftoverLine();
+  if (left) problems.push(left);
   // npm test is not run here: it runs before "done" and on GitHub, and the commit hook's quick check
   // before every commit; running the whole suite again cost 12-56 s a turn
   if (problems.length) stop(`NOT DONE. Before this turn ends:\n- ${problems.join('\n- ')}`);
