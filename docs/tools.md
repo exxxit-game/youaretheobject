@@ -9,7 +9,7 @@ once); what it names is read or run only for its task. One line per situation; t
   C:\Users\admin\Documents\objekt-files\papers\. A note on one paper: research-desk research-litnote;
   several papers: paper-compare; are the references real: citation-check.
 - A narrow fact (a real size, a standard's number, a period photo): the quick-research agent; a wide
-  question (a market, every platform, many options): the deep-research agent.
+  question (a market, every platform, many options, how those who do it work: their forums): the deep-research agent.
 - Searching papers: Consensus, PubMed, the hosted reference lookup; a PDF: PDF Tools (it opens files only
   under Documents, Downloads or Desktop); a page a fetch cannot read: the browser pane.
 - How the engine does a thing (a component, a primitive, the scene, a material): A-Frame's own docs of our
