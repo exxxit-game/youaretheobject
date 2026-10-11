@@ -82,18 +82,20 @@ function draw(main, small) {
 }
 
 // the steps tools/xr-room-run.mjs shows, each for its time. Walking stays inside his boundary: the
-// next room waits for a procedure that is safe (docs/audit/room-probe-review.md, finding 1)
+// next room comes last and on its own: both rooms lit, the controllers in hand, nothing drawn over his view
+// while he walks (docs/audit/room-probe-review.md, finding 1: "no lines drawn and the controllers in hand")
 window.__steps = [
-  { "main": "Это твоя комната глазами очков. Осмотрись, не сходя с места", "small": "1 из 5 · линии — стены и мебель · 15 секунд", "secs": 15 },
-  { "main": "Медленно пройдись внутри своей зоны, к стенам не подходи", "small": "2 из 5 · 40 секунд; пока идёшь, всё бледнее", "secs": 40 },
-  { "main": "Посмотри на стол или шкаф, не сходя с места", "small": "3 из 5 · 20 секунд", "secs": 20 },
-  { "main": "Положи контроллеры и подними обе руки перед собой, раскрой ладони", "small": "4 из 5 · 15 секунд", "secs": 15 },
-  { "main": "Вернись в середину зоны, встань прямо и разведи руки в стороны", "small": "5 из 5 · 10 секунд", "secs": 10 },
+  { "main": "Это твоя комната глазами очков. Осмотрись, не сходя с места", "small": "1 из 6 · линии — стены и мебель · 15 секунд", "secs": 15 },
+  { "main": "Медленно пройдись внутри своей зоны, к стенам не подходи", "small": "2 из 6 · 40 секунд; пока идёшь, всё бледнее", "secs": 40 },
+  { "main": "Посмотри на стол или шкаф, не сходя с места", "small": "3 из 6 · 20 секунд", "secs": 20 },
+  { "main": "Положи контроллеры и подними обе руки перед собой, раскрой ладони", "small": "4 из 6 · 15 секунд", "secs": 15 },
+  { "main": "Вернись в середину зоны, встань прямо и разведи руки в стороны", "small": "5 из 6 · 10 секунд", "secs": 10 },
+  { "main": "Возьми контроллеры. Если свет горит в обеих комнатах — медленно выйди в соседнюю и вернись; если нет — просто стой", "small": "6 из 6 · минута · линий и таблички не будет, смотри под ноги", "secs": 60, "clear": true },
   { "main": "Готово, спасибо. Возьми контроллеры, сними очки и напиши «снял»", "small": "конец", "secs": 3 }
 ];
 
 const solids = [], lines = [];
-let place = null;
+let place = null, clear = false;
 // a short tone with each new step: with the controllers put down no buzz reaches him
 const beep = () => {
   if (!audio) return;
@@ -139,7 +141,13 @@ async function runSteps(session, { dry = false } = {}) {
     window.__say(s.main, s.small);
     said.push(s.main);
     if (!dry) { r.stepAt = i + 1; save(); }
-    await hold(s.secs * 1000, dry ? null : session, s);
+    if (s.clear) {
+      // he reads the step first, then everything drawn goes away for the walk, and comes back after
+      await hold(6000, dry ? null : session, s);
+      clear = true;
+      await hold((s.secs - 6) * 1000, dry ? null : session, s);
+      clear = false;
+    } else await hold(s.secs * 1000, dry ? null : session, s);
   }
   if (!dry && live()) { r.done = new Date().toISOString(); save(); }
   await wait(8000 / window.__stepsSpeed);
@@ -335,6 +343,8 @@ async function start() {
       for (const src of session.inputSources) { const h = src.gamepad && src.gamepad.hapticActuators && src.gamepad.hapticActuators[0]; if (h && h.pulse) h.pulse(0.6, 120); }
       beep();
     }
+    // during the walk to the next room nothing is drawn over his view
+    for (const c of scene.children) c.visible = c === panel ? panel.visible && !clear : !clear;
     if (time - lastSave > 2000) { save(); lastSave = time; }
     renderer.render(scene, camera);
   });
