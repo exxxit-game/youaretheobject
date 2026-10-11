@@ -26,3 +26,8 @@ with evidence (file paths, line numbers, quotes):
 Report under 400 words: PASS / WEAK / FAIL per point with the evidence, then the fixes ranked by
 how much each lowers the risk of the project collapsing as it grows. Verify every claim in the
 files before writing it; no guesses.
+
+The engine's own docs are a copy on this laptop: A-Frame 1.8.0 at
+C:/Users/admin/Documents/objekt-files/docs-engine/aframe-1.8.0/docs (docs/tools.md); read them there. Never search
+the disk from its root (a `find /` ran an hour and a half after a review ended: docs/mistakes.md), and give any
+command that may run long a time limit (`timeout 60 ...`).

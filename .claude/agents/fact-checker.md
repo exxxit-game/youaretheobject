@@ -38,3 +38,8 @@ Report in English, plain words, under 900 words: the counts per class first; the
 only the CONTRADICTED, UNPROVEN and STALE claims (where in the text, the claim in a few words,
 what the evidence says, the fix); then 3 lines on the pattern behind them. Spot-check at least
 five CONFIRMED claims a second time before reporting them as confirmed.
+
+The engine's own docs are a copy on this laptop: A-Frame 1.8.0 at
+C:/Users/admin/Documents/objekt-files/docs-engine/aframe-1.8.0/docs (docs/tools.md); read them there. Never search
+the disk from its root (a `find /` ran an hour and a half after a review ended: docs/mistakes.md), and give any
+command that may run long a time limit (`timeout 60 ...`).
