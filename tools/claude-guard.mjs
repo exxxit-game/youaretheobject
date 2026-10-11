@@ -9,7 +9,8 @@
 // claims, and stopped correct work more often than wrong.
 //   pre:  a shell command that skips the git hooks or runs Playwright on the laptop is refused, and
 //         so are a query that writes to the live database and any write of mine to the practice review
-//         record (connected tools banned by name alone are deny rules in .claude/settings.json)
+//         record, and a delete in the papers library or a move out of it, which no git holds
+//         (connected tools banned by name alone are deny rules in .claude/settings.json)
 //   subagent-start, subagent-stop: a practice reviewer's run is recorded for the owner's automatic
 //         stop before VR in the headset and the test copy (tools/review-gate.mjs)
 //   stop: a turn does not end while work is unsaved or not on GitHub, or the main folder lacks it,
@@ -145,7 +146,17 @@ const WHY = {
   merge: 'merges into main, the live site, on GitHub, past the push guard: main changes only by a push with the owner\'s word (OBJECT_LIVE=owner-said-yes)',
   resolve: 'closes an outside reviewer\'s remark: only the reviewer closes its own, once its next review reads the fix; answer it and leave it open, so a remark never ends on my own word',
   graphqlFile: 'sends GitHub a GraphQL request from a file or stdin, which the guard cannot read for a merge into main: give the query inline (-f query=...)',
+  library: 'deletes files of the papers library (Documents\\objekt-files) or moves them out of it; no git holds that folder, so a lost paper comes back only from the backup: leave it, or ask the owner',
 };
+// the papers library in any spelling the shells take (C:\..., /c/..., ~, $HOME, %USERPROFILE%, relative),
+// but not its backup at a drive's root (F:\objekt-files, /f/objekt-files), which robocopy mirrors into
+const LIB = /(^|[\\/"'=])objekt-files([\\/"']|$)/i;
+const BACKUP_ROOT = /(^|["'=])([a-z]:[\\/]+|\/[a-z]\/+)objekt-files([\\/"']|$)/i;
+const inLib = (x = '') => LIB.test(x) && !BACKUP_ROOT.test(x);
+const ABSOLUTE = /^([a-z]:|[\\/~$%])/i;
+const DELETERS = /^(rm|del|erase|rd|rmdir|ri|remove-item|unlink|shred|truncate|clear-content|clc|clear-item|cli)$/;
+const DELETE_CALL = /\b(?:unlink|rm|rmdir|rmtree|remove|removedirs|truncate)\w*\s*\(/;
+const deletesLib = (code) => (LIB.test(code) && DELETE_CALL.test(code) ? WHY.library : null);
 // a program by its name, in any path form the shells take
 const base = (w = '') => w.replace(/^.*[\\/]/, '').toLowerCase().replace(/\.(exe|cmd|bat|ps1)$/, '');
 const RECORD = /practice-reviews|OBJECT_REVIEW_RECORD/i;
@@ -222,7 +233,7 @@ function setsHooks(w, k) {
   return named >= 0 && /core\.hookspath/i.test(w[named + 1] ?? '');
 }
 
-function judge(words, stdin, ps) {
+function judge(words, stdin, ps, here = false) {
   const w = [...words];
   // variables set for the command, and the shell's own words before it
   while (w.length) {
@@ -237,17 +248,17 @@ function judge(words, stdin, ps) {
   if (Object.hasOwn(WRAPPERS, p)) {
     let k = 0;
     while (k < a.length && a[k].startsWith('-')) k += WRAPPERS[p]?.test(a[k]) ? 2 : 1;
-    return judge(a.slice(k + (p === 'timeout' ? 1 : 0)), stdin, ps);
+    return judge(a.slice(k + (p === 'timeout' ? 1 : 0)), stdin, ps, here);
   }
   // shells handed a command as text, or fed one on their input
   if (/^(sh|bash|zsh|dash|ksh)$/.test(p)) {
     const c = a.findIndex((x) => /^-[a-z]*c[a-z]*$/.test(x));
-    if (c >= 0) return refusal(a[c + 1] ?? '', false);
-    if (!a.some((x) => !x.startsWith('-'))) return stdin.map((s) => refusal(s, false)).find(Boolean) ?? null;
+    if (c >= 0) return refusal(a[c + 1] ?? '', false, here);
+    if (!a.some((x) => !x.startsWith('-'))) return stdin.map((s) => refusal(s, false, here)).find(Boolean) ?? null;
   }
-  if (/^(powershell|pwsh)$/.test(p)) { const c = a.findIndex((x) => /^-(c|command)$/i.test(x)); if (c >= 0) return refusal(a.slice(c + 1).join(' '), true); }
-  if (p === 'cmd') { const c = a.findIndex((x) => /^\/[ck]$/i.test(x)); if (c >= 0) return refusal(a.slice(c + 1).join(' '), false); }
-  if (p === 'invoke-expression' || p === 'iex') return refusal(a.join(' '), true);
+  if (/^(powershell|pwsh)$/.test(p)) { const c = a.findIndex((x) => /^-(c|command)$/i.test(x)); if (c >= 0) return refusal(a.slice(c + 1).join(' '), true, here); }
+  if (p === 'cmd') { const c = a.findIndex((x) => /^\/[ck]$/i.test(x)); if (c >= 0) return refusal(a.slice(c + 1).join(' '), false, here); }
+  if (p === 'invoke-expression' || p === 'iex') return refusal(a.join(' '), true, here);
   if (p === 'git') return git(a);
   // a merge on GitHub skips the push guard; gh's own options may stand before or between its command
   // words (gh pr -R owner/repo merge), so they are set aside before the words are read
@@ -284,13 +295,14 @@ function judge(words, stdin, ps) {
       test ||= x === '--test';
       check ||= x === '--check' || x === '-c';
     }
-    if (code !== null) return writesRecord(code);
+    if (code !== null) return writesRecord(code) || deletesLib(code);
     if (!check && files.some((f) => /(^|[\\/])smoke\.mjs$/i.test(f) || /(^|[\\/])@?playwright([\\/]|$)/i.test(f))) return WHY.browser;
-    if (!files.length || files[0] === '-') return writesRecord(stdin.join('\n'));
+    if (!files.length || files[0] === '-') return writesRecord(stdin.join('\n')) || deletesLib(stdin.join('\n'));
   }
   if (/^(python3?|py|perl|ruby)$/.test(p)) {
     const c = a.findIndex((x) => /^-[A-Za-z]*[ce]$/.test(x));
     if (c >= 0 && writesRecord(a[c + 1] ?? '')) return WHY.record;
+    if (c >= 0 && deletesLib(a[c + 1] ?? '')) return WHY.library;
   }
   // the headset restarted past the check that the owner is not wearing it
   if (p === 'adb') {
@@ -312,16 +324,47 @@ function judge(words, stdin, ps) {
     const to = a.findIndex((x) => /^(-destination|-t|--target-directory)$/i.test(x)), places = a.filter((x) => !x.startsWith('-'));
     if (RECORD.test(to >= 0 ? a[to + 1] ?? '' : places[places.length - 1] ?? '')) return WHY.record;
   }
+  return library(p, a, here);
+}
+
+// the papers library: a delete in it, a move out of it, a mirror that purges it. A path is in it by its
+// spelling, or by being relative while the shell stands in it (here)
+function library(p, a, here) {
+  const lib = (x = '') => inLib(x) || (here && !x.startsWith('-') && !ABSOLUTE.test(x));
+  // cmd's one-letter switches (/Y, /S) are not places; a Unix path like /tmp is
+  const places = a.filter((x) => !x.startsWith('-') && !/^\/[a-z]$/i.test(x));
+  if (DELETERS.test(p) && places.some(lib)) return WHY.library;
+  if (p === 'find' && places.some(lib) && a.some((x, j) => x === '-delete' || (/^-(exec|execdir|ok)$/.test(x) && DELETERS.test(base(a[j + 1]))))) return WHY.library;
+  // a move loses nothing while it stays inside; out of the library it does
+  if (/^(mv|move|mi|move-item)$/.test(p)) {
+    const t = a.findIndex((x) => /^(-destination|-t|--target-directory)$/i.test(x));
+    const to = t >= 0 ? a[t + 1] ?? '' : places[places.length - 1] ?? '';
+    if (!lib(to) && places.filter((x) => x !== to).some(lib)) return WHY.library;
+  }
+  // robocopy: /MIR and /PURGE delete in the destination, /MOV and /MOVE take the source away
+  if (p === 'robocopy') {
+    const [from, to] = a.filter((x) => !x.startsWith('/'));
+    if ((a.some((x) => /^\/(mir|purge)$/i.test(x)) && lib(to)) || (a.some((x) => /^\/mov(e)?$/i.test(x)) && lib(from))) return WHY.library;
+  }
+  if (p === 'rsync') {
+    const to = places[places.length - 1] ?? '';
+    if ((a.some((x) => /^--del(ete)?/.test(x)) && lib(to)) || (a.includes('--remove-source-files') && places.slice(0, -1).some(lib))) return WHY.library;
+  }
   return null;
 }
 
 // Why this command line may not run, or null: each command it runs is judged by its program and
 // arguments, never by words that only stand in it. tests/guard.test.mjs runs both ways.
-export function refusal(line, ps = false) {
+export function refusal(line, ps = false, here = false) {
   for (const c of commands(line, ps)) {
     if (c.redirs.some((r) => r.op.includes('>') && RECORD.test(r.target))) return WHY.record;
-    const why = judge(c.words, c.stdin, ps);
+    const why = judge(c.words, c.stdin, ps, here);
     if (why) return why;
+    // after a cd into the library the relative paths are in it; a cd elsewhere (or up) leaves it
+    if (/^(cd|chdir|pushd|set-location|sl|push-location)$/.test(base(c.words[0]))) {
+      const to = c.words.slice(1).find((x) => !x.startsWith('-')) ?? '';
+      here = inLib(to) || (here && !ABSOLUTE.test(to) && !to.startsWith('..'));
+    }
   }
   return null;
 }
@@ -361,7 +404,8 @@ if (mode === 'pre') {
   const tool = String(event.tool_name || '');
   if (/__execute_sql$/.test(tool) && !readOnlySql(String(event.tool_input?.query || ''))) stop('REFUSED: only a single read-only query (SELECT) may run on the live database.');
   if (/^(Write|Edit|MultiEdit|NotebookEdit)$/.test(tool) && RECORD_FILE.test(String(event.tool_input?.file_path || event.tool_input?.notebook_path || ''))) stop('REFUSED: the practice review record is written only by Claude Code\'s hook when a reviewer run ends; run the practice-reviewer agent instead.');
-  const why = refusal(String(event.tool_input?.command || ''), tool === 'PowerShell');
+  // the shell keeps its folder between calls, so a session standing in the library is seen by its cwd
+  const why = refusal(String(event.tool_input?.command || ''), tool === 'PowerShell', inLib(`${String(event.cwd || '').replace(/\\/g, '/')}/`));
   if (why) stop(`REFUSED: this command ${why}. Do the work so the guard passes instead.`);
   process.exit(0);
 }

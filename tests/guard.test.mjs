@@ -111,6 +111,24 @@ const refused = cases([
   'gh api -X PUT repos/exxxit-game/youaretheobject/pulls/9/merge',
   'gh api repos/exxxit-game/youaretheobject/merges -f base=main -f head=room-polish',
   "gh api graphql -f query='mutation{resolveReviewThread(input:{threadId:\"PRRT_x\"}){thread{isResolved}}}'",
+  // the papers library, which no git holds, in every spelling of its path
+  'rm -rf ~/Documents/objekt-files/papers/x.pdf',
+  'rm /c/Users/admin/Documents/objekt-files/papers/x.pdf',
+  ['Remove-Item -Recurse -Force "C:\\Users\\admin\\Documents\\objekt-files\\papers"', PS],
+  ['Remove-Item "$env:USERPROFILE\\Documents\\objekt-files\\papers\\x.pdf"', PS],
+  ['cmd /c del /q "%USERPROFILE%\\Documents\\objekt-files\\papers\\x.pdf"', PS],
+  'cd ~/Documents/objekt-files && rm papers/x.pdf',
+  ['Set-Location "C:\\Users\\admin\\Documents\\objekt-files"; Remove-Item papers\\x.pdf', PS],
+  'bash -c "rm -r ../../../../../objekt-files/papers"',
+  'find ~/Documents/objekt-files -name "*.tmp" -delete',
+  'find "$HOME/Documents/objekt-files" -name "*.txt" -exec rm {} +',
+  'mv ~/Documents/objekt-files/papers/x.pdf /tmp',
+  ['Move-Item -Path "C:\\Users\\admin\\Documents\\objekt-files\\papers\\x.pdf" -Destination "C:\\Temp"', PS],
+  ['robocopy "F:\\objekt-files" "C:\\Users\\admin\\Documents\\objekt-files" /MIR', PS],
+  ['robocopy "C:\\Users\\admin\\Documents\\objekt-files" "D:\\elsewhere" /MOVE', PS],
+  'rsync -a --delete /f/objekt-files/ ~/Documents/objekt-files/',
+  "node -e \"require('fs').rmSync(require('os').homedir() + '/Documents/objekt-files/papers', { recursive: true })\"",
+  "python -c \"import shutil, os; shutil.rmtree(os.path.expanduser('~/Documents/objekt-files/papers'))\"",
 ]);
 for (const [c, shell] of refused) assert.ok(refusal(c, shell === PS), `the guard let through: ${c}`);
 // a red last run of GitHub's tests is said at the start; a green one, one still running or none is not
@@ -166,11 +184,29 @@ const allowed = cases([
   'grep -n OBJECT_REVIEW_RECORD tools/review-gate.mjs',
   'grep -n "GIT_CONFIG_KEY_0=core.hooksPath" tests/guard.test.mjs',
   'GIT_CONFIG_COUNT=1 GIT_CONFIG_KEY_0=user.name GIT_CONFIG_VALUE_0=x git commit -m x',
+  // the papers library read, added to and backed up
+  'ls ~/Documents/objekt-files/papers',
+  'cp ~/Downloads/x.pdf ~/Documents/objekt-files/papers/',
+  'mv ~/Downloads/x.pdf ~/Documents/objekt-files/papers/',
+  'mv ~/Documents/objekt-files/papers/a.pdf ~/Documents/objekt-files/papers/b.pdf',
+  'pdftotext ~/Documents/objekt-files/papers/a.pdf ~/Documents/objekt-files/papers/a.txt',
+  'cd ~/Documents/objekt-files && ls papers',
+  'cd ~/Documents/objekt-files && cd /tmp && rm x.txt',
+  ['robocopy "C:\\Users\\admin\\Documents\\objekt-files" "F:\\objekt-files" /MIR', PS],
+  ['robocopy "F:\\objekt-files" "C:\\Users\\admin\\Documents\\objekt-files" /E', PS],
+  'rm -rf /tmp/objekt-files-copy',
+  'grep -rn "objekt-files" docs/ | head',
+  'rm /tmp/x.txt',
 ]);
 for (const [c, shell] of allowed) {
   const why = refusal(c, shell === PS);
   assert.ok(!why, `the guard refused a command that runs nothing it guards: ${c}\n${why}`);
 }
+// a shell already standing in the library: the hook sees it by the event's cwd
+assert.ok(refusal('rm papers/x.pdf', false, true), 'a delete by a relative path inside the library went through');
+assert.ok(!refusal('ls papers', false, true), 'a read inside the library was refused');
+const inLibrary = spawnSync(process.execPath, ['tools/claude-guard.mjs', 'pre'], { cwd: ROOT, encoding: 'utf8', input: JSON.stringify({ tool_name: 'Bash', tool_input: { command: 'rm papers/x.pdf' }, cwd: 'C:\\Users\\x\\Documents\\objekt-files' }) });
+assert.equal(inLibrary.status, 2, 'the hook let a delete through in a shell standing in the library');
 
 // the hook itself, as Claude Code calls it: the event as JSON on stdin, exit 2 refuses
 const ask = (tool_name, command) => spawnSync(process.execPath, ['tools/claude-guard.mjs', 'pre'], { cwd: ROOT, encoding: 'utf8', input: JSON.stringify({ tool_name, tool_input: { command }, cwd: ROOT }) }).status;
