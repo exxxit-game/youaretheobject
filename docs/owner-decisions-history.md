@@ -213,13 +213,15 @@ is no reason to reopen one. Written as one file until 11.10; what came after is 
   version, a schema per room, a rate limit); Meta's headset emulator (IWER) in the GitHub test.
 
 ## Since the split
-- The rules split (the board's second item, his «да» 11.10): what is read at every start is
-  CLAUDE.md with his permanent prompt on top, one line a decision (docs/owner-decisions.md) and docs/tools.md;
+- The rules split (the board's second item; asked whether to shorten CLAUDE.md and his decisions, «укорачивать» 11.10 11:58): what is read at every start is
+  CLAUDE.md with his permanent prompt on top, one line a decision (docs/owner-decisions.md) and docs/tools.md, with the top of docs/board.md shown by the start hook;
   this record and every other document are read for their task. His words: «у нас есть документы, которые очень
   важны, и ты должен их постоянно знать. Прям вот они у тебя должны быть, прям понял, чуть ли не перед глазами
   все время… А есть такие документы, к которым ты вот только во время задачи должен обратиться, понимаешь? Вот
   надо распределить, чтобы твоя память была чистая, чтобы то, что надо, ты знал, а то, когда надо обратиться, ты
-  просто обращался… Чтобы не было вот этого, как тогда с космограммом. Знай все всегда и постоянно» 11.10 14:59.
+  просто обращался… Чтобы не было вот этого, как тогда с космограммом. Знай все всегда и постоянно. Не, мы теперь, видишь, мы теперь работаем
+  правильно. Надо знать конкретно то, что надо знать, а то, чем надо пользоваться в конкретный момент, тем мы пользуемся
+  в конкретный момент» 11.10 14:59 (the Cosmogram way, «знай все всегда», is what he rejects).
 - Bans few, thinking free, invention out of precise work: «Понаставляли запретов, а запреты, понимаешь, не дают
   развиваться мыслям. Поэтому запреты лишние были убраны… Размышлять, вот размышлять я вообще никогда тебе не
   запрещаю. Но вот додумывать, фантазировать в подобные моменты, когда здесь точечная работа, а программирование,

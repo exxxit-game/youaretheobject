@@ -6,17 +6,17 @@ All his words, how each came, and the texts he accepted: docs/owner-decisions-hi
 enough. A new decision: its line here, the rest there. A risk list or a general method is no reason to reopen one.
 
 ## The process
-- The important always in front of me, the rest read only during its task («чтобы твоя память была чистая» 11.10).
+- The rules read at start shortened («укорачивать» 11.10): the important always in front of me, the rest read only during its task («чтобы твоя память была чистая» 11.10).
 - Bans few, thinking free, no invention in precise work («Размышлять… я вообще никогда тебе не запрещаю. Но вот додумывать, фантазировать… когда здесь точечная работа» 11.10).
 - His permanent prompt stands at the top of CLAUDE.md as he pasted it («Да, длинный вариант» 11.10).
 - The process first, rebuilt by the plan, all at once («нельзя улучшать игру, пока мы не улучшили процесс разработки» 10.10).
 - Then frozen: it changes only on a health-check finding (node tools/health.mjs; it only repairs the broken thing) or his word, and a change replaces something («согласен» 10.10).
 - The process review accepted (https://claude.ai/artifact/NMfbi3vWaZQX8oR9t39mTC): a ban only where a mistake cannot be undone or costs him time; a complaint is no reason for a new guard («Убирать, что не надо» 11.10).
-- What matters is kept by checks the machine runs, stage by stage, not by memory («поэтапно» 10.10); a claim about our setup is read from the thing itself, about Quest from Meta's docs; nothing red reaches GitHub («чтобы ты не по памяти отвечал» 10.10).
+- What matters is kept by checks the machine runs by itself, stage by stage, not by memory: each stage has its list of what must be known and checked before it («поэтапно» 10.10); a claim about our setup is read from the thing itself, about Quest from Meta's docs; nothing red reaches GitHub («чтобы ты не по памяти отвечал» 10.10).
 - Two empty PATH entries in Windows stay («Вообще не хочу туда лезть» 10.10).
 - Connectors off: Notion, Jam, Adobe, Figma, the GitHub connector, Claude in Chrome, computer use, Minutes, privacy-legal; kept: Claude Docs, the browser pane, Consensus, PubMed, reference lookup, PDF Tools, Dropbox, one Supabase; the superpowers plugin off («да» 10.10).
 - Google Drive is the papers' cloud copy; the old Dropbox files stay («мы выбираем Google Driver» 10.10).
-- Plugins: CodeRabbit and the TypeScript language server on, the rest off («ставь» 9.10); the strongest model («взял самую-самую умную» 9.10); main protected on GitHub («Да» 9.10).
+- Plugins on for every project: CodeRabbit and the TypeScript language server, the rest off («ставь» 9.10); the strongest model («взял самую-самую умную» 9.10); main protected on GitHub («Да» 9.10).
 - Paid tools only when they help decisively («не готов платить за лишнюю херню» 10.10).
 - CodeRabbit on its 14-day trial, kept only if useful («если он нам будет очень полезен… буду платить» 10.10); it reviews the one pull request room-polish → reviewed, moved by a robot on GitHub, never by the session under review («да, этот» 10.10); it replaces the PR review toolkit («делай» 10.10).
 - He sets up and connects; I check it all as one whole («Все, что надо настроить, подключить, я настрою и подключу» 10.10).
@@ -46,7 +46,7 @@ enough. A new decision: its line here, the rest there. A risk list or a general 
 - The loop: find what exists, build it in, check it, write its source beside it; what is not found goes to him («Искать, воплощать» 11.10); nothing invented in code («нельзя получить результат, если результат нафантазирован» 11.10).
 - An object: many pictures of the real thing from every side (shops' product photos), then how it is made, then the build («это можно как правило поставить» 11.10).
 - Rooms are faithful re-creations of published experiments, no invented mechanics; our own new experiments too, live, on the closest studies, he picks the candidates («мы можем ставить свои эксперименты» 9.10).
-- The whole before a part («весь мотор пересобирать» 10.10).
+- The whole before a part, each step weighed, not the simplest («весь мотор пересобирать» 10.10).
 - No light from nowhere: the scene's lights, fixed once for the whole corridor («проблема решается глобально» 9.10).
 - Guy Ritchie's "Revolver", not Portal: replayed to be understood, built detail by detail («деталька за деталькой» 9.10); Portal's humour all the same («без юмора ты там просто как лабораторная крыса» 10.10).
 - Readability beats period look («Читаемость» 8.10); pictures before the game (8.10); beauty within the weakest headset's budget («максимум красоты, ну не в нагрузку» 9.10).
@@ -54,8 +54,8 @@ enough. A new decision: its line here, the rest there. A risk list or a general 
 - What is left to imagination goes to him as real options («Есть несколько вариантов, и я выбираю» 9.10).
 - In the headset every step he is to do goes inside it (quest-look.mjs say), never only the chat («а ты мне говорил в очках» 11.10); he puts it on only when asked («если ты не попросил, я в них сидеть не буду» 11.10).
 - New numbers and conclusions reach him only on a fact-checked page; in the chat a link and one line («Делай» 10.10).
-- No empty words to him: Chase's «Tyranny of Words», Orwell's six rules («Ты про эти правила говоришь?» 11.10), Hayakawa's report against judgment («это речь маркетолога» 11.10).
-- General semantics behind my words and checks: Korzybski, the Kodishes, Chase, Hayakawa («воспользуйся уже всеми известными людям знаниями» 11.10).
+- No empty words to him: Chase's «Tyranny of Words», Orwell's six rules («Ты про эти правила говоришь?» 11.10), Hayakawa's report against judgment («это речь маркетолога» 11.10); Glavred's paid API not taken.
+- General semantics behind my words and checks: Korzybski, the Kodishes (dates and indexes on every claim, the map is not the territory), Chase, Hayakawa («воспользуйся уже всеми известными людям знаниями» 11.10).
 - The outside reviewer's remark is closed only by the reviewer («ты сам себя можешь оправдать» 11.10).
 - I check all a tool can measure; he judges what he sees, one action at a time («Мне надо делать что-то конкретно одно» 9.10).
 - Missing anything (a norm, a document, a login, a paywall, his photo): tell him at once, each time, with the link («всегда говори мне каждый раз» 11.10).
@@ -65,13 +65,13 @@ enough. A new decision: its line here, the rest there. A risk list or a general 
 - No player character, only controllers or hands («Просто джойстики или руки» 11.10).
 - All the headset and its accessories can measure is learned and used; a room may be more exact with an accessory, the most from the bare headset otherwise («Надо научиться измерять» 11.10). His own: the headset, a BoboVR strap.
 - Space tiers: seated, standing, roomscale 1.8×1.8 m (base; his area), large (offered only, never shrunk). Live players only where the original had real participants or a design like Mori & Arai; mixed reality where the original was a real room.
-- Formal «вы»; no music. Humour only in the rooms («юмор будет только в экспериментах, в комнатах» 9.10); the corridor's voice serious, small dry details in print welcome («дополняет, а не уничтожает серьезность»).
+- Formal «вы»; no music. Humour only in the rooms («юмор будет только в экспериментах, в комнатах» 9.10); the corridor's voice serious, the start a serious automatic message; small dry details in print welcome there («дополняет, а не уничтожает серьезность»).
 - A room's voice: a laboratory party host («тамада, но лабораторный»), a children's-game rhythm, the procedure as in the paper; the first room opens with a minute of a funny warm-up, then serious («для разминки» 10.10).
 
 ## Data, science, money
-- The lever stays with us, we are our own lab («Рычаг должен быть всегда у нас» 9.10); data protection first («это самое серьезное» 9.10); never sell data.
+- The lever stays with us, we are our own lab, only how is open («Рычаг должен быть всегда у нас» 9.10); data protection first («это самое серьезное» 9.10); never sell data.
 - Ethics: consent, 18+ for recording, «start without recording», quit any time, debrief, anonymous data; science only after ethics approval, preregistration and a separate consent.
-- Floor 1 free, then paid packs («потом… купить дополнительный контент» 8.10) that work even when the trick is known; education licences; university partners.
+- Floor 1 free, then paid packs («потом… купить дополнительный контент» 8.10); chosen to work even when the trick is known; education licences; university partners.
 - Playtest: 5–10 testers from his Telegram VR community; 5 approved questions; releases only on his word.
 - Payouts go to Ukraine («украина» 10.10).
 - The tool revision (https://claude.ai/artifact/ShHre3dd8yNXUJcCnXn65D; «нужно всё вносить и исправлять, улучшать» 10.10): Blender and compression tools; the site published by GitHub Actions, only the game's files public; one live migration (date only, random key, consent version, a schema per room, a rate limit); IWER in the GitHub test.
