@@ -16,6 +16,7 @@ import '../engine/room-bounds.js';
 import '../engine/sfx.js';
 import '../engine/grab-press.js';
 import '../engine/controller-batch.js';
+import '../engine/laser-beam.js';
 import '../engine/surface.js';
 import '../engine/shapes.js';
 import '../engine/cable.js';

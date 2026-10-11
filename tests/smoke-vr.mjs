@@ -75,8 +75,25 @@ export async function playVR(browser, url, { corridor, room }) {
     // back where the player stands, then the page taken with the trigger
     await page.evaluate(() => { window.__xr.position.set(0, 1.6, 0); window.__xr.quaternion.set(0, 0, 0, 1); });
     await frames(4);
+    // the ray shows only where it can act (src/engine/laser-beam.js; Meta, Ray casting specs): turned to
+    // the floor it fades out, on the clipboard it shows, and while the stick aims the teleport arc it is off
+    const beam = (shown, why) => page.waitForFunction((want) => {
+      const laser = [...document.querySelectorAll('[laser-controls]')].find((e) => e.getAttribute('laser-controls').hand === 'right');
+      const line = laser.getObject3D('line');
+      return want ? !!line && line.material.visible && line.material.opacity > 0.5 : !line || !line.material.visible;
+    }, shown, { timeout: 5000 }).catch(() => { throw new Error(`the right controller's ray ${why}`); });
+    await page.evaluate(() => window.__xr.controllers.right.quaternion.set(-Math.SQRT1_2, 0, 0, Math.SQRT1_2));
+    await beam(false, 'stays drawn while it points at the floor, where nothing can be pressed');
     const aim = await page.evaluate(aimRight);
     assert.ok(aim.hit, `the right controller's ray does not meet the clipboard (${JSON.stringify(aim)})`);
+    await beam(true, 'is not drawn while it points at the clipboard');
+    // the stick pushed forward aims a teleport; a click on the stick cancels it, so the player stays
+    await page.evaluate(() => window.__xr.controllers.right.updateAxes('thumbstick', 0, -1));
+    await beam(false, 'stays drawn beside the teleport arc');
+    await page.evaluate(() => window.__xr.controllers.right.updateButtonValue('thumbstick', 1));
+    await frames(4);
+    await page.evaluate(() => { window.__xr.controllers.right.updateAxes('thumbstick', 0, 0); window.__xr.controllers.right.updateButtonValue('thumbstick', 0); });
+    await beam(true, 'does not come back on the clipboard once the teleport is cancelled');
     await page.evaluate(() => window.__xr.controllers.right.updateButtonValue('trigger', 1));
     await frames(4);
     await page.evaluate(() => window.__xr.controllers.right.updateButtonValue('trigger', 0));

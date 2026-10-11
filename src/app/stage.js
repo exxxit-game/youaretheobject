@@ -18,7 +18,7 @@
 // (supermedium/three.js PR #25; tests/vendor.test.mjs). Without OCULUS_multiview each eye draws as before.
 // ?multiview=0 turns it off, so the headset's measure can compare (tools/quest-look.mjs perf).
 const MULTIVIEW = new URLSearchParams(globalThis.location?.search || '').get('multiview') !== '0';
-const LASER = 'raycaster="objects: .clickable; far: 8; lineColor: #f0c96a; lineOpacity: .6" grab-press controller-batch';
+const LASER = 'raycaster="objects: .clickable; far: 8; lineColor: #f0c96a; lineOpacity: .6" grab-press controller-batch laser-beam';
 
 // inside: the markup of the places, put in before the scene loads, so their static parts are merged
 // and their tiles laid with everything else
