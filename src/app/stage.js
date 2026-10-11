@@ -1,8 +1,10 @@
 // What every place of the game stands on: the scene, how it is drawn, and the player (the rig with
 // the camera and both controllers). The app holds it for the whole visit; the corridor and the rooms
 // behind its doors are put into it (src/app/lab.js).
-// The rig stands at the origin: on a computer the camera's own position is then the world position
-// that room-bounds keeps inside the walls, and leaving VR puts the rig back there (recenter.js).
+// The rig stands at the origin; the corridor turns it to face a place (src/app/lobby/lobby.js), and
+// leaving a headset's session puts it back here (recenter.js).
+// prewarm: everything drawn once before it is first seen, the room behind its shut door too
+// (src/engine/prewarm.js).
 
 // No fixed foveated rendering (A-Frame's default is the most): it draws the view away from the lens
 // centre at a lower resolution, and Meta warns that "high-contrast or text-heavy scenes may make the
@@ -20,7 +22,7 @@ const LASER = 'raycaster="objects: .clickable; far: 8; lineColor: #f0c96a; lineO
 
 // inside: the markup of the places, put in before the scene loads, so their static parts are merged
 // and their tiles laid with everything else
-export const stageHTML = (inside) => `<a-scene renderer="antialias: true; colorManagement: true; foveationLevel: 0; multiviewStereo: ${MULTIVIEW}" background="color: #0b0b0d"
+export const stageHTML = (inside) => `<a-scene prewarm="show: .room-interior" renderer="antialias: true; colorManagement: true; foveationLevel: 0; multiviewStereo: ${MULTIVIEW}" background="color: #0b0b0d"
          cursor="rayOrigin: mouse" raycaster="objects: .clickable; far: 8"
          vr-mode-ui="enabled: true" loading-screen="enabled: false" xr-mode-ui="enabled: true">
   <a-entity id="rig" position="0 0 0" recenter>

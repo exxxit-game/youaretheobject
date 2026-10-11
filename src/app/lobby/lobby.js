@@ -71,9 +71,12 @@ function placePlayer({ x, z, yaw, pitch = 0, lift = false }, area) {
   rig.object3D.updateMatrixWorld();
   const at = rig.object3D.worldToLocal(new THREE.Vector3(x, 0, z));
   cam.object3D.position.set(at.x, cam.object3D.position.y, at.z);
-  // look-controls has no setting for a starting tilt; its pitch object is what it turns up and down
+  // the mouse's own turn and tilt start afresh, so the place's direction is the view's (look-controls
+  // has no setting for them; its yaw and pitch objects are what it turns)
   const look = cam.components['look-controls'];
-  if (look && look.pitchObject) look.pitchObject.rotation.x = THREE.MathUtils.degToRad(pitch);
+  if (!look || !look.pitchObject) return;
+  look.yawObject.rotation.y = 0;
+  look.pitchObject.rotation.x = THREE.MathUtils.degToRad(pitch);
 }
 
 // How the player moves: teleport and snap turn by default (Meta's comfort defaults);

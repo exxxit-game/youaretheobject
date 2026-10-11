@@ -24,6 +24,9 @@ AFRAME.registerComponent('recenter', {
     this.wait = 'idle';   // placement: asked for, then done by the first tracked pose (tick)
     const sc = this.el.sceneEl;
     sc.addEventListener('enter-vr', () => {
+      // a computer's full screen is A-Frame's VR mode too (enterVR, no headset): nothing to place
+      this.presented = sc.renderer.xr.isPresenting;
+      if (!this.presented) return;
       this.wait = 'waiting';
       const space = sc.renderer.xr.getReferenceSpace();
       if (space && !this.space) { this.space = space; space.addEventListener('reset', () => { this.wait = 'waiting'; }); }
@@ -39,6 +42,8 @@ AFRAME.registerComponent('recenter', {
       }
     });
     sc.addEventListener('exit-vr', () => {
+      if (!this.presented) return;
+      this.presented = false;
       this.space = null;
       this.wait = 'idle';
       this.seated = undefined;

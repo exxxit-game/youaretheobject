@@ -74,7 +74,8 @@ function arrival(scene) {
     window.addEventListener('keydown', flat);
     scene.canvas.addEventListener('pointerdown', flat);
     const inside = () => settleArrival(delay, () => faces(scene)).then(resolve);
-    const entered = () => { if (!inVR(scene)) return; scene.removeEventListener('enter-vr', entered); inside(); };
+    // a computer's full screen is entered by a press on the flat page, so it counts as that press
+    const entered = () => { scene.removeEventListener('enter-vr', entered); if (inVR(scene)) inside(); else flat(); };
     if (inVR(scene)) inside(); else scene.addEventListener('enter-vr', entered);
   });
 }

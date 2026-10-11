@@ -263,14 +263,22 @@ async function playRoom(url, playtest, { leave = false } = {}) {
       mirror: !!document.querySelector('#glass').components['mirror-glass'].envMap
     })), { corridor: false, lit: [], mirror: true }, 'from the room the corridor is still drawn or lit, or the mirror holds nothing');
     // A computer's full screen is A-Frame's VR mode too (its enterVR adds the state without a
-    // headset): the camera walked out through the walls in it (docs/mistakes.md)
-    await page.evaluate(() => document.querySelector('a-scene').addState('vr-mode'));
-    await page.keyboard.down('KeyS');
-    await page.waitForTimeout(1500);
-    await page.keyboard.up('KeyS');
-    const backZ = await page.evaluate(() => { const p = new THREE.Vector3(); document.querySelector('#cam').object3D.getWorldPosition(p); return p.z; });
-    await page.evaluate(() => document.querySelector('a-scene').removeState('vr-mode'));
-    assert.ok(backZ < ROOM_WALLS.maxZ, `on a computer's full screen the camera walked to z ${backZ.toFixed(2)}, past the room's back wall`);
+    // headset): the camera walked out through the walls in it (docs/mistakes.md). The camera is put
+    // past the back wall, as the keys took it, and room-bounds must bring it back (wasd-controls
+    // itself would not move it on a slow frame, so the keys alone could prove nothing here)
+    const backZ = await page.evaluate(async (wall) => {
+      const sc = document.querySelector('a-scene'), cam = document.querySelector('#cam').object3D, p = new THREE.Vector3();
+      const seat = cam.position.clone();
+      sc.addState('vr-mode');
+      cam.parent.updateMatrixWorld();
+      cam.position.copy(cam.parent.worldToLocal(new THREE.Vector3(0, cam.position.y, wall + 3)));
+      await new Promise((r) => setTimeout(r, 500));
+      cam.getWorldPosition(p);
+      sc.removeState('vr-mode');
+      cam.position.copy(seat);
+      return p.z;
+    }, ROOM_WALLS.maxZ);
+    assert.ok(backZ < ROOM_WALLS.maxZ, `on a computer's full screen the camera stayed at z ${backZ.toFixed(2)}, past the room's back wall`);
     // "understood" twice: after the instructions and after the control concept
     for (let i = 0; i < 2; i++) {
       await page.waitForFunction(() => document.documentElement.dataset.roomState === 'intro' &&

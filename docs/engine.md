@@ -29,6 +29,7 @@ Reusable parts. The engine never imports from `src/app/` or `src/rooms/`.
 | `cable.js` | Component `cable`: one smooth tube through a list of points |
 | `mirror.js` | Component `mirror-glass`: a one-way mirror whose reflection is captured once, in a tick, without the player's rig: after load, or when the scene event `on` names arrives (a room lit only once the player is in) |
 | `away-meter.js` | `createAwayMeter(camEl, target, paused, degrees)`: seconds the head points away from a place |
+| `prewarm.js` | Component `prewarm` on the scene: every material's shaders, every picture and shape readied before they are first seen: a moment after load, drawn once unseen into a one-pixel picture, and again on the first frame in a headset (multiview's shaders differ); `show` names hidden groups drawn for it too |
 | `room-bounds.js` | Keeps the desktop camera inside the room (bounds as parameters); off only while a headset's session presents, since a computer's full screen is A-Frame's VR mode too |
 | `results.js` | `sendResult`, `markPlayed` (through `src/app/session.js`), `compareRoom` (room 01 reads the aggregates for "you and others") |
 
