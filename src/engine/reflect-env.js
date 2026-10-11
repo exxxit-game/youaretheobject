@@ -5,6 +5,21 @@
 // blurred for rough metal (PMREM) right here, in the tick, before either eye is drawn: left to
 // three.js it would be blurred in the middle of drawing an eye, which in a headset spoils a frame.
 // <a-entity reflect-env> ... polished parts ... </a-entity>
+
+// What a picture taken once must not hold, or it holds it frozen where it was (the controllers
+// showed so in the extinguisher's steel): the player (the camera's rig: controllers, lasers, the
+// fade round the camera) and what only shows the player's aim (marked userData.player: the teleport
+// arc and ring), as a static reflection probe leaves out what moves (Unity: a baked probe "does not
+// capture GameObjects at runtime that have their Reflection Probe Static flag disabled",
+// docs.unity3d.com/Manual/class-ReflectionProbe.html). Returns the way back.
+export function hidePlayer(sceneEl) {
+  let rig = sceneEl.camera.el.object3D;
+  while (rig.parent && rig.parent !== sceneEl.object3D) rig = rig.parent;
+  const hidden = [rig, ...sceneEl.object3D.children.filter((c) => c.userData.player)].filter((c) => c.visible);
+  for (const c of hidden) c.visible = false;
+  return () => { for (const c of hidden) c.visible = true; };
+}
+
 AFRAME.registerComponent('reflect-env', {
   // strength: how much of the picture the metal shows (a small satin part near a bright sign glares at 1)
   // out: metres to move the picture's point along the entity's own +z, for a flat thing on a wall
@@ -34,17 +49,15 @@ AFRAME.registerComponent('reflect-env', {
     if (this.data.out) this.cam.position.addScaledVector(new AFRAME.THREE.Vector3(0, 0, 1).transformDirection(o.matrixWorld), this.data.out);
     const shown = o.visible;
     o.visible = false;   // the object must not mirror itself
-    // nor the player (their rig: controllers, lasers, the fade round the camera): a picture taken
-    // once holds them frozen where they were (the controllers showed so in the extinguisher's steel)
-    let player = this.el.sceneEl.camera.el.object3D;
-    while (player.parent && player.parent !== this.el.sceneEl.object3D) player = player.parent;
-    const there = player.visible;
-    player.visible = false;
+    const back = hidePlayer(this.el.sceneEl);
     const xr = renderer.xr.enabled;
     renderer.xr.enabled = false;
-    this.cam.update(renderer, this.el.sceneEl.object3D);
-    renderer.xr.enabled = xr;
-    player.visible = there;
+    try {
+      this.cam.update(renderer, this.el.sceneEl.object3D);
+    } finally {
+      renderer.xr.enabled = xr;
+      back();
+    }
     o.visible = shown;   // a hidden object stays hidden
     this.pmrem = this.pmrem || new AFRAME.THREE.PMREMGenerator(renderer);
     this.blurred = this.pmrem.fromCubemap(this.target.texture, this.blurred);

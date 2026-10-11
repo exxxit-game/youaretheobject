@@ -50,6 +50,7 @@ AFRAME.registerComponent('locomotion', {
       new THREE.MeshBasicMaterial({ color: this.data.color }));
     this.ring.position.y = 0.005;   // just above the floor tiles
     this.line.visible = this.ring.visible = false;
+    this.line.userData.player = this.ring.userData.player = true;   // never in a picture taken once (reflect-env.js)
     this.el.sceneEl.object3D.add(this.line, this.ring);
     // leaving VR (or taking the headset off) drops an aim and any held stick, so nothing stale
     // moves the player on return, and a smooth move then does not end with the desktop pose

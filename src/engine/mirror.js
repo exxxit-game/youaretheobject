@@ -9,6 +9,8 @@
 // taken once would hold them frozen there.
 // The room still controls the glass opacity: when the observation room is lit, the glass turns
 // see-through and the reflection fades with it.
+import { hidePlayer } from './reflect-env.js';
+
 AFRAME.registerComponent('mirror-glass', {
   schema: { size: { default: 256 }, delay: { default: 1200 }, offset: { default: 0.6 }, eye: { default: 1.4 }, intensity: { default: 1.8 },
     on: { default: '' } },
@@ -39,19 +41,19 @@ AFRAME.registerComponent('mirror-glass', {
     this.el.object3D.getWorldQuaternion(quat);
     const normal = new THREE.Vector3(0, 0, 1).applyQuaternion(quat);
     camera.position.copy(pos).addScaledVector(normal, this.data.offset).setY(this.data.eye);
-    let player = sceneEl.camera.el.object3D;
-    while (player.parent && player.parent !== sceneEl.object3D) player = player.parent;
-    const shown = player.visible;
     sceneEl.object3D.add(camera);
     mesh.visible = false;
-    player.visible = false;
+    const back = hidePlayer(sceneEl);
     const xr = sceneEl.renderer.xr.enabled;
     sceneEl.renderer.xr.enabled = false;
-    camera.update(sceneEl.renderer, sceneEl.object3D);
-    sceneEl.renderer.xr.enabled = xr;
-    player.visible = shown;
-    mesh.visible = true;
-    sceneEl.object3D.remove(camera);
+    try {
+      camera.update(sceneEl.renderer, sceneEl.object3D);
+    } finally {
+      sceneEl.renderer.xr.enabled = xr;
+      back();
+      mesh.visible = true;
+      sceneEl.object3D.remove(camera);
+    }
     // blurred for the glass here (PMREM), as reflect-env.js does: left to three.js it is blurred the
     // first time the glass is drawn, in the middle of a frame
     const pmrem = new THREE.PMREMGenerator(sceneEl.renderer);
