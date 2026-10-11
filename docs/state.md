@@ -8,7 +8,8 @@
   the main folder (room-polish) holds the session branch (stop hook, tools/claude-guard.mjs). Push every turn (power cuts); main only on his word.
 - Room 01 = illusion of control (Alloy & Abramson 1979), `src/rooms/01-control/`: SET ASIDE 08.10 as a lab
   room (16–20 min of waiting, owner found it unbearably boring). Playtest `?playtest=1`, speed `?speed=N`.
-- Migration 0009 (date only, random key, consent version, room 01 JSON Schema, keyed IP limit) is live: the owner
+- Migrations 0009 (date only, random key, consent version, room 01 JSON Schema, keyed IP limit) and 0010 (known consent
+  versions, the comparison's gate; run 11.10, read back) are live: the owner
   ran it in the SQL editor on 10.10 (history 20261010151418), read back the same day (tables, functions, grants,
   the pg_cron launcher, compare_room through the API). Run again, it stops at once at the pg_cron setup and
   changes nothing. Open: on the first real results read app.recent.trusted (does CF-Connecting-IP arrive).

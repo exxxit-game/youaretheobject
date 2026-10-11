@@ -19,6 +19,8 @@ create table app.consent_versions (
   what text not null
 );
 revoke all on table app.consent_versions from public, anon, authenticated;
+-- row level security on, as on the other tables (the SQL editor asked; foreign key checks bypass it)
+alter table app.consent_versions enable row level security;
 insert into app.consent_versions (version, what) values
   (0, 'unknown: rows from before migration 0009'),
   (1, 'the consent of src/app/texts.ru.js, version 1 (CONSENT_VERSION = 1)');

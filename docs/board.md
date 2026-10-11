@@ -35,8 +35,7 @@
 
 ## Ждёт тебя (не больше трёх)
 1. Отправить в main робота CodeRabbit (твоё «Делай» 11.10; защита Claude Code не пустила меня): в Git Bash в папке проекта `OBJECT_LIVE=owner-said-yes git push origin claude/main-robot:main`.
-2. Миграция 0010 (версии согласия, порог сравнения; твоё «Делай» 11.10): текст supabase/migrations/0010_consent_versions_compare_gate.sql вставить в SQL editor Supabase и нажать Run.
-3. По желанию, для «двух телефонов»: Shiv 2005 (платно), Wilson и Nisbett 1978 (вход Мичигана).
+2. По желанию, для «двух телефонов»: Shiv 2005 (платно), Wilson и Nisbett 1978 (вход Мичигана).
 
 ## Показы
 | Когда | Что | Твой ответ |
