@@ -15,14 +15,14 @@ excerpt). A phenomenon by name: search `docs/library/papers.json`, every record 
 - [decisions and self-knowledge](library/decisions-self.md) (52): choice blindness, Chevreul pendulum, ideomotor action, introspection, sense of agency, contingency judgment, illusion of control, replication, thought experiment, attitude change
 - [social](library/social.md) (72): evacuation, conformity, cooperation, culture, proxemics, replication, synchrony, Asch conformity, Ringelmann effect, avatars
 - [emotion, morality, culture](library/emotion-morality-culture.md) (46): culture, thought experiment, trolley problem, awe, moral action, presence, Eastern samples, Milgram, Moral Machine, architecture
-- [VR norms and hardware](library/vr-norms-hardware.md) (97): cybersickness, presence, video passthrough, mixed reality, anthropometry, locomotion, SteamVR, VR interface design, augmented reality, cinematic VR
-- [methods, ethics, law](library/methods-ethics-law.md) (80): attention checks, crowdsourcing, data quality, online experiments, research ethics, careless responding, citizen science, debriefing, deception, measurement
+- [VR norms and hardware](library/vr-norms-hardware.md) (98): cybersickness, presence, video passthrough, mixed reality, anthropometry, locomotion, SteamVR, VR interface design, augmented reality, cinematic VR
+- [methods, ethics, law](library/methods-ethics-law.md) (81): attention checks, crowdsourcing, online experiments, data quality, research ethics, careless responding, citizen science, debriefing, deception, measurement
 - [games and platforms](library/games-platforms.md) (29): citizen science, crowdsourcing, gamelike features, playtesting, usability, video games, Disney Aladdin, FPS games, Foldit, Great Brain Experiment
 - [data sets](library/data-sets.md) (11): anthropometry, ANSUR II, body measurements, demographics, eye height, interpupillary distance, survey, Beat Saber, NHANES, Norway
 
 ## Status
 
-370 records: card 144 · no card 210 · wanted 10 · read-not-saved 5 · dropped 1. Text of the papers on disk: ok 318 · ocr 29 · placeholder 2 · none 5.
+371 records: card 144 · no card 211 · wanted 10 · read-not-saved 5 · dropped 1. Text of the papers on disk: ok 319 · ocr 29 · placeholder 2 · none 5.
 Relations: data 2 · derived 1 · duplicate 1 · replication 8 · supplement 10.
 Not in the library (wanted, read but not saved, dropped): [wanted](library/wanted.md). Areas searched
 for rooms: [coverage](library/coverage.md). Experiment cards: [catalog](catalog.md).

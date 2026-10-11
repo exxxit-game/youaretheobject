@@ -1,7 +1,7 @@
 # VR norms and hardware
 
 Generated from `docs/library/papers.json` by `node tools/build-library.mjs`. Do not edit by hand.
-97 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
+98 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
 in the library folder's papers\ as `<id>.txt` (a data set: `<dir>/<id>.txt` from the library folder); "text: ocr" marks a scan's
 text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 
@@ -46,6 +46,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **holzwarth-2021** Holzwarth et al. 2021. Comparing the Accuracy and Precision of SteamVR Tracking 2.0 and Oculus Quest 2 in a Room Scale Setup · tracking accuracy, SteamVR, Quest 2, room scale · no card
 - **horejsi-2025** Horejsi et al. 2025. Virtual reality locomotion methods differentially affect spatial orientation and cybersickness during maze navigation · locomotion, spatial orientation, cybersickness, maze · no card
 - **hu-2024** Hu et al. 2024. Apple vs. Meta: A Comparative Study on Spatial Tracking in SOTA XR Headsets · spatial tracking, Apple Vision Pro, Meta Quest, mixed reality · no card
+- **huber-2020** Huber & Gajos 2020. Conducting online virtual environment experiments with uncompensated, unsupervised samples · online experiments, virtual reality, unsupervised samples, replication · no card
 - **iso-9241-306-2018-preview** ISO 2018. ISO 9241-306: Ergonomics of human-system interaction, Part 306: Field assessment methods for electronic visual displays (preview pages only) · display ergonomics, field assessment, standard · no card
 - **jin-2021** Jin et al. 2021. Effect of field of view on egocentric distance perception in real and virtual environment (in Korean) · distance perception, field of view, egocentric distance, real vs VR · [card](../cards/jin-2021.md)
 - **kelly-2021** Kelly et al. 2021. Who Are Virtual Reality Headset Owners? A Survey and Comparison of Headset Owners and Non-Owners · headset owners, survey, demographics · no card

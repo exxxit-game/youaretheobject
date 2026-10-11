@@ -1,7 +1,7 @@
 # methods, ethics, law
 
 Generated from `docs/library/papers.json` by `node tools/build-library.mjs`. Do not edit by hand.
-80 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
+81 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
 in the library folder's papers\ as `<id>.txt` (a data set: `<dir>/<id>.txt` from the library folder); "text: ocr" marks a scan's
 text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 
@@ -39,6 +39,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **hedge-2018** Hedge et al. 2018. The reliability paradox: Why robust cognitive tasks do not produce reliable individual differences · reliability paradox, individual differences, cognitive tasks · no card
 - **hoch-2023** Hoch & Chenette 2023. The value of enhanced ethics checks: Initial experiences with PLOS ONE's updated Human Subjects Research policy · ethics checks, journal policy, PLOS ONE · no card
 - **horing-2016** Hoering et al. 2016. A virtual experimenter to increase standardization for the investigation of placebo effects · virtual experimenter, placebo, standardization · no card
+- **huber-2020** Huber & Gajos 2020. Conducting online virtual environment experiments with uncompensated, unsupervised samples · online experiments, virtual reality, unsupervised samples, replication · no card
 - **jorgensen-2004** Jorgensen 2004. Marrying HCI/Usability and Computer Games: A Preliminary Look · usability, HCI and games · no card
 - **kennedy-1993** Kennedy et al. 1993. Simulator Sickness Questionnaire: An Enhanced Method for Quantifying Simulator Sickness · simulator sickness questionnaire, SSQ, measurement · no card · text: ocr
 - **kim-2019** Kim et al. 2019. Preventing careless responding in online surveys with a mirror image (in Korean) · careless responding, mirror image, online surveys, self-awareness · no card

@@ -3159,6 +3159,26 @@
    "source": "https://doi.org/10.1145/3491102.3517593"
   },
   {
+   "id": "huber-2020",
+   "authors": "Huber & Gajos",
+   "year": "2020",
+   "title": "Conducting online virtual environment experiments with uncompensated, unsupervised samples",
+   "sections": [
+    "methods-ethics-law",
+    "vr-norms-hardware"
+   ],
+   "tags": [
+    "online experiments",
+    "virtual reality",
+    "unsupervised samples",
+    "replication"
+   ],
+   "type": "article",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://doi.org/10.1371/journal.pone.0227629"
+  },
+  {
    "id": "ingham-1974",
    "authors": "Ingham, Levinger, Graves & Peckham",
    "year": "1974",
