@@ -87,7 +87,11 @@ const ask = async (js) => {
     log('link to the page lost, trying again:', String(v.error).slice(0, 80));
     await sleep(5000);
     try { room.close(); } catch (e) { /* already closed */ }
-    try { room = await page({ test: (u) => u.includes('xr-room') }, { noAnswerMs: 20000 }) || room; } catch (e) { /* the headset not reachable yet */ }
+    // finding the page again waits on the headset's tab list and socket with no limit of their own:
+    // bounded, so a lost link cannot hold the loop past its end
+    try {
+      room = await Promise.race([page({ test: (u) => u.includes('xr-room') }, { noAnswerMs: 20000 }), sleep(30000).then(() => null)]) || room;
+    } catch (e) { /* the headset not reachable yet */ }
   }
   return null;
 };
