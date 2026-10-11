@@ -133,7 +133,8 @@ quoted; the time is when he said it (UTC). A risk list or a general method is no
   додумать, ты что-то сам додумываешь… у меня не спрашиваешь… Есть несколько вариантов, и я выбираю» 9.10).
 - In the headset he reads each step inside it, one at a time, never the chat (tools/quest-look.mjs say): «чтоб я
   просто одевал очки, а ты мне говорил в очках, что надо сделать, как сделать… делать это постоянной практикой,
-  чтобы я не напоминал тебе об этом каждый раз» 11.10.
+  чтобы я не напоминал тебе об этом каждый раз» 11.10. He puts it on only when asked («если ты не попросил, я в них сидеть
+  не буду без нужды» 11.10): each time it is needed, I ask him to put it on.
 - New numbers and conclusions reach him only on a page that passed the fact-check; in the chat a link and one line
   with no new numbers. My proposal after a summary stronger than its evidence reached
   him in the chat; his answer: «Делай… и сторож будет это проверять и это тоже» 10.10 (UTC; my proposal pasted back with his «Делай»). The chat guard built for it
@@ -150,7 +151,8 @@ quoted; the time is when he said it (UTC). A risk list or a general method is no
   reviewer itself (tools/claude-guard.mjs refuses mine): «ты сам себя можешь оправдать» 11.10.
 - I check all a tool can measure; he judges what he sees, one action at a time («Ты должен… проверять сам
   все, что можешь»; «Мне надо делать что-то конкретно одно» 9.10 09:14); blocked, or missing a norm or a document: tell him at once, each time («Если чего-то нет, скажи мне… и мы
-  найдем это… всегда говори мне каждый раз» 11.10).
+  найдем это… всегда говори мне каждый раз» 11.10). A tool that fails is mended at its cause at once, with thought, never
+  put off («Если у тебя такое происходит, то это будет происходить постоянно… раздуманно к этому подходил» 11.10).
 - No mirrors: the one-way mirror in room 101 goes entirely; the extinguisher's polished steel stays as it is («надо
   полностью убирать это зеркало… Огнетушитель пусть остается как есть» 11.10; «Ты ж не за светом туда заходишь»): in VR there is no character, so a mirror has nothing to show («ты на себя
   посмотреть не можешь, значит и толку от зеркала там нету»; «Намного легче вместо зеркал поставить что-то другое» 11.10).
@@ -162,7 +164,9 @@ quoted; the time is when he said it (UTC). A risk list or a general method is no
   результат, если результат нафантазирован» 11.10).
 - Knowledge is updated when needed: the docs copies, the tools and our records are refreshed from their sources when a
   newer version matters («При нужде, пользуйся интернетом, обновляй документацию и инструменты… наши знания нужно
-  обновлять при нужде» 11.10).
+  обновлять при нужде» 11.10). Watching for updates is mine, every month: A-Frame, Meta and the headset's browser, Claude
+  Code's own new abilities, then a page to him of what changed and what to take («лучше ты будешь за этим следить»;
+  «Ты же тоже обновляешься постоянно… чтобы ты тоже постоянно знал, какие у тебя новые возможности» 11.10).
 - Space tiers: seated, standing, roomscale 1.8×1.8 m (base; his area), large (offered only, never shrunk).
   Live players replace scripted people only where the original had real participants or a design like
   Mori & Arai; mixed reality where the original was a real room.
