@@ -43,7 +43,7 @@
     "SessionStart": [
       {
         "hooks": [
-          { "type": "command", "command": "node \"${CLAUDE_PROJECT_DIR}/tools/claude-guard.mjs\" start", "timeout": 20 }
+          { "type": "command", "command": "node \"${CLAUDE_PROJECT_DIR}/tools/claude-guard.mjs\" start", "timeout": 45 }
         ]
       }
     ],
@@ -58,13 +58,13 @@
       {
         "matcher": "Bash|PowerShell",
         "hooks": [
-          { "type": "command", "command": "node \"${CLAUDE_PROJECT_DIR}/tools/claude-guard.mjs\" pre", "timeout": 10 }
+          { "type": "command", "command": "node \"${CLAUDE_PROJECT_DIR}/tools/claude-guard.mjs\" pre", "timeout": 10, "onFailure": "block" }
         ]
       },
       {
         "matcher": "mcp__.*",
         "hooks": [
-          { "type": "command", "command": "node \"${CLAUDE_PROJECT_DIR}/tools/claude-guard.mjs\" pre", "timeout": 10 }
+          { "type": "command", "command": "node \"${CLAUDE_PROJECT_DIR}/tools/claude-guard.mjs\" pre", "timeout": 10, "onFailure": "block" }
         ]
       },
       {

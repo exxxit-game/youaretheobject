@@ -79,9 +79,10 @@ export function checkPlugins(file = path.join(os.homedir(), '.claude', 'settings
 }
 
 // --- the Claude Code inside the desktop app ---------------------------------------------------
-// the prompt and agent hooks need 2.1.294 or later (docs/state.md); the app keeps each version it
+// the prompt and agent hooks need 2.1.294 or later, and onFailure: block on the guards needs 2.1.295
+// (Claude Code's hooks reference, onFailure; docs/state.md); the app keeps each version it
 // downloaded in its own folder and runs the newest
-export const MIN_VERSION = '2.1.294';
+export const MIN_VERSION = '2.1.295';
 const parts = (v) => v.split('.').map(Number);
 export const atLeast = (v, min) => { const a = parts(v), b = parts(min); for (let i = 0; i < 3; i++) if (a[i] !== b[i]) return a[i] > b[i]; return true; };
 const byVersion = (a, b) => { const x = parts(a), y = parts(b); for (let i = 0; i < 3; i++) if (x[i] !== y[i]) return x[i] - y[i]; return 0; };

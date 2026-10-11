@@ -13,7 +13,7 @@ import {
 } from '../tools/health.mjs';
 import { summarize as summarizeRemarks } from '../tools/coderabbit.mjs';
 import { target as advanceTo } from '../tools/advance-reviewed.mjs';
-import { hooksProblems, memoryIndexProblems, pluginProblems, PLUGINS_ON, atLeast, newest } from '../tools/health-setup.mjs';
+import { hooksProblems, memoryIndexProblems, pluginProblems, PLUGINS_ON, atLeast, newest, MIN_VERSION } from '../tools/health-setup.mjs';
 
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'health-'));
 const put = (rel, text) => { const f = path.join(tmp, rel); fs.mkdirSync(path.dirname(f), { recursive: true }); fs.writeFileSync(f, text); return f; };
@@ -164,6 +164,17 @@ assert.match(summarizeRemarks(prData(null)).line, /no open pull request from roo
 const projectSettings = JSON.parse(fs.readFileSync('.claude/settings.json', 'utf8'));
 assert.equal(projectSettings.enabledPlugins['privacy-legal@synced'], false, 'privacy-legal is off for the project');
 assert.ok(projectSettings.deniedMcpServers.some((s) => s.serverName === 'plugin:research-desk:reference-lookup'), 'the local copy of the reference lookup is denied; the hosted one is kept');
+// a guard that crashes or times out lets its action through unless onFailure is block (Claude Code's hooks
+// reference, 'Block the action when a hook fails'): the command and MCP guards hold what cannot be undone, so
+// they block; the Write|Edit guard does not, so a broken guard can still be mended with Edit
+const pre = (m) => projectSettings.hooks.PreToolUse.find((h) => h.matcher === m).hooks[0];
+assert.equal(pre('Bash|PowerShell').onFailure, 'block', 'the command guard blocks when it fails');
+assert.equal(pre('mcp__.*').onFailure, 'block', 'the MCP guard blocks when it fails');
+assert.notEqual(pre('Write|Edit|MultiEdit|NotebookEdit').onFailure, 'block', 'the edit guard lets a broken guard be mended');
+// the start waits up to 15 + 10 + 10 s inside (health, CodeRabbit, GitHub's runs); a hook past its timeout is
+// cancelled and its output thrown away, the board's top with it
+assert.ok(projectSettings.hooks.SessionStart[0].hooks[0].timeout >= 45, 'the start hook has time for its own waits');
+assert.equal(MIN_VERSION, '2.1.295', 'onFailure needs Claude Code 2.1.295');
 // the guards: Claude Code runs the main folder's copies; a difference in content (not in line ends) is broken
 assert.deepEqual(localImports("import fs from 'node:fs';\nimport { a } from './secrets.mjs';\nimport { b, c } from './board.mjs';\n"), ['secrets.mjs', 'board.mjs']);
 assert.ok(sameText('a\r\nb\r\n', 'a\nb\n'));

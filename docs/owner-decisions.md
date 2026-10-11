@@ -8,7 +8,7 @@ enough. A new decision: its line here, the rest there. A risk list or a general 
 ## The process
 - The rules read at start shortened («укорачивать» 11.10): the important always in front of me, the rest read only during its task («чтобы твоя память была чистая» 11.10).
 - Bans few, thinking free, no invention in precise work («Размышлять… я вообще никогда тебе не запрещаю. Но вот додумывать, фантазировать… когда здесь точечная работа» 11.10).
-- His permanent prompt stands at the top of CLAUDE.md as he pasted it («Да, длинный вариант» 11.10).
+- His permanent prompt stands at the top of CLAUDE.md: his long text of 11.10 («Да, длинный вариант») put in points, variant B of the revision's shelf 1 («Вариант В» 11.10); the text as he pasted it is in the record.
 - The process first, rebuilt by the plan, all at once («нельзя улучшать игру, пока мы не улучшили процесс разработки» 10.10).
 - Then frozen: it changes only on a health-check finding (node tools/health.mjs; it only repairs the broken thing) or his word, and a change replaces something («согласен» 10.10).
 - The process review accepted (https://claude.ai/artifact/NMfbi3vWaZQX8oR9t39mTC): a ban only where a mistake cannot be undone or costs him time; a complaint is no reason for a new guard («Убирать, что не надо» 11.10).
