@@ -17,14 +17,17 @@ const log = (...a) => console.log(new Date().toISOString().slice(11, 19), ...a);
 requireReview(path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'), 'the real-room session in the headset');
 if (!wornByPerson()) { console.log('not now: the headset is not on his head'); process.exit(1); }
 // The plan against the headset as it is, before he takes a step: the session has him walk, so the
-// link must be Wi-Fi and the power his strap. A run started on the cable lost him mid-walk when the
-// cable came out (docs/mistakes.md); a link or power that does not match stops the run here.
+// link must be Wi-Fi only and the power off the battery's own, from outside. A run started on the
+// cable lost him mid-walk when the cable came out (docs/mistakes.md); a link or power that does not
+// match stops the run here. The headset reports a strap and a wall charger alike ("AC powered"), so
+// the strap itself is what he confirms: the page asks for every cable out but the strap's, and his
+// press of its start button is that answer
 const link = adb('devices').split('\n').slice(1).map((l) => l.trim().split('\t')).filter(([, s]) => s === 'device').map(([id]) => id);
 const power = adb('shell', 'dumpsys', 'battery');
-const onWifi = link.length === 1 && link[0].includes(':'), onStrap = /AC powered: true/.test(power);
-console.log(`link ${link.join(', ') || 'none'} (${onWifi ? 'Wi-Fi' : 'not Wi-Fi only'}), power ${onStrap ? 'strap' : 'not the strap'}`);
+const onWifi = link.length === 1 && link[0].includes(':'), onAc = /AC powered: true/.test(power);
+console.log(`link ${link.join(', ') || 'none'} (${onWifi ? 'Wi-Fi' : 'not Wi-Fi only'}), power ${onAc ? 'from outside, AC (the strap or a wall charger)' : 'the battery only'}`);
 if (!onWifi) { console.log('not now: the steps have him walk; first node tools/quest-wifi.mjs, then the cable out, then this again'); process.exit(1); }
-if (!onStrap) { console.log('not now: the headset is not on his strap'); process.exit(1); }
+if (!onAc) { console.log('not now: no outside power: is the strap on and switched on?'); process.exit(1); }
 // the folder is made before the run, so a long session never ends unsaved
 if (here) fs.mkdirSync(here, { recursive: true });
 
@@ -73,15 +76,32 @@ const readHeat = () => {
 // the steps pause while the session is hidden, so the wait has no fixed length: up to a quarter hour
 const total = 15 * 60;
 const t0 = Date.now();
+// a call to the page that survives a lost link: the link is made again and the call repeated; the
+// page keeps its record in the headset meanwhile, so nothing is lost while the link is down
+const ask = async (js) => {
+  for (let i = 0; i < 3; i++) {
+    let v;
+    try { v = await room.run(js); } catch (e) { v = { error: String(e) }; }
+    if (!(v && v.error)) return v;
+    log('link to the page lost, trying again:', String(v.error).slice(0, 80));
+    await sleep(5000);
+    try { room.close(); } catch (e) { /* already closed */ }
+    try { room = await page({ test: (u) => u.includes('xr-room') }, { noAnswerMs: 20000 }) || room; } catch (e) { /* the headset not reachable yet */ }
+  }
+  return null;
+};
 let last = -1;
 while (Date.now() - t0 < total * 1000) {
   readHeat();
   await sleep(5000);
-  const s = await room.run('window.__roomState()');
-  if (s && !s.error && s.stepAt !== last) { last = s.stepAt; log('step', s.stepAt, 'of', STEPS.length); }
+  const s = await ask('window.__roomState()');
+  if (s && s.stepAt !== last) { last = s.stepAt; log('step', s.stepAt, 'of', STEPS.length); }
   if (s && (s.ended || (s.done && !s.running))) break;
 }
-const summary = await room.run('window.__roomSummary()');
+// the result, or where it stays when the link never comes back
+let summary = null;
+for (let i = 0; i < 24 && !summary; i++) { summary = await ask('window.__roomSummary()'); if (!summary) await sleep(5000); }
+if (!summary) console.log('the result stays in the headset (the page keeps its last runs): open tools/xr-room.html there again and read window.__rooms');
 const result = JSON.stringify({ summary, heat }, null, 1);
 if (here) { fs.writeFileSync(path.join(here, 'room-result.json'), result); log('saved', path.join(here, 'room-result.json')); } else console.log(result);
 room.close();

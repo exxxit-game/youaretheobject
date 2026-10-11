@@ -66,9 +66,16 @@ const devtools = async (what) => {
 export async function openGame(url) {
   forwardDevtools();
   // a browser that is not running (it closes while the headset sleeps) has no debug link: it is
-  // started on the address instead
+  // started on the address instead. A running browser that does not answer stops the opening, since
+  // its other game tabs could not be closed
   let list;
-  try { list = await fetch(`${DEVTOOLS}/list`); } catch (e) { openUrl(url); return 0; }
+  try { list = await fetch(`${DEVTOOLS}/list`); } catch (e) {
+    let running = '';
+    try { running = adb('shell', 'pidof', 'com.oculus.browser'); } catch (err) { /* pidof exits 1 when none runs */ }
+    if (running) throw new Error('the headset browser runs but its tab list did not answer: its game tabs cannot be closed first');
+    openUrl(url);
+    return 0;
+  }
   if (!list.ok) throw new Error(`the headset browser refused list: ${list.status}`);
   const game = (await list.json()).filter((t) => t.type === 'page' && /object-preview\/|localhost:3000/.test(t.url));
   if (!game.length) { openUrl(url); return 0; }
