@@ -182,6 +182,11 @@ function record(frame, session, space) {
       const h = r.hands[src.handedness] || (r.hands[src.handedness] = { joints: src.hand.size, trackedMost: 0 });
       h.trackedNow = seen;
       h.trackedMost = Math.max(h.trackedMost, seen);
+      // the joints' sizes (W3C Hand Input: each joint's radius in metres), once the hand is seen whole
+      if (seen === src.hand.size && frame.fillJointRadii && !h.radiusMm) {
+        const radii = new Float32Array(src.hand.size), names = [...src.hand.keys()];
+        if (frame.fillJointRadii([...src.hand.values()], radii)) h.radiusMm = { wrist: +(radii[names.indexOf('wrist')] * 1000).toFixed(1), indexTip: +(radii[names.indexOf('index-finger-tip')] * 1000).toFixed(1) };
+      }
     }
   }
   for (const h of ['left', 'right']) if (r.hands[h] && ![...session.inputSources].some((s) => s.hand && s.handedness === h)) r.hands[h].trackedNow = 0;
