@@ -85,12 +85,13 @@ function draw(main, small) {
 // next room comes last and on its own: both rooms lit, the controllers in hand, nothing drawn over his view
 // while he walks (docs/audit/room-probe-review.md, finding 1: "no lines drawn and the controllers in hand")
 window.__steps = [
-  { "main": "Это твоя комната глазами очков. Осмотрись, не сходя с места", "small": "1 из 6 · линии — стены и мебель · 15 секунд", "secs": 15 },
-  { "main": "Медленно пройдись внутри своей зоны, к стенам не подходи", "small": "2 из 6 · 40 секунд; пока идёшь, всё бледнее", "secs": 40 },
-  { "main": "Посмотри на стол или шкаф, не сходя с места", "small": "3 из 6 · 20 секунд", "secs": 20 },
-  { "main": "Положи контроллеры и подними обе руки перед собой, раскрой ладони", "small": "4 из 6 · 15 секунд", "secs": 15 },
-  { "main": "Вернись в середину зоны, встань прямо и разведи руки в стороны", "small": "5 из 6 · 10 секунд", "secs": 10 },
-  { "main": "Возьми контроллеры. Если свет горит в обеих комнатах — медленно выйди в соседнюю и вернись; если нет — просто стой", "small": "6 из 6 · минута · линий и таблички не будет, смотри под ноги", "secs": 60, "clear": true },
+  { "main": "Это твоя комната глазами очков. Осмотрись, не сходя с места", "small": "1 из 7 · линии — стены и мебель · 15 секунд", "secs": 15 },
+  { "main": "Медленно пройдись внутри своей зоны, к стенам не подходи", "small": "2 из 7 · 40 секунд; пока идёшь, всё бледнее", "secs": 40 },
+  { "main": "Посмотри на стол или шкаф, не сходя с места", "small": "3 из 7 · 20 секунд", "secs": 20 },
+  { "main": "Положи контроллеры и подними обе руки перед собой, раскрой ладони", "small": "4 из 7 · 15 секунд", "secs": 15 },
+  { "main": "Вернись в середину зоны, встань прямо и разведи руки в стороны", "small": "5 из 7 · 10 секунд", "secs": 10 },
+  { "main": "Возьми контроллеры в руки", "small": "6 из 7 · дальше — когда оба в руках", "secs": 30, "until": "controllers" },
+  { "main": "Если в соседней комнате светло — медленно выйди туда и вернись. Если темно — стой", "small": "7 из 7 · линий не будет, смотри под ноги", "secs": 60, "read": 8, "clear": true },
   { "main": "Готово, спасибо. Возьми контроллеры, сними очки и напиши «снял»", "small": "конец", "secs": 3 }
 ];
 
@@ -142,11 +143,17 @@ async function runSteps(session, { dry = false } = {}) {
     said.push(s.main);
     if (!dry) { r.stepAt = i + 1; save(); }
     if (s.clear) {
-      // he reads the step first, then everything drawn goes away for the walk, and comes back after
-      await hold(6000, dry ? null : session, s);
+      // he reads the step first (a third of a second a word and more: BBC subtitle guide, in
+      // docs/research/vr/02-standards.md), then everything drawn goes away for the walk, and comes back after
+      await hold(s.read * 1000, dry ? null : session, s);
       clear = true;
-      await hold((s.secs - 6) * 1000, dry ? null : session, s);
+      await hold((s.secs - s.read) * 1000, dry ? null : session, s);
       clear = false;
+    } else if (s.until === 'controllers' && !dry) {
+      // the step ends once the headset reports both controllers in his hands, or after its time
+      const inHand = () => [...session.inputSources].filter((src) => src.gamepad && !src.hand).length >= 2;
+      for (let t = 0; t < s.secs * 10 && !inHand(); t++) await hold(100, session, s);
+      if (r) r.controllersBack = inHand();
     } else await hold(s.secs * 1000, dry ? null : session, s);
   }
   if (!dry && live()) { r.done = new Date().toISOString(); save(); }

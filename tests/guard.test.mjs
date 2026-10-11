@@ -109,6 +109,7 @@ const refused = cases([
   'gh api graphql -F query=@-',
   'gh api -X PUT repos/exxxit-game/youaretheobject/pulls/9/merge',
   'gh api repos/exxxit-game/youaretheobject/merges -f base=main -f head=room-polish',
+  "gh api graphql -f query='mutation{resolveReviewThread(input:{threadId:\"PRRT_x\"}){thread{isResolved}}}'",
 ]);
 for (const [c, shell] of refused) assert.ok(refusal(c, shell === PS), `the guard let through: ${c}`);
 // a red last run of GitHub's tests is said at the start; a green one, one still running or none is not

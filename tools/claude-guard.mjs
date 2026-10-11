@@ -140,6 +140,7 @@ const WHY = {
   record: 'writes the practice review record, which only Claude Code\'s hook writes when a reviewer run ends',
   recordEnv: 'points the headset tools at another practice review record',
   merge: 'merges into main, the live site, on GitHub, past the push guard: main changes only by a push with the owner\'s word (OBJECT_LIVE=owner-said-yes)',
+  resolve: 'closes an outside reviewer\'s remark: only the reviewer closes its own, once its next review reads the fix; answer it and leave it open, so a remark never ends on my own word',
   graphqlFile: 'sends GitHub a GraphQL request from a file or stdin, which the guard cannot read for a merge into main: give the query inline (-f query=...)',
 };
 // a program by its name, in any path form the shells take
@@ -254,6 +255,9 @@ function judge(words, stdin, ps) {
     // a GraphQL body the guard cannot read: a field read from a file or stdin (-F query=@file, gh's
     // "@" form) or the whole request from --input; our own calls give the query inline
     if (g[0] === 'api' && g.includes('graphql') && (a.some((x) => /^[\w-]+=@/.test(x)) || a.includes('--input'))) return WHY.graphqlFile;
+    // the session under review does not close the remarks on its own work: it answers, and the
+    // reviewer closes what it sees fixed in its next review
+    if (g[0] === 'api' && a.some((x) => /\b(resolveReviewThread|minimizeComment)\b/.test(x))) return WHY.resolve;
   }
   // the smoke test and Playwright: only on GitHub
   if (/^(npm|pnpm|yarn|bun)$/.test(p)) {
