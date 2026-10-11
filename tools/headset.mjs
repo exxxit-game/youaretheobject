@@ -62,7 +62,12 @@ const devtools = async (what) => {
 };
 export async function openGame(url) {
   adb('forward', 'tcp:9222', 'localabstract:chrome_devtools_remote');
-  const game = (await (await devtools('list')).json()).filter((t) => t.type === 'page' && /object-preview\/|localhost:3000/.test(t.url));
+  // a browser that is not running (it closes while the headset sleeps) has no debug link: it is
+  // started on the address instead
+  let list;
+  try { list = await fetch(`${DEVTOOLS}/list`); } catch (e) { openUrl(url); return 0; }
+  if (!list.ok) throw new Error(`the headset browser refused list: ${list.status}`);
+  const game = (await list.json()).filter((t) => t.type === 'page' && /object-preview\/|localhost:3000/.test(t.url));
   if (!game.length) { openUrl(url); return 0; }
   for (const t of game.slice(1)) await devtools(`close/${t.id}`);
   await devtools(`activate/${game[0].id}`);
