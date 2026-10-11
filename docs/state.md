@@ -9,10 +9,9 @@
 - Room 01 = illusion of control (Alloy & Abramson 1979), `src/rooms/01-control/`: SET ASIDE 08.10 as a lab
   room (16–20 min of waiting, owner found it unbearably boring). Playtest `?playtest=1`, speed `?speed=N`.
 - Migrations 0009 (date only, random key, consent version, room 01 JSON Schema, keyed IP limit) and 0010 (known consent
-  versions, the comparison's gate; run 11.10, read back) are live: the owner
-  ran it in the SQL editor on 10.10 (history 20261010151418), read back the same day (tables, functions, grants,
-  the pg_cron launcher, compare_room through the API). Run again, it stops at once at the pg_cron setup and
-  changes nothing. Open: on the first real results read app.recent.trusted (does CF-Connecting-IP arrive).
+  versions, the comparison's gate; run 11.10, read back) are live: the owner ran 0009 in the SQL editor on 10.10
+  (history 20261010151418), read back the same day (tables, functions, grants, the pg_cron launcher, compare_room
+  through the API); run again, it stops at the pg_cron setup and changes nothing. Open: on the first real results read app.recent.trusted (does CF-Connecting-IP arrive).
 - Supabase `objekt` (`rkvdwzlymmewsxjysgma`, eu-west-1 Ireland), in the owner's organisation on the paid Pro plan (read
   10.10 with the Supabase connector's get_organization; a paid project is never paused), private schema `app`:
   `runs` via `submit_run` (room 01 checked against supabase/schemas/01-control-1.json), `playtests` via `submit_playtest`; both
