@@ -32,8 +32,7 @@
   the owner's choices: https://claude.ai/artifact/NGika3MZ8ms7GdFvfiZhvT
   The road from the corridor to the store, how he and I work, the tools (10.10): https://claude.ai/artifact/3unCQLkqfc36ExW2RtzvX4
   How the game's code is built, now and after the turnaround (10.10): https://claude.ai/artifact/NZR4cdhP1QGAEE6kipyjp5
-  His room as the headset reads it, two mixed-reality sessions (11.10; records in objekt-files/notes/headset, not in the repo): https://claude.ai/artifact/CgxirtxxN4gPidXWnmiDjV
-  Room 101 behind its corridor door, the turnaround (11.10: light before and after, the mirror's choice, measures): https://claude.ai/artifact/RrNeo3s4Uk9WpzyrnoLGLH
+  His room as the headset reads it (11.10; records in objekt-files/notes/headset): https://claude.ai/artifact/CgxirtxxN4gPidXWnmiDjV; room 101 behind its door (11.10): https://claude.ai/artifact/RrNeo3s4Uk9WpzyrnoLGLH
 - Headset: Quest 3 over USB; `tools/quest-check.mjs` (11/11 PASS 08.10, old 60 fps bar, no log); `tools/xr-probe.html`.
   Owner plays the test copy https://exxxit-game.github.io/object-preview/ (bookmark in the headset, the
   game from GitHub): `node tools/publish-preview.mjs` before he looks; it never sends data. From 9.10 the
