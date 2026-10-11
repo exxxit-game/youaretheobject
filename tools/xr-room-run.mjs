@@ -42,7 +42,7 @@ for (let i = 0; i < 60 && !Array.isArray(STEPS); i++) {
   room = await page({ test: (u) => u.includes('xr-room') });
   STEPS = room ? await room.run('window.__steps') : null;
 }
-// on any early exit the start button is turned off, so he cannot start a session nothing drives
+// on any early exit the start button is turned off, so no session starts before the checks above held
 const stop = async (why) => { console.log(why); if (room) { await room.run("document.getElementById('start').disabled = true"); room.close(); } process.exit(1); };
 if (!Array.isArray(STEPS)) await stop('the room page did not load its steps');
 log('page ready', STEPS.length, 'steps');
@@ -68,19 +68,17 @@ const readHeat = () => {
       batteryC: +(b.match(/temperature: (\d+)/) || [])[1] / 10, cpuMaxC: cpu.length ? Math.max(...cpu) : null });
   } catch (e) { heat.push({ error: String(e).slice(0, 80) }); }
 };
-try {
-  for (const [i, s] of STEPS.entries()) {
-    log('step', i + 1, await room.run(`window.__say(${JSON.stringify(s.main)}, ${JSON.stringify(s.small)})`));
-    const t0 = Date.now();
-    while (Date.now() - t0 < s.secs * 1000) {
-      readHeat();
-      await sleep(Math.min(10000, s.secs * 1000 - (Date.now() - t0)));
-    }
-  }
-} catch (e) {
-  // a run that breaks in the middle still tells him, inside the headset, that he can stop
-  await room.run(`window.__say(${JSON.stringify(STEPS[STEPS.length - 1].main)}, '')`);
-  throw e;
+// the page leads him through the steps on its own clock; here only the heat is logged and the end
+// awaited. A link lost meanwhile costs only these readings: the steps and the record go on in the headset
+const total = STEPS.reduce((n, s) => n + s.secs, 0) + 60;
+const t0 = Date.now();
+let last = -1;
+while (Date.now() - t0 < total * 1000) {
+  readHeat();
+  await sleep(5000);
+  const s = await room.run('window.__roomState()');
+  if (s && !s.error && s.stepAt !== last) { last = s.stepAt; log('step', s.stepAt, 'of', STEPS.length); }
+  if (s && (s.ended || (s.done && !s.running))) break;
 }
 const summary = await room.run('window.__roomSummary()');
 const result = JSON.stringify({ summary, heat }, null, 1);
