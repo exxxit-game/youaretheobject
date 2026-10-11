@@ -8,6 +8,7 @@ import { createSheet } from '../../engine/ui/sheet.js';
 import { loadSounds } from '../../engine/sfx.js';
 import '../../engine/fader.js';
 import '../../engine/locomotion.js';
+import { pressable } from '../../engine/laser-beam.js';
 import '../../engine/reflect-env.js';
 import '../../engine/moulding.js';
 import '../../engine/shapes.js';
@@ -151,6 +152,10 @@ export async function runLobby(room) {
   // hung would otherwise be missed, and every sound would wait for the next one
   onFirstGesture(() => {});
   const sheet = createSheet(scene, { inside: WALLS });
+  // door 1 answers only once the clipboard says to choose it: before, the ray would mark it as
+  // something to press that does nothing (src/engine/laser-beam.js)
+  const leaf = $('#door1 .clickable');
+  pressable(leaf, false);
   const light = lightCorridor(sheet);
   placePlayer(SPOT, AREA);
   document.title = LOBBY_T.title;   // the corridor is no room yet; the room names the page once entered
@@ -194,13 +199,14 @@ export async function runLobby(room) {
   await spoken;
   speak(LOBBY_T.chooseDoor);
   const door = $('#door1');
-  const leaf = door.querySelector('.clickable');
+  pressable(leaf, true);
   document.documentElement.dataset.lobby = 'door';
   await new Promise((resolve) => {
     // while the leave question is open the door waits for its answer
     const onDoor = () => { if (sheet.isAsking()) return; leaf.removeEventListener('click', onDoor); resolve(); };
     leaf.addEventListener('click', onDoor);
   });
+  pressable(leaf, false);
   delete document.documentElement.dataset.lobby;
   exitOff();   // rooms are left another way (left-early.js)
 
@@ -213,8 +219,6 @@ export async function runLobby(room) {
   placePlayer(room.seat, room.area);
   door.removeAttribute('animation');
   door.setAttribute('rotation', '0 0 0');
-  // the room is lit and alone: what it captures of itself (a mirror) is taken now, under the black
-  scene.emit('room-entered');
   await delay(250);
   await $('#cam').components.fader.to(0);
   return withRecording;

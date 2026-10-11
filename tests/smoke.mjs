@@ -255,13 +255,14 @@ async function playRoom(url, playtest, { leave = false } = {}) {
     // through the door the poster stops answering (the lasers reach it through the walls)
     assert.equal(await page.evaluate(() => document.querySelector('#notePoster').classList.contains('clickable')), false, 'the poster still answers from the room');
     // In the room the corridor is not drawn and its lights are out, the room lit by its own lamps
-    // (src/app/lobby/lobby.js), and its mirror holds the lit room, taken once the player was in
+    // (src/app/lobby/lobby.js); door 1 behind the player and the room's button before the trials do
+    // nothing, so the ray does not mark them (src/engine/laser-beam.js)
     await page.waitForFunction(() => document.documentElement.dataset.roomState === 'intro', null, { timeout: 30000 });
     assert.deepEqual(await page.evaluate(() => ({
       corridor: document.querySelector('#corridor').object3D.visible,
       lit: [...document.querySelectorAll('.corridor-light')].filter((el) => Number(el.getAttribute('light').intensity) > 0).map((el) => el.id),
-      mirror: !!document.querySelector('#glass').components['mirror-glass'].envMap
-    })), { corridor: false, lit: [], mirror: true }, 'from the room the corridor is still drawn or lit, or the mirror holds nothing');
+      answers: [...document.querySelectorAll('#door1 .clickable, #buttonCap.clickable')].length
+    })), { corridor: false, lit: [], answers: 0 }, 'from the room the corridor is still drawn or lit, or door 1 or the button answers when it does nothing');
     // A computer's full screen is A-Frame's VR mode too (its enterVR adds the state without a
     // headset): the camera walked out through the walls in it (docs/mistakes.md). The camera is put
     // past the back wall, as the keys took it, and room-bounds must bring it back (wasd-controls

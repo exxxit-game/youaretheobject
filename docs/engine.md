@@ -27,7 +27,7 @@ Reusable parts. The engine never imports from `src/app/` or `src/rooms/`.
 | `decal.js` | Component `decal`: a thin thing (a plate, a strap, a label, a dial) keeps its thickness and is drawn over what it lies on by a depth offset (`DECAL_OFFSET`, also the panel's `decal`) |
 | `shapes.js` | Components `rounded-box` and `lathe`: shapes A-Frame lacks |
 | `cable.js` | Component `cable`: one smooth tube through a list of points |
-| `mirror.js` | Component `mirror-glass`: a one-way mirror whose reflection is captured once, in a tick, without the player's rig: after load, or when the scene event `on` names arrives (a room lit only once the player is in) |
+| `laser-beam.js` | Component `laser-beam` on each controller: its ray is drawn only while it meets a visible target and not while the teleport arc aims, fading 0.25 s (Meta, Ray casting specs); `pressable(el, on)` puts a target in or out of what the rays answer |
 | `away-meter.js` | `createAwayMeter(camEl, target, paused, degrees)`: seconds the head points away from a place |
 | `prewarm.js` | Component `prewarm` on the scene: every material's shaders, every picture and shape readied before they are first seen: a moment after load, drawn once unseen into a one-pixel picture, and again on the first frame in a headset (multiview's shaders differ); `show` names hidden groups drawn for it too |
 | `room-bounds.js` | Keeps the desktop camera inside the room (bounds as parameters); off only while a headset's session presents, since a computer's full screen is A-Frame's VR mode too |

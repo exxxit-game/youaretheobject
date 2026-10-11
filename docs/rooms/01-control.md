@@ -46,6 +46,7 @@ trial-level predictions, not for the end-of-task rating; the depression link did
 | 7 | Gender asked at the end, "prefer not to say" allowed | Main result differs by sex | — |
 | 8 | Prior knowledge asked at the end ("did you know this experiment?") | Standard for online replications | — |
 | 9 | Players are not Penn undergraduates of the 1970s, and they are not paid (the originals were paid volunteers, topped up to $2.50, pp. 457, 452) | — | Partly |
+| 10 | No one-way mirror: the window to the observation room is closed with venetian blinds (AA-V-00200B, 1973: src/rooms/01-control/scene.js), and nobody is seen behind it; the reveal says the original subject sat so that the experimenter could watch through a one-way mirror from the next room (p. 450) | The owner's decision 11.10 ("No mirrors", docs/owner-decisions.md): in VR the player has no body, so a mirror shows him nothing; blinds his pick of three | Yes (reveal) |
 
 ## Not in the paper: our choices (owner may change)
 | Item | Our value | Reason |

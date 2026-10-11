@@ -6,8 +6,21 @@
 // The fade is Meta's default, 0.25 s, made through the raycaster's own lineOpacity, which it reads
 // whenever it redraws the line (docs/components/raycaster.md, "Customizing the Line"), and the animation
 // component (docs/components/animation.md); a line faded out is switched off, so it costs no draw call.
+// A target behind a wall or under a hidden part is no target: the rays reach through walls to whatever
+// is clickable (three.js tests no visibility), and Meta's best practices say no hover on hidden objects
+// (Ray casting best practices, docs/research/vr/01-meta.md).
 // <a-entity laser-controls raycaster="objects: .clickable; lineOpacity: .6" laser-beam>
 const FADE_MS = 250;
+const seen = (el) => { for (let o = el.object3D; o; o = o.parent) if (!o.visible) return false; return true; };
+
+// What the rays answer, put in or taken out: a target that does nothing now is none, or the ray would
+// mark it as something to press (Meta: the ray goes out where it "has nothing to act on"). The
+// raycasters then read their list again, as a class change does not reach them by itself.
+export function pressable(el, on) {
+  el.classList.toggle('clickable', on);
+  const scene = el.sceneEl;
+  for (const r of [scene, ...scene.querySelectorAll('[raycaster]')]) r.components.raycaster?.refreshObjects();
+}
 
 AFRAME.registerComponent('laser-beam', {
   init() {
@@ -31,7 +44,7 @@ AFRAME.registerComponent('laser-beam', {
     if (!ray || !this.el.components.line) return;
     if (this.full === null) this.full = ray.data.lineOpacity;
     const aiming = this.el.parentEl?.components.locomotion?.aimHand === this.el;
-    const show = ray.intersectedEls.length > 0 && !aiming;
+    const show = !aiming && ray.intersectedEls.some(seen);
     if (show === this.shown) return;
     this.shown = show;
     if (show) this.el.setAttribute('line', 'visible', true);

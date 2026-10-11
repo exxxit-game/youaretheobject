@@ -1,7 +1,8 @@
 // Scene of room 01: a small booth like the one in Alloy & Abramson (1979, p. 450):
 // a table with a black stand (23×23 cm) holding a yellow and a green light 5 cm
-// from its top, a black box (15.5×7.5×4 cm) with a spring button, and a one-way
-// mirror to the observation room with the relay equipment. The experimenter leaves
+// from its top, a black box (15.5×7.5×4 cm) with a spring button, and the window to the
+// observation room, where the paper has a one-way mirror, closed with blinds (the owner's
+// decision of 11.10: no mirrors; docs/rooms/01-control.md). The experimenter leaves
 // through the door and comes back (p. 452). The wall screen carries the words of the
 // experimenter. Look: a university lab of 1979 (painted block walls, linoleum,
 // acoustic ceiling, bakelite and chrome). Sizes in metres, the room's own: the corridor stands it
@@ -17,6 +18,49 @@ const SPACE = `space: 0 0 ${BOOTH.maxX - BOOTH.minX} ${BOOTH.maxZ - BOOTH.minZ}`
 // the corridor beyond it
 export const DOORWAY = { x: 0.7, z: BOOTH.maxZ };
 
+// The window's venetian blinds, closed, as the US federal specification of the time has them (Interim
+// Federal Specification AA-V-00200B, "Venetian Blinds", GSA, 1973; everyspec.com): Type I, 2-inch slats
+// (3.3.1.1) closed with at least 1/4 inch of overlap (3.3.1.3); woven face tapes 1-1/2 inch wide, the
+// end ones at most 7 inches from the blind's ends and at most 34 inches apart, the colour of the
+// slats (3.3.1.3); the tilt cord on the left, the lift cord's lock on the right, both worked from the
+// front (3.3.1.5); baked enamel, "white or eggshell" (3.5.1); set inside the window, the slats' ends 1/8
+// to 3/8 inch from its sides and the bottom rail at most 5/8 inch above the sill (3.4.1). Not in it,
+// ours: the slats' pitch, 1-11/16 inch as cloth tapes for 2-inch slats are made today
+// (fixmyblinds.com, glossary), the rails' section and the cords' length. Two-inch slats over one-inch
+// ones (Type II): half the stripes, which the photosensitivity guidance counts (ITU-R BT.1702-3,
+// docs/research/vr/02-standards.md). Inside the window's frame: y 1.005 to 1.795, z -0.9 to 0.3.
+const IN = 0.0254;
+const f4 = (v) => +v.toFixed(4);
+function blindsHTML() {
+  const top = 1.795, sill = 1.005, z = -0.3, length = 1.2 - 2 * IN / 4, x = -1.575;
+  const slat = 2 * IN, pitch = (1 + 11 / 16) * IN, tape = 1.5 * IN, tapeIn = 0.17;
+  const rail = { h: IN, d: 1.25 * IN }, bottom = { h: 0.75 * IN, d: 1.75 * IN };
+  // closed: each slat reaches past the next by the specification's quarter inch
+  const tilt = Math.asin((pitch + IN / 4) / slat);
+  const under = top - rail.h, over = sill + (5 / 8) * IN;
+  const n = Math.floor((under - over - bottom.h) / pitch);
+  const front = x + (slat / 2) * Math.cos(tilt) + 0.001;
+  const ENAMEL = 'color: #f0ead6; roughness: 0.45', CLOTH = 'color: #f0ead6; roughness: 0.9';
+  const parts = [
+    `<a-box position="${f4(x)} ${f4(top - rail.h / 2)} ${z}" width="${f4(rail.d)}" height="${f4(rail.h)}" depth="${f4(length)}" material="${ENAMEL}"></a-box>`,
+    `<a-box position="${f4(x)} ${f4(over + bottom.h / 2)} ${z}" width="${f4(bottom.d)}" height="${f4(bottom.h)}" depth="${f4(length)}" material="${ENAMEL}"></a-box>`
+  ];
+  for (let i = 0; i < n; i++) {
+    parts.push(`<a-box position="${f4(x)} ${f4(under - pitch * (i + 0.5))} ${z}" rotation="0 0 ${f4((tilt * 180) / Math.PI)}" width="${f4(slat)}" height="0.001" depth="${f4(length)}" material="${ENAMEL}"></a-box>`);
+  }
+  for (const s of [-1, 1]) {
+    parts.push(`<a-plane rotation="0 90 0" position="${f4(front)} ${f4((under + over + bottom.h) / 2)} ${f4(z + s * (length / 2 - tapeIn))}" width="${f4(tape)}" height="${f4(under - over - bottom.h)}" material="${CLOTH}"></a-plane>`);
+  }
+  // two cords a side down the front, a pull knob on each: tilt on the player's left (+z), lift on his right
+  for (const at of [z + length / 2 - 0.04, z - length / 2 + 0.04]) {
+    for (const d of [-0.004, 0.004]) {
+      parts.push(`<a-cylinder radius="${f4(IN / 16)}" height="0.9" position="${f4(x + rail.d / 2 + 0.004)} ${f4(under - 0.45)} ${f4(at + d)}" material="${CLOTH}"></a-cylinder>`);
+      parts.push(`<a-cylinder radius="0.006" height="0.03" position="${f4(x + rail.d / 2 + 0.004)} ${f4(under - 0.915)} ${f4(at + d)}" material="${ENAMEL}"></a-cylinder>`);
+    }
+  }
+  return parts.join('\n  ');
+}
+
 // Light: an ambient fill and one warm lamp under an enamel shade (room-light: dark while the player
 // is in the corridor, src/app/lobby/lobby.js). The lamp alone lights the desk to its approved level:
 // the corridor's lamp, which reached through the wall until the corridor was put out of the room,
@@ -26,9 +70,6 @@ export const DOORWAY = { x: 0.7, z: BOOTH.maxZ };
 export const sceneHTML = `
   <a-entity class="room-light" light="type: ambient; color: #c9cfd6; intensity: 0.55"></a-entity>
   <a-entity class="room-light" light="type: point; color: #ffe2b0; intensity: 2.55; distance: 0; decay: 0.6" position="0 2.13 -0.2"></a-entity>
-  <!-- the observation room's lamp, off until the reveal (room.js); outside the room's inside, which
-       is hidden while its door is shut: lights are turned down, never hidden (src/app/lobby/lobby.js) -->
-  <a-entity id="obsLight" light="type: point; color: #dfe7ff; intensity: 0; distance: 0; decay: 1" position="-2.4 2.1 -0.3"></a-entity>
   <!-- everything up to the screen is static: merged after load into one mesh per look -->
   <a-entity class="room-interior" merge-static>
   <a-cylinder radius="0.05" height="0.02" position="0 2.49 -0.2" color="#d8d4c8"></a-cylinder>
@@ -75,9 +116,8 @@ export const sceneHTML = `
   <a-box position="1.5975 0.051 0" width="0.005" height="0.102" depth="3.2" color="#2b2d29"></a-box>
   <a-box position="-1.5975 0.051 0" width="0.005" height="0.102" depth="3.2" color="#2b2d29"></a-box>
 
-  <!-- one-way mirror in the left wall, framed on all sides -->
-  <a-plane id="glass" data-dynamic rotation="0 90 0" position="-1.595 1.4 -0.3" width="1.2" height="0.8" mirror-glass="on: room-entered"
-           material="color: #c2c9cd; metalness: 1; roughness: .04; opacity: .94; transparent: true"></a-plane>
+  <!-- the observation window in the left wall, framed on all sides, its blinds closed -->
+  ${blindsHTML()}
   <a-box position="-1.585 0.99 -0.3" width="0.05" height="0.03" depth="1.26" color="#2a2a2a"></a-box>
   <a-box position="-1.585 1.81 -0.3" width="0.05" height="0.03" depth="1.26" color="#2a2a2a"></a-box>
   <a-box position="-1.585 1.4 -0.915" width="0.05" height="0.85" depth="0.03" color="#2a2a2a"></a-box>
@@ -88,37 +128,6 @@ export const sceneHTML = `
   <a-entity id="plaque" class="on-wall door-sign" ${SIGN_PANEL} position="${plaqueX(0.7, SIGN.fromFrame + SIGN.w / 2)} ${SIGN.y} 1.594" rotation="0 180 0"></a-entity>
   <a-entity rounded-box="width: 0.08; height: 0.12; depth: 0.012; radius: 0.006; color: #d8d2c2; roughness: 0.5"
             class="on-wall" position="1.4 1.1 1.592"></a-entity>
-
-  <!-- observation room: desk with relay equipment, chair, the observer -->
-  <a-box position="-2.4 1.25 -0.3" width="1.6" height="2.5" depth="2.4" material="color: #4a4d52; side: back; roughness: 1"></a-box>
-  <a-box position="-2.75 0.74 -0.3" width="0.6" height="0.04" depth="1.0" color="#5a4a3a"></a-box>
-  <a-box position="-2.75 0.37 0.12" width="0.5" height="0.72" depth="0.04" color="#3a3029"></a-box>
-  <a-box position="-2.75 0.37 -0.72" width="0.5" height="0.72" depth="0.04" color="#3a3029"></a-box>
-  <a-entity rounded-box="width: 0.24; height: 0.18; depth: 0.3; radius: 0.01; color: #2d2f33" position="-2.66 0.85 -0.5"></a-entity>
-  <a-entity rounded-box="width: 0.2; height: 0.12; depth: 0.22; radius: 0.01; color: #2d2f33" position="-2.66 0.82 -0.12"></a-entity>
-  <a-sphere radius="0.008" position="-2.785 0.9 -0.58" material="color: #300; emissive: #ff5040; emissiveIntensity: 0.8"></a-sphere>
-  <a-sphere radius="0.008" position="-2.785 0.9 -0.54" material="color: #030; emissive: #50ff60; emissiveIntensity: 0.8"></a-sphere>
-  <a-sphere radius="0.008" position="-2.765 0.84 -0.08" material="color: #330; emissive: #ffd040; emissiveIntensity: 0.8"></a-sphere>
-  <a-entity id="observer" data-dynamic visible="false" position="-3.0 0 -0.3" rotation="0 -90 0">
-    <a-entity rounded-box="width: 0.38; height: 0.56; depth: 0.22; radius: 0.08; color: #141416; roughness: 1" position="0 0.8 0.02"></a-entity>
-    <a-cylinder radius="0.045" height="0.08" position="0 1.1 0.03" color="#141416" roughness="1"></a-cylinder>
-    <a-sphere radius="0.105" position="0 1.22 0.03" color="#141416" roughness="1"></a-sphere>
-    <a-entity rounded-box="width: 0.32; height: 0.13; depth: 0.42; radius: 0.05; color: #141416; roughness: 1" position="0 0.53 -0.2"></a-entity>
-    <a-entity rounded-box="width: 0.28; height: 0.45; depth: 0.11; radius: 0.05; color: #141416; roughness: 1" position="0 0.24 -0.38"></a-entity>
-    <a-entity rounded-box="width: 0.08; height: 0.4; depth: 0.09; radius: 0.035; color: #141416; roughness: 1" position="0.22 0.83 -0.06" rotation="-35 0 0"></a-entity>
-    <a-entity rounded-box="width: 0.08; height: 0.4; depth: 0.09; radius: 0.035; color: #141416; roughness: 1" position="-0.22 0.83 -0.06" rotation="-35 0 0"></a-entity>
-  </a-entity>
-  <a-box position="-3.0 0.45 -0.3" width="0.4" height="0.04" depth="0.4" color="#2e3238"></a-box>
-  <a-box position="-3.19 0.72 -0.3" width="0.03" height="0.5" depth="0.4" color="#2e3238"></a-box>
-  <a-cylinder radius="0.015" height="0.45" position="-2.84 0.22 -0.14" color="#777"></a-cylinder>
-  <a-cylinder radius="0.015" height="0.45" position="-2.84 0.22 -0.46" color="#777"></a-cylinder>
-  <a-cylinder radius="0.015" height="0.45" position="-3.16 0.22 -0.14" color="#777"></a-cylinder>
-  <a-cylinder radius="0.015" height="0.45" position="-3.16 0.22 -0.46" color="#777"></a-cylinder>
-  <!-- cable from the booth wall along the floor, up the desk's front edge, into the relay equipment -->
-  <a-box position="-1.615 0.05 -0.6" width="0.03" height="0.08" depth="0.08" color="#2a2a2a"></a-box>
-  <a-entity cable="radius: 0.007; points: -1.62 0.045 -0.6, -1.64 0.02 -0.6, -1.68 0.007 -0.6, -1.95 0.007 -0.62,
-    -2.25 0.007 -0.63, -2.40 0.009 -0.61, -2.435 0.04 -0.6, -2.442 0.3 -0.595, -2.442 0.70 -0.59, -2.442 0.752 -0.585,
-    -2.452 0.768 -0.58, -2.50 0.767 -0.575, -2.545 0.79 -0.57"></a-entity>
 
   </a-entity>
 

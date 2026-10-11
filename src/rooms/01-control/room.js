@@ -5,13 +5,13 @@ import '../../engine/cable.js';
 import '../../engine/surface.js';
 import '../../engine/shapes.js';
 import '../../engine/decal.js';
-import '../../engine/mirror.js';
 import '../../engine/merge-static.js';
 import { eventLog } from '../../engine/log.js';
 import { unlock } from '../../engine/audio.js';
 import { loadSounds, playSound } from '../../engine/sfx.js';
 import { loadVoice, speak } from '../../engine/voice.js';
 import { pulse } from '../../engine/haptics.js';
+import { pressable } from '../../engine/laser-beam.js';
 import { createChoice } from '../../engine/ui/choice.js';
 import { createScale } from '../../engine/ui/scale.js';
 import { createAwayMeter } from '../../engine/away-meter.js';
@@ -91,6 +91,8 @@ let state = 'idle';
 function setState(s) {
   state = s;
   document.documentElement.dataset.roomState = s;
+  // the button answers only in the trials, so the ray marks it only then (src/engine/laser-beam.js)
+  pressable($('#buttonCap'), s === 'run');
 }
 
 /* ---------- the experimenter: voice plus the same words on the screen ---------- */
@@ -109,12 +111,6 @@ async function say(text, top = false) {
 // Buttons under a text that fills the screen (pages, checks). top: from writeTop.
 function pick(labels, top) {
   return new Promise((resolve) => lowChoice.show(labels, resolve, top));
-}
-
-function darkGlass(dark) {
-  $('#glass').setAttribute('material', 'opacity', dark ? 0.94 : 0.12);
-  $('#obsLight').setAttribute('light', 'intensity', dark ? 0 : 6);
-  $('#observer').setAttribute('visible', !dark);
 }
 
 // Shows a question at the top of the screen and returns where the answers may
@@ -140,7 +136,6 @@ async function understood() {
 async function intro() {
   setState('intro');
   phase('intro');
-  darkGlass(true);
   // As in the paper (pp. 451–452): instructions, a chance to ask; then the control
   // concept with the empty scale in view, and a chance to ask again.
   do {
@@ -196,7 +191,6 @@ async function reveal(condition) {
   const r = analyse(eventLog.entries);
   session.finish({ condition, ...r, seated, speed: SPEED });
   await say(T.thanks);
-  darkGlass(false);
   // test runs never ask the live server
   const others = SPEED === 1 ? await compareRoom(ROOM_ID, ROOM_VERSION) : null;
   const pages = revealPages(r, condition, others);

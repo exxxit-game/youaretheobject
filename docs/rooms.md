@@ -36,7 +36,6 @@ What room.js exports:
    carries class `room-interior`: the corridor leaves it undrawn until the door opens (Meta: fewer
    than 200 draw calls a frame on Quest 3), and no light is inside it (lights are turned down,
    never hidden: a hidden light changes the count and three.js rebuilds every lit material).
-   A mirror captured once (`mirror-glass`) takes `on: room-entered`, so it holds the lit room.
 2. `ENTRY`: what the corridor needs before its door, `{ id, real, debrief, extra, seat: { x, z,
    yaw, pitch }, area: { minX, maxX, minZ, maxZ } }`, the seat and the computer's walking area in
    the room's own metres (the app turns them into the corridor's).

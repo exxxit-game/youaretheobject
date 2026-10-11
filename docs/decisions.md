@@ -143,3 +143,8 @@ Consequence: the frames lie on the block module like every flat thing on a wall 
 src/engine/moulding.js builds a frame as framers do: one cross-section, read off a photo of the real frame, cut at 45 degrees and joined round the picture, so its beads, steps and hollows run round the corners (the end walls' Arcimboldo, after its frame in Cremona).
 Why: boxes stacked in bands read as square steps (the owner: «не квадратная, как у тебя… такие волны внутрь идут»); a profile is how a moulding is made and gives any later frame the same way.
 Consequence: a frame's widths come from its photo; how high each part stands off the wall cannot be read off a frontal photo and is marked as our estimate where it is used.
+
+## Room 101's observation window has closed blinds, not a one-way mirror
+The owner took mirrors out (a VR player has no body to see) and chose blinds of three options; they follow the federal specification of the time (AA-V-00200B, 1973), 2-inch slats.
+Why: the paper's observation is kept in words in the reveal (p. 450), with no claim stronger than the paper's "could be observed".
+Consequence: no transparent surface and no observation room behind it; raising the blinds to show something is his to decide later.

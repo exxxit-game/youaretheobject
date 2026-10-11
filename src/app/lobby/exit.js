@@ -1,4 +1,5 @@
 import { getContext } from '../../engine/audio.js';
+import { pressable } from '../../engine/laser-beam.js';
 import { LOBBY_T } from './texts.ru.js';
 
 // The studio's poster on the experimenter's board (the exit sign's figure and the name EXXXIT) is
@@ -27,9 +28,8 @@ export function leaveButton(scene, sheet) {
   });
   function off() {
     on = false;
-    poster.classList.remove('clickable');
+    pressable(poster, false);
     tint(rest);
-    for (const r of [scene, ...scene.querySelectorAll('[raycaster]')]) r.components.raycaster?.refreshObjects();
   }
   return off;
 }
