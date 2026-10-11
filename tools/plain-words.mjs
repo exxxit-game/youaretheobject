@@ -17,7 +17,7 @@
 // the sources name, and the owner sees the list with its counts before it stands.
 export const RULES = [
   { rule: 'allness', shown: 'всё, весь, полностью, целиком, всегда, никогда, везде', fix: 'name what, or how many were checked',
-    source: 'Korzybski, Science and Sanity, introduction to the 2nd edition (1941), p. lx: the extensional devices, "etc." against allness',
+    source: 'Korzybski, Science and Sanity, introduction to the 2nd edition (1941), p. lx: the extensional devices (indexes, dates, etc., quotes, hyphens); "etc." as the tool against allness: the Institute of General Semantics help sheet (A. Johnson, 2006)',
     words: ['всё(?![ \\t]+(?:ещё|еще|равно|же|таки)(?!\\p{L}))', 'весь', 'полностью', 'целиком', 'всегда', 'никогда', 'везде'] },
   { rule: 'an inference told as a report', shown: 'подтвердил, доказано, гарантирует, обезврежено, устранено', fix: 'say what was measured, by what, and what it showed',
     source: 'Hayakawa, Language in Thought and Action, ch. 3, p. 38: reports are verifiable and exclude inferences and judgments',
