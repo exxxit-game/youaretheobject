@@ -22,9 +22,9 @@ const section = (text, h) => {
 export function top(text) {
   const t = String(text).replace(/\r\n/g, '\n').trim();
   const head = t.indexOf(UNTIL) < 0 ? t : t.slice(0, t.indexOf(UNTIL)).trim();
-  const shows = section(t, SHOWS).split('\n');
-  const rows = shows.filter((l) => /^\|\s*\d{1,2}\.\d{1,2}\s*\|/.test(l));
-  const table = shows.filter((l) => !rows.includes(l) || rows.indexOf(l) < SHOWN_ROWS);
+  // rows counted by place, not by text: two rows may read the same
+  let seen = 0;
+  const table = section(t, SHOWS).split('\n').filter((l) => !/^\|\s*\d{1,2}\.\d{1,2}\s*\|/.test(l) || seen++ < SHOWN_ROWS);
   return [head, section(t, WAITS), table.join('\n'), `(the rest of the board: ${BOARD})`].filter(Boolean).join('\n\n');
 }
 
