@@ -9,9 +9,11 @@
 //         stop before VR in the headset and the test copy (tools/review-gate.mjs)
 //   stop: a turn does not end while work is unsaved or not on GitHub, while a page only the owner
 //         can open, left by research since his last message, has not reached him (owner-links.mjs),
+//         while what I wrote him holds a new number or an empty word (plain-words.mjs),
 //         or while the board has no row for today saying what he will see (board.mjs)
 //   start, prompt: the board comes back at start and after every compaction; every owner message
-//         is logged, and the window it was written in holds the work (one-window.mjs): another
+//         is logged, brings his chat rules in front of me (plain-words.mjs), and the window it was
+//         written in holds the work (one-window.mjs): another
 //         window may read but not run commands or change files, and its turns end freely
 // Imported with no mode (tests/guard.test.mjs), it only defines refusal() and readOnlySql().
 import { execFileSync } from 'node:child_process';
@@ -24,6 +26,7 @@ import { unrelayed, sinceOwner, typedText } from './owner-links.mjs';
 import { scan, named, entries, write, lastReport, REVIEWER, REPORT_END } from './review-gate.mjs';
 import { BOARD, SHOWS, LOG, shows, stalled, plannedToday } from './board.mjs';
 import { windowFile, take, elsewhere } from './one-window.mjs';
+import { findings, told, reminder, written } from './plain-words.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DECISIONS = 'docs/owner-decisions.md';
@@ -457,6 +460,8 @@ if (mode === 'prompt') {
       take(windowFile(HERE), event.session_id);
     }
   } catch { /* a failed log must not stop his message */ }
+  // his chat rules in front of me before I answer (a UserPromptSubmit hook's output joins the context)
+  if (typedText(String(event.prompt || ''))) process.stdout.write(`${reminder()}\n`);
   process.exit(0);
 }
 
@@ -488,6 +493,9 @@ if (mode === 'stop') {
   try { record = event.transcript_path ? sinceOwner(event.transcript_path) : ''; } catch { /* no record to read */ }
   const owed = unrelayed(record);
   if (owed.length) problems.push(`pages only the owner can open, left by research: give him each link (the answer, or the plan's list of what is asked of him), with what to bring back:\n${owed.join('\n')}`);
+  // what I wrote him since his message, or since this hook's last word: no new numbers, no empty words
+  const broke = findings(written(record));
+  if (broke.length) problems.push(`what you wrote him breaks his chat rules (tools/plain-words.mjs): ${told(broke)}. Write him that again in one short line without them; a number goes on a page that passed the fact-check`);
   // every session says what he will see today, so a session that shows him nothing is plain
   let board = '';
   try { board = fs.readFileSync(path.join(HERE, BOARD), 'utf8'); } catch { /* checked below */ }

@@ -121,6 +121,9 @@ const CASES = [
   ['claude-guard stop', 'work saved and pushed', 'a turn ends with unsaved work', () => append('docs/roadmap.md', '\nunsaved\n'), () => askGuard('stop', { stop_hook_active: false }), 'work not saved'],
   ['claude-guard stop', 'ask the owner at a barrier', 'a turn ends with a page only the owner can open not given to him', () => fs.writeFileSync(`${dir}-record.jsonl`, `{"content":"${MARK}\\n- https://archive.example.org/locked - the page\\n\\n"}\n`),
     () => askGuard('stop', { stop_hook_active: false, transcript_path: `${dir}-record.jsonl` }), 'pages only the owner can open'],
+  ['claude-guard stop', 'his chat rules', 'a turn ends with a new number written to him in the chat',
+    () => fs.writeFileSync(`${dir}-chat.jsonl`, `${JSON.stringify({ type: 'user', origin: { kind: 'human' }, message: { content: 'go on' } })}\n${JSON.stringify({ type: 'assistant', message: { content: [{ type: 'text', text: 'The headset holds 90 frames.' }] } })}\n`),
+    () => askGuard('stop', { stop_hook_active: false, transcript_path: `${dir}-chat.jsonl` }), 'breaks his chat rules'],
   // last: it leaves the clone on its own branch, which the reset between cases does not undo
   ['claude-guard stop', 'the next window has the work', 'a turn ends with the main folder behind this branch',
     () => { git('checkout', '-q', '-b', 'planted-session'); git('branch', '-f', 'room-polish', 'HEAD'); append('docs/roadmap.md', '\nplanted\n'); git('commit', '-qam', 'planted'); },
