@@ -11,16 +11,18 @@
 // device asks for them), and a negated passive ("не проверено" is the report CLAUDE.md asks for).
 
 // Each rule with its source and the words that break it: the forms of its kind found in my own
-// Russian messages to him in this project's session records, the ones he named ("подтвердил",
-// "обезврежено", "по-правильному", "крепкая", "главное", "весь"), and the source's own examples in
-// Russian (Orwell's historic, epoch-making, unforgettable). The owner sees the list with its counts.
+// Russian messages to him in this project's session records ("весь" named by him; "подтвердил",
+// "обезврежено", "по-правильному", "крепкая", "главное" listed by me to him, his answer "Да"), and the
+// source's own examples in Russian (Orwell's historic, epoch-making, unforgettable). The owner sees the
+// list with its counts.
 export const RULES = [
   { rule: 'allness', shown: 'всё, весь, полностью, целиком, всегда, никогда, везде', fix: 'name what, or how many were checked',
     source: 'Korzybski, Science and Sanity (the text of the 5th edition), introduction to the 2nd edition (1941), p. lx: the extensional devices (indexes, dates, etc., quotes, hyphens); p. 166: "In life, we deal structurally only with non-allness"',
     words: ['всё(?![ \\t]+(?:ещё|еще|равно|же|таки)(?!\\p{L}))', 'весь', 'полностью', 'целиком', 'всегда', 'никогда', 'везде'] },
   { rule: 'an inference told as a report', shown: 'подтвердил, доказано, гарантирует, обезврежено, устранено', fix: 'say what was measured, by what, and what it showed',
     source: 'Hayakawa, Language in Thought and Action, ch. 3, p. 38: reports are verifiable and exclude, as far as possible, inferences and judgments',
-    words: ['подтверди(?:л|ла|ли|лось|лся|т|тся)', 'подтвержда(?:ет|ют)', 'подтвержд[её]н[оаы]?', 'доказа(?:л|ла|ли|но|на|ны)', 'гарантир\\p{L}*', 'обезврежен[оаы]?', 'устран[её]н[оаы]?'] },
+    // any ending of the verb and its participles; the nouns (подтверждение, доказательство, устранение) are no claim
+    words: ['подтверди[лт]\\p{L}*', 'подтвержда(?:ет|ют)', 'подтвержд[её]н(?!и[еяю])\\p{L}*', 'доказа[лн]\\p{L}*', 'гарантир\\p{L}*', 'обезврежен\\p{L}*', 'устран[её]н(?!и[еяю])\\p{L}*'] },
   { rule: 'a judgment (purr or snarl word)', shown: 'отлично, идеально, красиво, крепкий, надёжно, по-правильному, хорошо, лучше', fix: 'what was measured instead, or leave the judgment to him',
     source: 'Hayakawa, Language in Thought and Action, ch. 3, pp. 42-46: judgments are expressions of approval or disapproval; snarl-words and purr-words',
     words: ['отличн\\p{L}*', 'идеальн\\p{L}*', 'красив\\p{L}*', 'крепк\\p{L}*', 'над[её]жн\\p{L}*', 'по-правильному', 'хорошо', 'лучш\\p{L}*', 'плохо'] },
@@ -33,7 +35,7 @@ export const RULES = [
     words: ['очень', 'действительно', 'реально', 'по-настоящему', 'на самом деле', 'честно', 'просто'] },
   { rule: 'the passive', shown: 'сохранено, проверено, исправлено, сделано, записано, отправлено', fix: 'say who did it: «я сохранил», «тест проверил»',
     source: 'Orwell, Politics and the English Language (1946), rule iv: never use the passive where you can use the active',
-    words: ['(?<!не[ \\t])(?:сохранен|проверен|исправлен|сделан|записан|отправлен|решен|обновлен|починен)[оаы]', '(?<!не[ \\t])решён'] },
+    words: ['(?<!не[ \\t])(?:сохранен|проверен|исправлен|сделан|записан|отправлен|решен|обновлен|починен)[оаы]'] },
   { rule: 'jargon', shown: 'коммит, хук, регулярка', fix: 'the everyday word: сохранение, отправить, проверка при сохранении, ошибка',
     source: 'Orwell, Politics and the English Language (1946), rule v: never a jargon word if you can think of an everyday equivalent',
     words: ['коммит\\p{L}*', 'хук\\p{L}*', 'регулярк\\p{L}*'] },

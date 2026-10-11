@@ -18,6 +18,7 @@ const words = (text) => findings(text).flatMap((f) => f.words);
 const held = [
   ['Замер подтвердил: кадров хватает.', 'an inference told as a report'],
   ['Обезврежено сегодня: согласие и схема.', 'an inference told as a report'],
+  ['Догадка подтвердилась, ошибки устранённые.', 'an inference told as a report'],
   ['Новый сеанс по-правильному ждёт проверяющего.', 'a judgment (purr or snarl word)'],
   ['Вывод: нижняя половина крепкая.', 'a judgment (purr or snarl word)'],
   ['Главное, что надо переделать: комната.', 'pretentious diction'],
