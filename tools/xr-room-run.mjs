@@ -88,10 +88,12 @@ const ask = async (js) => {
     await sleep(5000);
     try { room.close(); } catch (e) { /* already closed */ }
     // finding the page again waits on the headset's tab list and socket with no limit of their own:
-    // bounded, so a lost link cannot hold the loop past its end
-    try {
-      room = await Promise.race([page({ test: (u) => u.includes('xr-room') }, { noAnswerMs: 20000 }), sleep(30000).then(() => null)]) || room;
-    } catch (e) { /* the headset not reachable yet */ }
+    // bounded, so a lost link cannot hold the loop past its end; a link that opens after the wait is closed
+    const finding = page({ test: (u) => u.includes('xr-room') }, { noAnswerMs: 20000 });
+    finding.catch(() => { /* the headset not reachable yet */ });
+    const found = await Promise.race([finding.catch(() => null), sleep(30000).then(() => null)]);
+    if (found) room = found;
+    else finding.then((late) => { try { if (late) late.close(); } catch (e) { /* already closed */ } }, () => {});
   }
   return null;
 };
