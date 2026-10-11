@@ -167,7 +167,10 @@ quoted; the time is when he said it (UTC). A risk list or a general method is no
 - The work's loop: find what exists, build it in, check it, write its source beside it; what is not found is said to him
   and chosen together («Искать, воплощать, искать, воплощать… Я правильно вижу наш процесс?», and to the two steps I
   added, check after building and record the source: «хорошо дополнил» 11.10); in code nothing invented («нельзя получить
-  результат, если результат нафантазирован» 11.10).
+  результат, если результат нафантазирован» 11.10). For an object, finding starts with many pictures of the real thing
+  from every side (shops sell them by the batch: their product photos), then how it is made (standards, specs), then the
+  build, as with the extinguisher: «Ты берешь, оцениваешь кучу картинок, как эти жалюзи выглядят. Потом изучаешь, как их
+  типа делают… это можно как правило поставить» 11.10 (the blinds built from the specification alone read as a plain panel).
 - Knowledge is updated when needed: the docs copies, the tools and our records are refreshed from their sources when a
   newer version matters («При нужде, пользуйся интернетом, обновляй документацию и инструменты… наши знания нужно
   обновлять при нужде» 11.10). Watching for updates is mine, every month: A-Frame, Meta and the headset's browser, Claude
