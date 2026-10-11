@@ -159,7 +159,7 @@ VR in the headset (`tools/quest-look.mjs` vr) and the test copy (`tools/publish-
 Why: the owner's «Сделать сейчас» (12.10) to the divergences page, card 5: «тестовая копия и очки ждут сверки со статьёй после последней правки комнаты — как сейчас ждут проверки перед очками»; a ban, by his rule, where a mistake costs him time: an unchecked room in the headset. Room 101 had changed 7 times since 11.10 with no paper check. It replaces the recipe's words «then run it again on the fixes» (`.claude/skills/new-room/SKILL.md`, step 8).
 Consequence: a room changed since its paper check stops the headset until the paper reviewer runs on it (`tests/review-gate.test.mjs`, seen red in `tools/prove-guards.mjs`).
 
-## The search helpers run on Sonnet
-quick-research and deep-research set `model: sonnet` (Claude Code's subagent field); every other helper runs on the session's model.
-Why: the owner's choice after the measure of 12.10 («Поисковых помощников (quick-research и deep-research) — на Sonnet; всё остальное как есть»): the same four questions on both models, one run each, gave the same right answers at about the same tokens and time, and Anthropic's price list puts every Sonnet 5.5 line at half of Opus 5.5.
-Consequence: tests/health.test.mjs holds the two lines; a search helper's report is checked as before (the fact-checker, two runs).
+## The search helpers stay on the session's model
+No helper in .claude/agents sets its own model, so each runs on the session's model (Opus 5.5).
+Why: the measure of 12.10 (https://claude.ai/artifact/REVKLNJQavWbus8Fk1S6ZB): the same four questions on Sonnet 5.5 and Opus 5.5, one run each; the three narrow ones came out equally right, but on the wide one each model missed a source the other found (Opus: the bHaptics vest on an audio cable; Sonnet: Web Serial in Chrome 148 on Android), and Sonnet costs half per token. He first chose Sonnet for the two search helpers, then, told of the wide question, «вернуть Opus» (12.10).
+Consequence: tests/health.test.mjs fails if any helper sets a model.

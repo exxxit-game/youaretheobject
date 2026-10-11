@@ -120,9 +120,8 @@ assert.deepEqual(agentHeaderProblems('---\nname: x\ndescription: one fact, fast\
 for (const f of fs.readdirSync('.claude/agents').filter((x) => x.endsWith('.md'))) {
   const turns = Number(fs.readFileSync(`.claude/agents/${f}`, 'utf8').match(/^maxTurns:\s*(\d+)\s*$/m)?.[1]);
   assert.ok(turns >= 40 && turns <= 300, `.claude/agents/${f} has no turn limit (maxTurns) or an odd one`);
-  // the search helpers on Sonnet, the rest on the session's own model (docs/owner-decisions.md, the measure of 12.10)
-  const model = fs.readFileSync(`.claude/agents/${f}`, 'utf8').match(/^model:\s*(\S+)\s*$/m)?.[1];
-  assert.equal(model, /^(quick|deep)-research\.md$/.test(f) ? 'sonnet' : undefined, `.claude/agents/${f}: the search helpers run on sonnet, the others on the session's model (his choice of 12.10)`);
+  // every helper on the session's own model, the strongest (docs/owner-decisions.md, the line on the model, 12.10)
+  assert.ok(!/^model:/m.test(fs.readFileSync(`.claude/agents/${f}`, 'utf8')), `.claude/agents/${f} sets its own model: every helper runs on the session's model (his choice of 12.10)`);
 }
 assert.deepEqual(agentHeaderProblems("---\nname: x\ndescription: 'checks each claim: done, checked'\n---\n"), [], 'a quoted value may hold ": "');
 assert.deepEqual(agentHeaderProblems('---\nname: x\ndescription: checks each claim: done, checked\n---\n'), ['the description holds an unquoted ": " (put the value in single quotes)']);
