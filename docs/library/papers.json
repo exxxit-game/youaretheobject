@@ -569,6 +569,26 @@
    "source": "https://doi.org/10.3758/s13428-022-02051-8"
   },
   {
+   "id": "aepd-2026-videogames",
+   "authors": "AEPD",
+   "year": "2026",
+   "title": "Recommendations and best practices for data protection in video games",
+   "sections": [
+    "methods-ethics-law",
+    "games-platforms"
+   ],
+   "tags": [
+    "data protection",
+    "video games",
+    "telemetry",
+    "GDPR"
+   ],
+   "type": "guideline",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://www.aepd.es/en/guides/videogames-recommendations-industry.pdf"
+  },
+  {
    "id": "agafonov-2016",
    "authors": "Agafonov, Burmistrov & Shilov",
    "year": "2016",
@@ -1245,6 +1265,22 @@
     "internet-mediated research",
     "research ethics",
     "online consent"
+   ],
+   "type": "guideline",
+   "text": "ok",
+   "status": "no card"
+  },
+  {
+   "id": "bps-2023-independent",
+   "authors": "British Psychological Society",
+   "year": "2023",
+   "title": "Statement on ethics review and independent research with human participants",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "ethics review",
+    "independent researchers"
    ],
    "type": "guideline",
    "text": "ok",
@@ -2208,6 +2244,23 @@
    "priority": "high",
    "reason": "as easton-shor-1976: the thesis chapter V may hold the same experiments; the paper itself: library or buy",
    "source": "https://doi.org/10.1080/00221309.1977.9920835"
+  },
+  {
+   "id": "edpb-2025-pseudonymisation",
+   "authors": "European Data Protection Board",
+   "year": "2025",
+   "title": "Guidelines 01/2025 on Pseudonymisation",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "pseudonymisation",
+    "GDPR",
+    "hashing"
+   ],
+   "type": "guideline",
+   "text": "ok",
+   "status": "no card"
   },
   {
    "id": "elchemaly-2025",
@@ -4236,6 +4289,25 @@
    "status": "card",
    "card": "docs/cards/mcdermott-2016.md",
    "source": "https://doi.org/10.1038/nature18635"
+  },
+  {
+   "id": "mcduff-2026",
+   "authors": "McDuff et al.",
+   "year": "2026",
+   "title": "Battling the Bots and Defending Against Fraudulent Responses in an International Community-Engaged Web-Based Survey With People Living With Long COVID: Methodological Study",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "online surveys",
+    "bots",
+    "fraudulent responses",
+    "data integrity"
+   ],
+   "type": "article",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://doi.org/10.2196/88838"
   },
   {
    "id": "mcfadyen-2021",

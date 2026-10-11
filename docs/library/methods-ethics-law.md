@@ -1,11 +1,12 @@
 # methods, ethics, law
 
 Generated from `docs/library/papers.json` by `node tools/build-library.mjs`. Do not edit by hand.
-81 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
+85 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
 in the library folder's papers\ as `<id>.txt` (a data set: `<dir>/<id>.txt` from the library folder); "text: ocr" marks a scan's
 text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 
 - **abdlkarim-2024** Abdlkarim et al. 2024. A methodological framework to assess the accuracy of virtual reality hand-tracking systems: A case study with the Meta Quest 2 · hand tracking accuracy, Meta Quest 2, measurement method · no card
+- **aepd-2026-videogames** AEPD 2026. Recommendations and best practices for data protection in video games · data protection, video games, telemetry, GDPR · no card
 - **ambinder-2009** Ambinder 2009. Valve's Approach to Playtesting: The Application of Empiricism (GDC 2009 slides, text transcribed) · playtesting, Valve, empiricism, biometrics · no card
 - **anwyl-irvine-2021** Anwyl-Irvine et al. 2021. Realistic precision and accuracy of online experiment platforms, web browsers, and devices · online experiments, timing precision, browsers, devices · no card
 - **apa-ethics-code-2017** American Psychological Association 2017. Ethical Principles of Psychologists and Code of Conduct (2002, amended 2010 and 2016) · research ethics, deception, debriefing, informed consent · no card
@@ -14,6 +15,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **blackhart-2012** Blackhart et al. 2012. Assessing the adequacy of postexperimental inquiries in deception research and the factors that promote participant honesty · deception, postexperimental inquiry, suspicion probe, debriefing · no card
 - **bps-2021-code** British Psychological Society 2021. BPS Code of Human Research Ethics · research ethics, code of conduct, consent · no card
 - **bps-2021-imr** British Psychological Society 2021. Ethics guidelines for internet-mediated research · internet-mediated research, research ethics, online consent · no card
+- **bps-2023-independent** British Psychological Society 2023. Statement on ethics review and independent research with human participants · ethics review, independent researchers · no card
 - **brown-2014** Brown et al. 2014. Crowdsourcing for Cognitive Science - The Utility of Smartphones · smartphone experiments, crowdsourcing, citizen science, Great Brain Experiment · no card
 - **brown-2022** Brown et al. 2022. The simulator sickness questionnaire, and the erroneous zero baseline assumption · simulator sickness questionnaire, baseline, measurement · no card
 - **bruhlmann-2024** Brühlmann et al. 2024. The effectiveness of warning statements in reducing careless responding in crowdsourced online surveys · careless responding, warning statements, online surveys · no card
@@ -24,6 +26,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **colombia-8430-1993** Ministerio de Salud de Colombia 1993. Resolución 8430 de 1993: normas científicas, técnicas y administrativas para la investigación en salud · research ethics, Colombia, health research rules, minimal risk · no card
 - **crump-2013** Crump et al. 2013. Evaluating Amazon's Mechanical Turk as a Tool for Experimental Behavioral Research · Mechanical Turk, online experiments, classic effects online · no card
 - **edpb-2019** European Data Protection Board 2019. Guidelines 3/2018 on the territorial scope of the GDPR (Article 3), version 2.1 · GDPR, territorial scope, EU representative · no card
+- **edpb-2025-pseudonymisation** European Data Protection Board 2025. Guidelines 01/2025 on Pseudonymisation · pseudonymisation, GDPR, hashing · no card
 - **eurec-2021** European Network of Research Ethics Committees (EUREC) 2021. Position of EUREC on Ethics Reviews of Research Projects involving Persons outside Biomedical Research · ethics review, non-medical research, Europe · no card
 - **exppsy-2022-2** Experimental Psychology (Russia), ed. Barabanschikov 2022. Experimental Psychology (Russia), vol. 15, no. 2 (whole issue, in Russian with English abstracts) · VR studies in Russia, journal issue, side effects · no card
 - **fitts-1954** Fitts 1954. The information capacity of the human motor system in controlling the amplitude of movement · Fitts law, movement time, motor control · no card · text: ocr · no room: a measuring tool with no reveal (search coverage, motor control)
@@ -47,6 +50,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **lakens-2022** Lakens 2022. Sample Size Justification · sample size justification, statistical power · no card
 - **lumsden-2016** Lumsden et al. 2016. The effects of gamelike features and test location on cognitive test performance and participant enjoyment · gamelike features, test location, enjoyment, cognitive tests · no card
 - **madary-2016** Madary & Metzinger 2016. Real Virtuality: A Code of Ethical Conduct. Recommendations for Good Scientific Practice and the Consumers of VR-Technology · VR ethics, code of conduct · no card
+- **mcduff-2026** McDuff et al. 2026. Battling the Bots and Defending Against Fraudulent Responses in an International Community-Engaged Web-Based Survey With People Living... · online surveys, bots, fraudulent responses, data integrity · no card
 - **miller-2020** Miller et al. 2020. Personal identifiability of user tracking data during observation of 360-degree VR video · user identification, tracking data, privacy · no card
 - **mottelson-2017** Mottelson & Hornbæk 2017. Virtual reality studies outside the laboratory · VR studies outside the lab, crowdsourcing · no card
 - **mottelson-2021** Mottelson et al. 2021. Conducting Unsupervised Virtual Reality User Studies Online · unsupervised VR studies, remote, online · no card

@@ -1,10 +1,11 @@
 # games and platforms
 
 Generated from `docs/library/papers.json` by `node tools/build-library.mjs`. Do not edit by hand.
-29 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
+30 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
 in the library folder's papers\ as `<id>.txt` (a data set: `<dir>/<id>.txt` from the library folder); "text: ocr" marks a scan's
 text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 
+- **aepd-2026-videogames** AEPD 2026. Recommendations and best practices for data protection in video games · data protection, video games, telemetry, GDPR · no card
 - **ambinder-2009** Ambinder 2009. Valve's Approach to Playtesting: The Application of Empiricism (GDC 2009 slides, text transcribed) · playtesting, Valve, empiricism, biometrics · no card
 - **awad-2018** Awad et al. 2018. The Moral Machine experiment · Moral Machine, moral dilemmas, autonomous vehicles, culture, citizen science · no card
 - **awad-2018-supplement** Awad et al. 2018. The Moral Machine experiment: supplementary information · Moral Machine, methods, consent · no card · supplement of awad-2018
