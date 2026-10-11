@@ -8,9 +8,8 @@ their tools); the owner sees it as a page in Russian.
 
 ## The method, taken from what exists
 
-ISO 19011:2018, "audit": "Systematic, independent and documented process for obtaining objective
-evidence (3.8) and evaluating it objectively to determine the extent to which the audit criteria
-(3.7) are fulfilled" (read through the EU Agency for Railways terminology collection, which names
+ISO 19011:2018 defines an audit as a "systematic, independent and documented process for obtaining objective
+evidence" and judging it against the audit criteria (read through the EU Agency for Railways terminology collection, which names
 ISO 19011:2018 as its source: era.europa.eu/era-railway-terminology-collection/audit/term/international_standard;
 the ISO text itself sits behind a terms-of-use gate). So each shelf has three columns: what is on it
 (the scope), what it is checked against (the criteria), how it is checked now (where the evidence comes from).
