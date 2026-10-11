@@ -78,6 +78,12 @@ assert.ok(lines(path.join(ROOT, 'docs/state.md')) <= STATE_MAX, `docs/state.md o
 // a new rule goes in only in place of an old one
 const RULES_MAX = 45;
 assert.ok(lines(path.join(ROOT, 'CLAUDE.md')) <= RULES_MAX + 1, `CLAUDE.md over ${RULES_MAX} lines: a new rule replaces an old one`);
+// what an @import pulls in loads with it, so the whole counts: "target under 200 lines per CLAUDE.md file"
+// (code.claude.com/docs/en/memory, "Write effective instructions")
+const IMPORTED_MAX = 200;
+const imported = [...fs.readFileSync(path.join(ROOT, 'CLAUDE.md'), 'utf8').matchAll(/@(docs\/[\w./-]+\.md)/g)].map((m) => m[1]);
+const loaded = lines(path.join(ROOT, 'CLAUDE.md')) + imported.reduce((n, f) => n + lines(path.join(ROOT, f)), 0);
+assert.ok(loaded <= IMPORTED_MAX, `CLAUDE.md with its imports (${imported.join(', ')}) is ${loaded} lines, over ${IMPORTED_MAX}: shorten one`);
 
 // 6. No dead code: every module under src/ is imported by another file
 // (the shell main.js and room.js files are entry points).

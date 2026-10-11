@@ -232,10 +232,16 @@ export function agentHeaderProblems(text) {
 export function checkAgentsLoad(root = ROOT) {
   const dir = path.join(root, '.claude', 'agents');
   const files = fs.existsSync(dir) ? fs.readdirSync(dir).filter((f) => f.endsWith('.md')) : [];
-  const bad = files.map((f) => [f, agentHeaderProblems(fs.readFileSync(path.join(dir, f), 'utf8'))]).filter(([, p]) => p.length);
-  return bad.length
-    ? bad.map(([f, p]) => broken(`the ${f.replace(/\.md$/, '')} agent does not load in any session (${p.join('; ')}): fix .claude/agents/${f}`))
-    : [ok(`all ${files.length} agents load`)];
+  const bad = files.map((f) => [`the ${f.replace(/\.md$/, '')} agent`, `.claude/agents/${f}`, agentHeaderProblems(fs.readFileSync(path.join(dir, f), 'utf8'))]);
+  // a skill's header is the same YAML: one that does not parse leaves the skill with no fields, and then
+  // Claude "can't match against your description" (Claude Code's skills reference)
+  const sdir = path.join(root, '.claude', 'skills');
+  const skills = fs.existsSync(sdir) ? fs.readdirSync(sdir).filter((d) => fs.existsSync(path.join(sdir, d, 'SKILL.md'))) : [];
+  bad.push(...skills.map((d) => [`the ${d} skill`, `.claude/skills/${d}/SKILL.md`, agentHeaderProblems(fs.readFileSync(path.join(sdir, d, 'SKILL.md'), 'utf8'))]));
+  const failing = bad.filter(([, , p]) => p.length);
+  return failing.length
+    ? failing.map(([what, file, p]) => broken(`${what} does not load in any session (${p.join('; ')}): fix ${file}`))
+    : [ok(`all ${files.length} agents and ${skills.length} ${skills.length === 1 ? 'skill' : 'skills'} load`)];
 }
 export function checkAgents(root = ROOT) {
   return RESEARCH_AGENTS.map((name) => {

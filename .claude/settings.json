@@ -19,14 +19,10 @@
   ],
   "permissions": {
     "allow": [
-      "Bash(node tools/quest-look.mjs)",
       "Bash(node tools/quest-look.mjs *)",
-      "PowerShell(node tools/quest-look.mjs)",
       "PowerShell(node tools/quest-look.mjs *)",
-      "Bash(gh run list)",
       "Bash(gh run list *)",
       "Bash(gh run view *)",
-      "PowerShell(gh run list)",
       "PowerShell(gh run list *)",
       "PowerShell(gh run view *)",
       "Bash(node tools/publish-preview.mjs)",
@@ -37,6 +33,27 @@
       "PowerShell(git push origin claude/*)",
       "PowerShell(git push -u origin claude/*)",
       "PowerShell(git push origin room-polish)"
+    ],
+    "deny": [
+      "mcp__plugin_playwright*",
+      "mcp__plugin_chrome-devtools*",
+      "mcp__*__apply_migration",
+      "mcp__*__deploy_edge_function",
+      "mcp__*__pause_project",
+      "mcp__*__restore_project",
+      "mcp__*__create_project",
+      "mcp__*__delete_branch",
+      "mcp__*__merge_branch",
+      "mcp__*__reset_branch",
+      "mcp__*__rebase_branch",
+      "mcp__*__confirm_cost",
+      "mcp__*__push_files",
+      "mcp__*__create_or_update_file",
+      "mcp__*__delete_file",
+      "mcp__*__merge_pull_request",
+      "mcp__*__update_pull_request_branch",
+      "mcp__*__create_repository",
+      "mcp__*__fork_repository"
     ]
   },
   "hooks": {

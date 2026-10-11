@@ -112,11 +112,13 @@ const CASES = [
   ['claude-guard pre', 'tests before done', 'the assistant skips the git hooks', () => {}, () => askGuard('pre', { tool_name: 'Bash', tool_input: { command: 'git commit --no-verify -m x' } }), 'REFUSED'],
   ['claude-guard pre', 'tests before done', 'the assistant hides a hook-skipping commit in a shell\'s command text', () => {}, () => askGuard('pre', { tool_name: 'Bash', tool_input: { command: 'bash -c "git commit -n -m x"' } }), 'REFUSED'],
   ['claude-guard pre', 'tests before done', 'the assistant runs Playwright locally', () => {}, () => askGuard('pre', { tool_name: 'PowerShell', tool_input: { command: 'npm run test:smoke' } }), 'REFUSED'],
-  ['claude-guard pre', 'tests before done', 'a connected tool starts a browser on the laptop', () => {}, () => askGuard('pre', { tool_name: 'mcp__plugin_playwright_playwright__browser_navigate', tool_input: {} }), 'REFUSED'],
-  ['claude-guard pre', 'data: read only', 'a migration applied to the live database', () => {}, () => askGuard('pre', { tool_name: 'mcp__db__apply_migration', tool_input: {} }), 'REFUSED'],
+  // tools banned by name are deny rules in the settings (Claude Code applies them; no hook to ask): the
+  // mistake planted is the rule taken out, and the health test is what sees it
+  ['settings deny', 'tests before done', 'a connected tool may start a browser on the laptop', () => swap('.claude/settings.json', '"mcp__plugin_playwright*",', ''), test('health.test.mjs'), 'mcp__plugin_playwright*'],
+  ['settings deny', 'data: read only', 'a migration may be applied to the live database', () => swap('.claude/settings.json', '"mcp__*__apply_migration",', ''), test('health.test.mjs'), 'mcp__*__apply_migration'],
   ['claude-guard pre', 'data: read only', 'a write hidden behind a read on the live database', () => {}, () => askGuard('pre', { tool_name: 'mcp__db__execute_sql', tool_input: { query: 'select 1; delete from app.runs' } }), 'REFUSED'],
   ['claude-guard pre', 'data: read only', 'a write called from a read on the live database', () => {}, () => askGuard('pre', { tool_name: 'mcp__db__execute_sql', tool_input: { query: "select public.submit_run('{}'::jsonb)" } }), 'REFUSED'],
-  ['claude-guard pre', 'main only on the owner\'s word', 'files pushed to GitHub past the push hook', () => {}, () => askGuard('pre', { tool_name: 'mcp__gh__push_files', tool_input: { branch: 'main' } }), 'REFUSED'],
+  ['settings deny', 'main only on the owner\'s word', 'files may be pushed to GitHub past the push hook', () => swap('.claude/settings.json', '"mcp__*__push_files",', ''), test('health.test.mjs'), 'mcp__*__push_files'],
   ['claude-guard start', 'the owner\'s decisions', 'a session starts without his decisions in front of it', () => fs.rmSync(at('docs/owner-decisions.md')), test('guard.test.mjs'), 'does not show the owner\'s decisions'],
   ['review gate', 'the owner\'s automatic stop', 'VR started in the headset with no practice review', () => {},
     () => headsetTool(['tools/quest-look.mjs', 'vr'], `${dir}-reviews.jsonl`), 'waits for the practice reviewer'],

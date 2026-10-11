@@ -180,6 +180,12 @@ assert.notEqual(pre('Write|Edit|MultiEdit|NotebookEdit').onFailure, 'block', 'th
 // cancelled and its output thrown away, the board's top with it
 assert.ok(projectSettings.hooks.SessionStart[0].hooks[0].timeout >= 45, 'the start hook has time for its own waits');
 assert.equal(MIN_VERSION, '2.1.295', 'onFailure needs Claude Code 2.1.295');
+// tools banned by their name alone are deny rules, which take them out of the assistant's tools (Claude
+// Code's permissions reference, "Tool name wildcards"): a browser on the laptop, writes to the live
+// database, writes to GitHub past the push hook
+for (const rule of ['mcp__plugin_playwright*', 'mcp__plugin_chrome-devtools*', 'mcp__*__apply_migration', 'mcp__*__deploy_edge_function', 'mcp__*__reset_branch', 'mcp__*__merge_branch', 'mcp__*__push_files', 'mcp__*__create_or_update_file', 'mcp__*__merge_pull_request']) {
+  assert.ok(projectSettings.permissions.deny.includes(rule), `the deny rule ${rule} is gone from .claude/settings.json`);
+}
 // the guards: Claude Code runs the main folder's copies; a difference in content (not in line ends) is broken
 assert.deepEqual(localImports("import fs from 'node:fs';\nimport { a } from './secrets.mjs';\nimport { b, c } from './board.mjs';\n"), ['secrets.mjs', 'board.mjs']);
 assert.ok(sameText('a\r\nb\r\n', 'a\nb\n'));

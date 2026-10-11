@@ -8,8 +8,8 @@
 // taken out by his yes to the process review of 11.10 (docs/owner-decisions.md): they held words, not
 // claims, and stopped correct work more often than wrong.
 //   pre:  a shell command that skips the git hooks or runs Playwright on the laptop is refused, and
-//         so are a connected browser tool, any write to the live database and any write of mine to
-//         the practice review record
+//         so are a query that writes to the live database and any write of mine to the practice review
+//         record (connected tools banned by name alone are deny rules in .claude/settings.json)
 //   subagent-start, subagent-stop: a practice reviewer's run is recorded for the owner's automatic
 //         stop before VR in the headset and the test copy (tools/review-gate.mjs)
 //   stop: a turn does not end while work is unsaved or not on GitHub, or the main folder lacks it,
@@ -327,14 +327,10 @@ export function refusal(line, ps = false) {
 }
 const RECORD_FILE = /practice-reviews/i;
 
-// Connected tools that do what a refused command would: a browser started on the laptop, and
-// writes to the live database (the owner: the assistant's access to the server is read only;
-// changes go through supabase/migrations on his word). Names are matched across connectors.
-const BROWSER_TOOLS = /^mcp__plugin_(playwright|chrome-devtools)/;
-const DB_WRITES = /__(apply_migration|deploy_edge_function|pause_project|restore_project|create_project|delete_branch|merge_branch|reset_branch|rebase_branch|confirm_cost)$/;
-// The GitHub connector writes to the repository directly, past the push hook that guards main
-// and checks for secrets: work reaches GitHub only through git push.
-const GITHUB_WRITES = /__(push_files|create_or_update_file|delete_file|merge_pull_request|update_pull_request_branch|create_repository|fork_repository)$/;
+// Connected tools banned by name alone (a browser started on the laptop, writes to the live database,
+// writes to GitHub past the push hook) are deny rules in .claude/settings.json, Claude Code's own way:
+// a tool a bare-name deny rule matches is taken out of the assistant's tools altogether (its
+// permissions reference, "Tool name wildcards"). This hook keeps what needs the call read: the SQL.
 // A SELECT still writes when it calls a function that writes: ours (submit_* add rows) and the
 // built-ins and extensions that change the server, sequences, settings, files or the outside world.
 const SQL_WRITE_CALLS = /(\b(submit_\w+|nextval|setval|set_config|pg_terminate_backend|pg_cancel_backend|pg_reload_conf|pg_rotate_logfile|pg_switch_wal|pg_promote|pg_notify|pg_advisory\w*|pg_stat_reset\w*|pg_create_\w+|pg_drop_\w+|pg_replication_\w+|pg_file_\w+|lo_\w+|dblink\w*|http\w*)\s*\(|\b(vault|net|pgmq)\.\w+|\bcron\.\w+\s*\()/i;
@@ -363,9 +359,6 @@ export const ciLine = (run) => (NEEDS_LOOK.has(run?.conclusion)
 
 if (mode === 'pre') {
   const tool = String(event.tool_name || '');
-  if (BROWSER_TOOLS.test(tool)) stop('REFUSED: this tool starts a browser on the laptop; Playwright and Chromium run only on GitHub (use the browser pane for a look).');
-  if (DB_WRITES.test(tool)) stop('REFUSED: the live database is read-only for the assistant; a change goes into supabase/migrations and reaches the server only on the owner\'s word.');
-  if (GITHUB_WRITES.test(tool)) stop('REFUSED: this connector writes to GitHub past the push hook (main only on the owner\'s word, the secret check); commit and git push instead.');
   if (/__execute_sql$/.test(tool) && !readOnlySql(String(event.tool_input?.query || ''))) stop('REFUSED: only a single read-only query (SELECT) may run on the live database.');
   if (/^(Write|Edit|MultiEdit|NotebookEdit)$/.test(tool) && RECORD_FILE.test(String(event.tool_input?.file_path || event.tool_input?.notebook_path || ''))) stop('REFUSED: the practice review record is written only by Claude Code\'s hook when a reviewer run ends; run the practice-reviewer agent instead.');
   const why = refusal(String(event.tool_input?.command || ''), tool === 'PowerShell');
