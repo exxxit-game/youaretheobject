@@ -10,7 +10,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { fingerprint, reviewOf, lookOf, REPORT_END } from '../tools/review-gate.mjs';
+import { fingerprint, reviewOf, lookOf, REPORT_END, PAPER_END, paperOf, checkedRooms, write } from '../tools/review-gate.mjs';
 import { withoutGitVars } from '../tools/secrets.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -77,6 +77,31 @@ assert.ok(lookOf(place, record), 'a fix only of the files the review named lets 
 put('index.html', '<html>changed</html>\n');
 assert.equal(lookOf(place, record), null, 'a file the review did not name changed: the own look waits too');
 
+// the paper check, room by room (requirePaper): a paper reviewer's run counts for the rooms its last
+// line lists, each as it then stands
+put('src/rooms/01-x/room.js', 'export const n = 1;\n');
+put('src/rooms/02-y/room.js', 'export const n = 2;\n');
+assert.deepEqual(checkedRooms(JSON.stringify({ message: `x\n${PAPER_END} 01-x, 02-y\nmore` })), ['01-x', '02-y'], 'the last line read out of a handed-back report');
+assert.equal(paperOf(place, '01-x', {}, record), null, 'no paper check yet: the stop holds');
+review('paper-cut', { type: 'paper-reviewer', report: 'Findings, then the run was cut short' });
+assert.equal(paperOf(place, '01-x', {}, record), null, 'a report with no rooms line does not count');
+review('paper-1', { type: 'paper-reviewer', report: `1. minor: src/rooms/01-x/room.js:1 says 1, the paper 2.\n${PAPER_END} 01-x` });
+assert.ok(paperOf(place, '01-x', {}, record), 'a whole paper check of the room lets it go');
+assert.equal(paperOf(place, '02-y', {}, record), null, 'a room the report did not list stays unchecked');
+review('paper-2', { report: `Findings.\n${REPORT_END} none\n${PAPER_END} 02-y` });
+assert.equal(paperOf(place, '02-y', {}, record), null, 'a practice reviewer\'s run is no paper check');
+review('paper-moved', { type: 'paper-reviewer', report: `${PAPER_END} 02-y`, between: () => put('src/rooms/02-y/room.js', 'export const n = 3;\n') });
+assert.equal(paperOf(place, '02-y', {}, record), null, 'the room changed while it was read: no check');
+hook('subagent-start', { agent_id: 'paper-t', agent_type: 'paper-reviewer' });
+hook('subagent-stop', { agent_id: 'paper-t', agent_type: 'paper-reviewer', last_assistant_message: '',
+  agent_transcript_path: transcript('paper-t', [{ type: 'user', message: { content: [{ type: 'text', text: `End with ${PAPER_END} 02-y` }] } }, handback(`Findings.\n${PAPER_END} 02-y`)]) });
+assert.ok(paperOf(place, '02-y', {}, record), 'a report handed back through a tool call counts for the room it lists');
+put('src/rooms/01-x/room.js', 'export const n = 4;\n');
+assert.equal(paperOf(place, '01-x', {}, record), null, 'a change to the room after its check stops the tools again');
+assert.ok(paperOf(place, '01-x', { look: true }, record), 'the own look goes after a fix of a file the report named');
+put('src/rooms/01-x/texts.ru.js', 'export const t = 1;\n');
+assert.equal(paperOf(place, '01-x', { look: true }, record), null, 'a file the report did not name: the own look waits too');
+
 // the tools refuse before they touch the headset or GitHub (an empty record: no review exists); run
 // with only node on the path, so a stop that ever broke could reach no adb, git or gh from here
 const empty = path.join(tmp, 'empty.jsonl');
@@ -85,6 +110,14 @@ bare.PATH = path.dirname(process.execPath);
 for (const args of [['tools/quest-look.mjs', 'vr'], ['tools/quest-look.mjs', 'eval', "document.querySelector('a-scene').enterVR()"], ['tools/xr-probe-run.mjs', 'input'], ['tools/publish-preview.mjs', '--anyway']]) {
   const r = spawnSync(process.execPath, args, { cwd: ROOT, encoding: 'utf8', env: { ...bare, OBJECT_REVIEW_RECORD: empty }, timeout: 20000 });
   assert.ok(r.status === 1 && r.stdout.includes('waits for the practice reviewer'), `${args.join(' ')} went ahead with no review:\n${r.stdout}${r.stderr}`);
+}
+// and with a practice review of these very files but no paper check of the room, the headset and the
+// test copy still wait (the probe shows no room, so it does not)
+const practiced = path.join(tmp, 'practiced.jsonl');
+write({ kind: 'review', agent: 'test', print: fingerprint(ROOT) }, practiced);
+for (const args of [['tools/quest-look.mjs', 'vr'], ['tools/publish-preview.mjs', '--anyway']]) {
+  const r = spawnSync(process.execPath, args, { cwd: ROOT, encoding: 'utf8', env: { ...bare, OBJECT_REVIEW_RECORD: practiced }, timeout: 20000 });
+  assert.ok(r.status === 1 && r.stdout.includes('waits for the paper check of 01-control'), `${args.join(' ')} went ahead with no paper check:\n${r.stdout}${r.stderr}`);
 }
 
 // the assistant cannot write the record or point the tools at another one; reading and the tools pass
@@ -102,4 +135,4 @@ for (const c of ['node tools/quest-look.mjs vr', 'node tools/publish-preview.mjs
 }
 
 fs.rmSync(tmp, { recursive: true, force: true });
-console.log('review gate: ok (the stop holds without a review, after a change, for other agents and cut reports; the own look goes after a fix of what the review named; the record is the hook\'s alone)');
+console.log('review gate: ok (the stop holds without a review, after a change, for other agents and cut reports; the own look goes after a fix of what the review named; the paper check holds the same way room by room; the record is the hook\'s alone)');

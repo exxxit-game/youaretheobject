@@ -93,7 +93,7 @@
     ],
     "SubagentStart": [
       {
-        "matcher": "practice-reviewer",
+        "matcher": "practice-reviewer|paper-reviewer",
         "hooks": [
           { "type": "command", "command": "node \"${CLAUDE_PROJECT_DIR}/tools/claude-guard.mjs\" subagent-start", "timeout": 60 }
         ]
@@ -101,7 +101,7 @@
     ],
     "SubagentStop": [
       {
-        "matcher": "practice-reviewer",
+        "matcher": "practice-reviewer|paper-reviewer",
         "hooks": [
           { "type": "command", "command": "node \"${CLAUDE_PROJECT_DIR}/tools/claude-guard.mjs\" subagent-stop", "timeout": 60 }
         ]

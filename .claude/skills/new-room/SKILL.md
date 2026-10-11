@@ -42,8 +42,9 @@ check. Do not tell the owner "done" before step 10.
    every line must match (a number heard as digits is fine).
 7. **Tests.** `npm test` green (structure rules included). Update `tests/smoke.mjs`
    and `tools/quest-check.mjs` for the room's flow.
-8. **Independent review.** Run the `paper-reviewer` agent on the room. Verify its
-   main claims in the paper yourself, fix, then run it again on the fixes.
+8. **Independent review.** The `paper-reviewer` agent on the room; verify its main claims in the
+   paper yourself and fix. The headset and the test copy wait for its run on the room as it then
+   stands (`tools/review-gate.mjs`, requirePaper).
 9. **See it.** First the `practice-reviewer` agent (the headset waits for it: `tools/review-gate.mjs`).
    Then a browser pass at `?speed=20` with screenshots of every new screen
    and a comparison with the room's approved shots (`docs/rooms/NN-shots/`); in the

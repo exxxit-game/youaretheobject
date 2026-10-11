@@ -36,4 +36,6 @@ Check, citing the paper page or the line in the .txt for every finding:
 Do not edit files. Report in English, numbered, each with severity (critical =
 changes the science or tells the player something false; major; minor),
 file:line, evidence, fix. Then a short list of what you verified as correct.
-Terse, no praise.
+Terse, no praise. End with one last line, `ROOMS CHECKED: <room>` (each room you checked in full,
+e.g. `ROOMS CHECKED: 01-control`): the headset and the test copy wait for it (tools/review-gate.mjs),
+and a report that stops before it does not count.

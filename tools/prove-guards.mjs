@@ -10,7 +10,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { PRIVATE_EMAIL, withoutGitVars } from './secrets.mjs';
-import { fingerprint, scan, write } from './review-gate.mjs';
+import { fingerprint, scan, write, roomScan } from './review-gate.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const LF = process.argv.includes('--lf');
@@ -126,6 +126,10 @@ const CASES = [
   ['review gate', 'the owner\'s automatic stop', 'my own VR look after a change to a file the review did not name',
     () => { write({ kind: 'review', agent: 'planted', ...scan(dir), named: ['src/engine/sfx.js'] }, `${dir}-look.jsonl`); append('src/engine/fader.js', '\n// changed after the review\n'); },
     () => headsetTool(['tools/quest-look.mjs', 'vr'], `${dir}-look.jsonl`), 'waits for the practice reviewer'],
+  // the practice review is of the files as they now stand, so only the paper check is missing
+  ['review gate', 'the paper check', 'VR started after the room changed since its check against the paper',
+    () => { write({ kind: 'paper', agent: 'planted', room: '01-control', ...roomScan(dir)['01-control'], named: [] }, `${dir}-paper.jsonl`); append('src/rooms/01-control/report.js', '\n// changed after the paper check\n'); write({ kind: 'review', agent: 'planted', print: fingerprint(dir) }, `${dir}-paper.jsonl`); },
+    () => headsetTool(['tools/quest-look.mjs', 'vr'], `${dir}-paper.jsonl`), 'waits for the paper check'],
   ['review gate', 'the owner\'s automatic stop', 'the probe run in VR after the game changed since its review',
     () => { write({ kind: 'review', agent: 'planted', print: fingerprint(dir) }, `${dir}-reviews.jsonl`); append('src/engine/sfx.js', '\n// changed after the review\n'); },
     // the probe, not the test copy: were the stop blind, the copy would really be published; and with

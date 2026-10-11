@@ -12,13 +12,14 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { PUBLIC } from '../tests/static-server.mjs';
 import { check } from './secrets.mjs';
-import { requireReview } from './review-gate.mjs';
+import { requireReview, requirePaper } from './review-gate.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const REPO = 'https://github.com/exxxit-game/object-preview.git';
 // the owner's automatic stop: he meets what is published here, so the practice reviewer must have
 // seen these very files; no flag skips it
 requireReview(ROOT, 'publishing the test copy');
+requirePaper(ROOT, 'publishing the test copy');
 const git = (cwd, ...args) => execFileSync('git', args, { cwd, encoding: 'utf8' }).trim();
 
 // the copy is public and its commit shows the author's address: only the hidden GitHub one

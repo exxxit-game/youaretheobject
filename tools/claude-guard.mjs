@@ -11,8 +11,9 @@
 //         so are a query that writes to the live database and any write of mine to the practice review
 //         record, and a delete in the papers library or a move out of it, which no git holds
 //         (connected tools banned by name alone are deny rules in .claude/settings.json)
-//   subagent-start, subagent-stop: a practice reviewer's run is recorded for the owner's automatic
-//         stop before VR in the headset and the test copy (tools/review-gate.mjs)
+//   subagent-start, subagent-stop: a practice reviewer's run, and a paper reviewer's run room by room,
+//         is recorded for the owner's automatic stop before VR in the headset and the test copy
+//         (tools/review-gate.mjs)
 //   stop: a turn does not end while work is unsaved or not on GitHub, or the main folder lacks it,
 //         or a command has run under Claude Code longer than ten minutes (tools/leftovers.mjs)
 //   start, prompt: the top of the board comes back at start and after every compaction, with
@@ -25,7 +26,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { withoutGitVars } from './secrets.mjs';
 import { typedText } from './owner-links.mjs';
-import { scan, named, entries, write, lastReport, REVIEWER, REPORT_END } from './review-gate.mjs';
+import { scan, named, entries, write, lastReport, REVIEWER, REPORT_END, PAPER_REVIEWER, PAPER_END, roomScan, checkedRooms } from './review-gate.mjs';
 import { BOARD, top, split } from './board.mjs';
 import { leftoverLine } from './leftovers.mjs';
 
@@ -466,26 +467,48 @@ if (mode === 'start') {
   process.exit(0);
 }
 
-// subagent-start, subagent-stop: a practice reviewer's run is recorded for the owner's automatic stop
+// subagent-start, subagent-stop: a practice or paper reviewer's run is recorded for the owner's automatic stop
 // (tools/review-gate.mjs) by this hook, not by the assistant. It counts only when the files a person
 // meets did not change while it read them and its report reached its last block. Never blocks.
 if (mode === 'subagent-start' || mode === 'subagent-stop') {
-  if (event.agent_type !== REVIEWER) process.exit(0);
+  if (event.agent_type !== REVIEWER && event.agent_type !== PAPER_REVIEWER) process.exit(0);
+  // a subagent here hands its report back through a tool call, not as its last text, so the
+  // report is read from the transcript's last assistant entry: its text or its tool call's input.
+  // Only the reviewer's own words count, never the caller's prompt, which names the block too.
+  const ends = (text, end) => new RegExp(`(^|\\n|\\\\n)${end}`).test(text);
+  const reportOf = (end) => {
+    const said = String(event.last_assistant_message || '');
+    try { if (!ends(said, end) && event.agent_transcript_path) return lastReport(event.agent_transcript_path); } catch { /* no transcript to read */ }
+    return said;
+  };
+  // the paper check, room by room: a room counts when it did not change while it was read and the
+  // report's last line lists it (tools/review-gate.mjs, requirePaper)
+  if (event.agent_type === PAPER_REVIEWER) {
+    const rooms = roomScan(HERE);
+    if (mode === 'subagent-start') {
+      write({ kind: 'paper-start', agent: event.agent_id, rooms: Object.fromEntries(Object.entries(rooms).map(([r, s]) => [r, s.print])), root: HERE });
+      process.exit(0);
+    }
+    const start = entries().filter((e) => e.kind === 'paper-start' && e.agent === event.agent_id).pop();
+    const report = reportOf(PAPER_END);
+    const listed = ends(report, PAPER_END) ? checkedRooms(report).filter((r) => rooms[r]) : [];
+    if (!listed.length) write({ kind: 'void', agent: event.agent_id, why: 'its report did not reach its last line listing the rooms' });
+    for (const room of listed) {
+      const why = !start ? 'no start seen for this run' : start.rooms?.[room] !== rooms[room].print ? 'the room changed while it read it' : '';
+      write(why ? { kind: 'void', agent: event.agent_id, room, why } : { kind: 'paper', agent: event.agent_id, room, ...rooms[room], named: named(report), root: HERE });
+    }
+    process.exit(0);
+  }
   const { print, files } = scan(HERE);
   if (mode === 'subagent-start') {
     write({ kind: 'start', agent: event.agent_id, print, root: HERE });
     process.exit(0);
   }
   const start = entries().filter((e) => e.kind === 'start' && e.agent === event.agent_id).pop();
-  // a subagent here hands its report back through a tool call, not as its last text, so the
-  // report is read from the transcript's last assistant entry: its text or its tool call's input.
-  // Only the reviewer's own words count, never the caller's prompt, which names the block too.
-  const ends = (text) => new RegExp(`(^|\\n|\\\\n)${REPORT_END}`).test(text);
-  let report = String(event.last_assistant_message || '');
-  try { if (!ends(report) && event.agent_transcript_path) report = lastReport(event.agent_transcript_path); } catch { /* no transcript to read */ }
+  const report = reportOf(REPORT_END);
   const why = !start ? 'no start seen for this run'
     : start.print !== print ? 'the files changed while it read them'
-      : !ends(report) ? 'its report did not reach its last block' : '';
+      : !ends(report, REPORT_END) ? 'its report did not reach its last block' : '';
   write(why ? { kind: 'void', agent: event.agent_id, why } : { kind: 'review', agent: event.agent_id, print, files, named: named(report), root: HERE, transcript: event.agent_transcript_path || '' });
   process.exit(0);
 }
