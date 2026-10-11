@@ -44,12 +44,15 @@ export async function askConsent(sheet, { extra = [] }) {
     { t: F.known, role: 'soft', gap: 0.014 }], APP_T.next, F.nameNote);
   const [sign] = await sheet.fill([{ t: `${F.date} ${today}`, role: 'body' }, { t: F.sign, role: 'body', gap: 0.018 }],
     APP_T.next, F.signNote, seal(F.mark, C.locale));
-  keep([name, sign]);
   for (const lines of pages.slice(0, -1)) await sheet.choose(page(lines), [APP_T.next]);
   if (await sheet.choose(page([C.age.ask]), [C.age.yes, C.age.no]) === 1) {
+    // under 18 the page says nothing is kept (C.minor), so the signed form is not kept either
     await sheet.choose(page([C.minor]), [C.start]);
     return false;
   }
+  // kept only once the player has said he is of age: before, a minor's hand-drawn name stayed in the
+  // browser while the page told him nothing would be saved (CodeRabbit's remark, the owner's word)
+  keep([name, sign]);
   const picked = await sheet.choose(page(pages.at(-1)), [C.withRecording, C.withoutRecording]);
   return picked === 0;
 }
