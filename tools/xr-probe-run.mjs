@@ -3,7 +3,8 @@
 // and prints what the headset gave. VR and MR need the owner wearing it; the microphone does not.
 // Needs the laptop's server running (the app's preview, or `npm run serve`) and the headset on
 // its cable; it is kept awake for the run and put back to sleep after (tools/headset.mjs).
-// Usage: node tools/xr-probe-run.mjs [vr ar mic input]   (input: controllers, hands and body, one task
+// Usage: node tools/xr-probe-run.mjs [vr ar mic camera input]   (camera: the headset's cameras' sizes and
+// rates, the owner grants the permission in the headset; input: controllers, hands and body, one task
 // at a time in the headset on its own page, tools/xr-probe-input.html; up to 6 min)
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -49,12 +50,12 @@ const show = async (url) => {
 await show(pageOf(steps[0]));
 await run(`localStorage.removeItem('xr-probe'), window.__probe = {}, 1`);
 
-const KEY = { vr: 'immersive-vr', ar: 'immersive-ar', mic: 'mic', input: 'input' };
+const KEY = { vr: 'immersive-vr', ar: 'immersive-ar', mic: 'mic', camera: 'camera', input: 'input' };
 for (const step of steps) {
   await show(pageOf(step));
   await run(`document.getElementById('${step}').click(), 1`, true);
-  // a session runs up to 5 s (input: until he has done every task, up to 6 min), then ends
-  for (let i = 0; i < (step === 'input' ? 720 : 60); i++) {
+  // a session runs up to 5 s (camera: his permission, then about 3 s a camera, up to 60 s; input: until he has done every task, up to 6 min), then ends
+  for (let i = 0; i < (step === 'input' ? 720 : step === 'camera' ? 120 : 60); i++) {
     await sleep(500);
     const done = await run(`(() => { const r = (window.__probe || {})['${KEY[step]}']; return !!r && (r.frames !== undefined || r.error !== undefined || r.granted !== undefined); })()`);
     if (done) break;
