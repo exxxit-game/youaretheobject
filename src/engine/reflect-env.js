@@ -34,10 +34,17 @@ AFRAME.registerComponent('reflect-env', {
     if (this.data.out) this.cam.position.addScaledVector(new AFRAME.THREE.Vector3(0, 0, 1).transformDirection(o.matrixWorld), this.data.out);
     const shown = o.visible;
     o.visible = false;   // the object must not mirror itself
+    // nor the player (their rig: controllers, lasers, the fade round the camera): a picture taken
+    // once holds them frozen where they were (the controllers showed so in the extinguisher's steel)
+    let player = this.el.sceneEl.camera.el.object3D;
+    while (player.parent && player.parent !== this.el.sceneEl.object3D) player = player.parent;
+    const there = player.visible;
+    player.visible = false;
     const xr = renderer.xr.enabled;
     renderer.xr.enabled = false;
     this.cam.update(renderer, this.el.sceneEl.object3D);
     renderer.xr.enabled = xr;
+    player.visible = there;
     o.visible = shown;   // a hidden object stays hidden
     this.pmrem = this.pmrem || new AFRAME.THREE.PMREMGenerator(renderer);
     this.blurred = this.pmrem.fromCubemap(this.target.texture, this.blurred);
