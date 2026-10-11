@@ -1,5 +1,6 @@
 // Moves the branch `reviewed`, CodeRabbit's baseline, up to the newest commit of room-polish that
-// CodeRabbit has read, once none of its remarks is open. It runs on GitHub (.github/workflows/reviewed.yml),
+// CodeRabbit has read, once none of its remarks is open. It runs on GitHub from main's own copy
+// (.github/workflows/reviewed.yml: never code the branch under review could change),
 // never in a session: the party under review does not move its own reviewer's baseline. It stops one
 // commit short of room-polish's head when the head itself was read:
 // a base holding every commit of the pull request makes GitHub close it as merged, and the review
