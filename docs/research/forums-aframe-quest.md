@@ -222,7 +222,7 @@ D6. [1.4 canvas text, not VR-specific] After three r152->r165 (color management)
 
 ## Summary by agreement
 (a) agreed by several (2+ independent threads or maintainer + reporter):
- - Quest OS/Browser updates break working WebXR pages; check against Wolvic / Meta samples (G1, G2, M1, M3, M4).
+ - Quest OS/Browser updates break working WebXR pages; check against Wolvic / Meta samples (G1, M1, M3, M4; G2 was A-Frame's own regression, see the note under the pattern above).
  - window.requestAnimationFrame stops in an immersive session; update canvas textures in the XR frame (tick) (S1, D1).
  - Multiview: no texture uploads mid-frame, one render() per frame (G7 + A-Frame docs).
  - Post-processing / own back buffer kills foveation and costs a lot on Quest (G8, N1, B1).
