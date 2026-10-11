@@ -44,7 +44,7 @@ enough. A new decision: its line here, the rest there. A risk list or a general 
 ## How things are built
 - Recreated from books and standards («Мы воссоздаем» 9.10); standards decide, not his pick («а не то, что я выбрал» 8.10); comfort fixes the one exception (9.10).
 - The loop: find what exists, build it in, check it, write its source beside it; what is not found goes to him («Искать, воплощать» 11.10); nothing invented in code («нельзя получить результат, если результат нафантазирован» 11.10).
-- What people who already do it wrote down (forums, their threads and answers) is a source too, beside the docs: found, read, written down, then judged useful or not («поищи по форумам, где люди обмениваются знаниями… ничего нового, снова надо просто найти, прочитать и записать» 11.10).
+- What people who already do it wrote down (forums, their threads and answers) is a source too, beside the docs: found, read, written down, then judged useful or not («поищи по форумам, где люди обмениваются знаниями… ничего нового, снова надо просто найти, прочитать и записать» 11.10); in every language it is shared in, from people whose experience is seen, not advice from someone unknown («Мы сами можем найти конкретно опытных по этому людей» 11.10).
 - An object: many pictures of the real thing from every side (shops' product photos), then how it is made, then the build («это можно как правило поставить» 11.10).
 - Rooms are faithful re-creations of published experiments, no invented mechanics; our own new experiments too, live, on the closest studies, he picks from the candidates in docs/research/own-experiments-now.md («мы можем ставить свои эксперименты» 9.10).
 - The whole before a part, each step weighed, not the simplest («весь мотор пересобирать» 10.10).

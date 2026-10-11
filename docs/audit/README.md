@@ -12,6 +12,7 @@ when it was written (their file:line may have moved since):
 - `plan-check.md`: the plan doc checked twice by the fact-checker, claim by claim, and the causes.
 - `premortem.md`: the plan assumed failed in October 2027 and asked why, by two analysts on two lenses; each cause names where its guard goes.
 - `process-rebuild.md`: the whole process audited at once (rules, machinery, knowledge, connectors, the owner's pain) and rebuilt by one plan; it replaced the earlier rules review and CLAUDE.md draft.
+- `revision.md`: the full revision the owner asked for on 11.10: every shelf we have, what each is checked against, how it is checked now, and the order the shelves go in.
 - `numbers.md`: cause 8's inventory, every number the three reports found without a source and every patch, looked up again in the code: its class (needs a source, a headset measure, a patch) and what settles it.
 
 | # | Cause | Fix | Guard | State |
