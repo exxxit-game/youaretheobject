@@ -27,6 +27,10 @@ quoted; the time is when he said it (UTC). A risk list or a general method is no
   docs) accepted: «Давай дальше по этому файлу делать, что нам надо. Убирать, что не надо» 11.10. Its two tables say which
   guards stay, go or change; a ban stands only where a mistake cannot be undone or costs him time; a complaint is no
   reason for a new guard.
+- His permanent prompt is the long text he opens a window with, as pasted 11.10 15:03 («Продолжаем, бери нужные
+  инструменты, нужную документацию и уроки и давай работать… Нужно помнить, что наши знания нужно обновлять при нужде.»,
+  in full in his message log); asked whether it is his prompt and which version: «Да, длинный вариант» 11.10 16:15. It goes
+  at the top of CLAUDE.md as it is, with the shortening of the rules (the board's second item).
 - CodeRabbit on its 14-day trial, kept and paid for only if it proves useful («14 дней нам хватит, чтобы...
   попользоваться и понаходить все то, что нам необходимо. А если он нам будет очень полезен, я, может, и дальше
   за него буду платить» 10.10 07:45). It reviews the one open pull request from room-polish into the branch
