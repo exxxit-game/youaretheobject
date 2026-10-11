@@ -48,6 +48,9 @@ needed; where no source settles it, the options go to him.
   practitioners' layer is nearly empty; the searches started on 11.10 begin to fill it (shelf 5).
 - The engine names its source in a link in 1 file of 37, and A-Frame's docs in 3.
 
+The two other AIs' advice the owner brought on 11.10 is checked claim by claim in
+[docs/research/other-ai-advice.md](../research/other-ai-advice.md); what it leaves for shelf 5 is listed there.
+
 ## Order
 
 1. Rules and Claude Code: his word (docs/board.md).
