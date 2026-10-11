@@ -175,3 +175,29 @@ Korean: no first-person write-up found. Chinese: one (tw93). Japanese: four. Rus
 - Papers R1–R4 not saved into objekt-files/papers (saving a downloaded file needs the owner's permission; WebFetch gives no raw text). Temporary text copies: scratchpad/mcmillan.txt, scratchpad/anthropic-teams2.txt.
 - Reddit: not tried (owner downloads it).
 
+
+## Boris Cherny's two threads, read whole on 11.10 (through threadreaderapp.com, which unrolls X threads)
+
+Boris Cherny created Claude Code. Read as summaries of each post, not word for word.
+
+- "My setup", 2 Jan 2026 (x.com/bcherny/status/2007179832300581177, 13 posts): a setup he calls "surprisingly
+  vanilla"; five local sessions in numbered tabs with system notifications, 5-10 more on the web; Opus with
+  thinking for everything; one shared CLAUDE.md in git, an entry added whenever Claude does something wrong,
+  also from code review; most sessions start in plan mode; frequent workflows as slash commands in
+  .claude/commands/; subagents such as a code simplifier and an end-to-end verifier; a PostToolUse hook for
+  formatting; no permission skipping, safe commands pre-allowed in .claude/settings.json; tools through MCP and
+  CLIs; long tasks checked by a background agent or a Stop hook; the most important tip: give Claude a way to
+  verify its own work (he has it test changes in a browser).
+- The team's tips, Feb 2026 (x.com/bcherny/status/2017742743125299476, 10 tips): 3-5 worktrees in parallel;
+  complex tasks start in plan mode, a second Claude may review the plan, go back to planning when things go
+  wrong; after each correction ask Claude to update CLAUDE.md; a task done more than once a day becomes a skill
+  or command; let Claude fix failing CI without saying how; have Claude prove the work (diff behaviour against
+  main), scrap a mediocre fix for the elegant one, write detailed specs; a status line with context use and
+  branch; "use subagents" for more compute and to keep the main context clean; a hook that routes permission
+  requests to a model that screens them; data through CLIs; the "Explanatory" or "Learning" output style,
+  HTML explanations and diagrams for learning.
+
+For us: the correction-into-CLAUDE.md habit matches his decisions' history (each decision with its words);
+plan mode and verification match the practice and fact-check reviewers; a Stop hook for long tasks matches
+tools/claude-guard.mjs; the "Learning" output style is a ready tool for his wish to understand our code
+(docs/owner-decisions.md, lessons only when he wants).
