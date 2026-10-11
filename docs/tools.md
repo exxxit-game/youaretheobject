@@ -11,7 +11,8 @@ once); what it names is read or run only for its task. One line per situation; t
 - A narrow fact (a real size, a standard's number, a period photo): the quick-research agent; a wide
   question (a market, every platform, many options, how those who do it work: their forums): the deep-research agent.
 - Searching papers: Consensus, PubMed, the hosted reference lookup; a PDF: PDF Tools (it opens files only
-  under Documents, Downloads or Desktop); a page a fetch cannot read: the browser pane.
+  under Documents, Downloads or Desktop); a page a fetch cannot read: the browser pane;
+  one it cannot open either (Reddit, a closed forum): its exact link to the owner, who saves it (Ctrl+S).
 - How the engine does a thing (a component, a primitive, the scene, a material): A-Frame's own docs of our
   version, a copy in C:\Users\admin\Documents\objekt-files\docs-engine\aframe-1.8.0\docs (aframe.io/docs/1.8.0
   online); the page goes in the WHY comment.
