@@ -57,7 +57,7 @@ export function doorHTML({ x, room = 1.6, corridor = 1.8, latch = 1, leaf = '', 
     <a-box position="${f(x)} 2.1452 ${f(room + s * 0.063)}" width="0.9204" height="0.016" depth="0.016" ${FRAME}></a-box>
     <a-box position="${f(x)} 0.0065 ${f(room + s * 0.0325)}" width="0.9204" height="0.013" depth="0.127" material="color: #9a9c9e; metalness: .6; roughness: .4"></a-box>
     <a-entity ${leaf}${moves ? ' merge-static' : ''} position="${hinge} 0 ${f(room + s * 0.01)}">
-      <a-entity ${clickable ? 'class="clickable" ' : ''}rounded-box="width: ${LEAF.w}; height: ${LEAF.h}; depth: ${LEAF.t}; radius: 0.004; color: #6a5641; roughness: 0.55"
+      <a-entity class="door-leaf${clickable ? ' clickable' : ''}" rounded-box="width: ${LEAF.w}; height: ${LEAF.h}; depth: ${LEAF.t}; radius: 0.004; color: #6a5641; roughness: 0.55"
                 position="${lx(LEAF.w / 2)} 1.083 ${lz(LEAF.t / 2)}"></a-entity>
       <a-box decal position="${lx(LEAF.w / 2)} 0.143 ${lz(LEAF.t + 0.00075)}" width="0.864" height="0.254" depth="0.0015" ${PLATE}></a-box>
       ${knob(LEAF.t, true)}${roomSide}${sign ? `

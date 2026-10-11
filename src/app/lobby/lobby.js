@@ -154,7 +154,7 @@ export async function runLobby(room) {
   const sheet = createSheet(scene, { inside: WALLS });
   // door 1 answers only once the clipboard says to choose it: before, the ray would mark it as
   // something to press that does nothing (src/engine/laser-beam.js)
-  const leaf = $('#door1 .clickable');
+  const leaf = $('#door1 .door-leaf');
   pressable(leaf, false);
   const light = lightCorridor(sheet);
   placePlayer(SPOT, AREA);

@@ -245,7 +245,8 @@ async function playRoom(url, playtest, { leave = false } = {}) {
     if (!playtest) {
       // under the leave question door 1 stays shut; after "stay" it opens
       await askLeave();
-      await page.evaluate(() => document.querySelector('#door1 .clickable').emit('click'));
+      assert.equal(await page.evaluate(() => document.querySelector('#door1 .door-leaf').classList.contains('clickable')), false, 'the ray marks door 1 while the leave question waits');
+      await page.evaluate(() => document.querySelector('#door1 .door-leaf').emit('click'));
       await page.waitForTimeout(500);
       assert.equal(await page.evaluate(() => document.documentElement.dataset.lobby), 'door', 'door 1 opened under the leave question');
       await pick(1);
