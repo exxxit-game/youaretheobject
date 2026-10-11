@@ -84,7 +84,10 @@ quoted; the time is when he said it (UTC). A risk list or a general method is no
   позже. сначала архитектура»; «потом мне обязательно нуно научится самому понимать что мы пишшем в коде» 10.10).
   Started before the corridor's end on his word («Давай учиться и смотреть, как это работает» 11.10), after a Reddit reply
   told him to learn the engine's concepts a little at a time from an existing beginner plan: the lessons follow A-Frame's
-  own guides, each on a piece of our game.
+  own guides, each on a piece of our game. The same day he settled the code's reference: «Тебе легче собрать все
+  документации, которые нам необходимы, и просто каждый раз с ними сверяться по задачам… намного легче не
+  выдумывать, а брать уже уроки готовые» 11.10. The engine's own documentation of the version we run (A-Frame 1.8.0,
+  a copy in objekt-files/docs-engine) is read for each task; lessons for him only when he wants one.
 - GitHub done properly, releases and all, now («давай сейчас каждый этот шаг сделаем правильно… Пусть оно
   там всем этим занимается» 9.10 07:23); the live site gets one thing only once it is polished
   («оттачиваем одну вещь… И только потом добавляем это в официальный наш репозиторий» 12:42).

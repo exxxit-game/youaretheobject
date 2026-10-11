@@ -12,6 +12,9 @@ forgotten (two reviewers here never ran once). One line per situation; the first
 - Searching papers: Consensus, PubMed, the hosted reference lookup; a PDF: PDF Tools (it opens files only
   under Documents, Downloads or Desktop); a page a fetch cannot read: the browser pane.
 - Anything the owner will see or do: the practice-reviewer agent first (VR and the test copy wait for it).
+- How the engine does a thing (a component, a primitive, the scene, a material): A-Frame's own docs of our
+  version, a copy in C:\Users\admin\Documents\objekt-files\docs-engine\aframe-1.8.0\docs (aframe.io/docs/1.8.0
+  online); the page goes in the WHY comment.
 - A claim about our own setup (a plan, a version, a number): read it from the thing itself first (the service
   through its connector, the vendored code, a fresh measure); about Quest or WebXR: Meta's docs first
   (metavr docs search, the meta-vr skill hz-quest-verify-first). A doc, the board or another window is a lead.
