@@ -211,6 +211,7 @@ async function start() {
       const h = frame.getHitTestResults(hits)[0], hp = h && h.getPose(ref);
       if (hp) r.hitTest = { aheadM: round(new THREE.Vector3().copy(viewer.transform.position).distanceTo(hp.transform.position)) };
     }
+    const seen = new Set();
     // the room's mesh: its triangles as lines, and an unseen copy to place the panel against
     for (const m of frame.detectedMeshes || []) {
       const pose = frame.getPose(m.meshSpace, ref);
@@ -237,7 +238,9 @@ async function start() {
           solid: new THREE.Mesh(g, new THREE.MeshBasicMaterial({ colorWrite: false, depthWrite: false })),
           info: { label: m.semanticLabel || 'mesh', triangles: m.indices.length / 3, sizeM: [round(s.x), round(s.y), round(s.z)] } };
       });
-      r.meshes[o.id] = o.info;
+      // the browser hands over a new object when a thing changes: one record per thing, by what it is
+      r.meshes[`${o.info.label}|${o.info.triangles}|${o.info.sizeM}`] = o.info;
+      seen.add(m);
       at(o, pose);
     }
     // the planes: their outlines, sizes and, for the level ones, their height above the floor
@@ -252,7 +255,15 @@ async function start() {
           info: { label: p.semanticLabel || 'plane', orientation: p.orientation, sizeM: [round(Math.max(...xs) - Math.min(...xs)), round(Math.max(...zs) - Math.min(...zs))] } };
       });
       at(o, pose);
-      r.planes[o.id] = { ...o.info, heightM: round(pose.transform.position.y) };
+      r.planes[`${o.info.label}|${o.info.orientation}|${o.info.sizeM}`] = { ...o.info, heightM: round(pose.transform.position.y) };
+      seen.add(p);
+    }
+    // what the browser no longer reports leaves the picture, so old outlines do not pile up
+    for (const [thing, o] of shown) {
+      if (seen.has(thing)) continue;
+      if (o.line) { scene.remove(o.line); o.line.geometry.dispose(); lines.splice(lines.indexOf(o.line.material), 1); }
+      if (o.solid) { scene.remove(o.solid); solids.splice(solids.indexOf(o.solid), 1); }
+      shown.delete(thing);
     }
     if (place && viewer) {
       const eye = new THREE.Vector3().copy(viewer.transform.position), dir = new THREE.Vector3(0, 0, -1).applyQuaternion(new THREE.Quaternion().copy(viewer.transform.orientation));

@@ -54,6 +54,9 @@ export function openUrl(url) {
 // laptop's) is pointed at the address and every other one closed; with none, the browser opens it.
 // Closing them all first left the browser with no window, and the address it was given next did
 // not load. A request the browser refuses stops the opening. Returns how many tabs were closed.
+// the debug link to the browser, made anew each time: a browser restarted while the headset slept has a new
+// socket, and an old forward kept pointing at the gone one
+const forwardDevtools = () => { try { adb('forward', '--remove', 'tcp:9222'); } catch (e) { /* none yet */ } adb('forward', 'tcp:9222', 'localabstract:chrome_devtools_remote'); };
 const DEVTOOLS = 'http://127.0.0.1:9222/json';
 const devtools = async (what) => {
   const r = await fetch(`${DEVTOOLS}/${what}`);
@@ -61,7 +64,7 @@ const devtools = async (what) => {
   return r;
 };
 export async function openGame(url) {
-  adb('forward', 'tcp:9222', 'localabstract:chrome_devtools_remote');
+  forwardDevtools();
   // a browser that is not running (it closes while the headset sleeps) has no debug link: it is
   // started on the address instead
   let list;
@@ -83,7 +86,7 @@ export async function openGame(url) {
 // errors, close }. A call the page never answers (the headset slept, the tab changed) reports so
 // instead of leaving the tool waiting.
 export async function page(match, { noAnswerMs = 120000 } = {}) {
-  adb('forward', 'tcp:9222', 'localabstract:chrome_devtools_remote');
+  forwardDevtools();
   const tabs = await (await fetch('http://127.0.0.1:9222/json/list')).json();
   const tab = tabs.find((t) => t.type === 'page' && match.test(t.url));
   if (!tab) return null;
