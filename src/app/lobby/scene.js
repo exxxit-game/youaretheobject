@@ -1,12 +1,12 @@
 // The lab corridor, built from its plan (plan.js): every wall, opening, door, plaque, rail and
 // light comes from there, so the corridor can grow without one door or plaque differing from the
-// next. Room 101's door is part of room 01 (src/rooms/01-control/scene.js), built by the same door
-// builder (src/engine/door.js) as every other. Built to the trade standards in
+// next. Every door comes from the same door builder (src/engine/door.js); room 101's, the one the
+// player goes through, stands apart from the rest (doorway below). Built to the trade standards in
 // docs/building-standards.md: 4 in vinyl base and the rail stop at door frames, 12 in floor tiles
 // and a 24 in ceiling grid laid out from the corridor's centre, 2 × 4 ft troffers in the grid.
 // Static parts are merged after load; the door signs and the light box change, so they stay apart.
 import { doorHTML, CHROME } from '../../engine/door.js';
-import { PLAN, DOORS, CENTRE, LENGTH, WIDTH, CORK_Z, toEntrance, wallRuns } from './plan.js';
+import { PLAN, DOORS, ROOM1_DOOR, CENTRE, LENGTH, WIDTH, CORK_Z, toEntrance, wallRuns } from './plan.js';
 import { LETTER } from '../../engine/ui/sheet-math.js';
 import { jointOrigin, CEILING } from '../../engine/tile-math.js';
 import { SIGN, SIGN_PANEL } from '../brand.js';
@@ -61,7 +61,7 @@ function endWall(x, facing) {
     <a-box position="${r(x + facing * 0.0025)} 0.051 ${CENTRE.z}" width="0.005" height="0.102" depth="${WIDTH}" color="#2b2d29"></a-box>`;
 }
 
-// every closed door of the corridor (room 101's is room 01's), its latch toward the entrance
+// every closed door of the corridor (room 101's is the doorway), its latch toward the entrance
 function doors() {
   return DOORS.filter((d) => d.kind !== 'room1').map((d) => {
     const { z, out } = FACE[d.wall];
@@ -69,6 +69,18 @@ function doors() {
     const attrs = d.kind === 'stairs' ? `id="plaqueStairs" class="door-sign" ${SIGN_PANEL}` : `class="door-sign room-plaque" data-number="${d.number}" ${SIGN_PANEL}`;
     return doorHTML({ x: d.x, room: r(z - out * PLAN.thick), corridor: z, latch: toEntrance(d.x) * out, sign: { attrs, y: SIGN.y } });
   }).join('');
+}
+
+// Room 101's door: the leaf opens to the laser and has the room-side hardware too. It is its own
+// group, outside the corridor's, seen from both sides: the corridor is not drawn once the player is
+// in the room (lobby.js), and the door must still be there behind them.
+function doorway() {
+  const d = ROOM1_DOOR, { z, out } = FACE[d.wall];
+  const sign = { attrs: `id="plaqueOut" class="door-sign room-plaque" data-number="${d.number}" ${SIGN_PANEL}`, y: SIGN.y };
+  return `
+<a-entity id="doorway" merge-static>${doorHTML({ x: d.x, room: r(z - out * PLAN.thick), corridor: z, latch: toEntrance(d.x) * out,
+    leaf: 'id="door1" data-dynamic', clickable: true, inside: true, sign })}
+</a-entity>`;
 }
 
 
@@ -199,15 +211,19 @@ export const corridorHTML = `
   </a-entity>
   <a-entity id="signFace" panel="w: 0.94; h: 0.16; px: 1024; bg: #160f05; decal: true" lightbox="light: #signLight; lightMax: 0.7"
             position="${SIGN_AT.x} ${SIGN_AT.y} ${SIGN_AT.z}"></a-entity>
-  <!-- the sign's warm spill on the door and floor below it (not a hot spot on the ceiling) -->
-  <a-entity id="signLight" light="type: point; color: #ffd9a0; intensity: 0; distance: 2.5; decay: 2" position="${PLAN.entrance} 1.95 2.25"></a-entity>
-  <!-- the corridor's own light, dim while the player is here (lobby.js, CORRIDOR_LIGHT) -->
-  <a-entity id="corridorAmbient" light="type: ambient; color: #c9cfd6; intensity: 0"></a-entity>
-  <a-entity id="corridorLamp" light="type: point; color: #eef2ff; intensity: 1.6; distance: 0; decay: 0.8" position="-0.2 2.3 ${CENTRE.z}"></a-entity>
   <a-plane position="${B.x} ${B.y} ${CORK_Z}" width="${r(B.w - 2 * B.border)}" height="${r(B.h - 2 * B.border)}" surface="kind: cork; repeat: 3.024 1.824"></a-plane>
   <!-- Letter sheets pinned beside the clipboard: the studio's poster and a flyer (board.js) -->
   <a-entity id="notePoster" class="clickable" ${note(NOTES.poster)}></a-entity>
   <a-entity id="noteFlyer" ${note(NOTES.flyer)}></a-entity>
   <!-- the Vegetable Gardener on both end walls, one upside down (which end, lobby.js by visit) -->
   ${END_PRINTS.map(printImage).join('')}
-</a-entity>`;
+</a-entity>
+<!-- the corridor's lights stand outside its group: the engine's lights pass through walls, so in the
+     room they are turned down to nothing (lobby.js), but they stay in the scene, since a light taken
+     out changes how many there are and three.js then rebuilds every lit material in the middle of play -->
+<!-- the sign's warm spill on the door and floor below it (not a hot spot on the ceiling) -->
+<a-entity id="signLight" class="corridor-light" light="type: point; color: #ffd9a0; intensity: 0; distance: 2.5; decay: 2" position="${PLAN.entrance} 1.95 2.25"></a-entity>
+<!-- the corridor's own light: dim, a fifth of the light on the room's desk at most (lobby.js) -->
+<a-entity id="corridorAmbient" class="corridor-light" light="type: ambient; color: #c9cfd6; intensity: 0.26"></a-entity>
+<a-entity id="corridorLamp" class="corridor-light" light="type: point; color: #eef2ff; intensity: 0.4; distance: 0; decay: 0.8" position="-0.2 2.3 ${CENTRE.z}"></a-entity>
+${doorway()}`;

@@ -106,21 +106,26 @@ const KINDS = {
   }
 };
 
-// UVs from world positions: across the surface (x, or z for walls facing x) and up
-// (y for walls, z for floor and ceiling); block courses start at the floor. The
-// geometry is cloned first: A-Frame shares one geometry between planes of the same size.
+// UVs from positions in the space's own metres: across the surface (x, or z for walls facing x)
+// and up (y for walls, z for floor and ceiling); block courses start at the floor. The space's
+// metres are the world's, or a room's own wherever the corridor stands it (frame: the room's group,
+// data-frame, src/app/lab.js), so its grid is laid from its own centre. The geometry is cloned
+// first: A-Frame shares one geometry between planes of the same size.
 // space: { x, y: centre (x, z), z, w: length along x and along z } of the room it belongs to.
-function worldUV(mesh, { size, tile, bond }, space) {
+function worldUV(mesh, { size, tile, bond }, space, frame) {
   const origin = bond ? bondOrigin : jointOrigin;
   const ox = origin(space.x, space.z, tile), oz = origin(space.y, space.w, tile);
-  mesh.updateMatrixWorld(true);
+  mesh.updateWorldMatrix(true, false);
+  const toSpace = new THREE.Matrix4();
+  if (frame) { frame.updateWorldMatrix(true, false); toSpace.copy(frame.matrixWorld).invert(); }
+  toSpace.multiply(mesh.matrixWorld);
   mesh.geometry = mesh.geometry.clone();
   const pos = mesh.geometry.attributes.position, uv = mesh.geometry.attributes.uv;
-  const n = new THREE.Vector3(0, 0, 1).applyQuaternion(mesh.getWorldQuaternion(new THREE.Quaternion()));
+  const n = new THREE.Vector3(0, 0, 1).transformDirection(toSpace);
   const flat = Math.abs(n.y) > 0.5, facesZ = Math.abs(n.z) > 0.5;
   const p = new THREE.Vector3();
   for (let i = 0; i < pos.count; i++) {
-    p.fromBufferAttribute(pos, i).applyMatrix4(mesh.matrixWorld);
+    p.fromBufferAttribute(pos, i).applyMatrix4(toSpace);
     const across = flat || facesZ ? p.x - ox : p.z - oz;
     const up = flat ? p.z - oz : p.y;
     uv.setXY(i, across / size, up / size);
@@ -173,7 +178,7 @@ AFRAME.registerComponent('surface', {
     const sceneEl = this.el.sceneEl;
     // world positions are final only once the scene has loaded (merge-static runs after this)
     if (grid && !sceneEl.hasLoaded) { sceneEl.addEventListener('loaded', () => this.apply(), { once: true }); return; }
-    if (grid) worldUV(mesh, grid, this.data.space);
+    if (grid) worldUV(mesh, grid, this.data.space, this.el.closest('[data-frame]')?.object3D);
     // A gridded kind takes its place from world UVs, so every surface of the kind shares one
     // texture, and merge-static can merge the pieces of a wall into one mesh (one draw call;
     // Meta: batch objects that share a material). A kind without a grid is repeated: one copy

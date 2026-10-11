@@ -13,6 +13,12 @@ function lamp(id, on) {
   $(id).setAttribute('material', 'emissiveIntensity', on ? 2.2 : 0);
 }
 
+// the press sounds from the button itself, wherever the corridor stands the room
+function buttonAt() {
+  const v = $('#buttonCap').object3D.getWorldPosition(new THREE.Vector3());
+  return { x: v.x, y: v.y, z: v.z };
+}
+
 // opt: { tapes, intervals, speed, paused() }. Resolves after the last trial.
 // press() is called by the room when the button is pressed.
 export function createTrials({ tapes, intervals, speed, paused }) {
@@ -96,7 +102,7 @@ export function createTrials({ tapes, intervals, speed, paused }) {
 
   // Only the first press inside the window counts ("once and only once", p. 451).
   function press() {
-    playSound('button', { x: 0, y: 0.88, z: -0.16 }, 0.7);
+    playSound('button', buttonAt(), 0.7);
     if (!win || performance.now() - win.t0 > ms(PROTOCOL.windowSecs)) { eventLog.add('stray'); return; }
     if (win.pressed) { eventLog.add('extra', win.n); return; }
     win.pressed = true;

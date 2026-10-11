@@ -60,8 +60,29 @@ export const DOORS = doors.map((d) => {
   const { k, ...door } = d;
   return number.has(d) ? { ...door, number: String(PLAN.floor * 100 + number.get(d)) } : door;
 });
-// the number of the door whose room is built: the room writes it on its own side of the wall too
-export const ROOM1_NUMBER = DOORS.find((d) => d.kind === 'room1').number;
+// the door whose room is built, and its number: the room writes it on its own side of the wall too
+export const ROOM1_DOOR = DOORS.find((d) => d.kind === 'room1');
+export const ROOM1_NUMBER = ROOM1_DOOR.number;
+
+// Where a room stands behind its door. A room is built in its own metres (src/rooms/NN-name/scene.js)
+// and says where its doorway is (DOORWAY): the middle of the opening on its wall's inside face, its
+// corridor beyond it along +z. The corridor turns it so that +z faces the door's wall and moves it so
+// the doorway lies in the door's opening: a room off the north wall stands as built, one off the
+// south wall half turned. Its place: { x, z, yaw } in the corridor's metres, yaw in degrees.
+export function roomPlace(door, doorway) {
+  if (door.wall === 'north') return { x: round(door.x - doorway.x), z: round(PLAN.north - PLAN.thick - doorway.z), yaw: 0 };
+  return { x: round(door.x + doorway.x), z: round(PLAN.south + PLAN.thick + doorway.z), yaw: 180 };
+}
+// a room's point (and a heading, degrees, 0 facing -z) in the corridor's metres
+export function toCorridor(place, { x, z, yaw = 0 }) {
+  const s = place.yaw ? -1 : 1;
+  return { x: round(place.x + s * x), z: round(place.z + s * z), yaw: (yaw + place.yaw) % 360 };
+}
+// a room's rectangle { minX, maxX, minZ, maxZ } in the corridor's metres
+export function areaToCorridor(place, area) {
+  const a = toCorridor(place, { x: area.minX, z: area.minZ }), b = toCorridor(place, { x: area.maxX, z: area.maxZ });
+  return { minX: Math.min(a.x, b.x), maxX: Math.max(a.x, b.x), minZ: Math.min(a.z, b.z), maxZ: Math.max(a.z, b.z) };
+}
 
 // along x, toward the entrance: the side of a door's latch (east for the middle doors)
 export const toEntrance = (x) => (x < PLAN.entrance - 1e-6 ? 1 : x > PLAN.entrance + 1e-6 ? -1 : 1);

@@ -198,22 +198,26 @@ for (const f of new Set([...commented, ...written, path.join(ROOT, 'index.html')
   assert.ok(!hit, `${rel(f)}: something like a secret key (${hit?.[0].slice(0, 12)}…)`);
 }
 
-// 15. Every room marks its inside with class room-interior, which the corridor leaves undrawn
-// while the door is shut (src/app/lobby/lobby.js; Meta: fewer than 200 draw calls a frame on
-// Quest 3), and the door the corridor sees (#door1) is never part of it.
+// 15. A room is only what stands behind its door (docs/rooms.md): the app holds the scene, the
+// player and every door (src/app/lab.js), so a room's markup has none of them. It marks its inside
+// with class room-interior, which the corridor leaves undrawn while the door is shut
+// (src/app/lobby/lobby.js; Meta: fewer than 200 draw calls a frame on Quest 3), and no light lies
+// inside that: lights are turned down, never hidden, or three.js rebuilds every lit material when
+// the door opens.
 for (const room of fs.readdirSync(path.join(ROOT, 'src/rooms'))) {
   const { sceneHTML } = await import(new URL(`../src/rooms/${room}/scene.js`, import.meta.url));
+  assert.ok(!/<a-scene|id="rig"|id="cam"|laser-controls|id="door1"|id="doorway"/.test(sceneHTML), `${room}: its markup holds what the app holds (the scene, the player or a door)`);
   const open = [];
-  let marked = 0, doorInside = false;
+  let marked = 0, hiddenLight = '';
   for (const m of sceneHTML.matchAll(/<(\/?)(a-[a-z-]+)([^>]*)>/g)) {
     if (m[1]) { open.pop(); continue; }
     const interior = /class="[^"]*\broom-interior\b/.test(m[3]);
     if (interior) marked++;
-    if (/id="door1"/.test(m[3]) && open.some(Boolean)) doorInside = true;
+    if (/\blight="/.test(m[3]) && (interior || open.some(Boolean))) hiddenLight = m[3].trim().slice(0, 70);
     if (!/\/\s*$/.test(m[3])) open.push(interior);
   }
   assert.ok(marked > 0, `${room}: no part of the room is marked room-interior`);
-  assert.ok(!doorInside, `${room}: door 1 is inside a room-interior part (the corridor would hide it)`);
+  assert.ok(!hiddenLight, `${room}: a light inside a room-interior part (hidden with it, it changes how many lights there are): ${hiddenLight}`);
 }
 
 // 14. Commits name the account's hidden GitHub address, never a personal one: the repository and

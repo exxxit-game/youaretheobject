@@ -36,7 +36,7 @@ assert.ok(!tags('a-cylinder').some(t => attr(t, 'radius') === '0.028'), 'no leve
 const kicks = tags('a-box').filter(t => attr(t, 'width') === '0.864');
 assert.ok(kicks.length === DOORS.length && kicks.every(t => near(Number(attr(t, 'height')), 0.254)), 'kick plates 254 × 864 mm');
 // Door 1: three hinges, top 248 mm below the frame head (2.1532 m), bottom top 264 mm above the floor
-const door1 = sceneHTML.slice(sceneHTML.indexOf('id="door1"'), sceneHTML.indexOf('</a-entity>\n  <a-entity id="plaque"'));
+const door1 = corridorHTML.slice(corridorHTML.indexOf('id="door1"'));   // the doorway closes the corridor's markup
 const hinges = [...door1.matchAll(/<a-cylinder radius="0.007" height="0.114" position="[-\d.]+ ([\d.]+)/g)].map(m => Number(m[1])).sort((a, b) => b - a);
 const top = 2.1532 - 0.248 - 0.057, bottom = 0.264 - 0.057;
 assert.equal(hinges.length, 3, 'three hinges on door 1');

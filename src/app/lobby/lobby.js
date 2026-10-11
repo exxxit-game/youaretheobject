@@ -30,7 +30,8 @@ export { corridorHTML } from './scene.js';
 // the sign over it comes on and plays (opening.js), the player takes the clipboard from
 // the board, it welcomes them and asks the consent, and the player points at door 1. The door opens, the view fades, and the player is at the
 // table (on the chair when seated). See docs/decisions.md, "The arrival".
-const BOUNDS = `minX: ${AREA.minX}; maxX: ${AREA.maxX}; minZ: ${AREA.minZ}; maxZ: ${AREA.maxZ}`;
+// an area { minX, maxX, minZ, maxZ } as room-bounds and locomotion take it
+const bounds = (a) => `minX: ${a.minX}; maxX: ${a.maxX}; minZ: ${a.minZ}; maxZ: ${a.maxZ}`;
 // The clipboard hangs on the experimenter's board left of door 1, its back 1 cm off the cork
 // (faces at least 5 mm apart, or they flicker) and the peg (scene.js) through its clip, facing
 // the corridor: the only stretch of wall wide enough for it.
@@ -41,10 +42,9 @@ const WALL_PRINT_LIGHT = 0.45;
 // Light as in the trade reference (docs/building-standards.md, S13: under 10 fc in corridors,
 // 50 fc at desks): the corridor floor gets at most a fifth of the light on the room's desk
 // (tests/smoke.mjs measures it). The engine's lights pass through walls, so the room's own
-// lights (class room-light) stay off while its door is shut and come up as it opens; the
-// corridor's lights then go to their in-room values, which keep the room's approved look.
-// Intensity in the corridor, then in the room.
-const CORRIDOR_LIGHT = { '#corridorAmbient': [0.26, 0], '#corridorLamp': [0.4, 1.6] };
+// lights (class room-light) stay off while its door is shut and come up as it opens, and the
+// corridor's (class corridor-light) go out once the player is in: the room is lit by its own
+// lamps alone, no light from nowhere (docs/owner-decisions.md).
 const DOOR_MS = 700;
 // How much of the room's light shows while its door opens (our choice, to be checked in the
 // headset): enough to see a lit room through the opening, little enough that the corridor
@@ -56,18 +56,23 @@ const delay = (ms) => new Promise((r) => setTimeout(r, ms));
 loadVoice(VOICE_LINES, import.meta.url);
 loadSounds(SOUNDS, import.meta.url);
 
-// Puts the player at a spot facing a direction: in VR through the recenter component; on a
-// computer the rig goes to the origin and the camera to the spot, because room-bounds
-// limits the camera's own position (so its numbers are world metres with the rig at 0).
-function placePlayer({ x, z, yaw, lift = false }, bounds) {
-  const rig = $('#rig');
+// Puts the player at a spot facing a direction, kept inside an area: in a headset through the
+// recenter component; on a computer the rig stays at the origin unturned and the camera goes to the
+// spot and turns, because room-bounds limits the camera's own position (so its numbers are world
+// metres with the rig at 0). A computer's full screen is A-Frame's VR mode too (its enterVR sets
+// "vr-mode" without a headset), so a headset is told by its session presenting.
+function placePlayer({ x, z, yaw, pitch = 0, lift = false }, area) {
+  const rig = $('#rig'), cam = $('#cam');
   rig.setAttribute('recenter', { x, z, yaw, lift });
-  if (rig.sceneEl.is('vr-mode')) { rig.components.recenter.apply(); return; }
+  cam.setAttribute('room-bounds', bounds(area));
+  if (rig.sceneEl.renderer.xr.isPresenting) { rig.components.recenter.apply(); return; }
   rig.object3D.position.set(0, 0, 0);
-  rig.object3D.rotation.y = THREE.MathUtils.degToRad(yaw);
-  const cam = $('#cam');
-  cam.setAttribute('room-bounds', bounds);
+  rig.object3D.rotation.y = 0;
   cam.object3D.position.set(x, cam.object3D.position.y, z);
+  const look = cam.components['look-controls'];
+  if (!look || !look.yawObject) return;
+  look.yawObject.rotation.y = THREE.MathUtils.degToRad(yaw);
+  look.pitchObject.rotation.x = THREE.MathUtils.degToRad(pitch);   // a computer's view, tilted as the place asks
 }
 
 // How the player moves: teleport and snap turn by default (Meta's comfort defaults);
@@ -86,28 +91,32 @@ function onFirstGesture(fn) {
   $('a-scene').addEventListener('enter-vr', go, { once: true });
 }
 
-// The corridor's light while the player is in it. Returns { peek(ms), full() }: peek brings
-// the room's lights up to DOOR_PEEK of their own while the door opens (the room shows through
-// the opening, and the corridor brightens only a little, as from light out of a door); full,
-// called under the fade to black, sets every light to its in-room value at once.
-// The room's inside (class room-interior) is not drawn while its door is shut: the walls hide
-// it, and every part drawn costs frame time in the headset (Meta: fewer than 200 draw calls a
-// frame on Quest 3; cull what walls hide). It appears as the door starts to open.
-function lightCorridor() {
+// What is drawn and lit while the player is in the corridor. Returns { peek(ms), enter() }: peek
+// brings the room's lights up to DOOR_PEEK of their own while the door opens (the room shows
+// through the opening, and the corridor brightens only a little, as from light out of a door);
+// enter, called under the fade to black, turns to the room alone.
+// What a wall hides is not drawn: every part drawn costs frame time in the headset (Meta: fewer
+// than 200 draw calls a frame on Quest 3; cull what walls hide). The room's inside (class
+// room-interior) is hidden while its door is shut and appears as the door starts to open; once the
+// player is in, the corridor (its group, and the clipboard on its board) is hidden and its lights
+// go out. Lights are turned down, never hidden: a hidden light changes how many lights there are,
+// and three.js then rebuilds every lit material in the middle of play.
+function lightCorridor(sheet) {
   const room = [...document.querySelectorAll('.room-light')].map((el) => [el, el.getAttribute('light').intensity]);
   const inside = [...document.querySelectorAll('.room-interior')];
   const set = (el, v) => el.setAttribute('light', 'intensity', v);
   for (const [el] of room) set(el, 0);
   for (const el of inside) el.object3D.visible = false;
-  for (const [sel, [here]] of Object.entries(CORRIDOR_LIGHT)) set($(sel), here);
   return {
     peek: (ms) => {
       for (const el of inside) el.object3D.visible = true;
       for (const [el, v] of room) el.setAttribute('animation__light', { property: 'light.intensity', to: v * DOOR_PEEK, dur: ms, easing: 'easeInOutQuad' });
     },
-    full: () => {
+    enter: () => {
       for (const [el, v] of room) { el.removeAttribute('animation__light'); set(el, v); }
-      for (const [sel, [, inRoom]] of Object.entries(CORRIDOR_LIGHT)) set($(sel), inRoom);
+      for (const el of document.querySelectorAll('.corridor-light')) set(el, 0);
+      $('#corridor').object3D.visible = false;
+      sheet.el.object3D.visible = false;
     }
   };
 }
@@ -125,7 +134,8 @@ function hangPrints(visits) {
   });
 }
 
-// room: { id, debrief, seat: { x, z, yaw }, bounds, extra, real }
+// room: { id, debrief, seat: { x, z, yaw }, area: { minX, maxX, minZ, maxZ }, extra, real }, its
+// seat and area in the corridor's metres (src/app/lab.js)
 // Resolves with true when the player chose to start with recording, once inside the room.
 export async function runLobby(room) {
   const scene = $('a-scene');
@@ -133,11 +143,11 @@ export async function runLobby(room) {
   // hung would otherwise be missed, and every sound would wait for the next one
   onFirstGesture(() => {});
   const sheet = createSheet(scene, { inside: WALLS });
-  const light = lightCorridor();
-  placePlayer(SPOT, BOUNDS);
+  const light = lightCorridor(sheet);
+  placePlayer(SPOT, AREA);
   document.title = LOBBY_T.title;   // the corridor is no room yet; the room names the page once entered
   showHint(LOBBY_T.hint);
-  $('#rig').setAttribute('locomotion', `${BOUNDS}; ${comfort()}`);   // the corridor is walked with the thumbsticks too
+  $('#rig').setAttribute('locomotion', `${bounds(AREA)}; ${comfort()}`);   // the corridor is walked with the thumbsticks too
   // every room's plaque shows its number from the plan; the stairs' sign its symbol and word
   for (const el of document.querySelectorAll('.room-plaque')) writePlaque(el.components.panel, { number: el.dataset.number });
   writeStairsSign($('#plaqueStairs').components.panel, LOBBY_T.stairs);
@@ -190,11 +200,13 @@ export async function runLobby(room) {
   light.peek(DOOR_MS);
   await delay(500);
   await $('#cam').components.fader.to(1);
-  light.full();
+  light.enter();
   $('#rig').removeAttribute('locomotion');   // the room is played where the original was
-  placePlayer(room.seat, room.bounds);
+  placePlayer(room.seat, room.area);
   door.removeAttribute('animation');
   door.setAttribute('rotation', '0 0 0');
+  // the room is lit and alone: what it captures of itself (a mirror) is taken now, under the black
+  scene.emit('room-entered');
   await delay(250);
   await $('#cam').components.fader.to(0);
   return withRecording;

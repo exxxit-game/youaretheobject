@@ -4,43 +4,31 @@
 // mirror to the observation room with the relay equipment. The experimenter leaves
 // through the door and comes back (p. 452). The wall screen carries the words of the
 // experimenter. Look: a university lab of 1979 (painted block walls, linoleum,
-// acoustic ceiling, bakelite and chrome). Sizes in metres.
-import { doorHTML } from '../../engine/door.js';
+// acoustic ceiling, bakelite and chrome). Sizes in metres, the room's own: the corridor stands it
+// behind its door (src/app/lab.js), which the corridor builds (src/app/lobby/scene.js).
 import { SIGN, SIGN_PANEL } from '../../app/brand.js';
-import { plaqueX, ROOM1_NUMBER } from '../../app/lobby/plan.js';
+import { plaqueX } from '../../app/lobby/plan.js';
 
 // the booth's walls' inside faces and its ceiling, 3.2 × 3.2 m round the origin: its tiles and
 // blocks are laid from that space (and the tests read where an eye can be in it)
 export const BOOTH = { minX: -1.6, maxX: 1.6, minZ: -1.6, maxZ: 1.6, ceiling: 2.5 };
 const SPACE = `space: 0 0 ${BOOTH.maxX - BOOTH.minX} ${BOOTH.maxZ - BOOTH.minZ}`;
+// the doorway: the middle of door 1's masonry opening (x 0.2 to 1.2) on the back wall's inside face,
+// the corridor beyond it
+export const DOORWAY = { x: 0.7, z: BOOTH.maxZ };
 
-// No fixed foveated rendering (A-Frame's default is the most): it draws the view away from the lens
-// centre at a lower resolution, and Meta warns that "high-contrast or text-heavy scenes may make the
-// foveation artifacts more obvious" (developers.meta.com/horizon/documentation/web/webxr-ffr); with
-// it the door numbers looked blurred in the owner's headset and turned sharp without it.
-// Multiview: both eyes drawn in one pass, so each draw call is made once a frame, not once an eye (Meta:
-// "Only CPU-bound experiences will benefit", "a CPU usage reduction of 25% - 50%"; Meta's IWSDK turns it
-// on by default: docs/research/engine-and-tools.md). A-Frame 1.8.0 passes the flag, but its three.js lost
-// the call that uploads the textures deferred during a multiview frame, so canvas text first drawn in VR
-// stayed black; vendor/aframe-1.8.0.min.js has it put back where super-three 0.181 has it
-// (supermedium/three.js PR #25; tests/vendor.test.mjs). Without OCULUS_multiview each eye draws as before.
-// ?multiview=0 turns it off, so the headset's measure can compare (tools/quest-look.mjs perf).
-const MULTIVIEW = new URLSearchParams(globalThis.location?.search || '').get('multiview') !== '0';
-export const sceneHTML = `<a-scene renderer="antialias: true; colorManagement: true; foveationLevel: 0; multiviewStereo: ${MULTIVIEW}" background="color: #0b0b0d"
-         cursor="rayOrigin: mouse" raycaster="objects: .clickable; far: 8"
-         vr-mode-ui="enabled: true" loading-screen="enabled: false" xr-mode-ui="enabled: true">
-
-  <a-entity id="rig" position="0 0 0.35" recenter="x: 0; z: 0.35; yaw: 0">
-    <a-entity id="cam" camera fader look-controls="pointerLockEnabled: false" wasd-controls="acceleration: 12" position="0 1.6 0"
-              room-bounds="minX: -1.4; maxX: 1.4; minZ: 0.1; maxZ: 1.2"></a-entity>
-    <a-entity laser-controls="hand: left" raycaster="objects: .clickable; far: 8; lineColor: #f0c96a; lineOpacity: .6" grab-press controller-batch></a-entity>
-    <a-entity laser-controls="hand: right" raycaster="objects: .clickable; far: 8; lineColor: #f0c96a; lineOpacity: .6" grab-press controller-batch></a-entity>
-  </a-entity>
-
-  <!-- light: ambient fill and one warm lamp under an enamel shade (room-light: dark while
-       the player is in the corridor, see src/app/lobby/lobby.js) -->
+// Light: an ambient fill and one warm lamp under an enamel shade (room-light: dark while the player
+// is in the corridor, src/app/lobby/lobby.js). The lamp alone lights the desk to its approved level:
+// the corridor's lamp, which reached through the wall until the corridor was put out of the room,
+// gave the desk an eighth of its light, so the lamp was raised from 2.2 to 2.55, where the light
+// meter (tests/smoke.mjs) reads the desk as before (0.622 against 0.626) and the corridor floor stays
+// under a fifth of it (docs/building-standards.md, S13).
+export const sceneHTML = `
   <a-entity class="room-light" light="type: ambient; color: #c9cfd6; intensity: 0.55"></a-entity>
-  <a-entity class="room-light" light="type: point; color: #ffe2b0; intensity: 2.2; distance: 0; decay: 0.6" position="0 2.13 -0.2"></a-entity>
+  <a-entity class="room-light" light="type: point; color: #ffe2b0; intensity: 2.55; distance: 0; decay: 0.6" position="0 2.13 -0.2"></a-entity>
+  <!-- the observation room's lamp, off until the reveal (room.js); outside the room's inside, which
+       is hidden while its door is shut: lights are turned down, never hidden (src/app/lobby/lobby.js) -->
+  <a-entity id="obsLight" light="type: point; color: #dfe7ff; intensity: 0; distance: 0; decay: 1" position="-2.4 2.1 -0.3"></a-entity>
   <!-- everything up to the screen is static: merged after load into one mesh per look -->
   <a-entity class="room-interior" merge-static>
   <a-cylinder radius="0.05" height="0.02" position="0 2.49 -0.2" color="#d8d4c8"></a-cylinder>
@@ -88,21 +76,21 @@ export const sceneHTML = `<a-scene renderer="antialias: true; colorManagement: t
   <a-box position="-1.5975 0.051 0" width="0.005" height="0.102" depth="3.2" color="#2b2d29"></a-box>
 
   <!-- one-way mirror in the left wall, framed on all sides -->
-  <a-plane id="glass" data-dynamic rotation="0 90 0" position="-1.595 1.4 -0.3" width="1.2" height="0.8" mirror-glass
+  <a-plane id="glass" data-dynamic rotation="0 90 0" position="-1.595 1.4 -0.3" width="1.2" height="0.8" mirror-glass="on: room-entered"
            material="color: #c2c9cd; metalness: 1; roughness: .04; opacity: .94; transparent: true"></a-plane>
   <a-box position="-1.585 0.99 -0.3" width="0.05" height="0.03" depth="1.26" color="#2a2a2a"></a-box>
   <a-box position="-1.585 1.81 -0.3" width="0.05" height="0.03" depth="1.26" color="#2a2a2a"></a-box>
   <a-box position="-1.585 1.4 -0.915" width="0.05" height="0.85" depth="0.03" color="#2a2a2a"></a-box>
   <a-box position="-1.585 1.4 0.315" width="0.05" height="0.85" depth="0.03" color="#2a2a2a"></a-box>
 
-  <!-- the room's number inside, on the wall at the latch side (the door's room face is its pull side) -->
+  <!-- the room's number inside, on the wall at the latch side of door 1 (the door's room face is its
+       pull side), and the light switch beside the door -->
   <a-entity id="plaque" class="on-wall door-sign" ${SIGN_PANEL} position="${plaqueX(0.7, SIGN.fromFrame + SIGN.w / 2)} ${SIGN.y} 1.594" rotation="0 180 0"></a-entity>
   <a-entity rounded-box="width: 0.08; height: 0.12; depth: 0.012; radius: 0.006; color: #d8d2c2; roughness: 0.5"
             class="on-wall" position="1.4 1.1 1.592"></a-entity>
 
   <!-- observation room: desk with relay equipment, chair, the observer -->
   <a-box position="-2.4 1.25 -0.3" width="1.6" height="2.5" depth="2.4" material="color: #4a4d52; side: back; roughness: 1"></a-box>
-  <a-entity id="obsLight" light="type: point; color: #dfe7ff; intensity: 0; distance: 0; decay: 1" position="-2.4 2.1 -0.3"></a-entity>
   <a-box position="-2.75 0.74 -0.3" width="0.6" height="0.04" depth="1.0" color="#5a4a3a"></a-box>
   <a-box position="-2.75 0.37 0.12" width="0.5" height="0.72" depth="0.04" color="#3a3029"></a-box>
   <a-box position="-2.75 0.37 -0.72" width="0.5" height="0.72" depth="0.04" color="#3a3029"></a-box>
@@ -132,14 +120,6 @@ export const sceneHTML = `<a-scene renderer="antialias: true; colorManagement: t
     -2.25 0.007 -0.63, -2.40 0.009 -0.61, -2.435 0.04 -0.6, -2.442 0.3 -0.595, -2.442 0.70 -0.59, -2.442 0.752 -0.585,
     -2.452 0.768 -0.58, -2.50 0.767 -0.575, -2.545 0.79 -0.57"></a-entity>
 
-  </a-entity>
-  <!-- door 1's way, seen from both sides: its own group, so the corridor can leave the room
-       interior undrawn while the door is shut (class room-interior, src/app/lobby/lobby.js) -->
-  <a-entity id="doorway" merge-static>
-    <!-- door 1, the door the experimenter leaves by (behind the player): built like every door of
-         the lab (src/engine/door.js), its number on the leaf; the light switch on the latch side -->
-    ${doorHTML({ x: 0.7, latch: 1, leaf: 'id="door1" data-dynamic', clickable: true, inside: true,
-      sign: { attrs: `id="plaqueOut" class="door-sign room-plaque" data-number="${ROOM1_NUMBER}" ${SIGN_PANEL}`, y: SIGN.y } })}
   </a-entity>
 
   <!-- experimenter screen -->
@@ -214,5 +194,4 @@ export const sceneHTML = `<a-scene renderer="antialias: true; colorManagement: t
       <a-cylinder radius="0.01" height="0.32" position="0.17 0.62 0.2" material="color: #a9acae; metalness: .8; roughness: .3"></a-cylinder>
     </a-entity>
   </a-entity>
-</a-scene>
 `;

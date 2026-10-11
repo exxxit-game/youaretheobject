@@ -1,7 +1,5 @@
 import '../../engine/panel.js';
-import '../../engine/recenter.js';
 import '../../engine/sfx.js';
-import '../../engine/grab-press.js';
 import '../../engine/blob-shadow.js';
 import '../../engine/cable.js';
 import '../../engine/surface.js';
@@ -9,8 +7,6 @@ import '../../engine/shapes.js';
 import '../../engine/decal.js';
 import '../../engine/mirror.js';
 import '../../engine/merge-static.js';
-import '../../engine/controller-batch.js';
-import '../../engine/room-bounds.js';
 import { eventLog } from '../../engine/log.js';
 import { unlock } from '../../engine/audio.js';
 import { loadSounds, playSound } from '../../engine/sfx.js';
@@ -20,7 +16,6 @@ import { createChoice } from '../../engine/ui/choice.js';
 import { createScale } from '../../engine/ui/scale.js';
 import { createAwayMeter } from '../../engine/away-meter.js';
 import { markStarted, markReached, watchExit } from '../../app/left-early.js';
-import { runLobby, corridorHTML } from '../../app/lobby/lobby.js';
 import { ROOM1_NUMBER } from '../../app/lobby/plan.js';
 import { createSession, SPEED, PLAYTEST } from '../../app/session.js';
 import { compareRoom } from '../../engine/results.js';
@@ -29,7 +24,6 @@ import { playtestReport } from '../../app/playtest-report.js';
 import { APP_T } from '../../app/texts.ru.js';
 import { writePlaque } from '../../app/brand.js';
 import { showHint } from '../../app/hint.js';
-import { sceneHTML } from './scene.js';
 import { placeChair } from './chair.js';
 import { PROTOCOL } from './protocol.js';
 import { pickCondition, makeTapes, makeIntervals } from './schedule.js';
@@ -49,6 +43,7 @@ const INK = '#f2efe8';
 const $ = (s) => document.querySelector(s);
 const screen = () => $('#screen').components.panel;
 const delay = (ms) => new Promise((r) => setTimeout(r, ms));
+// Places in the room's own metres (scene.js); the corridor stands the room behind its door.
 // Behind the player, where the door would be.
 const DOOR = { x: 0.7, y: 1.0, z: 1.5 };
 // The stand with the two lights: looking far away from it during the trials is
@@ -59,11 +54,20 @@ const STAND = { x: 0, y: 1.02, z: -0.45 };
 const SCREEN_TOP = 2.36;
 // Answer buttons stay above the screen's lower edge (with a small margin).
 const SCREEN_LOW = SCREEN_TOP - 1.0 + 0.02;
-// Where the desktop camera may move inside the room, world metres (the corridor sets its own).
-const ROOM_BOUNDS = 'minX: -1.4; maxX: 1.4; minZ: 0.3; maxZ: 1.55';
 const UNDER_TEXT = 0.05;
 
-let scene, choice, lowChoice, scale, shownScale, session, trials = null;
+export { sceneHTML, DOORWAY } from './scene.js';
+// What the corridor needs before its door (src/app/lab.js): the room, what a player who left it
+// early learns, where they sit (at the table, facing it; on a computer the view tilted down toward
+// it) and where the computer's camera may move.
+export const ARRIVAL = {
+  id: ROOM_ID, real: SPEED === 1, debrief: T.earlyDebrief, extra: PLAYTEST ? [APP_T.playtest.consent] : [],
+  seat: { x: 0, z: 0.35, yaw: 0, pitch: -16 }, area: { minX: -1.4, maxX: 1.4, minZ: 0.3, maxZ: 1.55 }
+};
+
+let scene, root, choice, lowChoice, scale, shownScale, session, trials = null;
+// a point of the room in the world's metres, for what takes world places (sounds, the away meter)
+const inWorld = ({ x, y, z }) => { const v = root.object3D.localToWorld(new THREE.Vector3(x, y, z)); return { x: v.x, y: v.y, z: v.z }; };
 let seated = false;
 let xrVisible = true;
 let held = false; // the "you left before the end" box is open
@@ -148,7 +152,7 @@ async function intro() {
     shownScale.hide();
   } while (!(await understood()));
   await say(T.leave);
-  playSound('door', DOOR, 0.8);
+  playSound('door', inWorld(DOOR), 0.8);
   screen().write([]);
   await delay(4000 / SPEED);
 }
@@ -156,7 +160,7 @@ async function intro() {
 async function runTrials() {
   setState('run');
   phase('run');
-  const meter = createAwayMeter($('#cam'), STAND, paused);
+  const meter = createAwayMeter($('#cam'), inWorld(STAND), paused);
   meter.start();
   eventLog.reset();
   eventLog.begin();
@@ -176,7 +180,7 @@ async function runTrials() {
 async function questions() {
   setState('questions');
   phase('questions');
-  playSound('door', DOOR, 0.8);
+  playSound('door', inWorld(DOOR), 0.8);
   await delay(1500 / SPEED);
   await say(T.back);
   // the experimenter rereads the part about control (p. 452)
@@ -238,39 +242,22 @@ function pressButton(e) {
   if (e && e.detail && e.detail.cursorEl) pulse(e.detail.cursorEl, 0.6, 40);
 }
 
-/* ---------- boot ---------- */
-async function boot() {
-  // answer buttons under a short question at the top of the screen
-  choice = createChoice(scene, { y: 2.02, z: -1.555, w: 1.5, bottom: SCREEN_LOW });
-  lowChoice = createChoice(scene, { y: 1.48, z: -1.555, w: 0.9, h: 0.12, bottom: SCREEN_LOW });
-  scale = createScale(scene, { y: 1.78, z: -1.555 });
-  shownScale = createScale(scene, { y: 1.6, z: -1.555 });
-  // On desktop the view starts tilted slightly down, toward the table.
-  const lc = $('#cam').components['look-controls'];
-  if (lc && lc.pitchObject) lc.pitchObject.rotation.x = -0.28;
-  writePlaque($('#plaque').components.panel, { number: ROOM1_NUMBER });   // the same number as outside
-  // The arrival: corridor, welcome, consent, the door; the player ends up at the table.
-  const withRecording = await runLobby({
-    id: ROOM_ID, real: REAL, debrief: T.earlyDebrief,
-    seat: { x: 0, z: 0.35, yaw: 0 }, bounds: ROOM_BOUNDS, extra: PLAYTEST ? [APP_T.playtest.consent] : []
-  });
-  unlock();
-  document.title = T.pageTitle(ROOM1_NUMBER);
-  showHint({ title: T.hint.title(ROOM1_NUMBER), body: T.hint.body });
-  playSound('room', null, 0.12, true);
-  play(withRecording);
-}
-
-// Room contract: mount() builds the scene and starts the flow. See docs/rooms.md.
-export function mount() {
+/* ---------- the room behind its door, then the player in it ---------- */
+// Room contract (docs/rooms.md): mount(root) once the room stands loaded behind its shut door (root:
+// its group in the scene), enter(withRecording) once the player is in, at the table.
+export function mount(r) {
+  root = r;
+  scene = root.sceneEl;
   session = createSession(ROOM_ID, ROOM_VERSION);
   session.watchIssues(() => ({ state, xr: !!(scene && scene.is && scene.is('vr-mode')) }));
   loadVoice(VOICE_LINES, import.meta.url);
   loadSounds(SOUNDS, import.meta.url);
-  document.body.insertAdjacentHTML('beforeend', sceneHTML);
-  scene = $('a-scene');
-  scene.insertAdjacentHTML('beforeend', corridorHTML); // before load: merged and tiled with the room
-  scene.setAttribute('sound-listener', '');
+  // answer buttons under a short question at the top of the screen, in the room's own metres
+  choice = createChoice(root, { y: 2.02, z: -1.555, w: 1.5, bottom: SCREEN_LOW });
+  lowChoice = createChoice(root, { y: 1.48, z: -1.555, w: 0.9, h: 0.12, bottom: SCREEN_LOW });
+  scale = createScale(root, { y: 1.78, z: -1.555 });
+  shownScale = createScale(root, { y: 1.6, z: -1.555 });
+  writePlaque($('#plaque').components.panel, { number: ROOM1_NUMBER });   // the same number as outside
   $('#buttonCap').addEventListener('click', pressButton);
   window.addEventListener('keydown', (e) => { if (e.code === 'Space') pressButton(); });
   scene.addEventListener('enter-vr', () => {
@@ -284,5 +271,12 @@ export function mount() {
   }
   $('#rig').addEventListener('recentered', (e) => { seated = !!(e.detail && e.detail.seated); placeChair(seated); });
   setState('idle');
-  if (scene.hasLoaded) boot(); else scene.addEventListener('loaded', boot);
+}
+
+export function enter(withRecording) {
+  unlock();
+  document.title = T.pageTitle(ROOM1_NUMBER);
+  showHint({ title: T.hint.title(ROOM1_NUMBER), body: T.hint.body });
+  playSound('room', null, 0.12, true);
+  play(withRecording);
 }

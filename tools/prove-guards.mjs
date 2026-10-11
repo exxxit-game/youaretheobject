@@ -72,7 +72,7 @@ const CASES = [
   ['structure 9', 'heredoc damage', 'a tool that no longer parses', () => append('tools/health-setup.mjs', '\nconst = ;\n'), structure, 'syntax error'],
   ['structure 10', 'catalog current', 'the catalog edited by hand', () => append('docs/catalog.md', '\n| x | planted |\n'), structure, 'catalog'],
   ['structure 11', 'A-Frame play/pause', 'a component method play(x)', () => append('src/engine/fader.js', '\nconst planted = {\n  play(arg) { return arg; }\n};\n'), structure, 'play/pause'],
-  ['structure 12', 'room lights', 'a room light without class room-light', () => swap('src/rooms/01-control/scene.js', '<a-entity id="rig"', '<a-entity light="type: point; intensity: 1"></a-entity>\n  <a-entity id="rig"'), structure, 'room-light'],
+  ['structure 12', 'room lights', 'a room light without class room-light', () => swap('src/rooms/01-control/scene.js', '<a-entity id="obsLight"', '<a-entity light="type: point; intensity: 1"></a-entity>\n  <a-entity id="obsLight"'), structure, 'room-light'],
   ['structure 13', 'the game\'s name', 'the name translated in the player\'s text', () => append('src/app/texts.ru.js', `\n// ${ru(0xab, 0x41e, 0x431, 0x44a, 0x435, 0x43a, 0x442, 0xbb)}\n`), structure, 'translates the game'],
   ['structure 17', 'words in full', 'a word cut short', () => append('src/app/texts.ru.js', `\nexport const planted = '${ru(0x41a, 0x43e, 0x43c, 0x43d)}. 101';\n`), structure, 'cuts a word short'],
   ['structure 16', 'comments say why', 'a comment saying who asked', () => append('tools/health-setup.mjs', `\n// the ${['own', 'er'].join('')} said so\n`), structure, 'tells history'],

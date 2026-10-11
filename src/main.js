@@ -1,4 +1,5 @@
-// Shell: pick a room from ?room=NN-name (default 01-control) and mount it.
+// Shell: pick the room behind door 1 from ?room=NN-name (default 01-control) and start the lab with it:
+// the app holds the scene, the player and the corridor, the room stands behind its door (src/app/lab.js).
 // No top-level await: older headset browsers cannot parse it and fail silently.
 const DEFAULT_ROOM = '01-control';
 const requested = new URLSearchParams(location.search).get('room');
@@ -21,6 +22,6 @@ const FONT_WAIT_MS = 6000;
 const SAMPLE = 'Aa ' + String.fromCodePoint(0x42f, 0x44f);
 const fonts = Promise.all(FACES.map((f) => document.fonts.load(f, SAMPLE))).catch(() => {});
 Promise.race([fonts, new Promise((r) => setTimeout(r, FONT_WAIT_MS))])
-  .then(() => import(`./rooms/${id}/room.js`))
-  .then((room) => room.mount())
+  .then(() => Promise.all([import('./app/lab.js'), import(`./rooms/${id}/room.js`)]))
+  .then(([lab, room]) => lab.start(room))
   .catch(showError);
