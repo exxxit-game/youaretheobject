@@ -93,6 +93,10 @@ function onFirstGesture(fn) {
   window.addEventListener('pointerdown', go, { once: true });
   window.addEventListener('keydown', go, { once: true });
   $('a-scene').addEventListener('enter-vr', go, { once: true });
+  // a press made while the page was still loading is that gesture too: the browser keeps it (sticky
+  // activation), and Chrome lets sound start "at some time after the user interacted with the page"
+  // (developer.chrome.com/blog/autoplay)
+  if (navigator.userActivation && navigator.userActivation.hasBeenActive) go();
 }
 
 // What is drawn and lit while the player is in the corridor. Returns { peek(ms), enter() }: peek

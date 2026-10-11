@@ -76,8 +76,9 @@ function arrival(scene) {
     const flat = () => { if (!inVR(scene) && arrivalStep(device, 'flat-press') === 'now') resolve(); };
     // a press made while the clipboard was still being hung is that first press too: the browser keeps
     // it (sticky activation, HTML's navigator.userActivation.hasBeenActive), where a listener added
-    // now would wait for a second one
-    if (navigator.userActivation && navigator.userActivation.hasBeenActive) flat();
+    // now would wait for a second one. Only on a computer with no headset, or in a test run: sticky
+    // activation counts a press anywhere, a VR button too, and a headset's player looks round first
+    if (navigator.userActivation && navigator.userActivation.hasBeenActive && (!device.headset || SPEED > 1)) flat();
     window.addEventListener('keydown', flat);
     scene.canvas.addEventListener('pointerdown', flat);
     const inside = () => settleArrival(delay, () => faces(scene)).then(resolve);

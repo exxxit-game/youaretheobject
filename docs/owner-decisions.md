@@ -152,7 +152,8 @@ quoted; the time is when he said it (UTC). A risk list or a general method is no
   все, что можешь»; «Мне надо делать что-то конкретно одно» 9.10 09:14); blocked, or missing a norm or a document: tell him at once, each time («Если чего-то нет, скажи мне… и мы
   найдем это… всегда говори мне каждый раз» 11.10).
 - No mirrors: the one-way mirror in room 101 goes entirely; the extinguisher's polished steel stays as it is («надо
-  полностью убирать это зеркало… Огнетушитель пусть остается как есть» 11.10; «Ты ж не за светом туда заходишь»).
+  полностью убирать это зеркало… Огнетушитель пусть остается как есть» 11.10; «Ты ж не за светом туда заходишь»): in VR there is no character, so a mirror has nothing to show («ты на себя
+  посмотреть не можешь, значит и толку от зеркала там нету»; «Намного легче вместо зеркал поставить что-то другое» 11.10).
 - No player character: only controllers or hands («хочу, чтобы это оставалось без какого-то персонажа. Просто джойстики
   или руки… без привязки к маскоту» 11.10).
 - Knowledge is updated when needed: the docs copies, the tools and our records are refreshed from their sources when a
