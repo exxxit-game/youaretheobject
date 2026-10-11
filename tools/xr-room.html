@@ -116,21 +116,39 @@ window.__say = (main, small = '') => {
 // to see the order and the timing (window.__stepsSpeed runs them faster).
 const wait = (ms) => new Promise((res) => setTimeout(res, ms));
 window.__stepsSpeed = 1;
+// a step's time runs only while he can see it: a hidden session pauses it, as an app pauses when the
+// system asks (W3C WebXR: hidden "cannot be seen by the user"; Meta VRC.Quest.Functional.2), and the
+// step is shown again with its tone when he is back
+async function hold(ms, session, step) {
+  let left = ms, hidden = false;
+  while (left > 0) {
+    await wait(100);
+    const seen = !session || session.visibilityState === 'visible';
+    if (seen && hidden) window.__say(step.main, step.small);
+    hidden = !seen;
+    if (seen) left -= 100 * window.__stepsSpeed;
+    else if (r) r.hiddenMs = (r.hiddenMs || 0) + 100;
+  }
+}
 async function runSteps(session, { dry = false } = {}) {
-  const said = [];
+  const said = [], mine = r;
+  // this run's own steps only: a run started after another ended never takes over its panel
+  const live = () => dry || (running && r === mine);
   for (const [i, s] of window.__steps.entries()) {
-    if (!dry && !running) return said;
+    if (!live()) return said;
     window.__say(s.main, s.small);
     said.push(s.main);
-    if (r && !dry) { r.stepAt = i + 1; save(); }
-    await wait(s.secs * 1000 / window.__stepsSpeed);
+    if (!dry) { r.stepAt = i + 1; save(); }
+    await hold(s.secs * 1000, dry ? null : session, s);
   }
-  if (r && !dry) { r.done = new Date().toISOString(); save(); }
+  if (!dry && live()) { r.done = new Date().toISOString(); save(); }
   await wait(8000 / window.__stepsSpeed);
-  if (!dry && running && session) session.end();
+  if (!dry && live() && session) session.end();
   return said;
 }
 window.__dryRun = () => runSteps(null, { dry: true });
+// a dry check of the pause: a stand-in session that is hidden for a while
+window.__dryHold = (ms, fakeSession) => hold(ms, fakeSession, { main: 'проверка паузы', small: '' });
 
 async function start() {
   if (running) return;
@@ -151,7 +169,7 @@ async function start() {
   // depth as the browser chose it: read on the CPU only when it gave the CPU path
   r.depth = { usage: session.depthUsage || 'none', format: session.depthDataFormat || null };
   r.frameRates = { now: session.frameRate, offered: session.supportedFrameRates ? [...session.supportedFrameRates] : 'not reported' };
-  let hits = null;
+  let hits = null, bounded = null;
   try { hits = await session.requestHitTestSource({ space: await session.requestReferenceSpace('viewer') }); } catch (e) { r.hitTest = 'no: ' + e.message; }
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.xr.enabled = true;
@@ -160,16 +178,22 @@ async function start() {
   const scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera();
   scene.add(panel);
   try {
-    const b = await session.requestReferenceSpace('bounded-floor');
-    const pts = [...(b.boundsGeometry || [])];
-    r.bounds = pts.length ? { points: pts.length, sizeM: [round(Math.max(...pts.map((p) => p.x)) - Math.min(...pts.map((p) => p.x))), round(Math.max(...pts.map((p) => p.z)) - Math.min(...pts.map((p) => p.z)))] } : 'empty';
+    bounded = await session.requestReferenceSpace('bounded-floor');
+    r.bounds = 'empty';
   } catch (e) { r.bounds = 'no: ' + e.message; }
-  session.addEventListener('visibilitychange', () => { r.events.push([Math.round(performance.now()), 'visibility ' + session.visibilityState]); save(); });
+  // each change of visibility with where he stood: whether the hides come at his boundary's edge
+  session.addEventListener('visibilitychange', () => { r.events.push([Math.round(performance.now()), 'visibility ' + session.visibilityState, lastAt]); save(); });
   session.addEventListener('inputsourceschange', () => r.events.push([Math.round(performance.now()), `hands ${[...session.inputSources].filter((s) => s.hand).length}, controllers ${[...session.inputSources].filter((s) => s.gamepad).length}`]));
-  session.addEventListener('end', () => { r.ended = new Date().toISOString(); running = false; save(); });
+  // the end says so on the flat page too, and the button stays off: a second run starts only from the
+  // laptop's runner, after its checks
+  session.addEventListener('end', () => {
+    r.ended = new Date().toISOString(); running = false; save();
+    document.getElementById('start').disabled = true;
+    document.querySelector('p').textContent = 'Готово, сеанс закончен. Сними очки и напиши «снял».';
+  });
 
   const shown = new Map();
-  let ids = 0, lastPath = 0, lastSave = 0, faded = false;
+  let ids = 0, lastPath = 0, lastSave = 0, faded = false, lastAt = null;
   const recent = [];   // where his head was over the last second, for a walking speed that does not blink
   const show = (thing, kind, build) => {
     let o = shown.get(thing);
@@ -190,6 +214,13 @@ async function start() {
     const ref = renderer.xr.getReferenceSpace(), viewer = frame.getViewerPose(ref);
     if (viewer && time - lastPath > 200) {
       const p = viewer.transform.position;
+      lastAt = [round(p.x), round(p.z)];
+      // the boundary as the browser reports it, read each time (it can come late or change), the largest kept
+      const pts = bounded ? [...(bounded.boundsGeometry || [])] : [];
+      if (pts.length) {
+        const size = [round(Math.max(...pts.map((q) => q.x)) - Math.min(...pts.map((q) => q.x))), round(Math.max(...pts.map((q) => q.z)) - Math.min(...pts.map((q) => q.z)))];
+        if (typeof r.bounds !== 'object' || size[0] * size[1] > r.bounds.sizeM[0] * r.bounds.sizeM[1]) r.bounds = { points: pts.length, sizeM: size };
+      }
       r.path.push([Math.round(time), round(p.x), round(p.y), round(p.z)]);
       // the lines and the panel fade while he walks faster than a slow step over the last second,
       // and come back when he stands (Meta: less virtual content while the person moves)
