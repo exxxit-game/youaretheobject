@@ -192,11 +192,15 @@ if (cmd === 'reload') {
         ...(small ? [{ t: small, size: 34, color: '#9a9a9a', gap: 30 }] : [])
       ]);
       // Where it stands, as the clipboard finds where it is read (src/engine/ui/sheet-math.js readingPose):
-      // straight ahead first, then the nearest turn to either side up to 60 degrees (still in the view), at 1 m
-      // or nearer down to 0.5 m, the
-      // first place where the panel's centre and all four corners are clear of every surface by 10 cm.
+      // straight ahead first, then the nearest turn to either side up to 20 degrees (the panel spans about
+      // 27 degrees each side of its centre, and Quest 3 sees 55: Meta's IWSDK keeps such UI within 30, "Compact
+      // global UI that must remain discoverable", documentation/iwsdk/concepts/spatial-ui/hud), at 1 m or
+      // nearer down to 0.5 m, the first place where no surface stands on the lines from the eye to the
+      // panel's centre and four corners, nor 10 cm past them.
       // A hint cut by a wall or a thing in front of it could not be read (the owner, 11.10). If nowhere is
-      // clear, it stands 0.5 m ahead drawn over everything, so it is read all the same.
+      // clear, it stands 0.5 m ahead drawn over everything, so it is read all the same (Meta: captions "never
+      // obstructed by spatial elements", design/accessibility), at the cost of a depth that contradicts the
+      // wall's (design/display): the reply says so, and the next hint asks him to step back.
       const at = new THREE.Vector3(), ahead = new THREE.Vector3();
       s.camera.getWorldPosition(at); s.camera.getWorldDirection(ahead);
       ahead.y = 0;
@@ -220,7 +224,7 @@ if (cmd === 'reload') {
         return [centre, ...corners].some(firstHit) ? null : centre;
       };
       let spot = null, d = 1;
-      search: for (const yaw of [0, 15, -15, 30, -30, 45, -45, 60, -60].map((g) => (g * Math.PI) / 180)) {
+      search: for (const yaw of [0, 10, -10, 20, -20].map((g) => (g * Math.PI) / 180)) {
         for (const dist of [1, 0.85, 0.7, 0.5]) { const c = place(yaw, dist); if (c) { spot = c; d = dist; break search; } }
       }
       const onTop = !spot;
