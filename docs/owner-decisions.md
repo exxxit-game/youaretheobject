@@ -161,7 +161,7 @@ quoted; the time is when he said it (UTC). A risk list or a general method is no
   полностью убирать это зеркало… Огнетушитель пусть остается как есть» 11.10; «Ты ж не за светом туда заходишь»): in VR there is no character, so a mirror has nothing to show («ты на себя
   посмотреть не можешь, значит и толку от зеркала там нету»; «Намного легче вместо зеркал поставить что-то другое» 11.10).
   In its place, closed venetian blinds, chosen from my three options (blinds, frosted glass, a wall): «Вариант с
-  жалюзями мне импонирует… если мы решим, что, а вот надо там показать что-то, то просто жалюзи подымутся» 11.10 15:37.
+  жалюзями мне импонирует… если мы решим, что, а вот надо там показать что-то, то просто жалюзи подымутся» 11.10 15:37. Built from his photos and the 1973 specification (Type II, 1-inch slats), closed the other way («оно должно быть в другую сторону»), in the specification's colour: «По стандарту 1973» 11.10.
 - No player character: only controllers or hands («хочу, чтобы это оставалось без какого-то персонажа. Просто джойстики
   или руки… без привязки к маскоту» 11.10).
 - The work's loop: find what exists, build it in, check it, write its source beside it; what is not found is said to him
