@@ -59,8 +59,11 @@ shapeComponent('rounded-box', {
 // standard counts (a blind of one even colour read as a plain panel). The arc keeps the crown's
 // shape, so closed slats still rest on each other and show no gap.
 const EDGE_TURN = 0.35;
-function slatGeometry(w, crown, length, n) {
+// corner: the slat's corners rounded to this radius at both ends (a specification asks for it), each
+// end drawn in as the quarter circle reaches across the width
+function slatGeometry(w, crown, length, n, corner = 0) {
   const R = (w * w) / (8 * crown) + crown / 2, y = (u) => Math.sqrt(R * R - u * u) - (R - crown / 2);
+  const end = (u) => { const off = Math.abs(u) - (w / 2 - corner); return length / 2 - (off > 0 ? corner - Math.sqrt(Math.max(0, corner * corner - off * off)) : 0); };
   const normal = (u) => {
     if (Math.abs(u) < w / 2 - 1e-9) return [0, 1, 0];
     const v = new THREE.Vector3(0, 1, 0).lerp(new THREE.Vector3(u / R, (y(u) + R - crown / 2) / R, 0), EDGE_TURN).normalize();
@@ -69,7 +72,7 @@ function slatGeometry(w, crown, length, n) {
   const pos = [], nor = [], uv = [];
   for (let i = 0; i < n; i++) {
     const a = -w / 2 + (w * i) / n, b = -w / 2 + (w * (i + 1)) / n;
-    const p = [[a, -length / 2, i / n, 0], [b, -length / 2, (i + 1) / n, 0], [b, length / 2, (i + 1) / n, 1], [a, length / 2, i / n, 1]];
+    const p = [[a, -end(a), i / n, 0], [b, -end(b), (i + 1) / n, 0], [b, end(b), (i + 1) / n, 1], [a, end(a), i / n, 1]];
     // wound so the face's front is its crown side, where the normals point
     for (const k of [0, 2, 1, 0, 3, 2]) { const [u, z, s, t] = p[k]; pos.push(u, y(u), z); nor.push(...normal(u)); uv.push(s, t); }
   }
@@ -80,8 +83,8 @@ function slatGeometry(w, crown, length, n) {
   return g;
 }
 shapeComponent('slat', {
-  width: { default: 0.0508 }, crown: { default: 0.00635 }, length: { default: 1 }, side: { default: 'double' }
-}, (d) => slatGeometry(d.width, d.crown, d.length, 6));
+  width: { default: 0.0508 }, crown: { default: 0.00635 }, length: { default: 1 }, corner: { default: 0 }, side: { default: 'double' }
+}, (d) => slatGeometry(d.width, d.crown, d.length, 6, d.corner));
 
 // plate: a flat plate with its corners rounded in its own plane (a clipboard, a clip's jaw), however
 // thin it is; its thickness along z, centred on the entity.

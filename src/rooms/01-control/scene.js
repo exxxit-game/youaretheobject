@@ -22,10 +22,10 @@ export const DOORWAY = { x: 0.7, z: BOOTH.maxZ };
 // docs/owner-decisions.md: a shop's product photos of 25 mm aluminium blinds, rozetka.com.ua item
 // 546663369), then how they are made: the US federal specification of the time (Interim Federal
 // Specification AA-V-00200B, "Venetian Blinds", GSA, 1973; everyspec.com), Type II: slats "one inch wide"
-// with a crown of at most 1/8 inch (3.3.2.3), ladder rungs "spaced evenly 45 in 36 inches" (3.3.2.9),
+// with a crown of at most 1/8 inch and corners rounded 1/8 to 3/16 inch (3.3.2.3), ladder rungs "spaced evenly 45 in 36 inches" (3.3.2.9),
 // braided polyester ladders, their verticals .045 to .066 inch thick, the end ones at most 6 inches from
 // the slats' ends and none more than 22 inches apart (3.3.2.9); a steel head channel and bottom rail
-// with a baked coating (3.3.2.1-2); the slats tilted by pulling tilt cords, the tilter on the left
+// with a baked coating, the rail with molded end caps (3.3.2.1-2); the slats tilted by pulling tilt cords, the tilter on the left
 // (3.3.2.7.1); the pull cords held together by an equalizer, a knob the cords' colour (3.3.1.4.4-5); "white
 // or eggshell" unless specified (3.5.1); set inside the window, the bottom rail at most 5/8 inch above the
 // sill (3.4.1). Closed with the room-side edges down, each slat over the next like the photos, which
@@ -65,8 +65,9 @@ function blindsHTML(colour = BLIND_COLOUR) {
     `<a-box position="${f4(x)} ${f4(top - rail.h / 2)} ${z}" width="${f4(rail.d)}" height="${f4(rail.h)}" depth="${f4(length)}" material="${PAINT}"></a-box>`,
     `<a-box position="${f4(x)} ${f4(over + bottom.h / 2)} ${z}" width="${f4(bottom.d)}" height="${f4(bottom.h)}" depth="${f4(length)}" material="${PAINT}"></a-box>`
   ];
+  for (const e of [-1, 1]) parts.push(`<a-box position="${f4(x)} ${f4(over + bottom.h / 2)} ${f4(z + e * (length / 2 + 0.0015))}" width="${f4(bottom.d + 0.002)}" height="${f4(bottom.h + 0.002)}" depth="0.003" material="${PAINT}"></a-box>`);
   for (let i = 0; i < n; i++) {
-    parts.push(`<a-entity slat="width: ${f4(slat)}; crown: ${f4(crown)}; length: ${f4(length)}; ${PAINT}" position="${f4(x)} ${f4(under - pitch * (i + 0.5))} ${z}" rotation="0 0 ${f4((tilt * 180) / Math.PI)}"></a-entity>`);
+    parts.push(`<a-entity slat="width: ${f4(slat)}; crown: ${f4(crown)}; length: ${f4(length)}; corner: ${f4(IN * 5 / 32)}; ${PAINT}" position="${f4(x)} ${f4(under - pitch * (i + 0.5))} ${z}" rotation="0 0 ${f4((tilt * 180) / Math.PI)}"></a-entity>`);
   }
   // three ladders (two would stand more than 22 inches apart): their front strings, a little under 1/16 inch
   const string = 0.0007, high = under - over - bottom.h, mid = (under + over + bottom.h) / 2;
@@ -78,7 +79,9 @@ function blindsHTML(colour = BLIND_COLOUR) {
   const cx = f4(x + rail.d / 2 + 0.003), cord = (zz) => `<a-cylinder radius="0.0009" height="0.9" position="${cx} ${f4(under - 0.45)} ${f4(zz)}" material="${YARN}"></a-cylinder>`;
   const knob = (y, zz) => `<a-cone radius-bottom="0.006" radius-top="0.0025" height="0.022" position="${cx} ${f4(y)} ${f4(zz)}" material="${PAINT}"></a-cone>`;
   const left = z + length / 2 - 0.03, right = z - length / 2 + 0.03;
-  for (const d of [-0.003, 0.003]) parts.push(cord(left + d), knob(under - 0.911, left + d), cord(right + d));
+  // the tilt cords' knobs side by side, clear of each other (a knob is 12 mm across)
+  for (const d of [-0.007, 0.007]) parts.push(cord(left + d), knob(under - 0.911, left + d));
+  for (const d of [-0.003, 0.003]) parts.push(cord(right + d));
   parts.push(`<a-box position="${cx} ${f4(under - 0.905)} ${f4(right)}" width="0.007" height="0.014" depth="0.012" material="${PAINT}"></a-box>`, knob(under - 0.923, right));
   return parts.join('\n  ');
 }
