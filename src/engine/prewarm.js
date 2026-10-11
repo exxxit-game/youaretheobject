@@ -44,11 +44,15 @@ AFRAME.registerComponent('prewarm', {
     });
     const back = this.open();
     const target = new THREE.WebGLRenderTarget(1, 1), was = renderer.getRenderTarget();
-    renderer.setRenderTarget(target);
-    renderer.render(scene, this.el.camera);
-    renderer.setRenderTarget(was);
-    target.dispose();
-    back();
+    // whatever happens in the draw, the scene is left as it was
+    try {
+      renderer.setRenderTarget(target);
+      renderer.render(scene, this.el.camera);
+    } finally {
+      renderer.setRenderTarget(was);
+      target.dispose();
+      back();
+    }
   },
 
   // the headset's first frame: opened before it is drawn, closed right after

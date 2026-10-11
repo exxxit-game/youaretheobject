@@ -57,8 +57,8 @@ AFRAME.registerComponent('reflect-env', {
     } finally {
       renderer.xr.enabled = xr;
       back();
+      o.visible = shown;   // a hidden object stays hidden
     }
-    o.visible = shown;   // a hidden object stays hidden
     this.pmrem = this.pmrem || new AFRAME.THREE.PMREMGenerator(renderer);
     this.blurred = this.pmrem.fromCubemap(this.target.texture, this.blurred);
     const map = this.blurred.texture;
