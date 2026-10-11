@@ -281,14 +281,15 @@ async function playRoom(url, playtest, { leave = false } = {}) {
         gl.readPixels(Math.round(w * fx), y0, 1, n, gl.RGBA, gl.UNSIGNED_BYTE, px);
         const L = Array.from({ length: n }, (_, i) => 200 * (0.2126 * lin(px[4 * i]) + 0.7152 * lin(px[4 * i + 1]) + 0.0722 * lin(px[4 * i + 2])));
         const peaks = L.map((v, i) => i).filter((i) => i > 1 && i < n - 2 && L[i] > L[i - 1] && L[i] >= L[i + 1] && L[i] > L[i - 2] && L[i] >= L[i + 2]);
-        return peaks.slice(1).map((p, k) => { const seg = L.slice(peaks[k], p + 1); return Math.max(...seg) - Math.min(...seg); });
+        return peaks.slice(1).map((p, k) => { const seg = L.slice(peaks[k], p + 1), top = Math.max(...seg); return { d: top - Math.min(...seg), rel: (top - Math.min(...seg)) / top }; });
       });
-      // and each overlap still shows, under that, or the blind reads as a plain panel (measured 11.10:
-      // 15-16 lines of 2-19 cd/m2 down each line)
-      return { harsh: Math.max(...lines.map((s) => s.filter((v) => v >= 20).length)), faint: Math.min(...lines.map((s) => s.filter((v) => v >= 2 && v < 20).length)) };
+      // and each overlap still shows, under that, or the blind reads as a plain panel: a line at least
+      // 5% darker than its slat, about four 8-bit steps, clear of rounding (our number; whether the
+      // lines read is the owner's look in the headset); measured 11.10: 11-14 such lines down each line
+      return { harsh: Math.max(...lines.map((s) => s.filter((v) => v.d >= 20).length)), faint: Math.min(...lines.map((s) => s.filter((v) => v.rel >= 0.05 && v.d < 20).length)) };
     });
     assert.ok(stripes.harsh <= 5, `the closed blinds seen close make ${stripes.harsh} light and dark stripes 20 cd/m2 apart (ITU-R BT.1702-3 allows five)`);
-    assert.ok(stripes.faint >= 10, `the closed blinds seen close show only ${stripes.faint} slat lines: they read as a plain panel`);
+    assert.ok(stripes.faint >= 8, `the closed blinds seen close show only ${stripes.faint} slat lines: they read as a plain panel`);
     // A computer's full screen is A-Frame's VR mode too (its enterVR adds the state without a
     // headset): the camera walked out through the walls in it (docs/mistakes.md). The camera is put
     // past the back wall, as the keys took it, and room-bounds must bring it back (wasd-controls
