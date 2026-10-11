@@ -55,7 +55,7 @@ The two other AIs' advice the owner brought on 11.10 is checked claim by claim i
 [docs/research/other-ai-advice.md](../research/other-ai-advice.md); what it leaves for shelf 5 is listed there. What practitioners wrote, found
 the same day on his word: [docs/research/forums-aframe-quest.md](../research/forums-aframe-quest.md) (English) and
 [docs/research/forums-other-languages.md](../research/forums-other-languages.md) (the other languages), and the threads the owner downloaded from Reddit:
-[docs/research/reddit-2026-10-11.md](../research/reddit-2026-10-11.md).
+[docs/research/reddit-2026-10-11.md](../research/reddit-2026-10-11.md) and [its second batch](../research/reddit-2026-10-11-2.md).
 
 ## Shelf 1, the rules and Claude Code (11.10)
 
