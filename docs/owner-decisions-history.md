@@ -5,7 +5,8 @@ again, never advised against. A change comes only from the owner. Read for a tas
 is not enough: the one-line form, loaded with CLAUDE.md at every session start and after every compaction,
 is docs/owner-decisions.md. A new decision gets its line there; whatever of his words or its story does not
 fit the line goes here. His words quoted; the time is when he said it (UTC). A risk list or a general method
-is no reason to reopen one. Written as one file until 11.10; what came after is under "Since the split".
+is no reason to reopen one. Kept as one file until the split of 11.10; decisions recorded since then are under "Since the split". Two
+dates corrected by the log at the split: «чтоб я просто одевал очки…» and «все, что можно измерить на очках…» are 10.10 UTC.
 
 ## The process (the rebuild, docs/audit/process-rebuild.md)
 - Nothing moves on the game until the process is set up («нельзя улучшать игру, пока мы не улучшили процесс
@@ -140,7 +141,7 @@ is no reason to reopen one. Written as one file until 11.10; what came after is 
   додумать, ты что-то сам додумываешь… у меня не спрашиваешь… Есть несколько вариантов, и я выбираю» 9.10).
 - In the headset he reads each step inside it, one at a time, never the chat (tools/quest-look.mjs say): «чтоб я
   просто одевал очки, а ты мне говорил в очках, что надо сделать, как сделать… делать это постоянной практикой,
-  чтобы я не напоминал тебе об этом каждый раз» 11.10. He puts it on only when asked («если ты не попросил, я в них сидеть
+  чтобы я не напоминал тебе об этом каждый раз» 10.10. He puts it on only when asked («если ты не попросил, я в них сидеть
   не буду без нужды» 11.10): each time it is needed, I ask him to put it on.
 - New numbers and conclusions reach him only on a page that passed the fact-check; in the chat a link and one line
   with no new numbers. My proposal after a summary stronger than its evidence reached
@@ -186,7 +187,7 @@ is no reason to reopen one. Written as one file until 11.10; what came after is 
   tiers, an experiment may say it is more exact with an accessory the player has, and gets the most from the bare
   headset otherwise. His own: the headset and a BoboVR strap («все, что можно измерить на очках. Надо научиться
   измерять»; «как вот есть в играх, лучше гулять в наушниках… можно будет говорить, что лучше пользоваться вот таким,
-  если оно у вас есть. А если нет, то вот мы попробовали передать максимум с того, что и так можем» 11.10).
+  если оно у вас есть. А если нет, то вот мы попробовали передать максимум с того, что и так можем» 10.10).
 - Formal «вы»; no music. Small dry details in print are welcome in the corridor too («шуточные мелочи, как у нас вот на
   бумажечке, требуются добровольцы, опыт не требуется… дополняет, а не уничтожает серьезность»). Otherwise
   humour only inside the rooms, never in the corridor's voice: the start is a serious

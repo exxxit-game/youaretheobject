@@ -18,7 +18,7 @@ enough. A new decision: its line here, the rest there. A risk list or a general 
 - Google Drive is the papers' cloud copy; the old Dropbox files stay («мы выбираем Google Driver» 10.10).
 - Plugins on for every project: CodeRabbit and the TypeScript language server, the rest off («ставь» 9.10); the strongest model («взял самую-самую умную» 9.10); main protected on GitHub («Да» 9.10).
 - Paid tools only when they help decisively («не готов платить за лишнюю херню» 10.10).
-- CodeRabbit on its 14-day trial, kept only if useful («если он нам будет очень полезен… буду платить» 10.10); it reviews the one pull request room-polish → reviewed, moved by a robot on GitHub, never by the session under review («да, этот» 10.10); it replaces the PR review toolkit («делай» 10.10).
+- CodeRabbit on its 14-day trial, kept only if useful («А если он нам будет очень полезен, я, может, и дальше за него буду платить» 10.10); it reviews the one pull request room-polish → reviewed, moved by a robot on GitHub, never by the session under review («да, этот» 10.10); it replaces the PR review toolkit («делай» 10.10).
 - He sets up and connects; I check it all as one whole («Все, что надо настроить, подключить, я настрою и подключу» 10.10).
 
 ## The goal
@@ -28,7 +28,7 @@ enough. A new decision: its line here, the rest there. A risk list or a general 
 - Bots: a hashed IP kept 10 minutes («Отпечаток IP на 10 минут»).
 
 ## Order
-- The corridor is the reference every room is built on, finished before anything else («доделать эталонный коридор, на который мы опираемся» 9.10); its order «Подпись, печать, лаборатории, картины… указатель… свет» (8.10), visuals first, texts after (9.10).
+- The corridor is the reference every room is built on (after the process rebuild), finished before anything else («доделать эталонный коридор, на который мы опираемся» 9.10); its order «Подпись, печать, лаборатории, картины… указатель… свет» (8.10), visuals first, texts after (9.10).
 - Until it is done: one window; one corridor item start to finish, then a picture and his yes or fix; anything else one line at the board's end unless he says urgent; the board's first line counts items done («Да» 10.10).
 - The headset check before the next room («Мы все время откладывали эту проверку» 9.10).
 - Yesterday's errors closed fully first («решим их полностью» 9.10).
@@ -45,14 +45,14 @@ enough. A new decision: its line here, the rest there. A risk list or a general 
 - Recreated from books and standards («Мы воссоздаем» 9.10); standards decide, not his pick («а не то, что я выбрал» 8.10); comfort fixes the one exception (9.10).
 - The loop: find what exists, build it in, check it, write its source beside it; what is not found goes to him («Искать, воплощать» 11.10); nothing invented in code («нельзя получить результат, если результат нафантазирован» 11.10).
 - An object: many pictures of the real thing from every side (shops' product photos), then how it is made, then the build («это можно как правило поставить» 11.10).
-- Rooms are faithful re-creations of published experiments, no invented mechanics; our own new experiments too, live, on the closest studies, he picks the candidates («мы можем ставить свои эксперименты» 9.10).
+- Rooms are faithful re-creations of published experiments, no invented mechanics; our own new experiments too, live, on the closest studies, he picks from the candidates in docs/research/own-experiments-now.md («мы можем ставить свои эксперименты» 9.10).
 - The whole before a part, each step weighed, not the simplest («весь мотор пересобирать» 10.10).
 - No light from nowhere: the scene's lights, fixed once for the whole corridor («проблема решается глобально» 9.10).
 - Guy Ritchie's "Revolver", not Portal: replayed to be understood, built detail by detail («деталька за деталькой» 9.10); Portal's humour all the same («без юмора ты там просто как лабораторная крыса» 10.10).
 - Readability beats period look («Читаемость» 8.10); pictures before the game (8.10); beauty within the weakest headset's budget («максимум красоты, ну не в нагрузку» 9.10).
-- Looks rise later, one thing at a time; now the build method and the frame budget («а поднять потом качество в максимум… думаю норм» 10.10).
+- Looks rise later, one thing at a time; now the build method and the frame budget, by the plan he accepted: merge first, measure in the headset, then multiview («а поднять потом качество в максимум… думаю норм» 10.10).
 - What is left to imagination goes to him as real options («Есть несколько вариантов, и я выбираю» 9.10).
-- In the headset every step he is to do goes inside it (quest-look.mjs say), never only the chat («а ты мне говорил в очках» 11.10); he puts it on only when asked («если ты не попросил, я в них сидеть не буду» 11.10).
+- In the headset every step he is to do goes inside it (quest-look.mjs say), never only the chat («а ты мне говорил в очках» 10.10); he puts it on only when asked («если ты не попросил, я в них сидеть не буду» 11.10).
 - New numbers and conclusions reach him only on a fact-checked page; in the chat a link and one line («Делай» 10.10).
 - No empty words to him: Chase's «Tyranny of Words», Orwell's six rules («Ты про эти правила говоришь?» 11.10), Hayakawa's report against judgment («это речь маркетолога» 11.10); Glavred's paid API not taken.
 - General semantics behind my words and checks: Korzybski, the Kodishes (dates and indexes on every claim, the map is not the territory), Chase, Hayakawa («воспользуйся уже всеми известными людям знаниями» 11.10).
@@ -63,7 +63,7 @@ enough. A new decision: its line here, the rest there. A risk list or a general 
 - Knowledge updated when needed («наши знания нужно обновлять при нужде» 11.10); watching A-Frame, Meta, the headset's browser and Claude Code is mine, monthly, then a page to him («лучше ты будешь за этим следить» 11.10).
 - No mirrors: room 101's goes, the extinguisher's steel stays («Огнетушитель пусть остается как есть» 11.10); in its place closed blinds («Вариант с жалюзями мне импонирует» 11.10) from his photos and the 1973 specification, closed the other way, in its colour («По стандарту 1973» 11.10).
 - No player character, only controllers or hands («Просто джойстики или руки» 11.10).
-- All the headset and its accessories can measure is learned and used; a room may be more exact with an accessory, the most from the bare headset otherwise («Надо научиться измерять» 11.10). His own: the headset, a BoboVR strap.
+- All the headset and its accessories can measure is learned and used; a room may be more exact with an accessory, the most from the bare headset otherwise («Надо научиться измерять» 10.10). His own: the headset, a BoboVR strap.
 - Space tiers: seated, standing, roomscale 1.8×1.8 m (base; his area), large (offered only, never shrunk). Live players only where the original had real participants or a design like Mori & Arai; mixed reality where the original was a real room.
 - Formal «вы»; no music. Humour only in the rooms («юмор будет только в экспериментах, в комнатах» 9.10); the corridor's voice serious, the start a serious automatic message; small dry details in print welcome there («дополняет, а не уничтожает серьезность»).
 - A room's voice: a laboratory party host («тамада, но лабораторный»), a children's-game rhythm, the procedure as in the paper; the first room opens with a minute of a funny warm-up, then serious («для разминки» 10.10).
