@@ -20,7 +20,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { withoutGitVars } from './secrets.mjs';
-import { unrelayed, sinceOwner } from './owner-links.mjs';
+import { unrelayed, sinceOwner, typedText } from './owner-links.mjs';
 import { scan, named, entries, write, lastReport, REVIEWER, REPORT_END } from './review-gate.mjs';
 import { BOARD, SHOWS, LOG, shows, stalled, plannedToday } from './board.mjs';
 import { windowFile, take, elsewhere } from './one-window.mjs';
@@ -449,9 +449,10 @@ if (mode === 'prompt') {
     const log = path.join(os.homedir(), 'Documents', 'objekt-files', 'notes', 'owner-messages.md');
     fs.mkdirSync(path.dirname(log), { recursive: true });
     // turns the app delivers that he did not type (helpers' reports, background notices, reminders,
-    // the artifact view): logged as his, they read as his words and their "da" as his yes (board.mjs)
+    // the pull request watcher, the artifact view): logged as his, they read as his words and their
+    // "da" as his yes (board.mjs), and the watcher took the work back to a closed window (11.10)
     const said = String(event.prompt || '');
-    if (!/^\s*<(task-notification|system-reminder|agent-message|artifact-view-context)\b/.test(said)) {
+    if (typedText(said)) {
       fs.appendFileSync(log, `\n## ${new Date().toISOString()} ${event.session_id || ''}\n${said}\n`);
       take(windowFile(HERE), event.session_id);
     }

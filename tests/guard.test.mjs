@@ -192,8 +192,15 @@ assert.equal(ask('Bash', 'grep -rn "git commit --no-verify" docs/'), 0, 'the hoo
   assert.equal(hook('stop', { session_id: 'B' }), 0, 'a window without the work was asked to save or push');
   hook('prompt', { session_id: 'B', prompt: '<task-notification>a helper finished</task-notification>' });
   assert.equal(JSON.parse(fs.readFileSync(env.OBJECT_WINDOW, 'utf8')).session, 'A', 'a notice took the work, not his message');
-  hook('prompt', { session_id: 'B', prompt: 'now here' });
+  hook('prompt', { session_id: 'B', prompt: '<ci-monitor-event>53 new review comments</ci-monitor-event>' });
+  assert.equal(JSON.parse(fs.readFileSync(env.OBJECT_WINDOW, 'utf8')).session, 'A', 'the pull request watcher took the work, not his message');
+  hook('prompt', { session_id: 'B', prompt: '<system-reminder>\nYou are operating in a git worktree.\n</system-reminder>\n\n' });
+  assert.equal(JSON.parse(fs.readFileSync(env.OBJECT_WINDOW, 'utf8')).session, 'A', 'a bare note took the work');
+  // a new window's first message: the app's worktree note, then his words (11.10)
+  hook('prompt', { session_id: 'B', prompt: '<system-reminder>\nYou are operating in a git worktree.\n</system-reminder>\n\nпродолжаем' });
   assert.equal(hook('pre', { session_id: 'B', tool_name: 'Bash', tool_input: { command: 'ls' } }), 0, 'the work did not follow him to the window he wrote in');
+  assert.match(fs.readFileSync(path.join(dir, 'Documents', 'objekt-files', 'notes', 'owner-messages.md'), 'utf8'), /продолжаем/, 'his first message in a new window was not logged');
+  assert.doesNotMatch(fs.readFileSync(path.join(dir, 'Documents', 'objekt-files', 'notes', 'owner-messages.md'), 'utf8'), /review comments/, 'the watcher\'s event was logged as his words');
   fs.rmSync(dir, { recursive: true, force: true });
 }
 
@@ -223,7 +230,9 @@ const said = (text, origin) => ({ type: 'user', ...(origin ? { origin: { kind: o
 const found = (url) => ({ type: 'assistant', message: { content: [{ type: 'text', text: `${MARK}\n- ${url}\n\n` }] } });
 const recordFile = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'guard-test-')), 'session.jsonl');
 for (const origin of ['human', null]) {
+  // the pull request watcher's events come with no mark at all (11.10)
   const lines = [found('https://old.example.org/a'), said('carry on', origin), said(`a helper's report\n${MARK}\n- https://new.example.org/b\n\n`, 'peer'),
+    said('<ci-monitor-event>13 new review comments</ci-monitor-event>', null),
     { type: 'user', message: { content: [{ type: 'tool_result', content: 'tool output' }] } }];
   fs.writeFileSync(recordFile, `${'{"type":"progress"}\n'.repeat(500)}${lines.map((l) => JSON.stringify(l)).join('\n')}\n`);
   for (const block of [1 << 20, 64]) {

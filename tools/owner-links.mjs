@@ -31,6 +31,16 @@ export function unrelayed(text) {
   return [...missing];
 }
 
+// Text of a turn the owner typed, not one the app delivers (helpers' reports, background notices,
+// the pull request watcher's events, the artifact view). The first message of a new window comes
+// with the app's note about the worktree before his words (11.10 his "продолжаем" was read as that
+// note, so the window did not take the work): leading notes are cut, and what is left is his.
+const NOTICE = /^\s*<(task-notification|system-reminder|agent-message|artifact-view-context|ci-monitor-event)\b/;
+export function typedText(text) {
+  const own = String(text).replace(/^(\s*<system-reminder>[\s\S]*?<\/system-reminder>)+/, '');
+  return own.trim() !== '' && !NOTICE.test(own);
+}
+
 // A line of the record that is a message the owner typed: Claude Code marks it as a person's
 // (origin "human"); records without that mark: user text that is no tool result and no notice.
 // Helpers' reports and background notices also arrive as user lines and are not his.
@@ -42,7 +52,7 @@ function typedByOwner(line) {
   if (e.origin) return e.origin.kind === 'human';
   const c = e.message?.content;
   const text = typeof c === 'string' ? c : Array.isArray(c) && !c.some((p) => p.type === 'tool_result') ? c.map((p) => p.text || '').join('') : '';
-  return text.trim() !== '' && !/^\s*<(task-notification|system-reminder|agent-message|artifact-view-context)\b/.test(text);
+  return typedText(text);
 }
 
 // The record (JSON lines, tens of MB late in a session) from the owner's last message on, read
