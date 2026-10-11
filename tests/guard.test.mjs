@@ -208,7 +208,8 @@ assert.equal(ask('Bash', 'grep -rn "git commit --no-verify" docs/'), 0, 'the hoo
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'leftovers-'));
   fs.writeFileSync(path.join(dir, 'list.json'), JSON.stringify(tree.map((p) => ({ ...p, start: p.start - T + Date.now() - LIMIT_MS - 3 * min }))));
   const hook = spawnSync(process.execPath, ['tools/claude-guard.mjs', 'stop'], { cwd: ROOT, encoding: 'utf8', env: { ...process.env, OBJECT_PROCESS_LIST: path.join(dir, 'list.json') }, input: JSON.stringify({ cwd: ROOT, stop_hook_active: false }) });
-  assert.ok(hook.status === 2 && /longer than 10 minutes[\s\S]*find \/ -name camera\.md/.test(hook.stderr), `the stop hook let the turn end with a command left running:\n${hook.stderr}`);
+  assert.ok(hook.status === 2 && /longer than 10 minutes[\s\S]*980 find\.exe, \d+ min$/m.test(hook.stderr), `the stop hook let the turn end with a command left running:\n${hook.stderr}`);
+  assert.ok(!hook.stderr.includes('camera.md'), 'the stop hook printed a command line, which can hold a key');
   fs.rmSync(dir, { recursive: true, force: true });
 }
 

@@ -67,6 +67,8 @@ export function leftoverLine(now = Date.now()) {
   let found;
   try { found = leftovers(processes(), now); } catch (e) { return `the check for helpers' commands left running could not list the processes (${String(e.message).split('\n')[0]}): mend it (tools/leftovers.mjs)`; }
   if (!found.length) return null;
-  const rows = found.map((p) => `  ${p.pid} ${p.name}, ${Math.round((now - p.start) / 60000)} min: ${(p.cmd || '').slice(0, 160)}`);
-  return `commands running longer than ${LIMIT_MS / 60000} minutes under Claude Code (a command past its time limit goes on in the background, and outlives the helper that started it): stop each one no longer needed (PowerShell: Stop-Process -Id <id>), or wait for it:\n${rows.join('\n')}`;
+  // its id, program and age only: a command line can hold a key, and this goes into the session's
+  // record (CodeRabbit, 11.10); the line itself is read by its id when needed
+  const rows = found.map((p) => `  ${p.pid} ${p.name}, ${Math.round((now - p.start) / 60000)} min`);
+  return `commands running longer than ${LIMIT_MS / 60000} minutes under Claude Code (a command past its time limit goes on in the background, and outlives the helper that started it): stop each one no longer needed (PowerShell: Stop-Process -Id <id>; what it runs: (Get-CimInstance Win32_Process -Filter "ProcessId=<id>").CommandLine), or wait for it:\n${rows.join('\n')}`;
 }
