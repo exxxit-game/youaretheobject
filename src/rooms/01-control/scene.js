@@ -30,7 +30,8 @@ export const DOORWAY = { x: 0.7, z: BOOTH.maxZ };
 // (fixmyblinds.com, glossary), the rails' section and the cords' length. Two-inch slats over one-inch
 // ones (Type II): half the stripes, which the photosensitivity guidance counts (ITU-R BT.1702-3,
 // docs/research/vr/02-standards.md). Each slat is drawn with the crown, an arc of a circle: flat ones
-// never touch, and from above, close to the wall, the gaps between them showed dark stripes. Behind
+// never touch, and from above, close to the wall, the gaps between them showed dark stripes; it is lit
+// as one flat face (src/engine/shapes.js, slat), so no slat turns from light to dark across itself. Behind
 // them, dark, the glass with the observation room beyond, kept dark for a one-way mirror to work.
 // Inside the window's frame: y 1.005 to 1.795, z -0.9 to 0.3.
 const IN = 0.0254;
@@ -40,7 +41,7 @@ function blindsHTML() {
   const slat = 2 * IN, pitch = (1 + 11 / 16) * IN, tape = 1.5 * IN, tapeIn = 0.17;
   const rail = { h: IN, d: 1.25 * IN }, bottom = { h: 0.75 * IN, d: 1.75 * IN };
   // the crown, a quarter inch, as an arc over the slat's width: its circle and the arc's angle
-  const crown = IN / 4, R = (slat * slat) / (8 * crown) + crown / 2, arc = 2 * Math.asin(slat / 2 / R);
+  const crown = IN / 4, R = (slat * slat) / (8 * crown) + crown / 2;
   // the arc's height over the slat's middle line at a point u along the slat (the middle line runs
   // half the crown under the arc's top)
   const rise = (u) => Math.sqrt(R * R - u * u) - (R - crown / 2);
@@ -53,18 +54,19 @@ function blindsHTML() {
   const tilt = lo;
   const under = top - rail.h, over = sill + (5 / 8) * IN;
   const n = Math.floor((under - over - bottom.h) / pitch);
-  const front = x + (slat / 2) * Math.cos(tilt) + 0.001;
+  // the face tapes hang in front of the slats' foremost points (the crowned edges, once turned)
+  const ahead = Math.max(...Array.from({ length: 21 }, (_, k) => { const u = -slat / 2 + (slat * k) / 20; return u * Math.cos(tilt) - rise(u) * Math.sin(tilt); }));
+  const front = x + ahead + 0.001;
   const ENAMEL = 'color: #f0ead6; roughness: 0.45', CLOTH = 'color: #f0ead6; roughness: 0.9';
   const parts = [
     `<a-plane rotation="0 90 0" position="-1.598 ${f4((top + sill) / 2)} ${z}" width="1.2" height="${f4(top - sill)}" material="color: #101112; roughness: 1"></a-plane>`,
     `<a-box position="${f4(x)} ${f4(top - rail.h / 2)} ${z}" width="${f4(rail.d)}" height="${f4(rail.h)}" depth="${f4(length)}" material="${ENAMEL}"></a-box>`,
     `<a-box position="${f4(x)} ${f4(over + bottom.h / 2)} ${z}" width="${f4(bottom.d)}" height="${f4(bottom.h)}" depth="${f4(length)}" material="${ENAMEL}"></a-box>`
   ];
-  // a slat: an open cylinder's arc, its axis along the blind, turned so the crown faces the room's side
-  const deg = (v) => f4((v * 180) / Math.PI);
+  // the slats (src/engine/shapes.js slat), turned room-side edge up: the crown toward the glass, as a
+  // blind closed that way has it
   for (let i = 0; i < n; i++) {
-    parts.push(`<a-entity position="${f4(x)} ${f4(under - pitch * (i + 0.5))} ${z}" rotation="0 0 ${deg(tilt)}">` +
-      `<a-cylinder open-ended="true" radius="${f4(R)}" height="${f4(length)}" theta-start="${deg(Math.PI - arc / 2)}" theta-length="${deg(arc)}" segments-radial="6" segments-height="1" rotation="90 0 0" position="0 ${f4(-(R - crown / 2))} 0" material="${ENAMEL}; side: double"></a-cylinder></a-entity>`);
+    parts.push(`<a-entity slat="width: ${f4(slat)}; crown: ${f4(crown)}; length: ${f4(length)}; ${ENAMEL}" position="${f4(x)} ${f4(under - pitch * (i + 0.5))} ${z}" rotation="0 0 ${f4((tilt * 180) / Math.PI)}"></a-entity>`);
   }
   for (const s of [-1, 1]) {
     parts.push(`<a-plane rotation="0 90 0" position="${f4(front)} ${f4((under + over + bottom.h) / 2)} ${f4(z + s * (length / 2 - tapeIn))}" width="${f4(tape)}" height="${f4(under - over - bottom.h)}" material="${CLOTH}"></a-plane>`);

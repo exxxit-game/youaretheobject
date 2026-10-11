@@ -50,6 +50,31 @@ shapeComponent('rounded-box', {
   width: { default: 1 }, height: { default: 1 }, depth: { default: 1 }, radius: { default: 0.01 }
 }, (d) => roundedBoxGeometry(d.width, d.height, d.depth, d.radius, 3));
 
+// slat: a venetian blind's slat, an arc of a circle across its width with its crown up (+y), its
+// length along z, centred on the entity. Lit as one flat face, every normal the crown's: with curved
+// normals each closed slat turned from light to dark across its width, and a blind seen close made
+// more than five such pairs of stripes, which ITU-R BT.1702-3 counts as a harmful pattern (measured on
+// room 101's blinds: 20-50 cd/m2 a slat; docs/research/vr/02-standards.md). The arc keeps the crown's
+// shape, so closed slats still rest on each other and show no gap.
+function slatGeometry(w, crown, length, n) {
+  const R = (w * w) / (8 * crown) + crown / 2, y = (u) => Math.sqrt(R * R - u * u) - (R - crown / 2);
+  const pos = [], nor = [], uv = [];
+  for (let i = 0; i < n; i++) {
+    const a = -w / 2 + (w * i) / n, b = -w / 2 + (w * (i + 1)) / n;
+    const p = [[a, y(a), -length / 2, i / n, 0], [b, y(b), -length / 2, (i + 1) / n, 0], [b, y(b), length / 2, (i + 1) / n, 1], [a, y(a), length / 2, i / n, 1]];
+    // wound so the face's front is its crown side, where the normals point
+    for (const k of [0, 2, 1, 0, 3, 2]) { pos.push(p[k][0], p[k][1], p[k][2]); nor.push(0, 1, 0); uv.push(p[k][3], p[k][4]); }
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute('normal', new THREE.Float32BufferAttribute(nor, 3));
+  g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+  return g;
+}
+shapeComponent('slat', {
+  width: { default: 0.0508 }, crown: { default: 0.00635 }, length: { default: 1 }, side: { default: 'double' }
+}, (d) => slatGeometry(d.width, d.crown, d.length, 6));
+
 // plate: a flat plate with its corners rounded in its own plane (a clipboard, a clip's jaw), however
 // thin it is; its thickness along z, centred on the entity.
 function plateGeometry(w, h, d, c) {

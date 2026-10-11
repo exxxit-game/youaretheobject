@@ -264,6 +264,27 @@ async function playRoom(url, playtest, { leave = false } = {}) {
       lit: [...document.querySelectorAll('.corridor-light')].filter((el) => Number(el.getAttribute('light').intensity) > 0).map((el) => el.id),
       answers: [...document.querySelectorAll('#door1 .clickable, #buttonCap.clickable')].length
     })), { corridor: false, lit: [], answers: 0 }, 'from the room the corridor is still drawn or lit, or door 1 or the button answers when it does nothing');
+    // The closed blinds make no stripe pattern even seen close (ITU-R BT.1702-3: more than five pairs
+    // of light and dark stripes 20 cd/m2 apart, at its reference white of 200 cd/m2, are harmful; a
+    // headset fills the view): drawn from the wall, level, the light and dark within each slat along
+    // three lines across them (src/engine/shapes.js slat, measured 11.10: 20-50 cd/m2 a slat before)
+    const stripes = await page.evaluate(() => {
+      const scene = document.querySelector('a-scene'), r = scene.renderer, gl = r.getContext(), place = document.querySelector('#roomPlace').object3D;
+      const cam = new THREE.PerspectiveCamera(80, gl.drawingBufferWidth / gl.drawingBufferHeight, 0.05, 20);
+      cam.position.copy(place.localToWorld(new THREE.Vector3(-1.3, 1.45, -0.3)));
+      cam.lookAt(place.localToWorld(new THREE.Vector3(-1.6, 1.4, -0.3)));
+      cam.updateMatrixWorld();
+      r.render(scene.object3D, cam);
+      const w = gl.drawingBufferWidth, h = gl.drawingBufferHeight, lin = (c) => { c /= 255; return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; };
+      return Math.max(...[0.4, 0.5, 0.6].map((fx) => {
+        const y0 = Math.round(h * 0.05), n = Math.round(h * 0.9), px = new Uint8Array(4 * n);
+        gl.readPixels(Math.round(w * fx), y0, 1, n, gl.RGBA, gl.UNSIGNED_BYTE, px);
+        const L = Array.from({ length: n }, (_, i) => 200 * (0.2126 * lin(px[4 * i]) + 0.7152 * lin(px[4 * i + 1]) + 0.0722 * lin(px[4 * i + 2])));
+        const peaks = L.map((v, i) => i).filter((i) => i > 1 && i < n - 2 && L[i] > L[i - 1] && L[i] >= L[i + 1] && L[i] > L[i - 2] && L[i] >= L[i + 2]);
+        return peaks.slice(1).filter((p, k) => { const seg = L.slice(peaks[k], p + 1); return Math.max(...seg) - Math.min(...seg) >= 20; }).length;
+      }));
+    });
+    assert.ok(stripes <= 5, `the closed blinds seen close make ${stripes} light and dark stripes 20 cd/m2 apart (ITU-R BT.1702-3 allows five)`);
     // A computer's full screen is A-Frame's VR mode too (its enterVR adds the state without a
     // headset): the camera walked out through the walls in it (docs/mistakes.md). The camera is put
     // past the back wall, as the keys took it, and room-bounds must bring it back (wasd-controls
