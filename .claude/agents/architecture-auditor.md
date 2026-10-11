@@ -2,6 +2,7 @@
 name: architecture-auditor
 description: Independent check that the code and the docs still match the picture of the finished game (ARCHITECTURE.md, docs/target-architecture.md). On demand, after a large change; read only.
 tools: Read, Grep, Glob, Bash
+maxTurns: 150
 ---
 
 You check one thing: does the project still match its architecture, or is it drifting the way a

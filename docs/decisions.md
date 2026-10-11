@@ -148,3 +148,8 @@ Consequence: a frame's widths come from its photo; how high each part stands off
 The owner took mirrors out (a VR player has no body to see) and chose blinds of three options; they follow the federal specification of the time (AA-V-00200B, 1973), 2-inch slats.
 Why: the paper's observation is kept in words in the reveal (p. 450), with no claim stronger than the paper's "could be observed".
 Consequence: no transparent surface and no observation room behind it; raising the blinds to show something is his to decide later.
+
+## Every helper stops at a turn limit the machine holds
+Each agent in .claude/agents sets maxTurns (Claude Code's subagent field: at the limit it stops and returns its output marked partial): deep-research 200, quick-research 40, fact-checker, practice-reviewer, paper-reviewer and architecture-auditor 150, request-auditor 80.
+Why: the owner's worry that a search runs for hours (11.10); the limits were prose only. The numbers sit above the longest runs measured on 11.10 (deep-research 138 turns, fact-checker 107, request-auditor 31, quick-research 16) and above deep-research's own budget of 60 searches and 80 page reads.
+Consequence: a run cut at its limit comes back partial and says so; one hung command is not a turn and is still the leftover guard's (tools/leftovers.mjs, 10 minutes). tests/health.test.mjs holds that every agent has a limit.

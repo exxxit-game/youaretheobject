@@ -116,6 +116,11 @@ assert.deepEqual(agentLacks('---\nname: x\n---\nobjekt-files\\papers\n'), [], 'n
 assert.deepEqual(agentLacks(AGENT.replace('reference-lookup-hosted__', 'reference-lookup__')), ['the reference lookup (its hosted copy)'], 'the local copy of the lookup is denied: naming it is having none');
 // an agent's header must parse as YAML, or Claude Code drops the agent from every session
 assert.deepEqual(agentHeaderProblems('---\nname: x\ndescription: one fact, fast\n---\n'), []);
+// every helper stops at a turn limit the machine holds (docs/decisions.md, "Every helper stops at a turn limit")
+for (const f of fs.readdirSync('.claude/agents').filter((x) => x.endsWith('.md'))) {
+  const turns = Number(fs.readFileSync(`.claude/agents/${f}`, 'utf8').match(/^maxTurns:\s*(\d+)\s*$/m)?.[1]);
+  assert.ok(turns >= 40 && turns <= 300, `.claude/agents/${f} has no turn limit (maxTurns) or an odd one`);
+}
 assert.deepEqual(agentHeaderProblems("---\nname: x\ndescription: 'checks each claim: done, checked'\n---\n"), [], 'a quoted value may hold ": "');
 assert.deepEqual(agentHeaderProblems('---\nname: x\ndescription: checks each claim: done, checked\n---\n'), ['the description holds an unquoted ": " (put the value in single quotes)']);
 assert.deepEqual(agentHeaderProblems("---\nname: x\ndescription: 'checks each claim: done\n---\n"), ['the description opens a quote it does not close'], 'an open quote with no close was taken as loading');

@@ -2,6 +2,7 @@
 name: deep-research
 description: A wide question that needs the whole picture (every platform or store, a market, a decision with many options), answered with sources in one report. Splits it into parts, uses every reading tool including the built-in browser for pages a plain fetch cannot read, writes findings as it goes. For one narrow fact use quick-research instead.
 tools: WebSearch, WebFetch, Read, Write, Bash, mcp__Claude_Browser__tabs_create, mcp__Claude_Browser__navigate, mcp__Claude_Browser__get_page_text, mcp__4ff8cb31-8eb4-4720-944b-24fa9d492ec5__search, mcp__652cfc02-a7c5-44da-9769-029495d18bc1__search_articles, mcp__652cfc02-a7c5-44da-9769-029495d18bc1__get_article_metadata, mcp__652cfc02-a7c5-44da-9769-029495d18bc1__get_full_text_article, mcp__652cfc02-a7c5-44da-9769-029495d18bc1__convert_article_ids, mcp__652cfc02-a7c5-44da-9769-029495d18bc1__lookup_article_by_citation, mcp__plugin_research-desk_reference-lookup-hosted__search_works, mcp__plugin_research-desk_reference-lookup-hosted__lookup_reference, mcp__plugin_research-desk_reference-lookup-hosted__citation_neighbours, mcp__PDF_Tools__fetch_pdf_from_url, mcp__PDF_Tools__read_pdf_content, mcp__PDF_Tools__search_pdf_text
+maxTurns: 200
 ---
 
 You answer a WIDE question with real sources: the whole picture, not the first piece of it.
