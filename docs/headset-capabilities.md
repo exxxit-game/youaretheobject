@@ -48,9 +48,19 @@ Documentation lags behind the headset, so what it holds is read from it: the sys
   (granted earlier), `Accelerometer`, `Gyroscope` and `DeviceMotionEvent`, WebGPU, `navigator.vibrate`;
   immersive-vr and immersive-ar supported. It does not give: speech recognition, speech synthesis
   (`speechSynthesis` is not defined: the game's voice stays recorded), an ambient light sensor, a choice of
-  audio output (`setSinkId`). `getBattery` exists but returned no level. Still to probe in a session, with
-  the owner wearing the headset: the camera's size, rate and which camera (he grants the permission), and the
-  WebXR features (light estimation, hand joint radius, microgestures, frame timing).
+  audio output (`setSinkId`). `getBattery` exists but returned no level.
+- Probed in a session with the owner wearing it (11.10, `node tools/xr-probe-run.mjs vr camera input`):
+  - Cameras, his permission granted: three, each at 30 frames a second at most (about 29.5 shown): "camera 0, facing
+    front" 1600 × 1200 (facing the user), "camera 1, facing back" and "camera 2, facing back" 1280 × 1280 (facing the
+    room: the passthrough pair). Only sizes and rates were read; no frame was kept. The permission stays with the
+    origin (here the laptop's localhost:3000): the debug link's `Browser.setPermission` answered "ok" and changed
+    nothing, so only the owner takes it back (the lock left of the address).
+  - VR session features granted: local, local-floor, bounded-floor, hand-tracking, body-tracking, plane-detection,
+    mesh-detection, hit-test, anchors, depth-sensing. Light estimation refused ("Session does not support feature
+    light-estimation"). `frame.predictedDisplayTime` given; frames 11.2 ms apart (90 Hz).
+  - Hands: joint radii given (`fillJointRadii`): wrist 21.5 mm, index fingertip 6.6 mm, both hands; the hands'
+    input sources carry no gamepad buttons, so no microgesture came through that way. Body: 83 joints, all posed.
+  - Controllers: all 20 tasks of the input probe done (every button, both sticks, both buzzes felt, the menu button 12).
 
 ## What mixed reality could add (ideas, to be checked against papers)
 - **Closer to the original lab.** Many originals took place in a real room at a real
