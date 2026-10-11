@@ -90,7 +90,9 @@ quoted; the time is when he said it (UTC). A risk list or a general method is no
   a copy in objekt-files/docs-engine) is read for each task; lessons for him only when he wants one («Оставить по
   желанию… если от этого нет пользы, значит нет пользы» 11.10), then «при подготовке уроков находятся
   новые ошибки… все равно будем проходить» 11.10: the lessons go on, on the extinguisher, each prepared from the
-  engine's docs, so preparing one checks our code against them (the label and hose fault surfaced so).
+  engine's docs, so preparing one checks our code against them (the label and hose fault surfaced so). Later the same
+  day: «эти перепроверки за тобой мне вообще не нравятся… мне еще и выучить надо, и постоянно за тобой перепроверить, это
+  как бы, ну, глупо» 11.10: lessons only when he wants one; he never re-checks code, machines and reviewers do.
 - GitHub done properly, releases and all, now («давай сейчас каждый этот шаг сделаем правильно… Пусть оно
   там всем этим занимается» 9.10 07:23); the live site gets one thing only once it is polished
   («оттачиваем одну вещь… И только потом добавляем это в официальный наш репозиторий» 12:42).
@@ -149,6 +151,11 @@ quoted; the time is when he said it (UTC). A risk list or a general method is no
 - I check all a tool can measure; he judges what he sees, one action at a time («Ты должен… проверять сам
   все, что можешь»; «Мне надо делать что-то конкретно одно» 9.10 09:14); blocked, or missing a norm or a document: tell him at once, each time («Если чего-то нет, скажи мне… и мы
   найдем это… всегда говори мне каждый раз» 11.10).
+- No player character: only controllers or hands («хочу, чтобы это оставалось без какого-то персонажа. Просто джойстики
+  или руки… без привязки к маскоту» 11.10).
+- Knowledge is updated when needed: the docs copies, the tools and our records are refreshed from their sources when a
+  newer version matters («При нужде, пользуйся интернетом, обновляй документацию и инструменты… наши знания нужно
+  обновлять при нужде» 11.10).
 - Space tiers: seated, standing, roomscale 1.8×1.8 m (base; his area), large (offered only, never shrunk).
   Live players replace scripted people only where the original had real participants or a design like
   Mori & Arai; mixed reality where the original was a real room.
