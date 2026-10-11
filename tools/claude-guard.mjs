@@ -1,7 +1,9 @@
 // Guards on the assistant itself, run by Claude Code (.claude/settings.json), not by its memory:
 // a rule written as text is skipped under load, a hook is not. Exit 2 stops the action and tells
-// the assistant why (code.claude.com/docs/en/hooks: PreToolUse exit 2 blocks the tool call; Stop
-// exit 2 keeps the turn going, and Claude Code ends it anyway after 8 blocks in a row).
+// the assistant why (code.claude.com/docs/en/hooks: PreToolUse exit 2 blocks the tool call). The Stop
+// hook keeps the turn going with additionalContext, the hooks reference's way for a hook "working as
+// designed" (shown as Stop hook feedback, not as an error); Claude Code ends the turn anyway after 8
+// continuations in a row with no tool call between them.
 // Bans only where a mistake cannot be undone or costs the owner time; judgments by word lists were
 // taken out by his yes to the process review of 11.10 (docs/owner-decisions.md): they held words, not
 // claims, and stopped correct work more often than wrong.
@@ -466,12 +468,21 @@ if (mode === 'prompt') {
 }
 
 if (mode === 'stop') {
-  const problems = [];
+  // problems a command of mine can fix hold the turn every time; those no command can fix (GitHub out
+  // of reach when the power cut took the router, the process list unreadable) hold it once and then let
+  // it end with a warning: the hooks reference asks a Stop hook to check stop_hook_active "to avoid
+  // blocking on a condition that will never resolve"
+  const again = event.stop_hook_active === true;
+  const problems = [], unfixable = [];
+  const reachable = () => {
+    if (process.env.OBJECT_GITHUB_REACHABLE) return process.env.OBJECT_GITHUB_REACHABLE !== '0';
+    try { execFileSync('git', ['ls-remote', '--exit-code', 'origin', 'HEAD'], { cwd: HERE, env: withoutGitVars(), stdio: 'ignore', timeout: 15000 }); return true; } catch { return false; }
+  };
   const dirty = gitHere('status', '--porcelain');
   if (dirty) problems.push(`work not saved (power is cut daily):\n${dirty}`);
   const ahead = gitHere('rev-list', '--count', '@{u}..HEAD');
-  if (ahead === null) problems.push('this branch has no copy on GitHub: push it');
-  else if (Number(ahead)) problems.push(`${ahead} commits not on GitHub: push the working branch`);
+  const unpushed = ahead === null ? 'this branch has no copy on GitHub: push it' : Number(ahead) ? `${ahead} commits not on GitHub: push the working branch` : null;
+  if (unpushed) (again && !reachable() ? unfixable : problems).push(again ? `${unpushed} (GitHub is out of reach: push when it is back)` : unpushed);
   // the next window's checkout is made from the main folder's HEAD, room-polish (.claude/settings.json
   // worktree.baseRef head): work pushed on this branch alone is missing from the next session, and a
   // written rule to bring it over at the end of a step does not hold when a session ends mid-step
@@ -481,13 +492,21 @@ if (mode === 'stop') {
     // board's showing and current lines, and a conflict resolved to one side loses the owner's words
     const theirs = gitHere('merge-base', '--is-ancestor', 'room-polish', 'HEAD') === null ? gitHere('rev-list', '--count', 'HEAD..room-polish') : null;
     const first = theirs ? `room-polish has ${theirs} commits of another window: first here run git merge room-polish, keeping both sides of every conflict in docs/board.md (the owner's words), then ` : '';
-    problems.push(`the main folder (room-polish, where the next window starts) lacks ${gitHere('rev-list', '--count', 'room-polish..HEAD')} commits of this branch: ${first}in it run git merge --ff-only ${branch}, then git push origin room-polish`);
+    // room-polish itself goes to GitHub at the end of a step, not every turn: CodeRabbit reads the pull
+    // request from it, its plan reads 10 pushes an hour, and pushes every few minutes kept it from
+    // finishing any review from 15:28 to 20:53 UTC on 11.10
+    problems.push(`the main folder (room-polish, where the next window starts) lacks ${gitHere('rev-list', '--count', 'room-polish..HEAD')} commits of this branch: ${first}in it run git merge --ff-only ${branch} (push room-polish to GitHub at the end of a step, not every turn)`);
   }
   // a helper's command left running (the owner's yes, 11.10): seen at every turn's end, not by my memory
   const left = leftoverLine();
-  if (left) problems.push(left);
+  if (left) (again && /could not list the processes/.test(left) ? unfixable : problems).push(left);
   // npm test is not run here: it runs before "done" and on GitHub, and the commit hook's quick check
   // before every commit; running the whole suite again cost 12-56 s a turn
-  if (problems.length) stop(`NOT DONE. Before this turn ends:\n- ${problems.join('\n- ')}`);
+  if (problems.length) {
+    const why = `NOT DONE. Before this turn ends:\n- ${[...problems, ...unfixable].join('\n- ')}`;
+    process.stdout.write(JSON.stringify({ hookSpecificOutput: { hookEventName: 'Stop', additionalContext: why } }));
+    process.exit(0);
+  }
+  if (unfixable.length) process.stdout.write(JSON.stringify({ systemMessage: `The turn ends with what no command fixes now:\n- ${unfixable.join('\n- ')}` }));
   process.exit(0);
 }

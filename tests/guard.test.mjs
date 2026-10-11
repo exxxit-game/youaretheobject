@@ -208,8 +208,36 @@ assert.equal(ask('Bash', 'grep -rn "git commit --no-verify" docs/'), 0, 'the hoo
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'leftovers-'));
   fs.writeFileSync(path.join(dir, 'list.json'), JSON.stringify(tree.map((p) => ({ ...p, start: p.start - T + Date.now() - LIMIT_MS - 3 * min }))));
   const hook = spawnSync(process.execPath, ['tools/claude-guard.mjs', 'stop'], { cwd: ROOT, encoding: 'utf8', env: { ...process.env, OBJECT_PROCESS_LIST: path.join(dir, 'list.json') }, input: JSON.stringify({ cwd: ROOT, stop_hook_active: false }) });
-  assert.ok(hook.status === 2 && /longer than 10 minutes[\s\S]*980 find\.exe, \d+ min$/m.test(hook.stderr), `the stop hook let the turn end with a command left running:\n${hook.stderr}`);
-  assert.ok(!hook.stderr.includes('camera.md'), 'the stop hook printed a command line, which can hold a key');
+  const told = (() => { try { return JSON.parse(hook.stdout).hookSpecificOutput?.additionalContext || ''; } catch { return ''; } })();
+  assert.ok(hook.status === 0 && /longer than 10 minutes[\s\S]*980 find\.exe, \d+ min$/m.test(told), `the stop hook let the turn end with a command left running:\n${hook.stdout}${hook.stderr}`);
+  assert.ok(!hook.stdout.includes('camera.md'), 'the stop hook printed a command line, which can hold a key');
+  fs.rmSync(dir, { recursive: true, force: true });
+}
+
+// The stop hook holds a turn on what a command can fix, every time; on what no command can fix (GitHub
+// out of reach), it holds once and then, with stop_hook_active, lets the turn end with a warning. A
+// repository of the test's own, one commit ahead of its own origin.
+{
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'stop-'));
+  const repo = path.join(dir, 'work'), origin = path.join(dir, 'origin.git');
+  const git = (...a) => spawnSync('git', a, { cwd: repo, encoding: 'utf8', env: { ...process.env, GIT_DIR: undefined } });
+  fs.mkdirSync(repo);
+  spawnSync('git', ['init', '-q', '--bare', origin]);
+  git('init', '-q'); git('config', 'user.email', 't@t'); git('config', 'user.name', 't'); git('config', 'core.hooksPath', '/dev/null');
+  fs.writeFileSync(path.join(repo, 'a.txt'), 'a\n'); git('add', '.'); git('commit', '-qm', 'a');
+  git('remote', 'add', 'origin', origin); git('push', '-q', '-u', 'origin', 'HEAD');
+  fs.writeFileSync(path.join(repo, 'a.txt'), 'b\n'); git('commit', '-qam', 'b');
+  fs.writeFileSync(path.join(dir, 'none.json'), '[]');
+  const ask = (again, reachable, more = {}) => spawnSync(process.execPath, [path.join(ROOT, 'tools/claude-guard.mjs'), 'stop'], { cwd: repo, encoding: 'utf8',
+    env: { ...process.env, OBJECT_PROCESS_LIST: path.join(dir, 'none.json'), OBJECT_GITHUB_REACHABLE: reachable ? '1' : '0', ...more }, input: JSON.stringify({ cwd: repo, stop_hook_active: again }) });
+  const said = (r) => { try { return JSON.parse(r.stdout); } catch { return {}; } };
+  const first = said(ask(false, false));
+  assert.match(first.hookSpecificOutput?.additionalContext || '', /1 commits not on GitHub/, 'the first stop let an unpushed turn end');
+  const second = ask(true, false);
+  assert.ok(second.status === 0 && !said(second).hookSpecificOutput && /out of reach/.test(said(second).systemMessage || ''), `with GitHub out of reach the second stop still held the turn:\n${second.stdout}`);
+  assert.match(said(ask(true, true)).hookSpecificOutput?.additionalContext || '', /not on GitHub/, 'with GitHub in reach the second stop let an unpushed turn end');
+  fs.writeFileSync(path.join(repo, 'a.txt'), 'c\n');
+  assert.match(said(ask(true, false)).hookSpecificOutput?.additionalContext || '', /work not saved/, 'unsaved work was let go: a commit is always possible');
   fs.rmSync(dir, { recursive: true, force: true });
 }
 

@@ -46,7 +46,10 @@ const headsetTool = (args, record) => {
 // Claude Code hands its hook the event as JSON on stdin (code.claude.com/docs/en/hooks)
 const askGuard = (mode, event, extra = {}) => {
   const r = spawnSync(process.execPath, ['tools/claude-guard.mjs', mode], { cwd: dir, env: { ...env, ...extra }, encoding: 'utf8', input: JSON.stringify(event) });
-  return { ok: r.status === 0, out: `${r.stdout}${r.stderr}` };
+  // the stop hook holds a turn with additionalContext and exit 0 (Claude Code's hooks reference), so
+  // "red" there is a held turn, not an exit code
+  const held = /"additionalContext"/.test(r.stdout);
+  return { ok: r.status === 0 && !held, out: `${r.stdout}${r.stderr}` };
 };
 // a helper's command eleven minutes old under a Claude Code session, as the processes are listed on the
 // laptop (tools/leftovers.mjs); no runner can make a process that old in a test, so the list is planted
