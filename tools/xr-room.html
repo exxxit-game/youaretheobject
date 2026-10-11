@@ -83,11 +83,11 @@ function draw(main, small) {
 // the steps tools/xr-room-run.mjs shows, each for its time. Walking stays inside his boundary: the
 // next room waits for a procedure that is safe (docs/audit/room-probe-review.md, finding 1)
 window.__steps = [
-  { "main": "Это твоя комната глазами очков: треугольники — сетка, линии — стены и мебель. Осмотрись, не сходя с места", "small": "1 из 5 · 15 секунд", "secs": 15 },
-  { "main": "Медленно пройдись внутри своей зоны, к стенам не подходи", "small": "2 из 5 · 40 секунд; пока идёшь, линии бледнее", "secs": 40 },
-  { "main": "Если стол или шкаф в твоей зоне — подойди и посмотри вблизи; если нет — издалека", "small": "3 из 5 · 20 секунд", "secs": 20 },
+  { "main": "Это твоя комната глазами очков. Осмотрись, не сходя с места", "small": "1 из 5 · линии — стены и мебель · 15 секунд", "secs": 15 },
+  { "main": "Медленно пройдись внутри своей зоны, к стенам не подходи", "small": "2 из 5 · 40 секунд; пока идёшь, всё бледнее", "secs": 40 },
+  { "main": "Посмотри на стол или шкаф, не сходя с места", "small": "3 из 5 · 20 секунд", "secs": 20 },
   { "main": "Положи контроллеры и подними обе руки перед собой, раскрой ладони", "small": "4 из 5 · 15 секунд", "secs": 15 },
-  { "main": "Встань прямо и разведи руки в стороны", "small": "5 из 5 · 10 секунд", "secs": 10 },
+  { "main": "Вернись в середину зоны, встань прямо и разведи руки в стороны", "small": "5 из 5 · 10 секунд", "secs": 10 },
   { "main": "Готово, спасибо. Возьми контроллеры, сними очки и напиши «снял»", "small": "конец", "secs": 3 }
 ];
 
@@ -112,14 +112,17 @@ window.__say = (main, small = '') => {
 async function start() {
   if (running) return;
   running = true;
-  try { audio = audio || new AudioContext(); } catch (e) { audio = null; }
+  try { audio = audio || new AudioContext(); audio.resume(); } catch (e) { audio = null; }
+  // the panel's words in the page's own face, loaded before the first step is drawn
+  try { await document.fonts.load('500 75px Inter', 'Аа'); } catch (e) { /* a stand-in face then */ }
   solids.length = 0; lines.length = 0; panel.visible = false;
-  r = window.__room = { started: new Date().toISOString(), path: [], planes: {}, meshes: {}, hands: {}, events: [], steps: [] };
+  r = window.__room = { started: new Date().toISOString(), path: [], planes: {}, meshes: {}, hands: {}, events: [], steps: [], sound: audio ? audio.state : 'none' };
   window.__rooms.push(r);
   window.__rooms.splice(0, Math.max(0, window.__rooms.length - KEEP_RUNS));
   const session = await navigator.xr.requestSession('immersive-ar', {
     optionalFeatures: FEATURES,
-    depthSensing: { usagePreference: ['cpu-optimized', 'gpu-optimized'], dataFormatPreference: ['luminance-alpha', 'float32'] }
+    // the CPU path only: on the GPU path the bundled three.js hides lines behind a depth mesh of its own
+    depthSensing: { usagePreference: ['cpu-optimized'], dataFormatPreference: ['luminance-alpha', 'float32'] }
   });
   r.enabledFeatures = session.enabledFeatures ? [...session.enabledFeatures] : 'not reported';
   // depth as the browser chose it: read on the CPU only when it gave the CPU path
@@ -143,7 +146,8 @@ async function start() {
   session.addEventListener('end', () => { r.ended = new Date().toISOString(); running = false; save(); });
 
   const shown = new Map();
-  let ids = 0, lastPath = 0, lastSave = 0, last = null, faded = false;
+  let ids = 0, lastPath = 0, lastSave = 0, faded = false;
+  const recent = [];   // where his head was over the last second, for a walking speed that does not blink
   const show = (thing, kind, build) => {
     let o = shown.get(thing);
     if (o && o.changed === thing.lastChangedTime) return o;
@@ -164,12 +168,14 @@ async function start() {
     if (viewer && time - lastPath > 200) {
       const p = viewer.transform.position;
       r.path.push([Math.round(time), round(p.x), round(p.y), round(p.z)]);
-      // the lines fade while he walks faster than a slow step, and come back when he stands
-      if (last) {
-        const moving = Math.hypot(p.x - last.x, p.z - last.z) / ((time - last.t) / 1000) > 0.25;
-        if (moving !== faded) { faded = moving; for (const m of lines) m.opacity = faded ? 0.12 : 0.5; }
+      // the lines and the panel fade while he walks faster than a slow step over the last second,
+      // and come back when he stands (Meta: less virtual content while the person moves)
+      recent.push({ x: p.x, z: p.z, t: time });
+      while (recent.length > 1 && time - recent[0].t > 1000) recent.shift();
+      if (recent.length > 2) {
+        const a = recent[0], moving = Math.hypot(p.x - a.x, p.z - a.z) / ((time - a.t) / 1000) > 0.25;
+        if (moving !== faded) { faded = moving; for (const m of lines) m.opacity = faded ? 0.12 : 0.5; panel.material.opacity = faded ? 0.15 : 1; }
       }
-      last = { x: p.x, z: p.z, t: time };
       lastPath = time;
       if (r.depth.usage === 'cpu-optimized' && r.depth.centreM === undefined && frame.getDepthInformation) {
         try { const d = frame.getDepthInformation(viewer.views[0]); if (d) { r.depth.size = [d.width, d.height]; r.depth.centreM = round(d.getDepthInMeters(0.5, 0.5)); } } catch (e) { r.depth.error = e.message; }
@@ -208,19 +214,31 @@ async function start() {
     // the room's mesh: its triangles as lines, and an unseen copy to place the panel against
     for (const m of frame.detectedMeshes || []) {
       const pose = frame.getPose(m.meshSpace, ref);
+      if (!pose) continue;
       const o = show(m, 'mesh', () => {
         const g = new THREE.BufferGeometry();
         g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(m.vertices), 3));
         g.setIndex(new THREE.BufferAttribute(new Uint32Array(m.indices), 1));
         g.computeBoundingBox();
         const s = g.boundingBox.getSize(new THREE.Vector3());
-        // the floor is measured but not drawn: lines over it would hide what could trip him
-        return { line: m.semanticLabel === 'floor' ? null : new THREE.LineSegments(new THREE.WireframeGeometry(g), new THREE.LineBasicMaterial({ color: colour(m.semanticLabel), transparent: true, opacity: 0.5 })),
+        // the floor is measured but not drawn: lines over it would hide what could trip him. The room's
+        // scan comes as one global mesh with the floor inside it, so a triangle is drawn only when all
+        // its corners stand above 0.15 m
+        const toRoom = new THREE.Matrix4().fromArray(pose.transform.matrix), v = new THREE.Vector3(), up = [];
+        for (let i = 0; i < m.indices.length; i += 3) {
+          let low = false;
+          for (let k = 0; k < 3; k++) { const j = m.indices[i + k] * 3; v.set(m.vertices[j], m.vertices[j + 1], m.vertices[j + 2]).applyMatrix4(toRoom); if (v.y < 0.15) low = true; }
+          if (!low) up.push(m.indices[i], m.indices[i + 1], m.indices[i + 2]);
+        }
+        const drawn = new THREE.BufferGeometry();
+        drawn.setAttribute('position', g.getAttribute('position'));
+        drawn.setIndex(up);
+        return { line: up.length ? new THREE.LineSegments(new THREE.WireframeGeometry(drawn), new THREE.LineBasicMaterial({ color: colour(m.semanticLabel), transparent: true, opacity: 0.5 })) : null,
           solid: new THREE.Mesh(g, new THREE.MeshBasicMaterial({ colorWrite: false, depthWrite: false })),
           info: { label: m.semanticLabel || 'mesh', triangles: m.indices.length / 3, sizeM: [round(s.x), round(s.y), round(s.z)] } };
       });
       r.meshes[o.id] = o.info;
-      if (pose) at(o, pose);
+      at(o, pose);
     }
     // the planes: their outlines, sizes and, for the level ones, their height above the floor
     for (const p of frame.detectedPlanes || []) {

@@ -1,9 +1,9 @@
 // Runs the real-room session in the owner's headset: opens tools/xr-room.html in the game's tab,
 // starts it, shows each step for its time, logs battery and heat meanwhile, saves the summary.
 // Usage: node tools/xr-room-run.mjs [folder]   the game tab open on localhost:3000 in the headset; the
-// result goes to <folder>/room-result.json, or is printed. As tools/quest-look.mjs vr, it starts only
-// while the owner wears the headset and once a practice review has seen the probe as it is
-// (docs/audit/room-probe-review.md).
+// result goes to <folder>/room-result.json, or is printed. It starts only while the owner wears the
+// headset and once a practice review has seen these very files, as tools/xr-probe-run.mjs does
+// (docs/audit/room-probe-review.md). He presses the start button himself, after reading the page.
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -14,7 +14,7 @@ const here = process.argv[2] || null;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const log = (...a) => console.log(new Date().toISOString().slice(11, 19), ...a);
 
-requireReview(path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'), 'the real-room session in the headset', { look: true });
+requireReview(path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'), 'the real-room session in the headset');
 if (!wornByPerson()) { console.log('not now: the headset is not on his head'); process.exit(1); }
 // the folder is made before the run, so a long session never ends unsaved
 if (here) fs.mkdirSync(here, { recursive: true });
@@ -31,11 +31,11 @@ if (!room) throw new Error('the room page did not open');
 log('page', await room.run("({ three: !!window.THREE, say: typeof window.__say })"));
 // what he is to do, each for its time, kept with the page's words (tools/xr-room.html)
 const STEPS = await room.run('window.__steps');
-await room.run("document.getElementById('start').click(), 'clicked'", true);
-// the session has started, or the run stops: no steps are timed without it (he may first answer the
-// browser's question about his space data)
+// he presses the start button and answers the browser's question about his space data; the session has
+// started, or the run stops: no steps are timed without it
+log('waiting for his press');
 let state = null;
-for (let i = 0; i < 60; i++) {
+for (let i = 0; i < 120; i++) {
   await sleep(1000);
   state = await room.run('window.__roomState()');
   if (!state || state.error || state.started) break;
