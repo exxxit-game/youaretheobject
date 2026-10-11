@@ -156,6 +156,10 @@ quoted; the time is when he said it (UTC). A risk list or a general method is no
   посмотреть не можешь, значит и толку от зеркала там нету»; «Намного легче вместо зеркал поставить что-то другое» 11.10).
 - No player character: only controllers or hands («хочу, чтобы это оставалось без какого-то персонажа. Просто джойстики
   или руки… без привязки к маскоту» 11.10).
+- The work's loop: find what exists, build it in, check it, write its source beside it; what is not found is said to him
+  and chosen together («Искать, воплощать, искать, воплощать… Я правильно вижу наш процесс?», and to the two steps I
+  added, check after building and record the source: «хорошо дополнил» 11.10); in code nothing invented («нельзя получить
+  результат, если результат нафантазирован» 11.10).
 - Knowledge is updated when needed: the docs copies, the tools and our records are refreshed from their sources when a
   newer version matters («При нужде, пользуйся интернетом, обновляй документацию и инструменты… наши знания нужно
   обновлять при нужде» 11.10).
