@@ -14,7 +14,7 @@ Answer the owner in Russian, plain words, short. The repo is English; Russian on
 - Do what was asked, with the whole around it seen first; ideas go at the end of the answer, not into code. A new topic goes to a new window.
 - After the rebuild the process is frozen (his decision): a health-check finding (node tools/health.mjs) only
   repairs the broken thing; anything new needs his word and replaces something. This file stays within 45 lines (tests/structure.test.mjs).
-- Blocked (a login, a captcha, a paywall, a photo only he can take): ask him at once, with the link, once; it waits in the board's «Ждёт тебя».
+- Missing anything for the work (a norm, a document, a login, a paywall, his photo): tell him at once, each time, with the link.
 - He is angry: act on the topic, no promises.
 
 ## Truth: we recreate («воссоздаём»)

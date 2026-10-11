@@ -147,7 +147,8 @@ quoted; the time is when he said it (UTC). A risk list or a general method is no
   известными людям знаниями… нацелены на развитие. И поприменяй их… там, где это необходимо» 11.10). A remark of the outside reviewer is closed only by the
   reviewer itself (tools/claude-guard.mjs refuses mine): «ты сам себя можешь оправдать» 11.10.
 - I check all a tool can measure; he judges what he sees, one action at a time («Ты должен… проверять сам
-  все, что можешь»; «Мне надо делать что-то конкретно одно» 9.10 09:14); blocked: ask him at once.
+  все, что можешь»; «Мне надо делать что-то конкретно одно» 9.10 09:14); blocked, or missing a norm or a document: tell him at once, each time («Если чего-то нет, скажи мне… и мы
+  найдем это… всегда говори мне каждый раз» 11.10).
 - Space tiers: seated, standing, roomscale 1.8×1.8 m (base; his area), large (offered only, never shrunk).
   Live players replace scripted people only where the original had real participants or a design like
   Mori & Arai; mixed reality where the original was a real room.
