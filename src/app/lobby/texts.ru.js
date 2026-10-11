@@ -3,6 +3,8 @@
 export const LOBBY_T = {
   // the game's name stays in English in every language: the player is the object
   title: 'You are the object',
+  // the light box over door 1: the name as the site's address, one lamp a word (src/app/lobby/sign.js)
+  signWords: ['you', 'are', 'the', 'object', '.com'],
   // the head of the clipboard's form, as on a consent form: the participant's name goes on the
   // line (the game's name is on the light box over the door, not on the form)
   participant: 'Участник ____________________',

@@ -130,7 +130,8 @@ https://www.edpb.europa.eu/sites/default/files/files/file1/edpb_guidelines_3_201
   Our indirect identifiers: age group, gender, seated, device, date; check rare combinations before any public file.
 
 ### D5. Per-room validation
-- Today submit_run holds room 01's whitelist inline (0008_submit_run_age.sql, about 70 lines); nine rooms a floor
+- Done by migration 0009 (applied 10.10): one JSON Schema per room version, supabase/schemas/01-control-1.json.
+  Before it, submit_run held room 01's whitelist inline (0008_submit_run_age.sql, about 70 lines); nine rooms a floor
   would grow one function where an edit for one room can break another.
 - https://supabase.com/docs/guides/database/extensions/pg_jsonschema : "validate ... json and jsonb data types
   against JSON Schema documents"; `jsonb_matches_schema(schema json, instance jsonb)`; "generally used in tandem
@@ -203,7 +204,7 @@ https://www.edpb.europa.eu/sites/default/files/files/file1/edpb_guidelines_3_201
 | "Anonymous" wording | "anonymous" | "anonymous after 7 days; provider logs IP" | CHANGE | Breyer, SRB (L5) | text / same | decision A, lawyer |
 | Consent version | none | a number in every row | ADD | Art 7(1), science later (D1) | 1 field / rows without it never usable for papers | decision B |
 | Send moment | before the reveal | keep/discard after the reveal | CHANGE | APA 8.07(c), BPS (D2) | 1 screen / 5 rooms changed | nothing |
-| Validation | inline whitelist in one function | JSON Schema per room version | CHANGE | pg_jsonschema (D5) | 1 room rewritten / 5 rewritten and a shared function at risk | nothing |
+| Validation | JSON Schema per room version (migration 0009) | same | KEEP | pg_jsonschema (D5) | 1 room rewritten / 5 rewritten and a shared function at risk | nothing |
 | Codebook | none | schema file + human page + errata per version | ADD | APA 8.14, vrprotocols, UKDS (D4/D7) | 1 / 5 written after the fact | nothing |
 | Bots | one global count | hashed-IP limit + schema checks + alert | CHANGE | lock-out risk (D6) | 1 migration / same | decision C |
 | Backups | 7 daily at Supabase | + weekly own dump, no PITR | ADD | same provider only (S1) | a GitHub job / same | adds the DB password as a GitHub secret |
@@ -229,8 +230,8 @@ D. A lawyer, when: (1) one consultation with a Ukrainian data-protection lawyer 
    version or the first paid floor, when GDPR targeting starts. Price: not researched.
 
 ## What to do first (after his word; main untouched)
-1. One migration as one whole: date-only time, random key, consent-version field, JSON Schema validation for room 01,
-   hashed-IP limit (if C1); written and reviewed on a branch, applied on his word.
+1. Done 10.10, migration 0009: date-only time, random key, consent-version field, JSON Schema validation for room 01,
+   hashed-IP limit; written and reviewed on a branch, applied on his word.
 2. The client: keep/discard after the reveal, consent version sent; the test that pins fields reads the schema.
 3. privacy.html and the consent text after A and B; the three retention clocks.
 4. The GitHub job: weekly logical dump + `db diff --linked` (he adds the secret).

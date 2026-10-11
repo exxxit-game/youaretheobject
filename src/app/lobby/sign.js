@@ -4,9 +4,11 @@
 // game's name as the site's address, and every word has its own lamp, so the sign can
 // play with it (a sign losing letters to say something else: TV Tropes "Signs of
 // Disrepair"; a part goes dark alone only with its own lamp: Signs of the Times).
-// The name is English in every language and is never translated.
+// The name is English in every language and is never translated; its words are player text, kept in
+// texts.ru.js with the rest of it.
 import { PLAN } from './plan.js';
-export const SIGN_WORDS = ['you', 'are', 'the', 'object', '.com'];
+import { LOBBY_T } from './texts.ru.js';
+export const SIGN_WORDS = LOBBY_T.signWords;
 export const SIGN_STYLE = { size: 84, weight: 800, spacing: 4, pad: 36, bg: '#160f05', on: '#ffe7b0', off: '#3a2d1f' };
 // Where the sign's face hangs (world metres), over door 1 on the north wall (src/app/lobby/plan.js):
 // a box 0.09 m deep, its foot on the frame head's top (2.2042 m: door.js, the head 51 mm deep at

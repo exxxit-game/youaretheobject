@@ -35,7 +35,8 @@ function prepared(geometry, matrix, color) {
   if (!g.attributes.uv) return null;
   g.clearGroups();
   const n = g.attributes.position.count, rgb = new Float32Array(n * 3);
-  for (let i = 0; i < n; i++) rgb.set([color.r, color.g, color.b], i * 3);
+  // written component by component: an array a vertex made garbage at load on the weakest headset
+  for (let i = 0; i < n; i++) { rgb[i * 3] = color.r; rgb[i * 3 + 1] = color.g; rgb[i * 3 + 2] = color.b; }
   g.setAttribute('color', new THREE.BufferAttribute(rgb, 3));
   return g.applyMatrix4(matrix);
 }

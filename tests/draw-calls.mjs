@@ -22,11 +22,16 @@ export async function drawCalls({ eyes: boxes } = {}) {
   if (!boxes || !boxes.length) throw new Error('drawCalls: where an eye can be is not given');
   const sceneEl = document.querySelector('a-scene'), renderer = sceneEl.renderer, xr = window.__xr;
   if (!xr || !renderer.xr.isPresenting) throw new Error('drawCalls: not in VR on the emulated headset');
-  // the next frame the headset draws of the scene: its calls, and by whom (renderer.info resets on each render)
-  const nextFrame = (by) => new Promise((done) => {
+  // the next frame the headset draws of the scene: its calls, and by whom (renderer.info resets on each render).
+  // A loop that stopped drawing would leave the wrapper in place and the smoke test waiting for ever:
+  // after FRAME_WAIT the wrapper comes off and the measure fails
+  const FRAME_WAIT = 10000;
+  const nextFrame = (by) => new Promise((done, fail) => {
     const render = renderer.render, draw = renderer.renderBufferDirect;
+    const timer = setTimeout(() => { renderer.render = render; renderer.renderBufferDirect = draw; fail(new Error(`drawCalls: no frame drawn in ${FRAME_WAIT} ms`)); }, FRAME_WAIT);
     renderer.render = function (scene, camera) {
       if (scene !== sceneEl.object3D) return render.call(this, scene, camera);
+      clearTimeout(timer);
       renderer.render = render;
       if (by) {
         renderer.renderBufferDirect = function (cam, sc, geometry, material, object, group) {
