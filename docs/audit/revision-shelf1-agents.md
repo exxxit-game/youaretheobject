@@ -1,5 +1,7 @@
 # Shelf 1, part C: our subagents and our skill against Anthropic's docs (11.10.2026)
 
+> Correction (11.10, two fact-checks of the shelf page): 2.1.268 below is the npm CLI on PATH, not what runs the sessions. The desktop app runs its own copy, 2.1.295 (its folder AppData/Roaming/Claude/claude-code holds 2.1.295 and 2.1.293), so maxTurns, omitClaudeMd and onFailure are all available without an update.
+
 > Kept as the helper wrote it on 11.10.2026 for the revision (docs/audit/revision.md): shelf 1, part C: our subagents and skill against the Claude Code docs of 11.10. Russian passages are left out of this English copy; their sources are linked. Nothing here is acted on until it is checked against our code and shown to the owner.
 
 
