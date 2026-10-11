@@ -5,7 +5,11 @@
   https://youaretheobject.com (GitHub Pages from `main`; `main` is an OLD package). Work: `room-polish`.
   Each session: one visible thing for him plus internal work (the board). Each session works in its own worktree, made from the main
   folder's HEAD (`.claude/settings.json` worktree.baseRef head; the default was old main); no turn ends until
-  the main folder (room-polish) holds the session branch (stop hook, tools/claude-guard.mjs). Push every turn (power cuts); main only on his word.
+  the main folder (room-polish) holds the session branch (stop hook, tools/claude-guard.mjs). Push the session branch every turn (power cuts),
+  room-polish to GitHub at the end of a step; main only on his word.
+- CodeRabbit: trial 10.10–23.10, then paid only if useful (his decision). It reads the one pull request room-polish →
+  reviewed (#10), at most 10 pushes an hour on its plan; a robot on GitHub (.github/workflows/reviewed.yml, main's
+  copy of tools/advance-reviewed.mjs) moves reviewed up once a read push has no open remark.
 - Room 01 = illusion of control (Alloy & Abramson 1979), `src/rooms/01-control/`: SET ASIDE 08.10 as a lab
   room (16–20 min of waiting, owner found it unbearably boring). Playtest `?playtest=1`, speed `?speed=N`.
 - Migrations 0009 (date only, random key, consent version, room 01 JSON Schema, keyed IP limit) and 0010 (known consent

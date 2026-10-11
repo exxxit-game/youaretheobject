@@ -9,7 +9,6 @@ enough. A new decision: its line here, the rest there. A risk list or a general 
 - The rules read at start shortened («укорачивать» 11.10): the important always in front of me, the rest read only during its task («чтобы твоя память была чистая» 11.10).
 - Bans few, thinking free, no invention in precise work («Размышлять… я вообще никогда тебе не запрещаю. Но вот додумывать, фантазировать… когда здесь точечная работа» 11.10).
 - His permanent prompt stands at the top of CLAUDE.md: his long text of 11.10 («Да, длинный вариант») put in points, variant B of the revision's shelf 1 («Вариант В» 11.10); the text as he pasted it is in the record.
-- The process first, rebuilt by the plan, all at once («нельзя улучшать игру, пока мы не улучшили процесс разработки» 10.10).
 - Then frozen: it changes only on a health-check finding (node tools/health.mjs; it only repairs the broken thing) or his word, and a change replaces something («согласен» 10.10).
 - The process review accepted (https://claude.ai/artifact/NMfbi3vWaZQX8oR9t39mTC): a ban only where a mistake cannot be undone or costs him time; a complaint is no reason for a new guard («Убирать, что не надо» 11.10).
 - What matters is kept by checks the machine runs by itself, stage by stage, not by memory: each stage has its list of what must be known and checked before it («поэтапно» 10.10); a claim about our setup is read from the thing itself, about Quest from Meta's docs; nothing red reaches GitHub («чтобы ты не по памяти отвечал» 10.10).
@@ -18,7 +17,7 @@ enough. A new decision: its line here, the rest there. A risk list or a general 
 - Google Drive is the papers' cloud copy; the old Dropbox files stay («мы выбираем Google Driver» 10.10).
 - Plugins on for every project: CodeRabbit and the TypeScript language server, the rest off («ставь» 9.10); the strongest model («взял самую-самую умную» 9.10); main protected on GitHub («Да» 9.10).
 - Paid tools only when they help decisively («не готов платить за лишнюю херню» 10.10).
-- CodeRabbit on its 14-day trial, kept only if useful («А если он нам будет очень полезен, я, может, и дальше за него буду платить» 10.10); it reviews the one pull request room-polish → reviewed, moved by a robot on GitHub, never by the session under review («да, этот» 10.10); it replaces the PR review toolkit («делай» 10.10).
+- CodeRabbit kept only if useful («А если он нам будет очень полезен, я, может, и дальше за него буду платить» 10.10); moved forward by a robot on GitHub, never by the session under review («да, этот» 10.10); it replaces the PR review toolkit («делай» 10.10); its trial and the pull request it reads: docs/state.md.
 - He sets up and connects; I check it all as one whole («Все, что надо настроить, подключить, я настрою и подключу» 10.10).
 
 ## The goal
@@ -29,9 +28,8 @@ enough. A new decision: its line here, the rest there. A risk list or a general 
 
 ## Order
 - The corridor is the reference every room is built on (after the process rebuild), finished before anything else («доделать эталонный коридор, на который мы опираемся» 9.10); its order «Подпись, печать, лаборатории, картины… указатель… свет» (8.10), visuals first, texts after (9.10).
-- Until it is done: one window; one corridor item start to finish, then a picture and his yes or fix; anything else one line at the board's end unless he says urgent; the board's first line counts items done («Да» 10.10).
+- Until it is done: one window at a time, the others closed; one corridor item start to finish, then a picture and his yes or fix; anything else one line at the board's end unless he says urgent; the board's first line counts items done («Да» 10.10).
 - The headset check before the next room («Мы все время откладывали эту проверку» 9.10).
-- Yesterday's errors closed fully first («решим их полностью» 9.10).
 - The start best-in-class («Пока первое не будет супер, дальше нечего даже идти» 9.10).
 - The experimenter branch stays on the laptop, next after the corridor («они будут следующие после коридора» 9.10).
 - The engine's own docs of our version (A-Frame 1.8.0, objekt-files/docs-engine) are read for each task («намного легче не выдумывать, а брать уже уроки готовые» 11.10).
@@ -51,7 +49,7 @@ enough. A new decision: its line here, the rest there. A risk list or a general 
 - No light from nowhere: the scene's lights, fixed once for the whole corridor («проблема решается глобально» 9.10).
 - Guy Ritchie's "Revolver", not Portal: replayed to be understood, built detail by detail («деталька за деталькой» 9.10); Portal's humour all the same («без юмора ты там просто как лабораторная крыса» 10.10).
 - Readability beats period look («Читаемость» 8.10); pictures before the game (8.10); beauty within the weakest headset's budget («максимум красоты, ну не в нагрузку» 9.10).
-- Looks rise later, one thing at a time; now the build method and the frame budget, by the plan he accepted: merge first, measure in the headset, then multiview («а поднять потом качество в максимум… думаю норм» 10.10).
+- Looks rise later, one thing at a time; now the build method and the frame budget («а поднять потом качество в максимум… думаю норм» 10.10).
 - What is left to imagination goes to him as real options («Есть несколько вариантов, и я выбираю» 9.10).
 - In the headset every step he is to do goes inside it (quest-look.mjs say), never only the chat («а ты мне говорил в очках» 10.10); he puts it on only when asked («если ты не попросил, я в них сидеть не буду» 11.10).
 - New numbers and conclusions reach him only on a fact-checked page; in the chat a link and one line («Делай» 10.10).

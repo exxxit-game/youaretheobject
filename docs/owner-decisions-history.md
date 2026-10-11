@@ -249,3 +249,6 @@ dates corrected by the log at the split: «чтоб я просто одевал
   >
   > Я считаю, уже давно известно как строят стену, комнату, свет, планету и ТД.
   > То есть, просто стоит изучать и делать грамотно, так у нас будет создан эталон и документация по работе с ним. Я правильно считаю? Нужно помнить, что наши знания нужно обновлять при нужде.
+  Asked whether «Вариант В» (Cyrillic) was the second (B, in points) or the third (C): «Вариант, где был прописан путь документов» 11.10, so B, the one naming docs/tools.md and docs/board.md.
+  Why B: «Он более логичный» 11.10.
+- Moved here from the decisions file by repair 5 of shelf 1 («Чини 1-7» 11.10), done and no longer an order: The process first, rebuilt by the plan, all at once («нельзя улучшать игру, пока мы не улучшили процесс разработки» 10.10). / Yesterday's errors closed fully first («решим их полностью» 9.10). / and from the looks line: «by the plan he accepted: merge first, measure in the headset, then multiview» (done: A-Frame 1.8 with multiview, measured in the headset 11.10).
