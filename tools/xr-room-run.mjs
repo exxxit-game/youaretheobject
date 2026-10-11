@@ -59,7 +59,8 @@ for (let i = 0; i < 120; i++) {
   if (!state || state.error || state.started) break;
 }
 log('start', state);
-if (!state || !state.started) await stop(`the mixed-reality session did not start: ${state && state.error}`);
+// started and still running, with no error: started stays true after the session has ended
+if (!state || state.error || !state.started || !state.running) await stop(`the mixed-reality session did not start or ended at once: ${state && state.error}`);
 
 const heat = [];
 const readHeat = () => {

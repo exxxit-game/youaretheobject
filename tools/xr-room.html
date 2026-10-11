@@ -213,8 +213,9 @@ async function start() {
   const show = (thing, kind, build) => {
     let o = shown.get(thing);
     if (o && o.changed === thing.lastChangedTime) return o;
-    if (o && o.line) { scene.remove(o.line); o.line.geometry.dispose(); lines.splice(lines.indexOf(o.line.material), 1); }
-    if (o && o.solid) { scene.remove(o.solid); solids.splice(solids.indexOf(o.solid), 1); }
+    // a rebuilt thing frees what the old one held on the graphics card: lines, their colour, the unseen copy
+    if (o && o.line) { scene.remove(o.line); o.line.geometry.dispose(); o.line.material.dispose(); lines.splice(lines.indexOf(o.line.material), 1); }
+    if (o && o.solid) { scene.remove(o.solid); o.solid.geometry.dispose(); o.solid.material.dispose(); solids.splice(solids.indexOf(o.solid), 1); }
     o = { id: o ? o.id : `${kind}${++ids}`, changed: thing.lastChangedTime, ...build() };
     for (const m of [o.line, o.solid]) if (m) { m.matrixAutoUpdate = false; scene.add(m); }
     if (o.solid) solids.push(o.solid);
@@ -330,8 +331,8 @@ async function start() {
     // what the browser no longer reports leaves the picture, so old outlines do not pile up
     for (const [thing, o] of shown) {
       if (seen.has(thing)) continue;
-      if (o.line) { scene.remove(o.line); o.line.geometry.dispose(); lines.splice(lines.indexOf(o.line.material), 1); }
-      if (o.solid) { scene.remove(o.solid); solids.splice(solids.indexOf(o.solid), 1); }
+      if (o.line) { scene.remove(o.line); o.line.geometry.dispose(); o.line.material.dispose(); lines.splice(lines.indexOf(o.line.material), 1); }
+      if (o.solid) { scene.remove(o.solid); o.solid.geometry.dispose(); o.solid.material.dispose(); solids.splice(solids.indexOf(o.solid), 1); }
       shown.delete(thing);
     }
     if (place && viewer) {
