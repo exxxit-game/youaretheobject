@@ -34,6 +34,16 @@ export function roomSchema(room, version) {
   throw new Error(`no migration loads a schema for ${room} version ${version}`);
 }
 
+// The consent versions the server knows (app.consent_versions): every version any migration adds.
+export function consentVersions() {
+  const known = new Set();
+  for (const f of files()) {
+    const m = fs.readFileSync(new URL(f, DIR), 'utf8').match(/insert into app\.consent_versions \(version, what\) values([\s\S]*?);/);
+    if (m) for (const [, v] of m[1].matchAll(/\(\s*(\d+)\s*,/g)) known.add(Number(v));
+  }
+  return known;
+}
+
 // Enough of JSON Schema (draft 7) for the keywords our room schemas use; anything else is refused, so a
 // schema cannot quietly mean more on the server than here. Returns the list of what breaks it.
 const KNOWN = new Set(['$schema', '$comment', 'type', 'enum', 'const', 'minimum', 'maximum', 'required', 'properties', 'additionalProperties']);

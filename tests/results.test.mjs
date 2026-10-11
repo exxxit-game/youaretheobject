@@ -7,7 +7,7 @@ import crypto from 'node:crypto';
 import { analyse } from '../src/rooms/01-control/report.js';
 import { T } from '../src/rooms/01-control/texts.ru.js';
 import { APP_T } from '../src/app/texts.ru.js';
-import { definition, params, roomSchema, check } from './sql.mjs';
+import { definition, params, roomSchema, check, consentVersions } from './sql.mjs';
 
 const read = (p) => fs.readFileSync(new URL(p, import.meta.url), 'utf8');
 const ROOM_VERSION = Number(read('../src/rooms/01-control/room.js').match(/const ROOM_VERSION = (\d+);/)[1]);
@@ -51,5 +51,7 @@ for (const [fn, send] of [['submit_run', 'sendResult'], ['submit_playtest', 'sen
 const WORDS = { 1: 'e6addd86020ed78894ea848b90f8f399687d43f14db03212b917d786006d5bd1' };
 const words = crypto.createHash('sha256').update(JSON.stringify([APP_T.consent, APP_T.playtest.consent])).digest('hex');
 assert.equal(words, WORDS[CONSENT_VERSION], `the consent's words changed (${words}): raise CONSENT_VERSION in src/app/consent.js and add its words here`);
+// and the server knows that version: a row naming an unknown one is refused (0010_consent_versions_compare_gate.sql)
+assert.ok(consentVersions().has(CONSENT_VERSION), `the server knows no consent version ${CONSENT_VERSION}: add its row to app.consent_versions in a migration`);
 
 console.log('results tests: ok');
