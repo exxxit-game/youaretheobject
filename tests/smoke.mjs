@@ -276,7 +276,8 @@ async function playRoom(url, playtest, { leave = false } = {}) {
       cam.updateMatrixWorld();
       r.render(scene.object3D, cam);
       const w = gl.drawingBufferWidth, h = gl.drawingBufferHeight, lin = (c) => { c /= 255; return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; };
-      const lines = [0.4, 0.5, 0.6].map((fx) => {
+      // three lines between the ladders' strings (the middle one stands at the view's centre)
+      const lines = [0.38, 0.44, 0.62].map((fx) => {
         const y0 = Math.round(h * 0.05), n = Math.round(h * 0.9), px = new Uint8Array(4 * n);
         gl.readPixels(Math.round(w * fx), y0, 1, n, gl.RGBA, gl.UNSIGNED_BYTE, px);
         const L = Array.from({ length: n }, (_, i) => 200 * (0.2126 * lin(px[4 * i]) + 0.7152 * lin(px[4 * i + 1]) + 0.0722 * lin(px[4 * i + 2])));

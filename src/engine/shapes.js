@@ -55,10 +55,10 @@ shapeComponent('rounded-box', {
 // normals each closed slat turned from light to dark across its width, and a blind seen close made
 // more than five such pairs of stripes, which ITU-R BT.1702-3 counts as a harmful pattern (measured on
 // room 101's blinds: 20-50 cd/m2 a slat; docs/research/vr/02-standards.md). Only the two edges turn,
-// halfway to the arc's own normal, so each overlap still shows as a faint line under the 20 cd/m2 the
+// a third of the way to the arc's own normal, so each overlap still shows as a faint line under the 20 cd/m2 the
 // standard counts (a blind of one even colour read as a plain panel). The arc keeps the crown's
 // shape, so closed slats still rest on each other and show no gap.
-const EDGE_TURN = 0.5;
+const EDGE_TURN = 0.35;
 function slatGeometry(w, crown, length, n) {
   const R = (w * w) / (8 * crown) + crown / 2, y = (u) => Math.sqrt(R * R - u * u) - (R - crown / 2);
   const normal = (u) => {

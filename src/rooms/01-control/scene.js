@@ -18,66 +18,68 @@ const SPACE = `space: 0 0 ${BOOTH.maxX - BOOTH.minX} ${BOOTH.maxZ - BOOTH.minZ}`
 // the corridor beyond it
 export const DOORWAY = { x: 0.7, z: BOOTH.maxZ };
 
-// The window's venetian blinds, closed, as the US federal specification of the time has them (Interim
-// Federal Specification AA-V-00200B, "Venetian Blinds", GSA, 1973; everyspec.com): Type I, 2-inch slats
-// (3.3.1.1) with a crown of at most 1/4 inch, closed with at least 1/4 inch of overlap (3.3.1.3) and
-// "practically no light" between them (3.4.4); woven face tapes 1-1/2 inch wide, the
-// end ones at most 7 inches from the blind's ends and at most 34 inches apart, the colour of the
-// slats (3.3.1.3); the tilt cord on the left, the lift cord's lock on the right, both worked from the
-// front (3.3.1.5), the pull cords held together by an equalizer (3.3.1.4.4); baked enamel, "white or eggshell" (3.5.1); set inside the window, the slats' ends 1/8
-// to 3/8 inch from its sides and the bottom rail at most 5/8 inch above the sill (3.4.1). Not in it,
-// ours: the slats' pitch, 1-11/16 inch as cloth tapes for 2-inch slats are made today
-// (fixmyblinds.com, glossary), the rails' section and the cords' length. Two-inch slats over one-inch
-// ones (Type II): half the stripes, which the photosensitivity guidance counts (ITU-R BT.1702-3,
-// docs/research/vr/02-standards.md). Each slat is drawn with the crown, an arc of a circle: flat ones
-// never touch, and from above, close to the wall, the gaps between them showed dark stripes; it is lit
-// as one flat face (src/engine/shapes.js, slat), so no slat turns from light to dark across itself. Behind
-// them, dark, the glass with the observation room beyond, kept dark for a one-way mirror to work.
-// Inside the window's frame: y 1.005 to 1.795, z -0.9 to 0.3.
+// The window's venetian blinds, closed, from many pictures of the real thing first (the owner's rule,
+// docs/owner-decisions.md: a shop's product photos of 25 mm aluminium blinds, rozetka.com.ua item
+// 546663369), then how they are made: the US federal specification of the time (Interim Federal
+// Specification AA-V-00200B, "Venetian Blinds", GSA, 1973; everyspec.com), Type II: slats "one inch wide"
+// with a crown of at most 1/8 inch (3.3.2.3), ladder rungs "spaced evenly 45 in 36 inches" (3.3.2.9),
+// braided polyester ladders, their verticals .045 to .066 inch thick, the end ones at most 6 inches from
+// the slats' ends and none more than 22 inches apart (3.3.2.9); a steel head channel and bottom rail
+// with a baked coating (3.3.2.1-2); the slats tilted by pulling tilt cords, the tilter on the left
+// (3.3.2.7.1); the pull cords held together by an equalizer, a knob the cords' colour (3.3.1.4.4-5); "white
+// or eggshell" unless specified (3.5.1); set inside the window, the bottom rail at most 5/8 inch above the
+// sill (3.4.1). Closed with the room-side edges down, each slat over the next like the photos, which
+// the specification allows ("either of the extreme closed positions", 3.4.4; the owner's word). Not in
+// it, ours: the rails' section (an inch, as in the photos) and the cords' length. Each slat is drawn with
+// its crown, an arc of a circle, so closed slats rest on each other with no gap, and lit as one flat face
+// with its edges turned a little (src/engine/shapes.js, slat): every overlap shows as a line, under the
+// 20 cd/m2 that ITU-R BT.1702-3 counts in a stripe pattern (docs/research/vr/02-standards.md; measured by
+// tests/smoke.mjs). Behind them, dark, the glass with the observation room beyond, kept dark for a
+// one-way mirror to work. Inside the window's frame: y 1.005 to 1.795, z -0.9 to 0.3.
 const IN = 0.0254;
 const f4 = (v) => +v.toFixed(4);
-function blindsHTML() {
+export const BLIND_COLOUR = '#f0ead6';
+function blindsHTML(colour = BLIND_COLOUR) {
   const top = 1.795, sill = 1.005, z = -0.3, length = 1.2 - 2 * IN / 4, x = -1.575;
-  const slat = 2 * IN, pitch = (1 + 11 / 16) * IN, tape = 1.5 * IN, tapeIn = 0.17;
-  const rail = { h: IN, d: 1.25 * IN }, bottom = { h: 0.75 * IN, d: 1.75 * IN };
-  // the crown, a quarter inch, as an arc over the slat's width: its circle and the arc's angle
-  const crown = IN / 4, R = (slat * slat) / (8 * crown) + crown / 2;
-  // the arc's height over the slat's middle line at a point u along the slat (the middle line runs
-  // half the crown under the arc's top)
+  const slat = IN, pitch = (36 / 45) * IN, ladderIn = 0.15;
+  const rail = { h: IN, d: IN }, bottom = { h: 0.375 * IN, d: IN };
+  // the crown as an arc over the slat's width: its circle, and its height over the slat's middle line
+  // at a point u along the slat (the middle line runs half the crown under the arc's top)
+  const crown = IN / 8, R = (slat * slat) / (8 * crown) + crown / 2;
   const rise = (u) => Math.sqrt(R * R - u * u) - (R - crown / 2);
-  // closed: each slat's lower edge rests on the crown of the one under it; found by halving
+  // closed: each slat's edge rests on the crown of the next; found by halving, then turned room-side down
   let lo = 0.9, hi = Math.PI / 2 - 0.001;
   for (let k = 0; k < 40; k++) {
     const t = (lo + hi) / 2, gap = pitch * Math.cos(t) - crown / 2 - rise(pitch * Math.sin(t) - slat / 2);
     if (gap > 0) lo = t; else hi = t;
   }
-  const tilt = lo;
+  const tilt = -lo;
   const under = top - rail.h, over = sill + (5 / 8) * IN;
   const n = Math.floor((under - over - bottom.h) / pitch);
-  // the face tapes hang in front of the slats' foremost points (the crowned edges, once turned)
+  // the ladders' front strings hang in front of the slats' foremost points
   const ahead = Math.max(...Array.from({ length: 21 }, (_, k) => { const u = -slat / 2 + (slat * k) / 20; return u * Math.cos(tilt) - rise(u) * Math.sin(tilt); }));
   const front = x + ahead + 0.001;
-  const ENAMEL = 'color: #f0ead6; roughness: 0.45', CLOTH = 'color: #f0ead6; roughness: 0.9';
+  const PAINT = `color: ${colour}; roughness: 0.45`, YARN = `color: ${colour}; roughness: 0.9`;
   const parts = [
     `<a-plane rotation="0 90 0" position="-1.598 ${f4((top + sill) / 2)} ${z}" width="1.2" height="${f4(top - sill)}" material="color: #101112; roughness: 1"></a-plane>`,
-    `<a-box position="${f4(x)} ${f4(top - rail.h / 2)} ${z}" width="${f4(rail.d)}" height="${f4(rail.h)}" depth="${f4(length)}" material="${ENAMEL}"></a-box>`,
-    `<a-box position="${f4(x)} ${f4(over + bottom.h / 2)} ${z}" width="${f4(bottom.d)}" height="${f4(bottom.h)}" depth="${f4(length)}" material="${ENAMEL}"></a-box>`
+    `<a-box position="${f4(x)} ${f4(top - rail.h / 2)} ${z}" width="${f4(rail.d)}" height="${f4(rail.h)}" depth="${f4(length)}" material="${PAINT}"></a-box>`,
+    `<a-box position="${f4(x)} ${f4(over + bottom.h / 2)} ${z}" width="${f4(bottom.d)}" height="${f4(bottom.h)}" depth="${f4(length)}" material="${PAINT}"></a-box>`
   ];
-  // the slats (src/engine/shapes.js slat), turned room-side edge up: the crown toward the glass, as a
-  // blind closed that way has it
   for (let i = 0; i < n; i++) {
-    parts.push(`<a-entity slat="width: ${f4(slat)}; crown: ${f4(crown)}; length: ${f4(length)}; ${ENAMEL}" position="${f4(x)} ${f4(under - pitch * (i + 0.5))} ${z}" rotation="0 0 ${f4((tilt * 180) / Math.PI)}"></a-entity>`);
+    parts.push(`<a-entity slat="width: ${f4(slat)}; crown: ${f4(crown)}; length: ${f4(length)}; ${PAINT}" position="${f4(x)} ${f4(under - pitch * (i + 0.5))} ${z}" rotation="0 0 ${f4((tilt * 180) / Math.PI)}"></a-entity>`);
   }
-  for (const s of [-1, 1]) {
-    parts.push(`<a-plane rotation="0 90 0" position="${f4(front)} ${f4((under + over + bottom.h) / 2)} ${f4(z + s * (length / 2 - tapeIn))}" width="${f4(tape)}" height="${f4(under - over - bottom.h)}" material="${CLOTH}"></a-plane>`);
+  // three ladders (two would stand more than 22 inches apart): their front strings, a little under 1/16 inch
+  const string = 0.0007, high = under - over - bottom.h, mid = (under + over + bottom.h) / 2;
+  for (const at of [z - (length / 2 - ladderIn), z, z + (length / 2 - ladderIn)]) {
+    parts.push(`<a-cylinder radius="${string}" height="${f4(high)}" position="${f4(front)} ${f4(mid)} ${f4(at)}" material="${YARN}"></a-cylinder>`);
   }
-  // two cords a side down the front: the tilt cords on the player's left (+z), a pull knob on each;
-  // the lift cords on his right, held by the equalizer, one knob under it
-  const cx = f4(x + rail.d / 2 + 0.004), cord = (zz) => `<a-cylinder radius="${f4(IN / 16)}" height="0.9" position="${cx} ${f4(under - 0.45)} ${f4(zz)}" material="${CLOTH}"></a-cylinder>`;
-  const knob = (y, zz) => `<a-cylinder radius="0.006" height="0.03" position="${cx} ${f4(y)} ${f4(zz)}" material="${ENAMEL}"></a-cylinder>`;
-  const left = z + length / 2 - 0.04, right = z - length / 2 + 0.04;
-  for (const d of [-0.004, 0.004]) parts.push(cord(left + d), knob(under - 0.915, left + d), cord(right + d));
-  parts.push(`<a-box position="${cx} ${f4(under - 0.91)} ${f4(right)}" width="0.01" height="0.02" depth="0.016" material="${ENAMEL}"></a-box>`, knob(under - 0.935, right));
+  // two cords a side down the front: the tilt cords on the player's left (+z), a knob on each; the lift
+  // cords on his right, held by the equalizer, one knob under it; knobs as cones, as in the photos
+  const cx = f4(x + rail.d / 2 + 0.003), cord = (zz) => `<a-cylinder radius="0.0009" height="0.9" position="${cx} ${f4(under - 0.45)} ${f4(zz)}" material="${YARN}"></a-cylinder>`;
+  const knob = (y, zz) => `<a-cone radius-bottom="0.006" radius-top="0.0025" height="0.022" position="${cx} ${f4(y)} ${f4(zz)}" material="${PAINT}"></a-cone>`;
+  const left = z + length / 2 - 0.03, right = z - length / 2 + 0.03;
+  for (const d of [-0.003, 0.003]) parts.push(cord(left + d), knob(under - 0.911, left + d), cord(right + d));
+  parts.push(`<a-box position="${cx} ${f4(under - 0.905)} ${f4(right)}" width="0.007" height="0.014" depth="0.012" material="${PAINT}"></a-box>`, knob(under - 0.923, right));
   return parts.join('\n  ');
 }
 
