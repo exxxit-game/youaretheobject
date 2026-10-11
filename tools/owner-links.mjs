@@ -33,7 +33,7 @@ export function unrelayed(text) {
 
 // Text of a turn the owner typed, not one the app delivers (helpers' reports, background notices,
 // the pull request watcher's events, the artifact view). The first message of a new window comes
-// with the app's note about the worktree before his words (11.10 his "продолжаем" was read as that
+// with the app's note about the worktree before his words (11.10 his first word there was read as that
 // note, so the window did not take the work): leading notes are cut, and what is left is his.
 const NOTICE = /^\s*<(task-notification|system-reminder|agent-message|artifact-view-context|ci-monitor-event)\b/;
 export function typedText(text) {

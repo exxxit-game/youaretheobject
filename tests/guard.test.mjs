@@ -197,9 +197,9 @@ assert.equal(ask('Bash', 'grep -rn "git commit --no-verify" docs/'), 0, 'the hoo
   hook('prompt', { session_id: 'B', prompt: '<system-reminder>\nYou are operating in a git worktree.\n</system-reminder>\n\n' });
   assert.equal(JSON.parse(fs.readFileSync(env.OBJECT_WINDOW, 'utf8')).session, 'A', 'a bare note took the work');
   // a new window's first message: the app's worktree note, then his words (11.10)
-  hook('prompt', { session_id: 'B', prompt: '<system-reminder>\nYou are operating in a git worktree.\n</system-reminder>\n\nпродолжаем' });
+  hook('prompt', { session_id: 'B', prompt: '<system-reminder>\nYou are operating in a git worktree.\n</system-reminder>\n\ncarry on here' });
   assert.equal(hook('pre', { session_id: 'B', tool_name: 'Bash', tool_input: { command: 'ls' } }), 0, 'the work did not follow him to the window he wrote in');
-  assert.match(fs.readFileSync(path.join(dir, 'Documents', 'objekt-files', 'notes', 'owner-messages.md'), 'utf8'), /продолжаем/, 'his first message in a new window was not logged');
+  assert.match(fs.readFileSync(path.join(dir, 'Documents', 'objekt-files', 'notes', 'owner-messages.md'), 'utf8'), /carry on here/, 'his first message in a new window was not logged');
   assert.doesNotMatch(fs.readFileSync(path.join(dir, 'Documents', 'objekt-files', 'notes', 'owner-messages.md'), 'utf8'), /review comments/, 'the watcher\'s event was logged as his words');
   fs.rmSync(dir, { recursive: true, force: true });
 }
