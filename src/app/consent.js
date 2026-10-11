@@ -50,8 +50,8 @@ export async function askConsent(sheet, { extra = [] }) {
     await sheet.choose(page([C.minor]), [C.start]);
     return false;
   }
-  // kept only once the player has said he is of age: before, a minor's hand-drawn name stayed in the
-  // browser while the page told him nothing would be saved (CodeRabbit's remark, the owner's word)
+  // kept only once the player has said he is of age: a minor is told nothing is saved, so his
+  // hand-drawn name must not stay in the browser
   keep([name, sign]);
   const picked = await sheet.choose(page(pages.at(-1)), [C.withRecording, C.withoutRecording]);
   return picked === 0;

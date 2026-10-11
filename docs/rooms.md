@@ -1,12 +1,15 @@
 # Room contract
 
-A room is a folder `src/rooms/NN-name/`. `src/main.js` loads
-`src/rooms/<id>/room.js` (id from `?room=`, default `01-control`) and calls `mount()`.
+A room is a folder `src/rooms/NN-name/` and stands behind a door of the corridor. The app holds
+the scene, the player (the rig, the camera, both controllers) and the corridor with every door for
+the whole visit (`src/app/lab.js`, `src/app/stage.js`); the room is only what is behind its door.
+`src/main.js` picks the room behind door 1 (`?room=`, default `01-control`), loads
+`src/rooms/<id>/room.js` and starts the lab with it.
 
 Required files (checked by `tests/structure.test.mjs`):
 ```
-room.js         export function mount()   builds the scene, runs the flow
-scene.js        export const sceneHTML    A-Frame markup
+room.js         sceneHTML, DOORWAY, ARRIVAL, mount(root), enter(withRecording)
+scene.js        export const sceneHTML, DOORWAY   A-Frame markup of the inside, in the room's own metres
 report.js       export function analyse(log) → report   pure: no DOM, no texts
 texts.ru.js     every word the player sees
 voice-lines.js  every spoken line and its recording
@@ -16,31 +19,41 @@ docs/rooms/NN-name.md   the spec: original procedure with pages, deviations, our
 A room built from a paper also has `protocol.js` (every number, with pages) and a
 test that pins those numbers to the paper.
 
-`mount()` must:
-1. Put the scene into the page (`<a-scene>` appended to `<body>`) and, before it loads, the
-   corridor (`corridorHTML` from `src/app/lobby/scene.js`) so both are merged and tiled together.
-   The room's door is `#door1` (pivot at its hinge, a `.clickable` leaf); the corridor stands behind it.
+What room.js exports:
+1. `sceneHTML`: the room's inside, no `<a-scene>`, no player, no door (`tests/structure.test.mjs`).
+   It is built in the room's own metres and `DOORWAY` says where its door's opening is: the middle
+   of the opening on the inside face of its wall, the corridor beyond it along +z. The app puts the
+   markup into a group (`#roomPlace`, `data-frame`) that the corridor's plan stands behind the door
+   (`roomPlace` in `src/app/lobby/plan.js`, `tests/plan.test.mjs`), before the scene loads, so it is
+   merged and tiled with the corridor; gridded surfaces are laid from the room's own centre.
    Its masonry opening and every flat thing on its walls (class `on-wall`) sit on the block
    module, so no cut sliver of block shows (`tests/masonry.test.mjs`); door signs (class
    `door-sign`) are placed by the sign standard instead (`SIGN` in `src/app/brand.js`).
    Every light of the room that is on in its markup carries class `room-light`: lights pass
    through walls, so the corridor keeps them off until the door opens (corridors are much
-   dimmer than rooms: docs/building-standards.md). `tests/structure.test.mjs` checks it.
-   The room's inside (walls, furniture, screen) carries class `room-interior`, door 1's way
-   (frame, stops, threshold, leaf) never: the corridor leaves the inside undrawn until the door
-   opens (Meta: fewer than 200 draw calls a frame on Quest 3). `tests/structure.test.mjs` checks it.
-2. Once the player is in the room, show its computer hint with `showHint({ title, body })`
-   (src/app/hint.js): it goes at the first press or on entering VR.
-3. Start with the shared arrival `runLobby(room)` with room = `{ id, real, debrief,
-   seat: { x, z, yaw }, bounds, extra }` (the sign over the door, the clipboard taken from the
-   board, welcome, left-early choice, consent, the door; it resolves with the consent once the
-   player is at the table; the thumbsticks move the player in the corridor only) and use the shared session
-   (`src/app/session.js`) for first/repeat runs, test speed and sending.
-4. Mirror the flow on `<html data-room-state>` (`idle` = consent … `done` = reveal).
+   dimmer than rooms: docs/building-standards.md), and once the player is in, the corridor's are
+   out: the room is lit by its own lamps alone. The room's inside (walls, furniture, screen)
+   carries class `room-interior`: the corridor leaves it undrawn until the door opens (Meta: fewer
+   than 200 draw calls a frame on Quest 3), and no light is inside it (lights are turned down,
+   never hidden: a hidden light changes the count and three.js rebuilds every lit material).
+   A mirror captured once (`mirror-glass`) takes `on: room-entered`, so it holds the lit room.
+2. `ARRIVAL`: what the corridor needs before its door, `{ id, real, debrief, extra, seat: { x, z,
+   yaw, pitch }, area: { minX, maxX, minZ, maxZ } }`, the seat and the computer's walking area in
+   the room's own metres (the app turns them into the corridor's).
+3. `mount(root)`: the room stands loaded behind its shut door; `root` is its group. Widgets go
+   into `root` (`createChoice(root, …)`), and what takes world places (sounds, the away meter)
+   is turned from the room's metres by `root.object3D.localToWorld`. Mirror the flow on
+   `<html data-room-state>` (`idle` = consent … `done` = reveal).
+4. `enter(withRecording)`: the player is at the table, after the shared arrival (`runLobby` in
+   `src/app/lobby/lobby.js`: the sign over the door, the clipboard taken from the board, welcome,
+   left-early choice, consent, the door; the thumbsticks move the player in the corridor only).
+   Show the room's computer hint with `showHint({ title, body })` (src/app/hint.js) and use the
+   shared session (`src/app/session.js`) for first/repeat runs, test speed and sending.
 
 Shared parts a room must not re-implement: arrival (corridor), consent, session, the clipboard
 (`src/engine/ui/sheet.js`), answer buttons (`src/engine/ui/choice.js`), rating scales
-(`src/engine/ui/scale.js`), voice, sound, door plaques (`writePlaque` in `src/app/brand.js`).
+(`src/engine/ui/scale.js`), voice, sound, doors (`src/engine/door.js`, built by the corridor),
+door plaques (`writePlaque` in `src/app/brand.js`).
 
 A door sign shows the room's number only, on the door's corridor face (`doorHTML({ sign })`) and on
 the wall inside: the experiment's name would tell the player what is studied before they do it

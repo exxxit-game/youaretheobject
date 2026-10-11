@@ -10,7 +10,7 @@ Reusable parts. The engine never imports from `src/app/` or `src/rooms/`.
 | `ui/scale.js` | `createScale(parent, place)` → `show({ labels, step, unit, doneLabel }, onDone)`: 0–100 rating scale |
 | `glide.js` | Component `glide`: `go({ to, ctrl, rotation, ms, step })` moves an entity along a curve, easing in and out (`step(e)` each frame) (path rules: `glidePath` in `ui/sheet-math.js`) |
 | `lightbox.js` | Component `lightbox` on a `panel`: a back-lit sign with one lamp per word; `show(words, style)`, `run(keys)` with a level per word, `lamp-cue` with the key's cue (`{ sound, hum, humS }`); patterns stay under the flash rule (`tests/glow.test.mjs`) |
-| `surface.js`, `tile-math.js` | Component `surface`: block, linoleum, ceiling, cork, lens, wood; `glow` for a lamp's lens; tiles laid out per space (`space: cx cz lx lz`) by the trade rules |
+| `surface.js`, `tile-math.js` | Component `surface`: block, linoleum, ceiling, cork, lens, wood; `glow` for a lamp's lens; tiles laid out per space (`space: cx cz lx lz`) by the trade rules, in the metres of the nearest group marked `data-frame` (a room wherever the corridor stands it) or the world's |
 | `log.js` | `eventLog`: `reset()`, `begin()`, `end()`, `add(kind, value)`, `entries`. Accepts events only between `begin()` and `end()` |
 | `locomotion.js`, `locomotion-math.js`, `vignette.js` | Component `locomotion` on the rig: thumbstick teleport (arc to the floor, release to go, click to cancel), 45° snap turn, 80 cm back step; or `move: smooth` (left stick walks at 1.4 m/s) and `turn: smooth`, with a vignette while moving smoothly; only inside its bounds; emits `player-moved` |
 | `audio.js` | `unlock()` (call after a click), `getContext()`, `onUnlock(fn)` (the one rule: every sound and voice line asked for before the first gesture waits for it, never lost; with no audio at all the wait still ends) |
@@ -27,9 +27,9 @@ Reusable parts. The engine never imports from `src/app/` or `src/rooms/`.
 | `decal.js` | Component `decal`: a thin thing (a plate, a strap, a label, a dial) keeps its thickness and is drawn over what it lies on by a depth offset (`DECAL_OFFSET`, also the panel's `decal`) |
 | `shapes.js` | Components `rounded-box` and `lathe`: shapes A-Frame lacks |
 | `cable.js` | Component `cable`: one smooth tube through a list of points |
-| `mirror.js` | Component `mirror-glass`: a one-way mirror whose reflection is captured once |
+| `mirror.js` | Component `mirror-glass`: a one-way mirror whose reflection is captured once, in a tick, without the player's rig: after load, or when the scene event `on` names arrives (a room lit only once the player is in) |
 | `away-meter.js` | `createAwayMeter(camEl, target, paused, degrees)`: seconds the head points away from a place |
-| `room-bounds.js` | Keeps the desktop camera inside the room (bounds as parameters) |
+| `room-bounds.js` | Keeps the desktop camera inside the room (bounds as parameters); off only while a headset's session presents, since a computer's full screen is A-Frame's VR mode too |
 | `results.js` | `sendResult`, `markPlayed` (through `src/app/session.js`), `compareRoom` (room 01 reads the aggregates for "you and others") |
 
 Rules: components are tick-driven (CSS and `requestAnimationFrame` do not run
