@@ -118,6 +118,7 @@ assert.deepEqual(agentLacks(AGENT.replace('reference-lookup-hosted__', 'referenc
 assert.deepEqual(agentHeaderProblems('---\nname: x\ndescription: one fact, fast\n---\n'), []);
 assert.deepEqual(agentHeaderProblems("---\nname: x\ndescription: 'checks each claim: done, checked'\n---\n"), [], 'a quoted value may hold ": "');
 assert.deepEqual(agentHeaderProblems('---\nname: x\ndescription: checks each claim: done, checked\n---\n'), ['the description holds an unquoted ": " (put the value in single quotes)']);
+assert.deepEqual(agentHeaderProblems("---\nname: x\ndescription: 'checks each claim: done\n---\n"), ['the description opens a quote it does not close'], 'an open quote with no close was taken as loading');
 assert.deepEqual(agentHeaderProblems('---\nname: x\n---\n'), ['no description']);
 for (const f of fs.readdirSync('.claude/agents')) assert.deepEqual(agentHeaderProblems(fs.readFileSync(path.join('.claude/agents', f), 'utf8')), [], `.claude/agents/${f} loads`);
 

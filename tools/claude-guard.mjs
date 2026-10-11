@@ -212,7 +212,10 @@ function setsHooks(w, k) {
   if (!m) return false;
   const next = w[k + 1] ?? '';
   const value = m[3] ? m[4] : next === '=' || /^-(value|v)$/i.test(next) ? w[k + 2] : next.replace(/^=/, '');
-  return /core\.hookspath/i.test(value ?? '');
+  if (/core\.hookspath/i.test(value ?? '')) return true;
+  // PowerShell's named parameters come in any order: -Value core.hooksPath before -Path Env:GIT_CONFIG_KEY_0
+  const named = w.findIndex((x) => /^-(value|v)$/i.test(x));
+  return named >= 0 && /core\.hookspath/i.test(w[named + 1] ?? '');
 }
 
 function judge(words, stdin, ps) {

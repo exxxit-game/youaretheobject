@@ -222,7 +222,11 @@ export function agentHeaderProblems(text) {
   if (front === undefined) return ['no header between --- lines'];
   const fields = front.split(/\r?\n/).map((l) => l.match(/^([\w-]+):\s?(.*)$/)).filter(Boolean);
   const problems = ['name', 'description'].filter((k) => !fields.some(([, key]) => key === k)).map((k) => `no ${k}`);
-  for (const [, key, value] of fields) if (!/^['"]/.test(value) && /:\s/.test(value)) problems.push(`the ${key} holds an unquoted ": " (put the value in single quotes)`);
+  for (const [, key, value] of fields) {
+    if (!/^['"]/.test(value) && /:\s/.test(value)) problems.push(`the ${key} holds an unquoted ": " (put the value in single quotes)`);
+    // a quoted value must close on its line with the quote it opened with, or YAML reads past it
+    else if (/^['"]/.test(value) && (value.trim().length < 2 || !value.trim().endsWith(value[0]))) problems.push(`the ${key} opens a quote it does not close`);
+  }
   return problems;
 }
 export function checkAgentsLoad(root = ROOT) {
