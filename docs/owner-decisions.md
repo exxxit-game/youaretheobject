@@ -121,7 +121,9 @@ quoted; the time is when he said it (UTC). A risk list or a general method is no
   чтобы я не напоминал тебе об этом каждый раз» 11.10.
 - New numbers and conclusions reach him only on a page that passed the fact-check; in the chat a link and one line
   with no new numbers, kept by a guard (not built yet). My proposal after a summary stronger than its evidence reached
-  him in the chat; his answer: «Делай… и сторож будет это проверять и это тоже» 11.10.
+  him in the chat; his answer: «Делай… и сторож будет это проверять и это тоже» 11.10. The same guard keeps out empty
+  words (evaluations with no measure behind them), as Chase's «Tyranny of Words» asks: «чтоб ты использовал тиранию
+  слов к себе… пустые… это речь маркетолога, который за 15 гривен тебе продаст все что угодно» 11.10.
 - I check all a tool can measure; he judges what he sees, one action at a time («Ты должен… проверять сам
   все, что можешь»; «Мне надо делать что-то конкретно одно» 9.10 09:14); blocked: ask him at once.
 - Space tiers: seated, standing, roomscale 1.8×1.8 m (base; his area), large (offered only, never shrunk).
