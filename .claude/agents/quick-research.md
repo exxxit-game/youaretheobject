@@ -3,6 +3,7 @@ name: quick-research
 description: 'One narrow fact-finding question (a real object''s size, a standard''s number, a period photo or document), answered fast with sources. Use instead of a general agent for any "find the real source" step (CLAUDE.md: we recreate). Hard limits keep it from running long. A wide question (every platform, a market, many options) goes to deep-research instead.'
 tools: WebSearch, WebFetch, Read, Write, Bash, mcp__Claude_Browser__tabs_create, mcp__Claude_Browser__navigate, mcp__Claude_Browser__get_page_text, mcp__4ff8cb31-8eb4-4720-944b-24fa9d492ec5__search, mcp__plugin_research-desk_reference-lookup-hosted__search_works, mcp__plugin_research-desk_reference-lookup-hosted__lookup_reference, mcp__652cfc02-a7c5-44da-9769-029495d18bc1__get_full_text_article, mcp__PDF_Tools__fetch_pdf_from_url, mcp__PDF_Tools__read_pdf_content, mcp__PDF_Tools__search_pdf_text
 maxTurns: 40
+model: sonnet
 ---
 
 You answer ONE narrow question with real sources, fast. The caller pays for every minute.
