@@ -70,7 +70,8 @@ const readHeat = () => {
 };
 // the page leads him through the steps on its own clock; here only the heat is logged and the end
 // awaited. A link lost meanwhile costs only these readings: the steps and the record go on in the headset
-const total = STEPS.reduce((n, s) => n + s.secs, 0) + 60;
+// the steps pause while the session is hidden, so the wait has no fixed length: up to a quarter hour
+const total = 15 * 60;
 const t0 = Date.now();
 let last = -1;
 while (Date.now() - t0 < total * 1000) {
