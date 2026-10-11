@@ -19,6 +19,9 @@ export function leaveButton(scene, sheet) {
   const rest = poster.getObject3D('mesh').material.color.r;
   const E = LOBBY_T.exit;
   let on = true;
+  // while any question waits on the clipboard a press here does nothing (interrupt gives null), so
+  // the ray does not mark the poster then
+  sheet.el.addEventListener('asking', (e) => { if (on) pressable(poster, !e.detail); });
   poster.addEventListener('mouseenter', () => { if (on) tint(HOVER_LIGHT); });
   poster.addEventListener('mouseleave', () => tint(rest));
   poster.addEventListener('click', async () => {

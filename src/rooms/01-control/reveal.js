@@ -31,7 +31,7 @@ export function revealPages(r, condition, others = null) {
     body(R.whenNot(r.greenIfNoPress, nonPress)),
     body(R.yourRating(control), 30)
   ];
-  const truth = [head(R.truthHeader), body(R.truth(pct), 30), soft(R.observer, 30)];
+  const truth = [head(R.truthHeader), body(R.truth(pct), 30)];
   const original = [
     head(R.originalHeader),
     body(R.original(ORIGINAL.participants), 30),

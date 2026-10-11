@@ -199,13 +199,17 @@ export async function runLobby(room) {
   await spoken;
   speak(LOBBY_T.chooseDoor);
   const door = $('#door1');
-  pressable(leaf, true);
+  // while the leave question is open the door waits for its answer, and the ray does not mark it
+  // (Meta: the ray is off where "it would conflict with another interaction")
+  const onAsk = (e) => pressable(leaf, !e.detail);
+  pressable(leaf, !sheet.isAsking());
+  sheet.el.addEventListener('asking', onAsk);
   document.documentElement.dataset.lobby = 'door';
   await new Promise((resolve) => {
-    // while the leave question is open the door waits for its answer
     const onDoor = () => { if (sheet.isAsking()) return; leaf.removeEventListener('click', onDoor); resolve(); };
     leaf.addEventListener('click', onDoor);
   });
+  sheet.el.removeEventListener('asking', onAsk);
   pressable(leaf, false);
   delete document.documentElement.dataset.lobby;
   exitOff();   // rooms are left another way (left-early.js)

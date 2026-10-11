@@ -209,6 +209,8 @@ export function createSheet(scene, { inside = null } = {}) {
     await ready;
     if (busy()) return null;
     asking = true;
+    // what waits for the answer stops answering the rays meanwhile (the door, the poster)
+    el.emit('asking', true);
     while (el.components.glide.trip) await el.components.glide.trip.arrived;
     saved = { ...page, was: isOpen ? 'open' : home ? 'hanging' : 'closed' };
     if (saved.was === 'hanging') {
@@ -225,6 +227,7 @@ export function createSheet(scene, { inside = null } = {}) {
   async function resume() {
     if (!saved) return;
     asking = false;   // answered: the game goes on (a door opens) while the sheet goes back
+    el.emit('asking', false);
     choice.hide();
     if (saved.was === 'hanging') {
       isOpen = false;

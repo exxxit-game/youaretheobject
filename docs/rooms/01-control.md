@@ -10,7 +10,7 @@ Every number here lives in code only in `src/rooms/01-control/protocol.js`, and
 | Element | Original | Page |
 |---|---|---|
 | Apparatus | Black stand 23×23 cm, yellow and green light 5 cm from its top, facing the subject; black box 15.5×7.5×4 cm, spring button in the centre | 450 |
-| Room | Subject alone, observed through a one-way mirror from the next room | 450 |
+| Room | Seated so that the experimenter in the observation room of a two-room suite could observe him through a one-way mirror (Exp. 1, p. 450; Exp. 2 used the same apparatus and procedure, p. 458); alone during the 40 trials (p. 452) | 450, 452, 458 |
 | Trial | Yellow light = start; press once within 3 s or do nothing; at the end of the 3 s the green light comes on or not | 451 |
 | Trials | 40 | 451 |
 | Intertrial interval | 10–25 s, mean 14 s | 451 |
@@ -46,7 +46,7 @@ trial-level predictions, not for the end-of-task rating; the depression link did
 | 7 | Gender asked at the end, "prefer not to say" allowed | Main result differs by sex | — |
 | 8 | Prior knowledge asked at the end ("did you know this experiment?") | Standard for online replications | — |
 | 9 | Players are not Penn undergraduates of the 1970s, and they are not paid (the originals were paid volunteers, topped up to $2.50, pp. 457, 452) | — | Partly |
-| 10 | No one-way mirror: the window to the observation room is closed with venetian blinds (AA-V-00200B, 1973: src/rooms/01-control/scene.js), and nobody is seen behind it; the reveal says the original subject sat so that the experimenter could watch through a one-way mirror from the next room (p. 450) | The owner's decision 11.10 ("No mirrors", docs/owner-decisions.md): in VR the player has no body, so a mirror shows him nothing; blinds his pick of three | Yes (reveal) |
+| 10 | No one-way mirror and no observation room built: the window in the left wall is closed with venetian blinds (AA-V-00200B, 1973: src/rooms/01-control/scene.js). Possible effect, not reported in the paper (it does not say whether subjects knew of the mirror): a mirror can signal that one may be watched, closed blinds the opposite | The owner's decision 11.10 ("No mirrors", docs/owner-decisions.md): in VR the player has no body, so a mirror shows him nothing; blinds his pick of three | Yes: the differences page («В оригинале экспериментатор мог наблюдать… Здесь зеркала нет: окно закрыто жалюзи», pp. 450, 458) |
 
 ## Not in the paper: our choices (owner may change)
 | Item | Our value | Reason |
@@ -67,7 +67,7 @@ trial-level predictions, not for the end-of-task rating; the depression link did
 ## Flow and states (`<html data-room-state>`)
 `idle` (the corridor: welcome, consent) → `intro` (instructions, check; concept with the empty scale, check) → `run` (40 trials, experimenter out)
 → `questions` (experimenter back, concept reread, 4 scales, certainty, evidence, hypotheses, gender, prior knowledge)
-→ `done` (reveal: what you did → the truth → original → replication → differences).
+→ `done` (reveal: what you did → the truth → original → replication → other players → differences).
 
 ## Data sent (only with consent, only at full speed; the privacy page is privacy.html)
 The condition and the whole result of `src/rooms/01-control/report.js` (counts, percentages, actual

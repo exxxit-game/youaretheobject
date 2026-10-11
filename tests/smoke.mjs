@@ -294,6 +294,8 @@ async function playRoom(url, playtest, { leave = false } = {}) {
     // 0.1 floor is our choice, so the corridor stays visible).
     const ratio = corridorLight / await lightAt([DESK.x, 0.846, DESK.z]);
     assert.ok(ratio <= 0.2 && ratio >= 0.1, `corridor floor / room desk light = ${ratio.toFixed(3)} (0.1–0.2)`);
+    // during the trials the button answers the ray (src/engine/laser-beam.js pressable)
+    assert.ok(await page.evaluate(() => !!document.querySelector('#buttonCap.clickable')), 'the button does not answer the ray during the trials');
     // press during about every other yellow light
     await page.evaluate(() => {
       window.__presser = setInterval(() => {
