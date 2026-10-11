@@ -10,40 +10,41 @@
 // names with a number (Quest 3, A-Frame 1.8), list numbers, dates and times (Korzybski's dating
 // device asks for them), and a negated passive ("не проверено" is the report CLAUDE.md asks for).
 
-// Each rule with its source and the words that break it in my own messages: counted in the Russian
-// messages to him in this project's session records (words used at least once, or named by him:
-// "подтвердил", "обезврежено", "по-правильному", "крепкая", "главное", "весь").
-// Russian forms have no published list for these rules; the words are the forms of the categories
-// the sources name, and the owner sees the list with its counts before it stands.
+// Each rule with its source and the words that break it: the forms of its kind found in my own
+// Russian messages to him in this project's session records, the ones he named ("подтвердил",
+// "обезврежено", "по-правильному", "крепкая", "главное", "весь"), and the source's own examples in
+// Russian (Orwell's historic, epoch-making, unforgettable). The owner sees the list with its counts.
 export const RULES = [
   { rule: 'allness', shown: 'всё, весь, полностью, целиком, всегда, никогда, везде', fix: 'name what, or how many were checked',
-    source: 'Korzybski, Science and Sanity, introduction to the 2nd edition (1941), p. lx: the extensional devices (indexes, dates, etc., quotes, hyphens); "etc." as the tool against allness: the Institute of General Semantics help sheet (A. Johnson, 2006)',
+    source: 'Korzybski, Science and Sanity (the text of the 5th edition), introduction to the 2nd edition (1941), p. lx: the extensional devices (indexes, dates, etc., quotes, hyphens); p. 166: "In life, we deal structurally only with non-allness"',
     words: ['всё(?![ \\t]+(?:ещё|еще|равно|же|таки)(?!\\p{L}))', 'весь', 'полностью', 'целиком', 'всегда', 'никогда', 'везде'] },
   { rule: 'an inference told as a report', shown: 'подтвердил, доказано, гарантирует, обезврежено, устранено', fix: 'say what was measured, by what, and what it showed',
-    source: 'Hayakawa, Language in Thought and Action, ch. 3, p. 38: reports are verifiable and exclude inferences and judgments',
+    source: 'Hayakawa, Language in Thought and Action, ch. 3, p. 38: reports are verifiable and exclude, as far as possible, inferences and judgments',
     words: ['подтверди(?:л|ла|ли|лось|лся|т|тся)', 'подтвержда(?:ет|ют)', 'подтвержд[её]н[оаы]?', 'доказа(?:л|ла|ли|но|на|ны)', 'гарантир\\p{L}*', 'обезврежен[оаы]?', 'устран[её]н[оаы]?'] },
   { rule: 'a judgment (purr or snarl word)', shown: 'отлично, идеально, красиво, крепкий, надёжно, по-правильному, хорошо, лучше', fix: 'what was measured instead, or leave the judgment to him',
     source: 'Hayakawa, Language in Thought and Action, ch. 3, pp. 42-46: judgments are expressions of approval or disapproval; snarl-words and purr-words',
-    words: ['отличн\\p{L}*', 'идеальн\\p{L}*', 'прекрасн\\p{L}*', 'замечательн\\p{L}*', 'великолепн\\p{L}*', 'супер', 'круто', 'красив\\p{L}*', 'крепк\\p{L}*', 'над[её]жн\\p{L}*', 'по-правильному', 'хорошо', 'лучш\\p{L}*', 'плохо', 'ужасн\\p{L}*'] },
-  { rule: 'pretentious diction', shown: 'главное, важно, ключевой, огромный', fix: 'say what follows from it',
+    words: ['отличн\\p{L}*', 'идеальн\\p{L}*', 'красив\\p{L}*', 'крепк\\p{L}*', 'над[её]жн\\p{L}*', 'по-правильному', 'хорошо', 'лучш\\p{L}*', 'плохо'] },
+  { rule: 'pretentious diction', shown: 'главное, важно, огромный, исторический', fix: 'say what follows from it',
     source: 'Orwell, Politics and the English Language (1946), "Pretentious diction": epoch-making, historic, unforgettable',
-    words: ['главн\\p{L}*', 'важн\\p{L}*', 'ключев\\p{L}*', 'огромн\\p{L}*', 'историческ\\p{L}*', 'грандиозн\\p{L}*'] },
+    // "главная папка" is the name of the main checkout folder, not a judgment of rank
+    words: ['главн\\p{L}*(?![ \\t]+папк)', 'важн\\p{L}*', 'огромн\\p{L}*', 'историческ\\p{L}*', 'эпохальн\\p{L}*', 'незабываем\\p{L}*'] },
   { rule: 'a word that can be cut', shown: 'очень, действительно, реально, на самом деле, честно, просто', fix: 'cut it',
     source: 'Orwell, Politics and the English Language (1946), rule iii: if it is possible to cut a word out, always cut it out',
-    words: ['очень', 'действительно', 'реально', 'по-настоящему', 'на самом деле', 'абсолютно', 'совершенно', 'буквально', 'честно', 'просто'] },
+    words: ['очень', 'действительно', 'реально', 'по-настоящему', 'на самом деле', 'честно', 'просто'] },
   { rule: 'the passive', shown: 'сохранено, проверено, исправлено, сделано, записано, отправлено', fix: 'say who did it: «я сохранил», «тест проверил»',
     source: 'Orwell, Politics and the English Language (1946), rule iv: never use the passive where you can use the active',
     words: ['(?<!не[ \\t])(?:сохранен|проверен|исправлен|сделан|записан|отправлен|решен|обновлен|починен)[оаы]', '(?<!не[ \\t])решён'] },
-  { rule: 'jargon', shown: 'коммит, хук, пуш, мерж, деплой, фича, баг, регулярка', fix: 'the everyday word: сохранение, отправить, проверка при сохранении, ошибка',
+  { rule: 'jargon', shown: 'коммит, хук, регулярка', fix: 'the everyday word: сохранение, отправить, проверка при сохранении, ошибка',
     source: 'Orwell, Politics and the English Language (1946), rule v: never a jargon word if you can think of an everyday equivalent',
-    words: ['коммит\\p{L}*', 'закоммит\\p{L}*', 'хук\\p{L}*', 'пуш\\p{L}*', 'запуш\\p{L}*', 'мерж\\p{L}*', 'смерж\\p{L}*', 'деплой\\p{L}*', 'фич[аиуе]\\p{L}*', 'баг(?:и|ов|а|у)?', 'регулярк\\p{L}*', 'рефактор\\p{L}*', 'кейс\\p{L}*'] },
+    words: ['коммит\\p{L}*', 'хук\\p{L}*', 'регулярк\\p{L}*'] },
 ];
 
 // names followed by their number (Quest 3, A-Frame 1.8, Opus 5.5); a model glued to its number
 // (WS-900) is taken out in bare() as well
-const NAMED = /\b(?:Quest|A-Frame|Opus|Sonnet|Haiku|Fable|IWSDK|Node|Windows|Android|Chrome|WebXR|Postgres(?:QL)?|Python)[ \t]?(?:\d+(?:\.\d+)*S?|Pro)\b/gi;
+const NAMED = /\b(?:Quest|A-Frame|Opus|Sonnet|Haiku|Fable|IWSDK|Node|Windows|Android|Chrome|WebXR|Postgres(?:QL)?|Python|Blender|Pico|Unity)[ \t]?(?:\d+(?:\.\d+)*S?|Pro)\b/gi;
 
-// a date in the board's form (day.month, day.month.year): a day and a month, not a measure
+// a date in the board's form (day.month, day.month.year): a day and a month, not a measure. A number
+// written with a point that fits a date (2.4) passes as one; a Russian decimal takes a comma (2,4)
 const date = (s) => {
   const [d, m] = s.split('.').map(Number);
   return d >= 1 && d <= 31 && m >= 1 && m <= 12;
@@ -61,7 +62,7 @@ export function bare(text) {
     .replace(/[^\s«»"()]*[\\/][^\s«»"()]*/g, (s) => (/[A-Za-zА-Яа-яЁё]/.test(s) ? ' ' : s))
     .replace(/^[ \t>]*(?:[-*+][ \t]+)?\d+[.)][ \t]/gm, ' ')
     .replace(/\b\d{4}-\d{2}-\d{2}(?:T[\d:.]+Z?)?/g, ' ')
-    .replace(/(?<![\d.,])\d{1,2}\.\d{1,2}(?:\.\d{4})?(?![\d.,])/g, (s) => (date(s) ? ' ' : s))
+    .replace(/(?<!\d|\d[.,])\d{1,2}\.\d{1,2}(?:\.\d{4})?(?!\d|[.,]\d)/g, (s) => (date(s) ? ' ' : s))
     .replace(/(?<![\d:])\d{1,2}:\d{2}(?::\d{2})?(?![\d:])/g, ' ')
     .replace(/#\d+/g, ' ')
     .replace(NAMED, ' ')

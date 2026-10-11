@@ -29,6 +29,10 @@ const held = [
   ['В очках 90 кадров.', 'a new number'],
   ['Видеокарта занята на 2,4 мс.', 'a new number'],
   ['Отрисовок стало 94 из 114.', 'a new number'],
+  ['Шаг 3 из 5 прошёл.', 'a new number'],
+  // a Russian decimal takes a comma; with a point (2.4) it reads as a date and passes (plain-words.mjs)
+  ['Кадров было 2,4 на 10.10', 'a new number'],
+  ['Главная ошибка в пробнике.', 'pretentious diction'],
 ];
 for (const [line, rule] of held) assert.ok(rules(line).includes(rule), `«${line}» not held as ${rule}: ${JSON.stringify(findings(line))}`);
 assert.deepEqual(words('Отрисовок стало 94 из 114.'), ['94', '114'], 'the numbers are named to me');
@@ -43,6 +47,8 @@ const passed = [
   'Это Quest 3 и A-Frame 1.8, огнетушитель WS-900.',
   '1. Надень очки.\n2. Нажми «Начать».\n10. Сними очки.',
   'Твоё решение от 10.10 и от 9.10.2026 стоит на доске.',
+  'Решение от 10.10. Ещё одно от 9.10.2026, и третье от 8.10, тоже на доске.',
+  'Сливаю ветку в главную папку; Blender 5.2.2 стоит.',
   'Ты написал в 07:56, работа перешла сюда в 2026-10-11T08:07:11Z.',
   'Это обсуждение #10 на GitHub.',
   'Не проверено: шаг в соседнюю комнату. Не сохранено: ничего.',
