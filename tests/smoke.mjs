@@ -9,7 +9,8 @@ import { startServer } from './static-server.mjs';
 import { nearFaces } from './near-faces.mjs';
 import { playVR } from './smoke-vr.mjs';
 import { WALLS, CEIL } from '../src/app/lobby/scene.js';
-import { BOOTH } from '../src/rooms/01-control/scene.js';
+import { BOOTH, DOORWAY } from '../src/rooms/01-control/scene.js';
+import { ROOM1_DOOR, roomPlace, toCorridor, areaToCorridor } from '../src/app/lobby/plan.js';
 import { MIN_LETTER, READ_DIST, MIN_TARGET_DEG, letterDeg } from '../src/engine/ui/sheet-math.js';
 
 // the reading rules, from the code that sets them: the smallest letter and the smallest target
@@ -24,7 +25,9 @@ const browser = await chromium.launch({ args: ['--use-gl=swiftshader', '--enable
 // nothing is drawn: the back of a thing lying on a wall is never seen
 const NEAR = 0.005;
 const inside = (w, top) => [[w.minX + NEAR, NEAR, w.minZ + NEAR], [w.maxX - NEAR, top - NEAR, w.maxZ - NEAR]];
-const CORRIDOR = { eyes: [inside(WALLS, CEIL)] }, ROOM = { eyes: [inside(BOOTH, BOOTH.ceiling)] };
+// room 01's walls and desk in the corridor's metres, where the corridor stands it (src/app/lobby/plan.js)
+const PLACE = roomPlace(ROOM1_DOOR, DOORWAY), ROOM_WALLS = areaToCorridor(PLACE, BOOTH), DESK = toCorridor(PLACE, { x: 0.4, z: -0.3 });
+const CORRIDOR = { eyes: [inside(WALLS, CEIL)] }, ROOM = { eyes: [inside(ROOM_WALLS, BOOTH.ceiling)] };
 
 async function playRoom(url, playtest, { leave = false } = {}) {
   const page = await browser.newPage();
@@ -267,7 +270,7 @@ async function playRoom(url, playtest, { leave = false } = {}) {
     await page.keyboard.up('KeyS');
     const backZ = await page.evaluate(() => { const p = new THREE.Vector3(); document.querySelector('#cam').object3D.getWorldPosition(p); return p.z; });
     await page.evaluate(() => document.querySelector('a-scene').removeState('vr-mode'));
-    assert.ok(backZ < BOOTH.maxZ, `on a computer's full screen the camera walked to z ${backZ.toFixed(2)}, past the room's back wall`);
+    assert.ok(backZ < ROOM_WALLS.maxZ, `on a computer's full screen the camera walked to z ${backZ.toFixed(2)}, past the room's back wall`);
     // "understood" twice: after the instructions and after the control concept
     for (let i = 0; i < 2; i++) {
       await page.waitForFunction(() => document.documentElement.dataset.roomState === 'intro' &&
@@ -280,7 +283,7 @@ async function playRoom(url, playtest, { leave = false } = {}) {
     // Corridors under 10 fc, desks 50 fc (docs/building-standards.md, S13): the corridor
     // floor gets at most a fifth of the light on the room's desk, and is not left dark (the
     // 0.1 floor is our choice, so the corridor stays visible).
-    const ratio = corridorLight / await lightAt([0.4, 0.846, -0.3]);
+    const ratio = corridorLight / await lightAt([DESK.x, 0.846, DESK.z]);
     assert.ok(ratio <= 0.2 && ratio >= 0.1, `corridor floor / room desk light = ${ratio.toFixed(3)} (0.1–0.2)`);
     // press during about every other yellow light
     await page.evaluate(() => {

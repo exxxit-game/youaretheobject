@@ -34,6 +34,7 @@ const wallAt = (z) => WALLS.find(w => z >= w.z[0] && z < w.z[1]);
 const offGrid = (v, origin, step) => { const r = (((v - origin) % step) + step) % step; return Math.min(r, step - r); };
 const attr = (tag, name) => { const m = tag.match(new RegExp(`\\b${name}="([^"]*)"`)); return m && m[1]; };
 const prop = (value, name) => { const m = value && value.match(new RegExp(`${name}:\\s*([-\\d.]+)`)); return m && Number(m[1]); };
+// room 01 stands as built behind door 101 (tests/plan.test.mjs), so its metres are the corridor's here
 const html = sceneHTML + corridorHTML;
 
 // door openings: a jamb of the 2 in frame stands 14.3 mm inside its opening's edge

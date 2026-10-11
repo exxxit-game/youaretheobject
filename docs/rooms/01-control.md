@@ -64,7 +64,7 @@ trial-level predictions, not for the end-of-task rating; the depression link did
 | Answer buttons | One common text size for all answers of a question | A smaller answer looks less important |
 
 ## Flow and states (`<html data-room-state>`)
-`idle` (consent) → `intro` (instructions, check; concept with the empty scale, check) → `run` (40 trials, experimenter out)
+`idle` (the corridor: welcome, consent) → `intro` (instructions, check; concept with the empty scale, check) → `run` (40 trials, experimenter out)
 → `questions` (experimenter back, concept reread, 4 scales, certainty, evidence, hypotheses, gender, prior knowledge)
 → `done` (reveal: what you did → the truth → original → replication → differences).
 

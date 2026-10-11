@@ -63,6 +63,11 @@ for (const room of fs.readdirSync(path.join(ROOT, 'src/rooms'))) {
     assert.ok(fs.existsSync(path.join(ROOT, 'src/rooms', room, file)), `room ${room} has no ${file}`);
   }
   assert.ok(fs.existsSync(path.join(ROOT, 'docs/rooms', `${room}.md`)), `room ${room} has no docs/rooms/${room}.md`);
+  // and room.js gives what the app takes from it (the room contract, docs/rooms.md)
+  const entry = fs.readFileSync(path.join(ROOT, 'src/rooms', room, 'room.js'), 'utf8');
+  for (const name of ['sceneHTML', 'DOORWAY', 'ENTRY', 'mount', 'enter']) {
+    assert.ok(new RegExp(`export (const|function) ${name}\\b|export \\{[^}]*\\b${name}\\b`).test(entry), `room ${room}: room.js does not export ${name} (docs/rooms.md)`);
+  }
 }
 
 // 5. Notes stay short: the state file is replaced, not appended to.

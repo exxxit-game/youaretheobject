@@ -25,7 +25,10 @@ check. Do not tell the owner "done" before step 9.
    page in each comment, frozen; a test pins every value to the paper. Then pure
    `schedule.js` / `report.js` with tests. Break a value on purpose once: the test
    must go red.
-5. **Room** from the shared parts only: the arrival `runLobby(room)` (`src/app/lobby/lobby.js`),
+5. **Room** by the room contract (`docs/rooms.md`): it stands behind its corridor door, so its markup
+   is only its inside, in its own metres (`sceneHTML`, `DOORWAY`), and `room.js` gives `ENTRY`,
+   `mount(root)` and `enter(withRecording)`; the app holds the scene, the player, the corridor, the door
+   and the arrival (`src/app/lab.js`). From the shared parts only:
    `src/app/consent.js`, `src/app/session.js`, the clipboard `src/engine/ui/sheet.js`,
    `src/engine/ui/choice.js`, `src/engine/ui/scale.js`, voice, sound, `writePlaque` (the
    room's number only: the experiment's name waits for the reveal). Every part of the scene

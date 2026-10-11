@@ -5,9 +5,8 @@
 // weakest headset whose budget the game keeps (docs/owner-decisions.md), wants fewer than 100 a frame
 // (Meta, device optimization comparison: docs/research/vr/01-meta.md).
 // The corridor is under it since parts that differ only in colour are merged (merge-static.js) and each
-// controller is drawn as one mesh (controller-batch.js). Room 101 is not: about half of its worst view is
-// the corridor behind its shut door, drawn although the walls hide it (docs/board.md). FRAME_BUDGET holds
-// it near its measure so it cannot grow unseen while that work goes on.
+// controller is drawn as one mesh (controller-batch.js); room 101 since the corridor behind its shut door
+// is no longer drawn from inside it (src/app/lobby/lobby.js: 144 calls before, 92 after).
 // A budget kept only in memory grew unseen, so the smoke test measures it on every push.
 // Runs in the page (the smoke test passes it to page.evaluate): self-contained, it uses only the
 // page's THREE, document and the emulated headset (window.__xr). eyes: boxes [[x0, y0, z0], [x1, y1,
@@ -17,7 +16,7 @@
 // mesh (by): where the next cut is (Meta's order: measure first, then merge:
 // docs/research/revision-4-graphics.md).
 export const QUEST2_FRAME = 100;
-export const FRAME_BUDGET = { corridor: QUEST2_FRAME, room: 150 };
+export const FRAME_BUDGET = { corridor: QUEST2_FRAME, room: QUEST2_FRAME };
 export async function drawCalls({ eyes: boxes } = {}) {
   if (!boxes || !boxes.length) throw new Error('drawCalls: where an eye can be is not given');
   const sceneEl = document.querySelector('a-scene'), renderer = sceneEl.renderer, xr = window.__xr;

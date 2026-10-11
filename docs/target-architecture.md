@@ -22,17 +22,18 @@ youaretheobject.com
 ## Layers
 | Layer | Folder | Knows about | Never knows about |
 |---|---|---|---|
-| Shell | `index.html`, `src/main.js` | which room to load, the game's face | room logic |
-| App | `src/app/` | the corridor, consent, the clipboard flow, reveal paging, session, language, purchases | a specific room |
+| Shell | `index.html`, `src/main.js` | which room stands behind door 1, the game's face | room logic |
+| App | `src/app/` | the scene and the player for the whole visit, the corridor and every door, where a room stands (its plan), consent, the clipboard flow, reveal paging, session, language, purchases | a specific room |
 | Engine | `src/engine/` | A-Frame components, audio, voice, panels, the clipboard sheet, log, UI widgets, results transport | rooms, texts |
-| Room | `src/rooms/NN-name/` | its own scene, experiment, report, texts, recordings | other rooms |
+| Room | `src/rooms/NN-name/` | its inside in its own metres (no scene, player or door), experiment, report, texts, recordings | other rooms |
 | Server | `supabase/migrations/` | per-room result validation, aggregates for "you against others" | game code |
 
 ## Every room the same folder
 ```
 src/rooms/NN-name/
-  room.js          the phases of THIS experiment only (consent, paging, sending come from app/)
-  scene.js         markup
+  room.js          the phases of THIS experiment only (consent, paging, sending come from app/):
+                   ENTRY, mount(root), enter(withRecording), docs/rooms.md
+  scene.js         markup of its inside and DOORWAY, where its door opening is
   protocol.js      every number of the original procedure, with paper pages
   report.js        log → measures, pure, tested
   reveal.js        its reveal pages, pure
@@ -57,6 +58,10 @@ tests/NN-*.test.mjs; the smoke test runs every room to its end in CI
   Schema (supabase/schemas, 0009_data_protection.sql).
 - Languages: texts.en.js beside every texts.ru.js, voice per language, each language's script
   in the game's face (tests/fonts.test.mjs fails until its file is added).
+- A room behind any door: the room is told its door (number, latch side) and lays its inside sign
+  and switch by it, instead of importing door 101's number and the corridor's plaqueX; leaving a
+  room for the corridor (unmount, the corridor drawn and lit again); the app watching the page's
+  errors from its first moment (now a room's session watches them once the scene has loaded).
 - A room scaffold (future tools/new-room.mjs): all files and tests of a new room at once.
 
 ## Rules that follow from this

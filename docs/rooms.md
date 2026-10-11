@@ -8,7 +8,7 @@ the whole visit (`src/app/lab.js`, `src/app/stage.js`); the room is only what is
 
 Required files (checked by `tests/structure.test.mjs`):
 ```
-room.js         sceneHTML, DOORWAY, ARRIVAL, mount(root), enter(withRecording)
+room.js         sceneHTML, DOORWAY, ENTRY, mount(root), enter(withRecording)
 scene.js        export const sceneHTML, DOORWAY   A-Frame markup of the inside, in the room's own metres
 report.js       export function analyse(log) → report   pure: no DOM, no texts
 texts.ru.js     every word the player sees
@@ -37,13 +37,13 @@ What room.js exports:
    than 200 draw calls a frame on Quest 3), and no light is inside it (lights are turned down,
    never hidden: a hidden light changes the count and three.js rebuilds every lit material).
    A mirror captured once (`mirror-glass`) takes `on: room-entered`, so it holds the lit room.
-2. `ARRIVAL`: what the corridor needs before its door, `{ id, real, debrief, extra, seat: { x, z,
+2. `ENTRY`: what the corridor needs before its door, `{ id, real, debrief, extra, seat: { x, z,
    yaw, pitch }, area: { minX, maxX, minZ, maxZ } }`, the seat and the computer's walking area in
    the room's own metres (the app turns them into the corridor's).
 3. `mount(root)`: the room stands loaded behind its shut door; `root` is its group. Widgets go
    into `root` (`createChoice(root, …)`), and what takes world places (sounds, the away meter)
    is turned from the room's metres by `root.object3D.localToWorld`. Mirror the flow on
-   `<html data-room-state>` (`idle` = consent … `done` = reveal).
+   `<html data-room-state>` (`idle` = the player not yet in … `done` = reveal).
 4. `enter(withRecording)`: the player is at the table, after the shared arrival (`runLobby` in
    `src/app/lobby/lobby.js`: the sign over the door, the clipboard taken from the board, welcome,
    left-early choice, consent, the door; the thumbsticks move the player in the corridor only).

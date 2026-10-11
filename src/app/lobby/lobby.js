@@ -56,23 +56,24 @@ const delay = (ms) => new Promise((r) => setTimeout(r, ms));
 loadVoice(VOICE_LINES, import.meta.url);
 loadSounds(SOUNDS, import.meta.url);
 
-// Puts the player at a spot facing a direction, kept inside an area: in a headset through the
-// recenter component; on a computer the rig stays at the origin unturned and the camera goes to the
-// spot and turns, because room-bounds limits the camera's own position (so its numbers are world
-// metres with the rig at 0). A computer's full screen is A-Frame's VR mode too (its enterVR sets
-// "vr-mode" without a headset), so a headset is told by its session presenting.
+// Puts the player at a spot facing a direction, kept inside an area (room-bounds, world metres): in
+// a headset through the recenter component; on a computer the rig, at the origin, is turned to face
+// the direction (A-Frame turns the view with the camera rig: components/camera.md) and the camera
+// goes to the spot. A computer's full screen is A-Frame's VR mode too (its enterVR sets "vr-mode"
+// without a headset), so a headset is told by its session presenting.
 function placePlayer({ x, z, yaw, pitch = 0, lift = false }, area) {
   const rig = $('#rig'), cam = $('#cam');
   rig.setAttribute('recenter', { x, z, yaw, lift });
   cam.setAttribute('room-bounds', bounds(area));
   if (rig.sceneEl.renderer.xr.isPresenting) { rig.components.recenter.apply(); return; }
   rig.object3D.position.set(0, 0, 0);
-  rig.object3D.rotation.y = 0;
-  cam.object3D.position.set(x, cam.object3D.position.y, z);
+  rig.object3D.rotation.y = THREE.MathUtils.degToRad(yaw);
+  rig.object3D.updateMatrixWorld();
+  const at = rig.object3D.worldToLocal(new THREE.Vector3(x, 0, z));
+  cam.object3D.position.set(at.x, cam.object3D.position.y, at.z);
+  // look-controls has no setting for a starting tilt; its pitch object is what it turns up and down
   const look = cam.components['look-controls'];
-  if (!look || !look.yawObject) return;
-  look.yawObject.rotation.y = THREE.MathUtils.degToRad(yaw);
-  look.pitchObject.rotation.x = THREE.MathUtils.degToRad(pitch);   // a computer's view, tilted as the place asks
+  if (look && look.pitchObject) look.pitchObject.rotation.x = THREE.MathUtils.degToRad(pitch);
 }
 
 // How the player moves: teleport and snap turn by default (Meta's comfort defaults);

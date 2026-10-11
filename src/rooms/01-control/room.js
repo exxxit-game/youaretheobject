@@ -60,7 +60,7 @@ export { sceneHTML, DOORWAY } from './scene.js';
 // What the corridor needs before its door (src/app/lab.js): the room, what a player who left it
 // early learns, where they sit (at the table, facing it; on a computer the view tilted down toward
 // it) and where the computer's camera may move.
-export const ARRIVAL = {
+export const ENTRY = {
   id: ROOM_ID, real: SPEED === 1, debrief: T.earlyDebrief, extra: PLAYTEST ? [APP_T.playtest.consent] : [],
   seat: { x: 0, z: 0.35, yaw: 0, pitch: -16 }, area: { minX: -1.4, maxX: 1.4, minZ: 0.3, maxZ: 1.55 }
 };
@@ -249,7 +249,7 @@ export function mount(r) {
   root = r;
   scene = root.sceneEl;
   session = createSession(ROOM_ID, ROOM_VERSION);
-  session.watchIssues(() => ({ state, xr: !!(scene && scene.is && scene.is('vr-mode')) }));
+  session.watchIssues(() => ({ state, xr: !!scene.renderer?.xr?.isPresenting }));   // a computer's full screen is no headset
   loadVoice(VOICE_LINES, import.meta.url);
   loadSounds(SOUNDS, import.meta.url);
   // answer buttons under a short question at the top of the screen, in the room's own metres

@@ -51,7 +51,7 @@ export function signOn(scene) {
       ending = nextEnding();
       return box.run(fast(SIGN_ENDINGS[ending]));
     })
-    .then(() => (scene.is('vr-mode') ? delay(ARRIVAL.litPauseS) : null));
+    .then(() => (inVR(scene) ? delay(ARRIVAL.litPauseS) : null));
 }
 
 // Called when the player takes the clipboard: in ending b the whole name comes back.
@@ -59,17 +59,23 @@ export function signAnswer() {
   if (ending === 'b') $('#signFace').components.lightbox.run(fast(SIGN_ANSWER));
 }
 
+// In a headset: its session presents. A computer's full screen is A-Frame's VR mode too (its
+// enterVR sets "vr-mode" and sends enter-vr without a headset), and is played as a screen; in a
+// headset the session presents before enter-vr is sent (A-Frame enters once setSession resolves).
+const inVR = (scene) => scene.renderer.xr.isPresenting;
+
 // When the sign may start: the rule is arrivalStep (sign.js), the wait in VR settleArrival.
 // The VR button lies outside the view, so pressing it is no press on the 3D view.
 function arrival(scene) {
   const device = { headset: AFRAME.utils.device.checkHeadsetConnected(), questBrowser: AFRAME.utils.device.isOculusBrowser() };
   if (arrivalStep(device, 'load') === 'now') return Promise.resolve();
   return new Promise((resolve) => {
-    const flat = () => { if (!scene.is('vr-mode') && arrivalStep(device, 'flat-press') === 'now') resolve(); };
+    const flat = () => { if (!inVR(scene) && arrivalStep(device, 'flat-press') === 'now') resolve(); };
     window.addEventListener('keydown', flat);
     scene.canvas.addEventListener('pointerdown', flat);
     const inside = () => settleArrival(delay, () => faces(scene)).then(resolve);
-    if (scene.is('vr-mode')) inside(); else scene.addEventListener('enter-vr', inside, { once: true });
+    const entered = () => { if (!inVR(scene)) return; scene.removeEventListener('enter-vr', entered); inside(); };
+    if (inVR(scene)) inside(); else scene.addEventListener('enter-vr', entered);
   });
 }
 
