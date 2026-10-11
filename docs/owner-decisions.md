@@ -125,7 +125,11 @@ quoted; the time is when he said it (UTC). A risk list or a general method is no
   words (evaluations with no measure behind them), as Chase's «Tyranny of Words» asks: «чтоб ты использовал тиранию
   слов к себе… пустые… это речь маркетолога, который за 15 гривен тебе продаст все что угодно» 11.10. Its rules: Orwell's
   six from «Politics and the English Language» (1946), his own printed card («Ты про эти правила говоришь?» 11.10), and
-  Hayakawa's report against judgment; Glavred's paid API not taken. A remark of the outside reviewer is closed only by the
+  Hayakawa's report against judgment; Glavred's paid API not taken. Orwell's sixth rule checked against the essay itself
+  (orwellfoundation.com): «Break any of these rules sooner than say anything outright barbarous». The method behind my
+  words and checks is general semantics, used wherever it helps: Korzybski, Bruce and Susan Kodish («Drive Yourself
+  Sane»: dates and indexes on every claim, the map is not the territory), Stuart Chase, Hayakawa («воспользуйся уже всеми
+  известными людям знаниями… нацелены на развитие. И поприменяй их… там, где это необходимо» 11.10). A remark of the outside reviewer is closed only by the
   reviewer itself (tools/claude-guard.mjs refuses mine): «ты сам себя можешь оправдать» 11.10.
 - I check all a tool can measure; he judges what he sees, one action at a time («Ты должен… проверять сам
   все, что можешь»; «Мне надо делать что-то конкретно одно» 9.10 09:14); blocked: ask him at once.
