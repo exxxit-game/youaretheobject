@@ -97,7 +97,7 @@ Verdicts: CONFIRMED / CONTRADICTED / UNPROVEN. Mixed claims are split into their
 - DOCS docs/components/text.md:13 — "The text component renders signed distance field (SDF) font text."
 - text.md:33-35 — "As a default, we've selected SDF-based text to be included as a core component due to its **relatively good performance and clarity**. This component uses [mattdesl's `three-bmfont-text` library]".
 - text.md:114-115 — "The text component defaults to `roboto` which uses a multi-channel signed distance (MSDF) font. MSDF helps to preserve sharp corners and edges."
-- BUILD @1208921 — a roboto font or a `-msdf.` file switches the shader to `"msdf"`. @1207037: `roboto:FM+"Roboto-msdf.json"`. Fonts load from `window.AFRAME_CDN_ROOT||"https://cdn.aframe.io/"` unless that is overridden.
+- BUILD @1208921 — a roboto font or a `-msdf.` file switches the shader to `"msdf"`. @1207037: `roboto:FM+"Roboto-msdf.json"`. Fonts load from cdn.aframe.io unless A-Frame's CDN root setting (on window) is overridden.
 - What the doc admits as limits (text.md:283, :286): it is bitmap-based ("Unicode this is not"), and "The generated text is not suitable for raycaster intersection testing." The docs make no claim about draw calls per text entity either way.
 
 ## 8. "Inspector opens with Ctrl+Alt+I in the headset's browser; it can save changes into the HTML"
