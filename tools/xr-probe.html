@@ -12,7 +12,7 @@
      buttons once in the headset (or the tools press them over the debug link: a click
      sent that way counts as the user's); the result is kept in window.__probe, in the
      page and in localStorage, and is read over USB or Wi-Fi (CDP) afterwards. -->
-<p>Проверка шлема. Кнопки нажимает ноутбук, сами их не нажимайте. Проверки VR и MR длятся несколько секунд, потом шлем сам вернётся сюда. Когда шлем спросит про микрофон или камеру, разрешите; у камеры берутся только размеры и частота кадров. Ничего не записывается и не отправляется. Разрешение камеры потом можно снять: замок слева от адреса, «Камера», «Не разрешать».</p>
+<p>Проверка шлема. Кнопки нажимает ноутбук, сами их не нажимайте. Проверки VR и MR длятся несколько секунд, потом шлем сам вернётся сюда. Когда шлем спросит про микрофон или камеру, разрешите; у камеры берутся только размеры и частота кадров. Ничего не записывается и не отправляется. Разрешение камеры потом можно снять: зелёный замок слева от адреса, разрешение «Headset cameras» (камеры шлема), «Don't allow» (не разрешать).</p>
 <button id="vr">Проверить VR</button>
 <button id="ar">Проверить MR</button>
 <button id="mic">Проверить микрофон</button>
@@ -154,6 +154,7 @@ document.getElementById('camera').onclick = async () => {
       const c = { label: d.label };
       await measureCamera(d, c);
       r.cameras.push(c);
+      show();   // kept after each camera, so a run that stops waiting still finds what was measured
     }
     r.granted = true;
   } catch (e) { r.error = e.name + ': ' + e.message; }

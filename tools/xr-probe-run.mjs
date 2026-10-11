@@ -66,6 +66,8 @@ const probe = await run('JSON.stringify(window.__probe)');
 probePage.close();
 sleepNow();
 const p = JSON.parse(probe || '{}');
+// a step that left nothing says so, rather than missing from the print
+for (const step of steps) if (!p[KEY[step]]) console.log(step, 'no result');
 for (const [k, r] of Object.entries(p)) {
   const short = { ...r };
   if (Array.isArray(short.planes)) short.planes = `${short.planes.length}: ${[...new Set(short.planes)].join(', ')}`;

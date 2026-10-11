@@ -13,7 +13,7 @@
      at a time (docs/audit/probe-review.md): one line of words on a panel 1 m ahead, the real
      controller models lighting the button pressed, the next line once the press is read, started
      by his own trigger. The run is read over the debug link from window.__probe.input. -->
-<p>Проверка контроллеров и рук. Всё, что нужно делать, будет написано внутри очков.</p>
+<p>Проверка контроллеров и рук. Кнопку нажимает ноутбук, сами её не нажимайте. Всё, что нужно делать, будет написано внутри очков.</p>
 <button id="input">Начать в очках</button>
 <pre id="out">Результатов пока нет.</pre>
 <a-scene id="scene" vr-mode-ui="enabled: false" background="color: #121212"
@@ -206,6 +206,8 @@ scene.addEventListener('enter-vr', () => {
 scene.addEventListener('exit-vr', () => { if (r && !r.finished) r.stopped = `left VR at ${task() ? task().id : '-'}`; if (r) { r.frames = r.tasks.length; save(); } });
 
 document.getElementById('input').onclick = async () => {
+  // a second press while the tasks run would start them over and lose those already done
+  if (scene.is('vr-mode') || (r && !r.finished && !r.stopped && !r.error)) return;
   r = window.__probe.input = { mode: 'input', started: new Date().toISOString(), tasks: [], sources: {}, hands: {}, haptics: [], events: [] };
   step = -1; placed = false; waiting = false;
   await document.fonts.load('500 54px Inter').catch(() => {});
