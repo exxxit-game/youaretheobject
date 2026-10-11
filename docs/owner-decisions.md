@@ -151,6 +151,8 @@ quoted; the time is when he said it (UTC). A risk list or a general method is no
 - I check all a tool can measure; he judges what he sees, one action at a time («Ты должен… проверять сам
   все, что можешь»; «Мне надо делать что-то конкретно одно» 9.10 09:14); blocked, or missing a norm or a document: tell him at once, each time («Если чего-то нет, скажи мне… и мы
   найдем это… всегда говори мне каждый раз» 11.10).
+- No mirrors: the one-way mirror in room 101 goes entirely; the extinguisher's polished steel stays as it is («надо
+  полностью убирать это зеркало… Огнетушитель пусть остается как есть» 11.10; «Ты ж не за светом туда заходишь»).
 - No player character: only controllers or hands («хочу, чтобы это оставалось без какого-то персонажа. Просто джойстики
   или руки… без привязки к маскоту» 11.10).
 - Knowledge is updated when needed: the docs copies, the tools and our records are refreshed from their sources when a
