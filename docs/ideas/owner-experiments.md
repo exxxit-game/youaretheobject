@@ -25,4 +25,4 @@ is to be found and read before any design; no names taken from memory yet.
 ## The scientists' tests, made more exact (11.10)
 "Improve the scientists' tests. Think what they missed before. How to make them very exact? For example, how
 long the decision took." What the headset can measure that the original lab could not (the time to each
-answer, where the person looked, how he moved) is the start; each room's paper says what it measured.
+answer, where his head was turned (Quest 3 has no eye tracking: docs/headset-capabilities.md), how he moved) is the start; each room's paper says what it measured.
