@@ -53,6 +53,7 @@ enough. A new decision: its line here, the rest there. A risk list or a general 
 - What is left to imagination goes to him as real options («Есть несколько вариантов, и я выбираю» 9.10).
 - In the headset every step he is to do goes inside it (quest-look.mjs say), never only the chat («а ты мне говорил в очках» 10.10); he puts it on only when asked («если ты не попросил, я в них сидеть не буду» 11.10).
 - New numbers and conclusions reach him only on a fact-checked page; in the chat a link and one line («Делай» 10.10).
+- The fact-check is always two runs that do not see each other, on a new page and on its edits alike («Всегда две проверки, как сейчас» 12.10).
 - No empty words to him: Chase's «Tyranny of Words», Orwell's six rules («Ты про эти правила говоришь?» 11.10), Hayakawa's report against judgment («это речь маркетолога» 11.10); Glavred's paid API not taken.
 - General semantics behind my words and checks: Korzybski, the Kodishes (dates and indexes on every claim, the map is not the territory), Chase, Hayakawa («воспользуйся уже всеми известными людям знаниями» 11.10).
 - The outside reviewer's remark is closed only by the reviewer («ты сам себя можешь оправдать» 11.10).

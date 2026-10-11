@@ -360,10 +360,11 @@ export function refusal(line, ps = false, here = false) {
     if (c.redirs.some((r) => r.op.includes('>') && RECORD.test(r.target))) return WHY.record;
     const why = judge(c.words, c.stdin, ps, here);
     if (why) return why;
-    // after a cd into the library the relative paths are in it; a cd elsewhere (or up) leaves it
+    // after a cd into the library the relative paths are in it; a cd elsewhere (or up) leaves it, and so
+    // does a bare cd, which goes home
     if (/^(cd|chdir|pushd|set-location|sl|push-location)$/.test(base(c.words[0]))) {
       const to = c.words.slice(1).find((x) => !x.startsWith('-')) ?? '';
-      here = inLib(to) || (here && !ABSOLUTE.test(to) && !to.startsWith('..'));
+      here = inLib(to) || (here && to !== '' && !ABSOLUTE.test(to) && !to.startsWith('..'));
     }
   }
   return null;

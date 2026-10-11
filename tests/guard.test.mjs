@@ -192,6 +192,8 @@ const allowed = cases([
   'pdftotext ~/Documents/objekt-files/papers/a.pdf ~/Documents/objekt-files/papers/a.txt',
   'cd ~/Documents/objekt-files && ls papers',
   'cd ~/Documents/objekt-files && cd /tmp && rm x.txt',
+  'cd ~/Documents/objekt-files && cd && rm notes.txt',
+  'cd ~/Documents/objekt-files && cd ~ && rm notes.txt',
   ['robocopy "C:\\Users\\admin\\Documents\\objekt-files" "F:\\objekt-files" /MIR', PS],
   ['robocopy "F:\\objekt-files" "C:\\Users\\admin\\Documents\\objekt-files" /E', PS],
   'rm -rf /tmp/objekt-files-copy',
