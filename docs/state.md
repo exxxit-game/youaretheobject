@@ -75,6 +75,5 @@ All in `docs/owner-decisions.md` (shown at every session start): settled, never 
   tools/claude-guard.mjs. The process rebuild of 10.10 and its audits' findings: docs/audit/process-rebuild.md.
 - Earlier causes and audits: docs/audit/README.md. Corridor: finished item by item on the board; approved shots in docs/rooms/corridor-shots/.
   Style book: https://claude.ai/artifact/DKDDa4sH1BG9TF24MJyQaH. How to use Claude Code, his memo: https://claude.ai/artifact/V4HzbgVtK8HGqczZ3zyfS9.
-- Process review of 11.10 (his "think deeply"): the page https://claude.ai/artifact/NMfbi3vWaZQX8oR9t39mTC; its measures (guards, tools,
-  days, walls, research) in C:UsersadminDocumentsobjekt-files
-otesprocess-review-2026-10-11. Engine lesson one: https://claude.ai/artifact/FVhfv8i8CGGTi4WSHgwbC9.
+- Process review 11.10: https://claude.ai/artifact/NMfbi3vWaZQX8oR9t39mTC, measures in objekt-files
+otesprocess-review-2026-10-11; lesson one: https://claude.ai/artifact/FVhfv8i8CGGTi4WSHgwbC9.
