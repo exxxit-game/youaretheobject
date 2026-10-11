@@ -6,7 +6,7 @@ description: Build or substantially change a room of Object (a re-created psycho
 # New room: steps in order
 
 The owner cannot read code or papers, so every step leaves proof a machine can
-check. Do not tell the owner "done" before step 9.
+check. Do not tell the owner "done" before step 10.
 
 1. **Card, then the paper in full.** Start from the experiment's card (`docs/catalog.md`, `docs/cards/`): its
    quotes are already checked against the paper text. Download the original (and the main replication) into

@@ -5,7 +5,19 @@ import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 
 // MSYS_NO_PATHCONV: Git Bash would otherwise turn adb's device paths into Windows paths
-export const adb = (...args) => execFileSync('adb', args, { encoding: 'utf8', env: { ...process.env, MSYS_NO_PATHCONV: '1' } }).trim();
+const run = (args) => execFileSync('adb', args, { encoding: 'utf8', env: { ...process.env, MSYS_NO_PATHCONV: '1' } }).trim();
+// The headset can be listed twice, on its cable and over Wi-Fi (tools/quest-wifi.mjs), and adb then
+// refuses every command that names no device ("more than one device/emulator"): the cable's serial
+// (the one without an address) is named, unless ANDROID_SERIAL names one already.
+let serial;
+function device() {
+  if (serial !== undefined) return serial;
+  const listed = process.env.ANDROID_SERIAL ? [] : run(['devices']).split('\n').slice(1).map((l) => l.trim().split('\t'))
+    .filter(([, state]) => state === 'device').map(([id]) => id);
+  serial = listed.length > 1 ? (listed.find((id) => !id.includes(':')) || listed[0]) : null;
+  return serial;
+}
+export const adb = (...args) => run(args[0] === 'devices' || !device() ? args : ['-s', device(), ...args]);
 
 // The laptop's server: the port the app's preview starts it on (.claude/launch.json), else the
 // port of `npm run serve`.
