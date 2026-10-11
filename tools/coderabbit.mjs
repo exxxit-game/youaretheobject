@@ -16,6 +16,7 @@ const [OWNER, NAME] = REPO.split('/');
 const QUERY = `query { repository(owner: "${OWNER}", name: "${NAME}") {
   pullRequests(states: OPEN, baseRefName: "${BASE}", headRefName: "room-polish", first: 1) { nodes { number url headRefOid changedFiles
     commits(last: 1) { nodes { commit { committedDate status { contexts { context state description } } } } }
+    reviews(last: 30) { nodes { author { login } submittedAt body } }
     reviewThreads(first: 100) { pageInfo { hasNextPage } nodes { isResolved isOutdated comments(first: 1) { nodes { author { login } path } } } } } } } }`;
 
 // A push it has not read for hours may never be read: after the trial a public repository under 10
@@ -23,18 +24,33 @@ const QUERY = `query { repository(owner: "${OWNER}", name: "${NAME}") {
 // requires reviews to be triggered manually", docs.coderabbit.ai/management/plans), so the line says
 // how long the head has waited and, past WAIT hours, how to ask.
 export const WAIT = 2;
+// Remarks with no thread of their own sit inside its review bodies ("Nitpick comments (n)", "Outside diff
+// range comments (n)"); an audit of every remark found that only these went unanswered, so the line also
+// counts those of the last day's reviews
+export const DAY = 24 * 3600000;
+export function untracked(reviews, now = Date.now()) {
+  const recent = (reviews || []).filter((r) => /^coderabbitai/.test(r.author?.login || '') && now - Date.parse(r.submittedAt) < DAY);
+  const count = (re) => recent.reduce((n, r) => n + [...String(r.body).matchAll(re)].reduce((a, m) => a + Number(m[1]), 0), 0);
+  return { nitpicks: count(/Nitpick comments \((\d+)\)/g), outside: count(/Outside diff range comments \((\d+)\)/g) };
+}
 // what to say at the start of a session
 export function summarize(data, now = Date.now()) {
   const pr = data?.data?.repository?.pullRequests?.nodes?.[0];
   if (!pr) return { line: `CodeRabbit: no open pull request from room-polish into ${BASE}, so nothing is reviewed: open one (gh pr create --base ${BASE} --head room-polish)` };
-  const open = pr.reviewThreads.nodes.filter((t) => !t.isResolved && !t.isOutdated && /^coderabbitai/.test(t.comments.nodes[0]?.author?.login || ''));
+  const said = base(pr, now);
+  const { nitpicks, outside } = untracked(pr.reviews?.nodes, now);
+  return nitpicks + outside ? { line: `${said.line}. Its reviews of the last day also hold ${nitpicks} nitpick and ${outside} outside-diff remarks with no thread: read each in the reviews (gh pr view ${pr.number} --comments) and fix it or answer it` } : said;
+}
+function base(pr, now) {
+  // an outdated thread is one whose line changed since; it stays a remark until CodeRabbit closes it
+  const open = pr.reviewThreads.nodes.filter((t) => !t.isResolved && /^coderabbitai/.test(t.comments.nodes[0]?.author?.login || ''));
   if (pr.reviewThreads.pageInfo?.hasNextPage) return { line: `CodeRabbit: more than 100 remark threads on ${pr.url}: read them on GitHub (gh pr view ${pr.number} --comments) before other work` };
   const status = (pr.commits.nodes[0]?.commit?.status?.contexts || []).find((c) => /^coderabbit/i.test(c.context));
   const skipped = status && /skipp/i.test(status.description || '');
   const read = status?.state === 'SUCCESS' && !skipped;
   if (open.length) {
     const files = [...new Set(open.map((t) => t.comments.nodes[0].path).filter(Boolean))];
-    return { line: `CodeRabbit: ${open.length} open remark${open.length === 1 ? '' : 's'} on ${pr.url} (${files.slice(0, 4).join(', ')}${files.length > 4 ? ', …' : ''}): read them before other work (gh pr view ${pr.number} --comments), fix the real ones, answer and resolve the rest` };
+    return { line: `CodeRabbit: ${open.length} open remark${open.length === 1 ? '' : 's'} on ${pr.url} (${files.slice(0, 4).join(', ')}${files.length > 4 ? ', …' : ''}): read them before other work (gh pr view ${pr.number} --comments), fix the real ones, answer the rest; CodeRabbit closes its own` };
   }
   if (skipped) return { line: `CodeRabbit skipped the last push (${status.description}) on ${pr.url}: ${pr.changedFiles > FILE_LIMIT ? `${pr.changedFiles} files against its limit of ${FILE_LIMIT}; ` : ''}ask it again with a comment "@coderabbitai review"` };
   if (!read) {

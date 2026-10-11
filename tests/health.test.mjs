@@ -142,7 +142,11 @@ const prData = (threads, { state = 'SUCCESS', description = 'Review completed', 
   commits: { nodes: [{ commit: { committedDate, status: { contexts: [{ context: 'CodeRabbit', state, description }] } } }] }, reviewThreads: { pageInfo: { hasNextPage: changedFiles === 999 }, nodes: threads } }] } } } });
 assert.match(summarizeRemarks(prData([], { changedFiles: 999 })).line, /more than 100 remark threads/, 'threads past the first page are not taken for none');
 const said = (...a) => summarizeRemarks(prData(...a));
-assert.match(said([thread('coderabbitai'), thread('coderabbitai', true), thread('coderabbitai', false, true), thread('exxxit-game')]).line, /^CodeRabbit: 1 open remark on .*pull\/10 \(src\/a\.js\)/, 'only its open, current remarks count');
+assert.match(said([thread('coderabbitai'), thread('coderabbitai', true), thread('coderabbitai', false, true), thread('exxxit-game')]).line, /^CodeRabbit: 2 open remarks on .*pull\/10 \(src\/a\.js\)/, 'its open remarks count, an outdated one too: its line changed, the remark stands');
+// remarks with no thread, inside its review bodies, of the last day
+const withReviews = (bodies, at = '2026-10-10T09:00:00Z') => { const d = prData([]); d.data.repository.pullRequests.nodes[0].reviews = { nodes: bodies.map((body) => ({ author: { login: 'coderabbitai' }, submittedAt: at, body })) }; return d; };
+assert.match(summarizeRemarks(withReviews(['**Nitpick comments (2)**', 'Outside diff range comments (1)']), Date.parse('2026-10-10T10:00:00Z')).line, /2 nitpick and 1 outside-diff remarks/, 'nitpicks and outside-diff remarks went unseen');
+assert.doesNotMatch(summarizeRemarks(withReviews(['**Nitpick comments (2)**'], '2026-10-08T09:00:00Z'), Date.parse('2026-10-10T10:00:00Z')).line, /nitpick/, 'an old review\'s nitpicks are counted again');
 assert.match(said([], { state: 'PENDING', description: 'Review in progress' }).line, /not read yet/, 'a review still running is said as such');
 const pending = (hoursAgo) => summarizeRemarks(prData([], { state: 'PENDING', description: 'Review in progress' }), Date.parse('2026-10-10T10:00:00Z') + hoursAgo * 3600000).line;
 assert.match(pending(1), /not read yet \(waiting 1 h\)$/, 'a fresh push only waits');

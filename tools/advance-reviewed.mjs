@@ -41,7 +41,9 @@ const openRemarks = () => {
   // no open pull request (closed, renamed, another base) or more threads than one page: the remarks
   // are unknown, and may be open, so nothing moves
   if (!pr || pr.reviewThreads.pageInfo.hasNextPage) return Infinity;
-  return pr.reviewThreads.nodes.filter((t) => !t.isResolved && !t.isOutdated && /^coderabbitai/.test(t.comments.nodes[0]?.author?.login || '')).length;
+  // an outdated thread (its line changed since) is still open until CodeRabbit closes it: counted, as the
+  // start line counts it (tools/coderabbit.mjs)
+  return pr.reviewThreads.nodes.filter((t) => !t.isResolved && /^coderabbitai/.test(t.comments.nodes[0]?.author?.login || '')).length;
 };
 
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
