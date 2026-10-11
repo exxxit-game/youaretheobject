@@ -14,7 +14,8 @@
   },
   "deniedMcpServers": [
     { "serverName": "plugin:research-desk:reference-lookup" },
-    { "serverName": "reference-lookup" }
+    { "serverName": "reference-lookup" },
+    { "serverName": "plugin:meta-vr:metavr" }
   ],
   "permissions": {
     "allow": [

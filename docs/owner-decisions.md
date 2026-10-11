@@ -23,6 +23,10 @@ quoted; the time is when he said it (UTC). A risk list or a general method is no
   10.10 08:12); the old Dropbox files stay where they are.
 - After the rebuild the process is frozen: it changes only on a health-check finding or his word, and a change
   replaces something («да», «согласен» 10.10).
+- The process review of 11.10 (https://claude.ai/artifact/NMfbi3vWaZQX8oR9t39mTC, measured against Anthropic's Claude Code
+  docs) accepted: «Давай дальше по этому файлу делать, что нам надо. Убирать, что не надо» 11.10. Its two tables say which
+  guards stay, go or change; a ban stands only where a mistake cannot be undone or costs him time; a complaint is no
+  reason for a new guard.
 - CodeRabbit on its 14-day trial, kept and paid for only if it proves useful («14 дней нам хватит, чтобы...
   попользоваться и понаходить все то, что нам необходимо. А если он нам будет очень полезен, я, может, и дальше
   за него буду платить» 10.10 07:45). It reviews the one open pull request from room-polish into the branch
@@ -123,9 +127,11 @@ quoted; the time is when he said it (UTC). A risk list or a general method is no
   просто одевал очки, а ты мне говорил в очках, что надо сделать, как сделать… делать это постоянной практикой,
   чтобы я не напоминал тебе об этом каждый раз» 11.10.
 - New numbers and conclusions reach him only on a page that passed the fact-check; in the chat a link and one line
-  with no new numbers, kept by a guard (not built yet). My proposal after a summary stronger than its evidence reached
-  him in the chat; his answer: «Делай… и сторож будет это проверять и это тоже» 10.10 (UTC; my proposal pasted back with his «Делай»). The same guard keeps out empty
-  words (evaluations with no measure behind them), as Chase's «Tyranny of Words» asks: «чтоб ты использовал тиранию
+  with no new numbers. My proposal after a summary stronger than its evidence reached
+  him in the chat; his answer: «Делай… и сторож будет это проверять и это тоже» 10.10 (UTC; my proposal pasted back with his «Делай»). The chat guard built for it
+  on 11.10 was removed the same day by his yes to the process review (below): it held words, not a claim stronger than
+  its evidence, and Cosmogram had tried one. Empty words (evaluations with no measure behind them) stay out of what I
+  write him, as Chase's «Tyranny of Words» asks: «чтоб ты использовал тиранию
   слов к себе… пустые… это речь маркетолога, который за 15 гривен тебе продаст все что угодно» 11.10. Its rules: Orwell's
   six from «Politics and the English Language» (1946), his own printed card («Ты про эти правила говоришь?» 11.10), and
   Hayakawa's report against judgment; Glavred's paid API not taken. Orwell's sixth rule checked against the essay itself

@@ -9,8 +9,8 @@ forgotten (two reviewers here never ran once). One line per situation; the first
   several papers: paper-compare; are the references real: citation-check.
 - A narrow fact (a real size, a standard's number, a period photo): the quick-research agent; a wide
   question (a market, every platform, many options): the deep-research agent.
-- Searching papers: Consensus, PubMed, the hosted reference lookup; a PDF: PDF Tools; a page a fetch
-  cannot read: the browser pane.
+- Searching papers: Consensus, PubMed, the hosted reference lookup; a PDF: PDF Tools (it opens files only
+  under Documents, Downloads or Desktop); a page a fetch cannot read: the browser pane.
 - Anything the owner will see or do: the practice-reviewer agent first (VR and the test copy wait for it).
 - A claim about our own setup (a plan, a version, a number): read it from the thing itself first (the service
   through its connector, the vendored code, a fresh measure); about Quest or WebXR: Meta's docs first
@@ -19,7 +19,8 @@ forgotten (two reviewers here never ran once). One line per situation; the first
 - The owner's requests since the last check, once at the end of a step: the request-auditor agent.
 - Code and docs against the finished picture, after a large change: the architecture-auditor agent.
 - The outside review: CodeRabbit's open remarks, shown at every session start, read before other work.
-- The headset: node tools/quest-look.mjs (look, measure; sleep after); while he wears it, every step he
+- The headset: the practice review runs before he is called to it, never while he waits in it;
+  node tools/quest-look.mjs (look, measure; sleep after); while he wears it, every step he
   is to do goes inside it with `quest-look.mjs say`, never only in the chat. Meta's own checks and traces:
   metavr, the Meta VR CLI (device, perf, vrc-local); install and store: the meta-vr skills hz-store-pwa
   and hz-store-submit; comfort: hz-immersive-designer.

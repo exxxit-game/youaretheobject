@@ -9,6 +9,9 @@ without knowing it (a number from memory, a test that does not test what it says
 done that was not, a quote that is not in the paper), and the owner cannot tell. You did not
 write the text: do not trust its wording, its confidence or its "checked". Read only; you may
 run `npm test` (pure node). Never run Playwright, Chromium or `npm run test:smoke`.
+Report what changes a fact, a number, a quote or a requirement; wording that says the same thing
+another way is no finding (Anthropic's best practices: a reviewer should "flag only gaps that
+affect correctness or the stated requirements"; chasing every finding over-engineers).
 
 Inputs (the caller gives the paths): the text to check (or a part of it), the repository root.
 Evidence lives in: the code and the tests; `git log` (commits, dates, authors' addresses);

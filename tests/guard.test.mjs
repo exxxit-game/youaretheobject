@@ -12,8 +12,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { refusal, ciLine, HEALTH_SHOWN, EXTRA_LINE } from '../tools/claude-guard.mjs';
 import { onHead } from '../tools/headset.mjs';
-import { MARK, unrelayed, sinceOwner } from '../tools/owner-links.mjs';
-import { BOARD, SHOWS, YES, PENDING, shows, dayKey, plannedToday, stalled, saidYes } from '../tools/board.mjs';
+import { BOARD, SHOWS, UNTIL, WAITS, top, split } from '../tools/board.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PS = 'PowerShell';
@@ -177,30 +176,23 @@ assert.equal(ask('Bash', 'git commit -n -m x'), 2, 'the hook let a hook-skipping
 assert.equal(ask(PS, 'npm run test:smoke'), 2, 'the hook let the smoke test run in PowerShell');
 assert.equal(ask('Bash', 'grep -rn "git commit --no-verify" docs/'), 0, 'the hook refused a search');
 
-// One window at a time (tools/one-window.mjs): the window the owner last wrote in holds the work,
-// another may not run commands or change files, and its turn ends without demands. A holder file and
-// a home of the test's own, so neither the real holder nor his message log is touched.
+// Every message the owner types is logged word for word, and nothing else is: the app's notices
+// (helpers' reports, the pull request watcher) logged as his read as his words. A home of the
+// test's own, so his real log is not touched.
 {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'one-window-'));
-  const env = { ...process.env, OBJECT_WINDOW: path.join(dir, 'window.json'), HOME: dir, USERPROFILE: dir };
-  const hook = (mode, event) => spawnSync(process.execPath, ['tools/claude-guard.mjs', mode], { cwd: ROOT, encoding: 'utf8', env, input: JSON.stringify({ cwd: ROOT, ...event }) }).status;
-  hook('prompt', { session_id: 'A', prompt: 'his message' });
-  assert.equal(JSON.parse(fs.readFileSync(env.OBJECT_WINDOW, 'utf8')).session, 'A', 'the window he wrote in does not hold the work');
-  assert.equal(hook('pre', { session_id: 'B', tool_name: 'Bash', tool_input: { command: 'ls' } }), 2, 'another window ran a command');
-  assert.equal(hook('pre', { session_id: 'B', tool_name: 'Edit', tool_input: { file_path: 'x.js' } }), 2, 'another window changed a file');
-  assert.equal(hook('pre', { session_id: 'A', tool_name: 'Bash', tool_input: { command: 'ls' } }), 0, 'the window he wrote in was stopped');
-  assert.equal(hook('stop', { session_id: 'B' }), 0, 'a window without the work was asked to save or push');
-  hook('prompt', { session_id: 'B', prompt: '<task-notification>a helper finished</task-notification>' });
-  assert.equal(JSON.parse(fs.readFileSync(env.OBJECT_WINDOW, 'utf8')).session, 'A', 'a notice took the work, not his message');
-  hook('prompt', { session_id: 'B', prompt: '<ci-monitor-event>53 new review comments</ci-monitor-event>' });
-  assert.equal(JSON.parse(fs.readFileSync(env.OBJECT_WINDOW, 'utf8')).session, 'A', 'the pull request watcher took the work, not his message');
-  hook('prompt', { session_id: 'B', prompt: '<system-reminder>\nYou are operating in a git worktree.\n</system-reminder>\n\n' });
-  assert.equal(JSON.parse(fs.readFileSync(env.OBJECT_WINDOW, 'utf8')).session, 'A', 'a bare note took the work');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'owner-log-'));
+  const env = { ...process.env, HOME: dir, USERPROFILE: dir };
+  const hook = (event) => spawnSync(process.execPath, ['tools/claude-guard.mjs', 'prompt'], { cwd: ROOT, encoding: 'utf8', env, input: JSON.stringify({ cwd: ROOT, ...event }) });
+  const logged = () => { try { return fs.readFileSync(path.join(dir, 'Documents', 'objekt-files', 'notes', 'owner-messages.md'), 'utf8'); } catch { return ''; } };
+  assert.equal(hook({ session_id: 'A', prompt: 'his message' }).status, 0, 'the prompt hook stopped his message');
+  hook({ session_id: 'B', prompt: '<task-notification>a helper finished</task-notification>' });
+  hook({ session_id: 'B', prompt: '<ci-monitor-event>53 new review comments</ci-monitor-event>' });
+  hook({ session_id: 'B', prompt: '<system-reminder>\nYou are operating in a git worktree.\n</system-reminder>\n\n' });
   // a new window's first message: the app's worktree note, then his words (11.10)
-  hook('prompt', { session_id: 'B', prompt: '<system-reminder>\nYou are operating in a git worktree.\n</system-reminder>\n\ncarry on here' });
-  assert.equal(hook('pre', { session_id: 'B', tool_name: 'Bash', tool_input: { command: 'ls' } }), 0, 'the work did not follow him to the window he wrote in');
-  assert.match(fs.readFileSync(path.join(dir, 'Documents', 'objekt-files', 'notes', 'owner-messages.md'), 'utf8'), /carry on here/, 'his first message in a new window was not logged');
-  assert.doesNotMatch(fs.readFileSync(path.join(dir, 'Documents', 'objekt-files', 'notes', 'owner-messages.md'), 'utf8'), /review comments/, 'the watcher\'s event was logged as his words');
+  hook({ session_id: 'B', prompt: '<system-reminder>\nYou are operating in a git worktree.\n</system-reminder>\n\ncarry on here' });
+  assert.match(logged(), /his message/, 'his message was not logged');
+  assert.match(logged(), /carry on here/, 'his first message in a new window was not logged');
+  assert.doesNotMatch(logged(), /review comments|a helper finished/, 'an app notice was logged as his words');
   fs.rmSync(dir, { recursive: true, force: true });
 }
 
@@ -210,38 +202,6 @@ const dump = (state, virtual) => `Virtual proximity state: ${virtual}\nisAutosle
 assert.ok(onHead(dump('HEADSET_MOUNTED', 'DISABLED')), 'worn by the owner reads as on his head');
 assert.ok(!onHead(dump('HEADSET_MOUNTED', 'CLOSE')), 'our own "worn on" override is not a person');
 assert.ok(!onHead(dump('HEADSET_UNMOUNTED', 'DISABLED')) && !onHead(dump('STANDBY', 'DISABLED')), 'off the head is free to restart');
-
-// Pages only the owner can open reach him: a link a research report lists after the mark must come
-// up again later in the session record (raw text, JSON-escaped newlines as Claude Code writes them)
-const report = `{"content":"found nothing open.\\n${MARK}\\n- https://archive.org/details/ubc1976 - section 3305\\n- https://shop.example.org/ubc.pdf.\\n\\nother text"}`;
-assert.deepEqual(unrelayed(report).sort(), ['https://archive.org/details/ubc1976', 'https://shop.example.org/ubc.pdf'], 'both links are owed to the owner');
-assert.deepEqual(unrelayed(report + '\n{"text":"open https://archive.org/details/ubc1976"}'), ['https://shop.example.org/ubc.pdf'], 'a link given to him is no longer owed');
-assert.deepEqual(unrelayed(report + '\n{"text":"https://archive.org/details/ubc1976 and https://shop.example.org/ubc.pdf"}'), [], 'all given: the turn may end');
-assert.deepEqual(unrelayed(`${MARK} none\\n\\nhttps://elsewhere.org/a`), [], 'a link after the block is not the owner\'s');
-assert.deepEqual(unrelayed('no research today'), [], 'no mark, nothing owed');
-// A report's block starts a line; a doc that names the mark in a sentence (docs/testing.md, read in a
-// session) is not a report, and a local address further down was once held as owed to the owner
-assert.deepEqual(unrelayed(`{"content":"    9\\t| claude-guard | left by a research agent after \`${MARK}\`, not reached him |\\n   20\\t| serve | http://localhost:3000 |"}`), [], 'the mark named in a sentence is no report');
-assert.deepEqual(unrelayed(`{"content":"export const MARK = \\"${MARK}\\"; // see https://example.org/a"}`), [], 'the mark quoted in code is no report');
-// The stop hook reads the record only from his last message on (a session's record grows to tens
-// of MB): a helper's report or a notice is no message of his, in records with and without the mark
-// Claude Code puts on what a person typed
-const said = (text, origin) => ({ type: 'user', ...(origin ? { origin: { kind: origin } } : {}), ...(origin === 'peer' ? { isMeta: true } : {}), message: { role: 'user', content: text } });
-const found = (url) => ({ type: 'assistant', message: { content: [{ type: 'text', text: `${MARK}\n- ${url}\n\n` }] } });
-const recordFile = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'guard-test-')), 'session.jsonl');
-for (const origin of ['human', null]) {
-  // the pull request watcher's events come with no mark at all (11.10)
-  const lines = [found('https://old.example.org/a'), said('carry on', origin), said(`a helper's report\n${MARK}\n- https://new.example.org/b\n\n`, 'peer'),
-    said('<ci-monitor-event>13 new review comments</ci-monitor-event>', null),
-    { type: 'user', message: { content: [{ type: 'tool_result', content: 'tool output' }] } }];
-  fs.writeFileSync(recordFile, `${'{"type":"progress"}\n'.repeat(500)}${lines.map((l) => JSON.stringify(l)).join('\n')}\n`);
-  for (const block of [1 << 20, 64]) {
-    assert.deepEqual(unrelayed(sinceOwner(recordFile, block)), ['https://new.example.org/b'], `only links left since his last message are owed (${origin || 'no mark'}, blocks of ${block})`);
-  }
-}
-fs.writeFileSync(recordFile, `${JSON.stringify(found('https://only.example.org/c'))}\n`);
-assert.deepEqual(unrelayed(sinceOwner(recordFile, 16)), ['https://only.example.org/c'], 'a record he has not written in is read whole');
-fs.rmSync(path.dirname(recordFile), { recursive: true, force: true });
 
 // The owner's decisions reach every session at its start and after each compaction: CLAUDE.md imports
 // them (Claude Code loads it then, whole); the start hook shows the board. A session that does not see
@@ -255,29 +215,22 @@ assert.ok(fs.existsSync(decisions) && /^- The corridor is the reference/m.test(f
   "the session does not show the owner's decisions: docs/owner-decisions.md is missing or lost its first decision");
 assert.ok(start.stdout.includes(boardTop), `the start hook does not show the board:\n${start.stdout.slice(0, 400)}`);
 
-// The board's table of showings: today's row is found in the owner's date form, and two answered rows in a
-// row without his yes stop the side work; rows still waiting for his look do not count either way
-const table = (rows) => `${SHOWS}\n| a | b | c |\n|---|---|---|\n${rows.map(([w, a]) => `| ${w} | thing | ${a} |`).join('\n')}\n`;
-assert.equal(dayKey(new Date(2026, 9, 9)), '9.10', 'dates as the board writes them');
-assert.ok(plannedToday(shows(table([['9.10', PENDING]])), '9.10') && !plannedToday(shows(table([['8.10', YES]])), '9.10'), 'a row for today is found, and only for today');
-assert.ok(stalled(shows(table([['7.10', 'x'], ['8.10', 'y'], ['9.10', PENDING]]))), 'two answers without his yes stall the work');
-assert.ok(!stalled(shows(table([['7.10', 'x'], ['8.10', YES], ['9.10', PENDING]])), { today: '9.10' }), 'a yes in the last two keeps the work going');
-assert.ok(stalled(shows(table([['7.10', PENDING], ['8.10', PENDING]])), { today: '9.10' }), 'rows left waiting from earlier days count as sessions without his yes');
-// a yes on the board counts only when his own message that day holds one
-const log = (day, text) => `## 2026-10-${day}T12:00:00.000Z s\n${text}\n`;
-assert.ok(saidYes(log('08', `${YES}, ok`), '8.10') && !saidYes(log('08', 'later maybe'), '8.10') && !saidYes(log('07', YES), '8.10'), 'his yes found only on its own day and as a word');
-assert.ok(stalled(shows(table([['7.10', 'x'], ['8.10', YES], ['9.10', PENDING]])), { today: '9.10', log: log('08', 'no answer from him') }), 'a yes the assistant wrote without his word does not count');
-assert.ok(!stalled(shows(table([['7.10', 'x'], ['8.10', YES], ['9.10', PENDING]])), { today: '9.10', log: log('08', YES) }), 'his own yes counts');
-// the board quotes his answers: the word in angle quotes, capitalised, or after a note; a word that only contains its letters is no yes
-for (const a of [`«${YES}»`, `«${YES[0].toUpperCase()}${YES.slice(1)}»`, `moved it; «${YES}»`]) assert.ok(!stalled(shows(table([['7.10', 'x'], ['8.10', a], ['9.10', PENDING]])), { today: '9.10', log: log('08', YES) }), `the answer ${a} is his yes`);
-assert.ok(stalled(shows(table([['7.10', 'x'], ['8.10', `«${String.fromCharCode(0x43d, 0x430)}${YES}»`], ['9.10', PENDING]])), { today: '9.10' }), 'a word that only contains the letters is no yes');
+// The top of the board at start: the head and the work now, what waits for him, the newest rows of
+// the showings (new rows go on top); the rest of the board is read from the file
+const board = (rows) => `# Board\n\nintro\n\n## Now\n- now\n\n${UNTIL}\n1. far\n\n${WAITS}\n1. a link\n\n${SHOWS}\n| a | b | c |\n|---|---|---|\n${rows.map((w) => `| ${w} | thing | pending |`).join('\n')}\n\n## Later\n- waits\n`;
+const shown = top(board(['11.10', '10.10', '9.10', '8.10', '7.10', '6.10']));
+assert.ok(shown.includes('- now') && shown.includes('1. a link') && shown.includes('| 7.10 |'), 'the top lost the work now, his asks or the newest showings');
+assert.ok(!shown.includes('far') && !shown.includes('| 6.10 |') && !shown.includes('waits'), 'the top shows the whole board again');
+// his brake: yesterday's commits split by what they touched, a commit touching both counted in both
+assert.deepEqual(split('@@a\nsrc/x.js\n\n@@b\ntools/y.mjs\ndocs/z.md\n\n@@c\nsrc/a.js\ntests/b.mjs\n\n@@d\nREADME.md'), { game: 2, process: 2 }, 'commits to the game and to the process counted wrong');
+assert.ok(/Yesterday's commits: \d+ touched the game, \d+ the process/.test(start.stdout), 'the start lost his brake line');
 assert.ok(start.stdout.length < 10000, `the start hook prints ${start.stdout.length} characters: over 10,000 Claude Code keeps only a preview`);
-// and on the worst day, not only on this machine: the board and the session line, then five health
-// problems and the CodeRabbit and red-CI lines, each at its longest (GitHub's runner lacks the
+// and on the worst day, not only on this machine: the top of the board and the session lines, then five
+// health problems and the CodeRabbit and red-CI lines, each at its longest (GitHub's runner lacks the
 // laptop's programs; a start that fit here went over there twice)
-const lastBoardLine = fs.readFileSync(path.join(ROOT, BOARD), 'utf8').trim().split(/\r?\n/).pop();
-const shownBoard = start.stdout.slice(0, start.stdout.indexOf(lastBoardLine) + lastBoardLine.length).length;
+const end = start.stdout.indexOf(`(the rest of the board: ${BOARD})`);
+const shownBoard = end + `(the rest of the board: ${BOARD})`.length;
 const worstStart = shownBoard + 2 + (1 + HEALTH_SHOWN + 1) * (EXTRA_LINE + 1) + 2 * (EXTRA_LINE + 2);
-assert.ok(worstStart < 10000, `on the worst day the start would print ${worstStart} characters (the board ${shownBoard}): shorten the board`);
+assert.ok(end > 0 && worstStart < 10000, `on the worst day the start would print ${worstStart} characters (the board's top ${shownBoard}): shorten the board's top`);
 
-console.log(`guard: ok (${refused.length} refused, ${allowed.length} allowed, the hook wired, the headset's wearer seen, links owed to the owner found since his last message, his decisions imported by CLAUDE.md, the board shown at start)`);
+console.log(`guard: ok (${refused.length} refused, ${allowed.length} allowed, the hook wired, the headset's wearer seen, his messages logged and only his, his decisions imported by CLAUDE.md, the board's top and his brake shown at start)`);

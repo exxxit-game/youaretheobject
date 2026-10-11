@@ -2,19 +2,17 @@
 // a rule written as text is skipped under load, a hook is not. Exit 2 stops the action and tells
 // the assistant why (code.claude.com/docs/en/hooks: PreToolUse exit 2 blocks the tool call; Stop
 // exit 2 keeps the turn going, and Claude Code ends it anyway after 8 blocks in a row).
+// Bans only where a mistake cannot be undone or costs the owner time; judgments by word lists were
+// taken out by his yes to the process review of 11.10 (docs/owner-decisions.md): they held words, not
+// claims, and stopped correct work more often than wrong.
 //   pre:  a shell command that skips the git hooks or runs Playwright on the laptop is refused, and
 //         so are a connected browser tool, any write to the live database and any write of mine to
 //         the practice review record
 //   subagent-start, subagent-stop: a practice reviewer's run is recorded for the owner's automatic
 //         stop before VR in the headset and the test copy (tools/review-gate.mjs)
-//   stop: a turn does not end while work is unsaved or not on GitHub, while a page only the owner
-//         can open, left by research since his last message, has not reached him (owner-links.mjs),
-//         while what I wrote him holds a new number or an empty word (plain-words.mjs),
-//         or while the board has no row for today saying what he will see (board.mjs)
-//   start, prompt: the board comes back at start and after every compaction; every owner message
-//         is logged, brings his chat rules in front of me (plain-words.mjs), and the window it was
-//         written in holds the work (one-window.mjs): another
-//         window may read but not run commands or change files, and its turns end freely
+//   stop: a turn does not end while work is unsaved or not on GitHub, or the main folder lacks it
+//   start, prompt: the top of the board comes back at start and after every compaction, with
+//         yesterday's commits to the game and to the process (his brake); every owner message is logged
 // Imported with no mode (tests/guard.test.mjs), it only defines refusal() and readOnlySql().
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
@@ -22,11 +20,9 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { withoutGitVars } from './secrets.mjs';
-import { unrelayed, sinceOwner, typedText } from './owner-links.mjs';
+import { typedText } from './owner-links.mjs';
 import { scan, named, entries, write, lastReport, REVIEWER, REPORT_END } from './review-gate.mjs';
-import { BOARD, SHOWS, LOG, shows, stalled, plannedToday } from './board.mjs';
-import { windowFile, take, elsewhere } from './one-window.mjs';
-import { findings, told, reminder, written } from './plain-words.mjs';
+import { BOARD, top, split } from './board.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DECISIONS = 'docs/owner-decisions.md';
@@ -334,11 +330,17 @@ const DB_WRITES = /__(apply_migration|deploy_edge_function|pause_project|restore
 const GITHUB_WRITES = /__(push_files|create_or_update_file|delete_file|merge_pull_request|update_pull_request_branch|create_repository|fork_repository)$/;
 // A SELECT still writes when it calls a function that writes: ours (submit_* add rows) and the
 // built-ins and extensions that change the server, sequences, settings, files or the outside world.
-const SQL_WRITE_CALLS = /(\b(submit_\w+|nextval|setval|set_config|pg_terminate_backend|pg_cancel_backend|pg_reload_conf|pg_rotate_logfile|pg_switch_wal|pg_promote|pg_notify|pg_advisory\w*|pg_stat_reset\w*|pg_create_\w+|pg_drop_\w+|pg_replication_\w+|pg_file_\w+|lo_\w+|dblink\w*|http\w*)\s*\(|\b(cron|vault|net|pgmq)\.\w+)/i;
-// a query that only reads: one statement, starting with a read, naming no write
-export const readOnlySql = (q) => /^\s*(select|with|explain|show)\b/i.test(q) && !/;\s*\S/.test(q)
-  && !/\b(insert|update|delete|drop|alter|create|grant|revoke|truncate|copy|call|do|merge|vacuum|comment|set|reset|lock|refresh|reindex|cluster|import|security)\b/i.test(q)
-  && !SQL_WRITE_CALLS.test(q);
+const SQL_WRITE_CALLS = /(\b(submit_\w+|nextval|setval|set_config|pg_terminate_backend|pg_cancel_backend|pg_reload_conf|pg_rotate_logfile|pg_switch_wal|pg_promote|pg_notify|pg_advisory\w*|pg_stat_reset\w*|pg_create_\w+|pg_drop_\w+|pg_replication_\w+|pg_file_\w+|lo_\w+|dblink\w*|http\w*)\s*\(|\b(vault|net|pgmq)\.\w+|\bcron\.\w+\s*\()/i;
+// a query that only reads: one statement, starting with a read, naming no write. Text in quotes is a
+// value, not a command: a privilege check names 'INSERT' or 'submit_run(jsonb)' and only reads (four
+// such reads were refused); reading the cron schedule's table is a read, calling cron's functions is not
+const unquoted = (q) => String(q).replace(/'(?:[^']|'')*'/g, "''");
+export const readOnlySql = (raw) => {
+  const q = unquoted(raw);
+  return /^\s*(select|with|explain|show)\b/i.test(q) && !/;\s*\S/.test(q)
+    && !/\b(insert|update|delete|drop|alter|create|grant|revoke|truncate|copy|call|do|merge|vacuum|comment|set|reset|lock|refresh|reindex|cluster|import|security)\b/i.test(q)
+    && !SQL_WRITE_CALLS.test(q);
+};
 
 // GitHub's own tests on room-polish (the smoke test runs only there): ten red runs in a row went
 // unseen while work went on, so the start says a red last run (gh run list --json: one run or none)
@@ -354,8 +356,6 @@ export const ciLine = (run) => (NEEDS_LOOK.has(run?.conclusion)
 
 if (mode === 'pre') {
   const tool = String(event.tool_name || '');
-  const other = /^(Bash|PowerShell|Write|Edit|MultiEdit|NotebookEdit)$/.test(tool) ? elsewhere(windowFile(HERE), event.session_id) : null;
-  if (other) stop(`REFUSED: another window holds the work: the owner wrote there last (${other.at}). This window may only read; tell him so, and go on when he writes here.`);
   if (BROWSER_TOOLS.test(tool)) stop('REFUSED: this tool starts a browser on the laptop; Playwright and Chromium run only on GitHub (use the browser pane for a look).');
   if (DB_WRITES.test(tool)) stop('REFUSED: the live database is read-only for the assistant; a change goes into supabase/migrations and reaches the server only on the owner\'s word.');
   if (GITHUB_WRITES.test(tool)) stop('REFUSED: this connector writes to GitHub past the push hook (main only on the owner\'s word, the secret check); commit and git push instead.');
@@ -372,7 +372,15 @@ const gitHere = (...a) => { try { return execFileSync('git', a, { cwd: HERE, env
 // context, so the state and the queue come back without anyone remembering to read them, and a
 // checkout made from the old live branch is named before work starts on it.
 if (mode === 'start') {
-  const out = [`Session ${event.source || 'start'}: the board (${BOARD}) is below; the board is the work; the owner's decisions come with CLAUDE.md. First thing: if its ${SHOWS} table has no row for today, add what he will see today and tell him in your first line. docs/state.md says where things are; the big plan doc is archive and strategy, read only when a step needs it.`];
+  const out = [`Session ${event.source || 'start'}: the top of the board (${BOARD}) is below; the board is the work; the owner's decisions come with CLAUDE.md. First thing: if its showings table has no row for today, add what he will see today and tell him in your first line. docs/state.md says where things are.`];
+  // his brake: yesterday's commits to the game and to the process, counted by git, not by me
+  const day = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}T00:00`;
+  const today = new Date(), yesterday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
+  const log = gitHere('log', '--all', '--no-merges', `--since=${day(yesterday)}`, `--until=${day(today)}`, '--name-only', '--pretty=format:@@%h');
+  if (log !== null) {
+    const { game, process: proc } = split(log);
+    out.push(`Yesterday's commits: ${game} touched the game, ${proc} the process.${proc > game ? ' The process took more than the game: say so to the owner first.' : ''}`);
+  }
   const branch = gitHere('rev-parse', '--abbrev-ref', 'HEAD');
   if (gitHere('rev-parse', '--verify', '-q', 'room-polish') && gitHere('merge-base', '--is-ancestor', 'room-polish', 'HEAD') === null) {
     out.push(`WARNING: this checkout (${branch}) lacks the latest work on room-polish; it was probably made from the old live branch. If it has no commits of its own, reset it to room-polish; otherwise merge room-polish. Say so to the owner.`);
@@ -385,17 +393,10 @@ if (mode === 'start') {
   if (!claudeMd.includes(`@${DECISIONS}`)) {
     try { out.push(fs.readFileSync(path.join(HERE, DECISIONS), 'utf8').trim()); } catch { out.push(`WARNING: ${DECISIONS} is missing here: the owner's decisions are not in front of this session.`); }
   }
-  // the board, whole: Claude Code keeps a hook's output whole only up to 10,000 characters (hooks
-  // docs), which tests/guard.test.mjs holds it to
+  // the top of the board (board.mjs): Claude Code keeps a hook's output whole only up to 10,000
+  // characters (hooks docs), which tests/guard.test.mjs holds it to
   try {
-    const board = fs.readFileSync(path.join(HERE, BOARD), 'utf8').trim();
-    let log = null;
-    try { log = fs.readFileSync(path.join(os.homedir(), LOG), 'utf8'); } catch { /* no log on this machine */ }
-    if (stalled(shows(board), { log })) out.push('STOP: two sessions in a row ended without his yes (a yes counts only if his own messages that day hold it). This session does only visible work: the next item he will see, nothing on the side.');
-    // the table of showings printed to its last five rows, so the output keeps its room as it grows
-    const at = board.indexOf(SHOWS), lines = board.slice(at).split(/\r?\n/);
-    const rows = lines.filter((l) => /^\|\s*\d{1,2}\.\d{1,2}\s*\|/.test(l));
-    out.push(at < 0 ? board : `${board.slice(0, at)}${lines.filter((l) => !rows.slice(0, -5).includes(l)).join('\n')}`);
+    out.push(top(fs.readFileSync(path.join(HERE, BOARD), 'utf8')));
   } catch { out.push(`WARNING: ${BOARD} is missing here: this checkout is not the project's current work.`); }
   // the health check, so a program, the library backup or a guard copy that broke silently is named at
   // the start (it takes about 2 s; a hung check must not hold the session up)
@@ -452,22 +453,14 @@ if (mode === 'prompt') {
     const log = path.join(os.homedir(), 'Documents', 'objekt-files', 'notes', 'owner-messages.md');
     fs.mkdirSync(path.dirname(log), { recursive: true });
     // turns the app delivers that he did not type (helpers' reports, background notices, reminders,
-    // the pull request watcher, the artifact view): logged as his, they read as his words and their
-    // "da" as his yes (board.mjs), and the watcher took the work back to a closed window (11.10)
+    // the pull request watcher, the artifact view): logged as his, they read as his words
     const said = String(event.prompt || '');
-    if (typedText(said)) {
-      fs.appendFileSync(log, `\n## ${new Date().toISOString()} ${event.session_id || ''}\n${said}\n`);
-      take(windowFile(HERE), event.session_id);
-    }
+    if (typedText(said)) fs.appendFileSync(log, `\n## ${new Date().toISOString()} ${event.session_id || ''}\n${said}\n`);
   } catch { /* a failed log must not stop his message */ }
-  // his chat rules in front of me before I answer (a UserPromptSubmit hook's output joins the context)
-  if (typedText(String(event.prompt || ''))) process.stdout.write(`${reminder()}\n`);
   process.exit(0);
 }
 
 if (mode === 'stop') {
-  // a window that does not hold the work may not save or push, so nothing is asked of it
-  if (elsewhere(windowFile(HERE), event.session_id)) process.exit(0);
   const problems = [];
   const dirty = gitHere('status', '--porcelain');
   if (dirty) problems.push(`work not saved (power is cut daily):\n${dirty}`);
@@ -487,19 +480,6 @@ if (mode === 'stop') {
   }
   // npm test is not run here: it runs before "done" and on GitHub, and the commit hook's quick check
   // before every commit; running the whole suite again cost 12-56 s a turn
-  // pages only the owner can open, left by research since his last message: they reach him in this
-  // turn. Only that part of the session record is read, not the whole (tens of MB) every turn
-  let record = '';
-  try { record = event.transcript_path ? sinceOwner(event.transcript_path) : ''; } catch { /* no record to read */ }
-  const owed = unrelayed(record);
-  if (owed.length) problems.push(`pages only the owner can open, left by research: give him each link (the answer, or the plan's list of what is asked of him), with what to bring back:\n${owed.join('\n')}`);
-  // what I wrote him since his message, or since this hook's last word: no new numbers, no empty words
-  const broke = findings(written(record));
-  if (broke.length) problems.push(`what you wrote him breaks his chat rules (tools/plain-words.mjs): ${told(broke)}. Write him that again in one short line without them; a number goes on a page that passed the fact-check`);
-  // every session says what he will see today, so a session that shows him nothing is plain
-  let board = '';
-  try { board = fs.readFileSync(path.join(HERE, BOARD), 'utf8'); } catch { /* checked below */ }
-  if (!plannedToday(shows(board))) problems.push(`no row for today in the ${SHOWS} table of ${BOARD}: write what the owner will see today, commit it, and say it to him`);
   if (problems.length) stop(`NOT DONE. Before this turn ends:\n- ${problems.join('\n- ')}`);
   process.exit(0);
 }

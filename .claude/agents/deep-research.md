@@ -38,5 +38,5 @@ Report (under 600 words): a short answer per part (numbers with units), every fa
 and a short exact quote, what is unverified, what you did not get to. End with a block that
 starts with the line `FOR THE OWNER:` and one line per page only a person can open (a login, a
 captcha, a region lock): `- <its link> — what to find there`; or `FOR THE OWNER: none`. The
-caller's turn cannot end until each of these links has reached the owner (tools/owner-links.mjs).
+caller puts each of these links once into the board's list of what waits for him (docs/board.md).
 No guessing: what you could not confirm is written as "unverified".

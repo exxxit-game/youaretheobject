@@ -10,7 +10,6 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { PRIVATE_EMAIL, withoutGitVars } from './secrets.mjs';
-import { MARK } from './owner-links.mjs';
 import { fingerprint, scan, write } from './review-gate.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -115,15 +114,7 @@ const CASES = [
     () => headsetTool(['tools/xr-probe-run.mjs', 'input'], `${dir}-reviews.jsonl`), 'waits for the practice reviewer'],
   ['claude-guard pre', 'the owner\'s automatic stop', 'the assistant writes the practice review record itself', () => {},
     () => askGuard('pre', { tool_name: 'Write', tool_input: { file_path: `${dir}-reviews.jsonl`.replace(/\.jsonl$/, '-practice-reviews.jsonl'), content: '{}' } }), 'REFUSED'],
-  ['claude-guard stop', 'the owner\'s yes is the measure', 'a session with no row saying what he will see today',
-    () => { const f = at('docs/board.md'); fs.writeFileSync(f, fs.readFileSync(f, 'utf8').split(/\r?\n/).filter((l) => !/^\|\s*\d{1,2}\.\d{1,2}\s*\|/.test(l)).join(eol('docs/board.md'))); },
-    () => askGuard('stop', { stop_hook_active: false }), 'no row for today'],
   ['claude-guard stop', 'work saved and pushed', 'a turn ends with unsaved work', () => append('docs/roadmap.md', '\nunsaved\n'), () => askGuard('stop', { stop_hook_active: false }), 'work not saved'],
-  ['claude-guard stop', 'ask the owner at a barrier', 'a turn ends with a page only the owner can open not given to him', () => fs.writeFileSync(`${dir}-record.jsonl`, `{"content":"${MARK}\\n- https://archive.example.org/locked - the page\\n\\n"}\n`),
-    () => askGuard('stop', { stop_hook_active: false, transcript_path: `${dir}-record.jsonl` }), 'pages only the owner can open'],
-  ['claude-guard stop', 'his chat rules', 'a turn ends with a new number written to him in the chat',
-    () => fs.writeFileSync(`${dir}-chat.jsonl`, `${JSON.stringify({ type: 'user', origin: { kind: 'human' }, message: { content: 'go on' } })}\n${JSON.stringify({ type: 'assistant', message: { content: [{ type: 'text', text: 'The headset holds 90 frames.' }] } })}\n`),
-    () => askGuard('stop', { stop_hook_active: false, transcript_path: `${dir}-chat.jsonl` }), 'breaks his chat rules'],
   // last: it leaves the clone on its own branch, which the reset between cases does not undo
   ['claude-guard stop', 'the next window has the work', 'a turn ends with the main folder behind this branch',
     () => { git('checkout', '-q', '-b', 'planted-session'); git('branch', '-f', 'room-polish', 'HEAD'); append('docs/roadmap.md', '\nplanted\n'); git('commit', '-qam', 'planted'); },
