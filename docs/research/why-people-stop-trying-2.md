@@ -66,17 +66,25 @@ Continues why-people-stop-trying.md (same rules: read: full / abstract only / un
 ### 2.5 Wise interventions (Walton) — precise, short, and they work only where the setting lets them
 
 - Walton et al. 2023, "Where and with whom does a brief social-belonging intervention promote progress in
-  college?", Science 380:499-505, doi:10.1126/science.ade4420. Read: abstract only (Europe PMC; no open
-  full text): "26,911 students at 22 diverse institutions"; online, "in under 30 minutes"; raised
-  first-year full-time completion, "effective only when students' groups were afforded opportunities to
-  belong". No effect size taken. Paywall: for the owner.
+  college?", Science 380:499-505, doi:10.1126/science.ade4420, erratum 12 Sep 2024 (table S6 only, "not any
+  other tables or figures ... nor any conclusions"). Read: full, 7 pages and the erratum, from the owner's
+  phone screenshots of 12.10 (objekt-files/notes/why-people-2026-10-12/walton-2023-owner-screenshots/).
+  Double-blind randomized trial, "26,911 students" at 22 institutions (p. 1); a "brief (10 to 30 min)
+  reading-and-writing activity" (p. 1); the key writing task took "just 7 min 36 s (median)" (p. 3). Outcome:
+  completing the first year enrolled full-time. Effects varied across local-identity groups, SD "2.4 percentage
+  points" (p. 4). Where the group was afforded belonging (85% of students), the average effect was "1.1
+  percentage points" (p. 4), largest for groups with low historic achievement, "2.0 percentage points" (p. 5),
+  essentially zero for high-achieving groups; where belonging was not afforded, no effect (pp. 4-5, Fig. 3).
+  The authors: the potential "depends on the opportunity students have to belong in their college contexts" (p. 6).
 - Walton & Wilson 2018, "Wise interventions", Psychol Rev — not read (not found open in this run).
 - How these messages are built, read in full in Yeager 2019 (above): the idea is not told as an order —
   "students were not told outright that they should work hard"; people "internalize the message by
   teaching it to a future first-year ninth grade student"; stories from older students. Effects were
   0.1 SD and depended on the surroundings.
-- Status: the evidence for short framing that changes later behaviour is from multi-step exercises of
-  25-60 min, aimed at one specific worry, with effects about 0.1 SD; a single opening slide is not that.
+- Status: the evidence for short framing that changes later behaviour comes from exercises of 10-60 min aimed at
+  one specific worry: Walton 2023, 10-30 min, raised first-year full-time completion by 1.1 percentage points
+  where the college afforded belonging and not at all where it did not; Yeager 2019, about 0.1 SD. A single
+  opening slide is not that.
 
 ### 2.6 Backfire: reactance and demand
 
@@ -158,7 +166,7 @@ What to avoid:
 ## Not done in this run
 
 Rotter 1966 and Bandura 1977 (not read); present bias and delay discounting (not searched); Piff 2015,
-Brickman 1978 and Walton 2023 full texts (paywalled); Walton & Wilson 2018; Oettingen's positive fantasies;
+Brickman 1978 full text (paywalled; Walton 2023 read in full 12.10 from the owner's screenshots); Walton & Wilson 2018; Oettingen's positive fantasies;
 Ukrainian-language research (not searched); a source for "Earth is the only planet known to have life";
 Wu, Spreckelsen & Cohen 2021 and the two awe meta-analyses beyond abstracts; Leontiev 2011 (HSE copy
 unreachable).
