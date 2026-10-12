@@ -7635,6 +7635,24 @@
    "source": "https://www.edpb.europa.eu/system/files/2023-04/edpb_guidelines_202209_personal_data_breach_notification_v2.0_en.pdf"
   },
   {
+   "id": "de-leeuw-2023",
+   "authors": "de Leeuw, J. R.",
+   "year": "2023",
+   "title": "DataPipe: Born-open data collection for online experiments",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "online experiments",
+    "open data",
+    "data storage"
+   ],
+   "type": "paper",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://doi.org/10.3758/s13428-023-02161-x"
+  },
+  {
    "id": "ombudsman-2014",
    "authors": "Ukrainian Parliament Commissioner for Human Rights",
    "year": "2014",
