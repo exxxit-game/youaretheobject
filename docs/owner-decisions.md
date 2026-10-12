@@ -23,7 +23,7 @@ enough. A new decision: its line here, the rest there. A risk list or a general 
 ## The goal
 - Hidden human abilities: find them, help each player open and develop them; the limit is the person's own (Korzybski through Chase and Hayakawa); everywhere, each place in its form («Скрытые человеческие способности, вот наша цель» 10.10; «ты сам себе худший забор»).
 - Three texts accepted as written, word for word in the history file: the manifesto, the game and Store page, the corridor's welcome (with the corridor's texts, board item 7) («Да» 10.10); where his «почти готовый текст» goes: his choice.
-- What the game keeps: first the player's profile stays on his headset, only anonymous numbers go to the server; later, on a separate consent, his data goes if he wants to help science («по отдельному согласию игрока» 10.10); science only after ethics approval and preregistration.
+- What the game keeps: first the player's profile stays on his headset, only anonymous numbers go to the server; later, on a separate consent, his data goes if he wants to help science («по отдельному согласию игрока» 10.10); science as in the Ethics line.
 - Bots: a hashed IP kept 10 minutes («Отпечаток IP на 10 минут»).
 
 ## Order
@@ -70,7 +70,7 @@ enough. A new decision: its line here, the rest there. A risk list or a general 
 
 ## Data, science, money
 - The lever stays with us, we are our own lab, only how is open («Рычаг должен быть всегда у нас» 9.10); data protection first («это самое серьезное» 9.10); never sell data.
-- Ethics: consent, 18+ for recording, «start without recording», quit any time, debrief, anonymous data; science only after ethics approval, preregistration and a separate consent. Reopened by him 12.10: «наука уже идет… Этический комитет это так просто галочка… Мы это все для науки используем»; his choice between A (science now in our lab, said plainly, a separate consent, a journal sample after approval) and B (as written) is pending (board, «Ждёт тебя»).
+- Ethics: consent, 18+ for recording, «start without recording», quit any time, debrief, anonymous data; science now, in our own lab, said plainly, with a separate consent mark for science, the preregistration first (what is gathered before it is a pilot); for a journal, a sample gathered after ethics approval (A: «наука уже идет… Этический комитет это так просто галочка» and then «согласен, предрегистрация» 12.10).
 - Floor 1 free, then paid packs («потом… купить дополнительный контент» 8.10); chosen to work even when the trick is known; education licences; university partners.
 - Playtest: 5–10 testers from his Telegram VR community; 5 approved questions; releases only on his word. A tester's run goes its own way, into the testers' table, without gender and age, the date kept for finding errors; testers told plainly the group is small and we can learn their result («хорошо, Б» 12.10).
 - Every data choice is weighed for few players now and many later, and must work for both («сейчас будет немного игроков… потом их будет намного больше. И надо так, чтобы сейчас и потом было нормально и удобно» 12.10); each question thought through for precision, the data kept carefully by us alone («мы же в точности нуждаемся… данные бережно храним только мы» 12.10).
@@ -78,5 +78,6 @@ enough. A new decision: its line here, the rest there. A risk list or a general 
 - Before people get the game, everything is re-checked and every hole found is fixed now, not after («Перед тем же, как людям давать, надо внимательно все там перепроверить… на данный момент уже лучше все поисправлять» 12.10).
 - On a hard question he picks from the most reasonable option I propose, worked out from the whole picture, comparing the best, the worst and the current solutions («здесь только ты должен это все хорошо обдумывать»; «я могу выбрать с того, что ты самое разумное предложишь… должны поменяться варианты»; «лучшие решения, худшие решения, актуальные решения, сравнивай их» 12.10).
 - A kept result cannot be taken back, and the player is told so politely and plainly, not curtly: no ads, we are a lab, thanks to those who share, fine for those who want it anonymous («А если вы хотите анонимно, то ладно»; «Мне больше нравится первый вариант. Но только… без грубости» 12.10); the data told so carefully that no one has a claim («как нам аккуратно поступить, чтобы к нам не было претензий» 12.10).
+- His gmail stays in the 101 old commits of 7–8.10: history is not rewritten; new commits carry GitHub's hidden address («оставить» 12.10).
 - Payouts go to Ukraine («украина» 10.10).
 - The tool revision (https://claude.ai/artifact/ShHre3dd8yNXUJcCnXn65D; «нужно всё вносить и исправлять, улучшать» 10.10): Blender and compression tools; the site published by GitHub Actions, only the game's files public; one live migration (date only, random key, consent version, a schema per room, a rate limit); IWER in the GitHub test.
