@@ -162,3 +162,4 @@ Brickman 1978 and Walton 2023 full texts (paywalled); Walton & Wilson 2018; Oett
 Ukrainian-language research (not searched); a source for "Earth is the only planet known to have life";
 Wu, Spreckelsen & Cohen 2021 and the two awe meta-analyses beyond abstracts; Leontiev 2011 (HSE copy
 unreachable).
+The owner tried the links on 12.10: the three DOI pages are paid, and the HSE link answers 404. Nothing was bought; the conclusions that rest on these papers are marked abstract-only above.
