@@ -7598,6 +7598,25 @@
    "source": "https://www.edpb.europa.eu/sites/default/files/files/file1/edpb_guidelines_3_2018_territorial_scope_after_public_consultation_en_1.pdf"
   },
   {
+   "id": "wp29-2018-transparency",
+   "authors": "Article 29 Data Protection Working Party",
+   "year": "2018",
+   "title": "Guidelines on transparency under Regulation 2016/679 (WP260 rev.01)",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "GDPR",
+    "transparency",
+    "privacy notice",
+    "plain language"
+   ],
+   "type": "guideline",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://ec.europa.eu/newsroom/article29/redirection/document/51025"
+  },
+  {
    "id": "ombudsman-2014",
    "authors": "Ukrainian Parliament Commissioner for Human Rights",
    "year": "2014",

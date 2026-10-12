@@ -1,7 +1,7 @@
 # methods, ethics, law
 
 Generated from `docs/library/papers.json` by `node tools/build-library.mjs`. Do not edit by hand.
-85 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
+86 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
 in the library folder's papers\ as `<id>.txt` (a data set: `<dir>/<id>.txt` from the library folder); "text: ocr" marks a scan's
 text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 
@@ -88,6 +88,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **westwood-2025** Westwood 2025. The potential existential threat of large language models to online survey research · LLM agents, online surveys, bots, attention checks · no card
 - **wiesing-2020** Wiesing et al. 2020. Accuracy and precision of stimulus timing and reaction times with Unreal Engine and SteamVR · stimulus timing, reaction times, Unreal Engine, SteamVR · no card
 - **wilson-2015** Wilson & Soranzo 2015. The Use of Virtual Reality in Psychology: A Case Study in Visual Perception · VR in psychology, visual perception · no card
+- **wp29-2018-transparency** Article 29 Data Protection Working Party 2018. Guidelines on transparency under Regulation 2016/679 (WP260 rev.01) · GDPR, transparency, privacy notice, plain language · no card
 
 ## Not in the library
 
