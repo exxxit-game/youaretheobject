@@ -81,3 +81,5 @@ git link is broken, and the "Cosmogram Docs" folder holds only an empty notes va
 6. Before trusting a plan row or a state line, check it against the live code or game first.
 7. Proofreading the player's text; a build stamp on the test copy, so the headset shows which copy
    it is playing.
+
+Every server, data and payment mistake, counted and checked against this project on 12.10: [cosmogram-server.md](cosmogram-server.md).

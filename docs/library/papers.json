@@ -7653,6 +7653,41 @@
    "source": "https://doi.org/10.3758/s13428-023-02161-x"
   },
   {
+   "id": "kirwan-2020",
+   "authors": "Kirwan, C. B., Bjornn, D. K., Anderson, B. B., et al.",
+   "year": "2020",
+   "title": "Repetition of computer security warnings results in differential repetition suppression effects as revealed with functional MRI",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "warning fatigue",
+    "security warnings",
+    "habituation"
+   ],
+   "type": "paper",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://doi.org/10.3389/fpsyg.2020.528079"
+  },
+  {
+   "id": "hravnak-2018",
+   "authors": "Hravnak, M., Pellathy, T., Chen, L., et al.",
+   "year": "2018",
+   "title": "A call to alarms: current state and future directions in the battle against alarm fatigue",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "alarm fatigue",
+    "warnings"
+   ],
+   "type": "paper",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://doi.org/10.1016/j.jelectrocard.2018.07.024"
+  },
+  {
    "id": "ombudsman-2014",
    "authors": "Ukrainian Parliament Commissioner for Human Rights",
    "year": "2014",

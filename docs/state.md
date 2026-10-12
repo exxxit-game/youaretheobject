@@ -16,8 +16,7 @@
   10.10 with the Supabase connector's get_organization; a paid project is never paused), private schema `app`:
   `runs` via `submit_run` (room 01 checked against supabase/schemas/01-control-1.json), `playtests` via `submit_playtest`; both
   insert-only for anon, verified. Sending is ON in code with consent; privacy page `privacy.html`
-  (contact t.me/exxxit). Tests pin client fields to the SQL (`tests/results.test.mjs`, `tests/playtest.test.mjs`).
-  Supabase CLI on the laptop: logged out 12.10 on his word (it could run any SQL past our guard); it holds no token.
+  (contact t.me/exxxit). Tests pin client fields to the SQL (`tests/results.test.mjs`, `tests/playtest.test.mjs`). The laptop's Supabase CLI: logged out 12.10 on his word, no token.
 - Files outside the repo, one folder `C:\Users\admin\Documents\objekt-files\`: `papers\` (every paper as `<id>.pdf`
   and `<id>.txt`), `datasets\`, `imports\` (exports as downloaded), `notes\` (his messages, the review record); copied
   whole to `F:\objekt-files` (`node tools/health.mjs` checks it) and to Google Drive by its program; the card index of
