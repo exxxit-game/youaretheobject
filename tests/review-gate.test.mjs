@@ -81,7 +81,8 @@ assert.equal(lookOf(place, record), null, 'a file the review did not name change
 // line lists, each as it then stands
 put('src/rooms/01-x/room.js', 'export const n = 1;\n');
 put('src/rooms/02-y/room.js', 'export const n = 2;\n');
-assert.deepEqual(checkedRooms(JSON.stringify({ message: `x\n${PAPER_END} 01-x, 02-y\nmore` })), ['01-x', '02-y'], 'the last line read out of a handed-back report');
+assert.deepEqual(checkedRooms(`x\n${PAPER_END} 01-x, 02-y\n\n`), ['01-x', '02-y'], 'the rooms the last line lists');
+assert.deepEqual(checkedRooms(`x\n${PAPER_END} 01-x\nFindings so far, then cut short`), [], 'a rooms line further up, then cut short: no room counts');
 assert.equal(paperOf(place, '01-x', {}, record), null, 'no paper check yet: the stop holds');
 review('paper-cut', { type: 'paper-reviewer', report: 'Findings, then the run was cut short' });
 assert.equal(paperOf(place, '01-x', {}, record), null, 'a report with no rooms line does not count');
@@ -101,6 +102,10 @@ assert.equal(paperOf(place, '01-x', {}, record), null, 'a change to the room aft
 assert.ok(paperOf(place, '01-x', { look: true }, record), 'the own look goes after a fix of a file the report named');
 put('src/rooms/01-x/texts.ru.js', 'export const t = 1;\n');
 assert.equal(paperOf(place, '01-x', { look: true }, record), null, 'a file the report did not name: the own look waits too');
+hook('subagent-start', { agent_id: 'paper-cut-2', agent_type: 'paper-reviewer' });
+hook('subagent-stop', { agent_id: 'paper-cut-2', agent_type: 'paper-reviewer', last_assistant_message: '',
+  agent_transcript_path: transcript('paper-cut-2', [handback(`${PAPER_END} 01-x\nFindings so far, then cut short`)]) });
+assert.equal(paperOf(place, '01-x', {}, record), null, 'a handed-back report whose rooms line is not its last: no check');
 
 // the tools refuse before they touch the headset or GitHub (an empty record: no review exists); run
 // with only node on the path, so a stop that ever broke could reach no adb, git or gh from here

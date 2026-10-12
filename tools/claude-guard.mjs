@@ -475,7 +475,7 @@ if (mode === 'subagent-start' || mode === 'subagent-stop') {
   // a subagent here hands its report back through a tool call, not as its last text, so the
   // report is read from the transcript's last assistant entry: its text or its tool call's input.
   // Only the reviewer's own words count, never the caller's prompt, which names the block too.
-  const ends = (text, end) => new RegExp(`(^|\\n|\\\\n)${end}`).test(text);
+  const ends = (text, end) => new RegExp(`(^|\\n)${end}`).test(text);
   const reportOf = (end) => {
     const said = String(event.last_assistant_message || '');
     try { if (!ends(said, end) && event.agent_transcript_path) return lastReport(event.agent_transcript_path); } catch { /* no transcript to read */ }

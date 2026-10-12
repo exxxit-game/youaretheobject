@@ -57,11 +57,11 @@ export function roomScan(root) {
   return Object.fromEntries(rooms.map((r) => [r, prints(root, fs.readdirSync(path.join(dir, r), { recursive: true })
     .map((f) => `${ROOMS}/${r}/${String(f).split(path.sep).join('/')}`).filter((rel) => fs.statSync(path.join(root, rel)).isFile()))]));
 }
-// the rooms a report's last line lists ("ROOMS CHECKED: 01-control"); a report handed back through a
-// tool call is JSON, where its line ends as an escaped \n or a quote
+// the rooms a report's last line lists ("ROOMS CHECKED: 01-control"), and only its last line: a
+// run that named a room further up and was then cut short has not finished its check
 export const checkedRooms = (report) => {
-  const line = new RegExp(`${PAPER_END}([^\\n"\\\\]*)`).exec(String(report));
-  return line ? line[1].split(/[\s,]+/).filter((r) => /^\d{2}-[\w-]+$/.test(r)) : [];
+  const last = String(report).split('\n').map((l) => l.trim()).filter(Boolean).pop() || '';
+  return last.startsWith(PAPER_END) ? last.slice(PAPER_END.length).split(/[\s,]+/).filter((r) => /^\d{2}-[\w-]+$/.test(r)) : [];
 };
 
 // the files a reviewer's report names, by path or by file name: the fixes it asks for touch these
@@ -80,7 +80,9 @@ export const write = (entry, record = RECORD) => {
 };
 
 // the last assistant entry of a transcript (JSON lines), as text: a subagent hands its report back
-// through a tool call, so its text or its tool call's input
+// through a tool call, so its text or the text values of its tool call's input, with their own line
+// ends (as JSON a report would be one line, and its last line could not be read)
+const texts = (v) => (typeof v === 'string' ? v : v && typeof v === 'object' ? Object.values(v).map(texts).filter(Boolean).join('\n') : '');
 export function lastReport(file) {
   const lines = fs.readFileSync(file, 'utf8').split('\n').filter(Boolean);
   for (let i = lines.length - 1; i >= 0; i--) {
@@ -88,7 +90,7 @@ export function lastReport(file) {
     try { e = JSON.parse(lines[i]); } catch { continue; }
     if (e.type !== 'assistant') continue;
     const parts = (e.message && e.message.content) || [];
-    const text = parts.map((p) => (p.type === 'text' ? p.text : p.type === 'tool_use' ? JSON.stringify(p.input || {}) : '')).join('\n');
+    const text = parts.map((p) => (p.type === 'text' ? p.text : p.type === 'tool_use' ? texts(p.input) : '')).join('\n');
     if (text.trim()) return text;
   }
   return '';
