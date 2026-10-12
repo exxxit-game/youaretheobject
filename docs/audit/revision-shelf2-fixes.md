@@ -36,8 +36,19 @@ checks of shelf 2 (revision-shelf2-server.md, -client-law.md, -schema-tests.md) 
   compare_room (the game reads neither).
 - The IP-hash key changed daily, as Plausible does, so hashes of different days cannot be linked.
 - The testers' table takes the whole run without gender and age (today 12 fields: 5 answers, 7 measures;
-  0004:26-27).
+  0009:210-211, the same list as 0004).
 - The consent's science mark (above).
+
+## Server and migrations
+- compare_room has no rate cap (revision-shelf2-server.md R2; Cosmogram, exposed, low).
+- Rename the migration files, move the schema JSON, add the drift job (revision-shelf2-server.md section 6, F5, F7,
+  F8); the deploy task of step 3 needs them; Supabase's guide also uses a separate staging project.
+- Every migration one transaction (begin…commit): 0009 and 0010 are, 0001–0008 are not; a test that every new
+  migration is.
+- privacy.html:48 says results cannot be read through the internet, yet compare_room gives averages to anyone
+  (revision-shelf2-client-law.md C11).
+- The statistics handbook (Hundepool et al. 2025, 2nd ed., p. 122) into the library; today its text is only in a
+  session scratch folder.
 
 ## Signals (Cosmogram's lessons)
 - Know when results stop arriving: Cosmogram's longest outages, about 7 and 10 days, went unnoticed.
@@ -45,15 +56,16 @@ checks of shelf 2 (revision-shelf2-server.md, -client-law.md, -schema-tests.md) 
   migration a read-back of the rights.
 
 ## Keys and access
-- Replace both GitHub logins on the laptop (gh: repo; git's own login: repo and workflow, read 12.10) with one
-  narrow key without Deployments, Workflows or Administration; workflow files then go in by the owner on
+- Replace both GitHub logins on the laptop (gh: gist, read:org, repo; git's own login: gist, repo, workflow; read 12.10) with one
+  narrow key without Deployments, Workflows or Administration (the last covers repository settings, main's rule among them); workflow files then go in by the owner on
   GitHub's site, step by step.
 - ElevenLabs: his screenshot showing "Unlimited" was taken before the step to set 10000; the restricted key
   cannot read the cap. He looks at elevenlabs.io/app/developers/api-keys, key objekt. Sound effects access is
   set by the steps, not confirmed by a probe.
 - The real call to learn whether the player's real IP reaches the database (his yes of 12.10): one row through
   the player's path. It must stay out of the statistics and "you and others" (src/app/session.js: our own
-  checks must not reach the statistics); design that first.
+  checks must not reach the statistics); design that first. What it decides: if the player's real address
+  (CF-Connecting-IP) does not arrive, the limit of 30 per 5 minutes applies to the whole game at once.
 
 ## Question 3 in detail (batched updates of the shown average)
 Anyone can ask the server for the average before and after a friend's run (the game key is public); the
@@ -70,6 +82,11 @@ people can pool their data. All this is my inference from the server's arithmeti
 minimum rule (Hundepool 2025), not a published method for a live average.
 
 ## Not checked
+- Russia's 152-FZ: a lawyer, before Russian-speaking testers (revision-shelf2-client-law.md section 4).
+- Meta's rules 11A on data computed from body and hands (seated, away).
+- ePrivacy and the four keys the game keeps on the device.
+- Whether the Quest Browser keeps or clears a site's data.
+- What cdn.aframe.io logs; whether a Draco decoder is also fetched from www.gstatic.com.
 - Whether GDPR applies to the game; one consent for the result and for error reports or two: a lawyer
   (decision D).
 - The role the Supabase connector in the chat runs as (people on Reddit say full rights; our guard holds it

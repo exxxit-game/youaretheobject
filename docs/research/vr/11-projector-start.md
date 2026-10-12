@@ -131,7 +131,7 @@ What each way of starting costs, from the sources found here and in 05a/05b:
 | Way to start | For it | Against it | Sources |
 |---|---|---|---|
 | The player switches the projector on (one press on a real switch) | Unmissable: he did it, so he is looking; the period's own act (the Carousel's "Power/Fan/Lamp" switch, the loop projector's "start button", the slide-tape patent's "single push"); every screen briefing found starts this way | One more act before the corridor's task; the switch must be found (the first-minute view is narrow: 90% never looked beyond 75°, Pausch 1996, 05a) | 11a; IEYTD, SUPERHOT, HL:A above |
-| Looking at it (head direction held) | No hands; our engine already has look events (`opening.js`) | Quest 3 has no eye tracking, so "look" is head direction; dwell selection's "Midas Touch" is that "users unintentionally select onscreen objects by gazing upon them" (Mohan et al., ISMAR-Adjunct 2018, https://consensus.app/papers/details/b5a22d4411d85edeb36b0b5ebbdbd9f2/, abstract only; DOI not checked); a look is not a "clear confirmation" | Consensus search 12.10; 05b §3 |
+| Looking at it (head direction held) | No hands; our engine already has look events (`opening.js`) | Quest 3 has no eye tracking (`docs/headset-capabilities.md`, from Meta's Compare devices page), so "look" is head direction; dwell selection's "Midas Touch" is that "users unintentionally select onscreen objects by gazing upon them" (Mohan et al., ISMAR-Adjunct 2018, https://consensus.app/papers/details/b5a22d4411d85edeb36b0b5ebbdbd9f2/, abstract only; DOI not checked); a look is not a "clear confirmation" | Consensus search 12.10; 05b §3 |
 | Timer plus look trigger | Starts early if he looks, starts anyway if not: Valve's "common trick" | Can start a talking film while he is still learning the controls, the collision Valve moved its call to avoid | HL:A "Shotgun Gate 2", "Greenhouse" |
 | A voice prompt ("press the switch to begin") | Several channels at once (Meta's onboarding blog, 05a) | Our corridor's voice is serious and the welcome exists; a prompt before the film is a second briefing; an announcer telling where to press is the non-diegetic cue the guidance research rates lower for presence (Rothe 2019, 05b) | 05a, 05b |
 | The game detects he is settled (stood still, looked round) | No act at all; matches the current silent arrival and the sign's start rule (`sign.js` arrivalStep) | Not a confirmation; settling took about 40 s in Lost (Unseld 2015, 05a) and 30 s to 30 min on Alyx's balcony; a film starting on a guess is the "starts by itself unnoticed" the owner rejected | 05a; HL:A |
@@ -198,7 +198,8 @@ ticket talk (board, 12.10) has no place to be seen.
 - Period: no 1970s Da-Lite or Draper catalogue, no date for electric classroom screens or the
   controlled slow return, no photo of a projector on a corridor wall shelf or ceiling in 1979, no
   Kodak slide lens/throw table, no screen roll-up speed.
-- Forced waiting: no VR study found. Gaze dwell: abstracts only.
+- Forced waiting: no VR study found. Gaze dwell: abstracts only. NFPA 101 of the 1970s: text not
+  found; the exit-sign rule rests on OSHA 1910.37 (adopted from NFPA 101-1970, 07 §3).
 - Forums in Russian and German were not searched (time); one Japanese source (Mogura VR) used.
 
 ## For the owner (pages a person can open)
