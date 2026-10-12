@@ -131,7 +131,7 @@ Parts (each gets an answer or "not found"):
 
 ### S2 Meta Store release with paid packs
 - Card and identity: Meta ("the user can make the payment with Meta Horizon Store"). The app gets `itemId` + `purchaseToken` (WICG spec) from `listPurchases()` on the device. No purchase data needs to reach our server.
-- Keep apart [inference]: never call `getLoggedInUserId()`; never put a SKU, token or Meta id into a research row; no server-side `verify_entitlement` (it needs the Meta `user_id` and the app secret on our server, i.e. "Meta Horizon User Data", policy 6.7). Cost: a pack can be copied (revision-1-store D1, his decision).
+- Keep apart [inference]: never call `getLoggedInUserId()`; never put a SKU, token or Meta id into a research row; no server-side `verify_entitlement` (it needs the Meta `user_id` and the app secret on our server, i.e. "Meta Horizon User Data", policy 6.7). Cost: a pack can be copied (revision-1-store D1, his to decide: not decided as of 12.10).
 - Meta duties: Data Use Checkup for Add-ons ("User ID, User Profile, In-App Purchase"); a clear way to ask for deletion (6.3); a way to report vulnerabilities (6.5); incident form "as soon as practicable" (6.4); at-rest encryption and TLS 1.2 (publish-sec-details). Our research numbers may count as "Device User Data" (headset position) [inference].
 - Owner: Meta account verification with 2FA by authenticator (developer-verification policy), org verification, DUC; the app secret never leaves the Meta dashboard.
 - Machine: a test pinning the research payload's field list so no purchase field can enter it [inference; tests/results.test.mjs already pins client fields].

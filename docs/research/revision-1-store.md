@@ -220,6 +220,7 @@ Meta's pages: the age API exists for WebXR PWAs, and the comfort rating judges t
   a public site repo (as the test copy already is); hides notes and history, not the floors. (c) Our server gives a
   paid floor's files only after Meta's `verify_entitlement`; real protection, but our server then handles a Meta user id
   (DUC, DPA, privacy text), against "no account" in our data rules. My pick: (b) now, (c) only if copying is seen.
+  **Withdrawn 12.10:** the pick (b) is no longer advised: it does not protect the floors, and a private repository on the free plan loses Actions minutes (2,000 a month against about 1,100 and 1,700 a day on 9 and 10.10), main's protection (Pro), environment secrets (Pro), free secret scanning, and required reviewers (Enterprise, in an organization). The advice now: the repository stays public; (a), then (c) only if copying is seen; D1 itself is still the owner's, before the first floor-2 room (docs/research/data-architectures.md; the data page of 12.10).
   What (b) costs on GitHub's free plan (read 10.10) **[read]**: private repositories get "2,000 minutes per month" of
   Actions; Pro "3,000 GitHub Actions minutes per month" and "Protected branches" in private repositories
   (https://docs.github.com/en/get-started/learning-about-github/githubs-plans); minutes are "Free for public
