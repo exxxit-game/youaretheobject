@@ -71,7 +71,8 @@ Three parts, each against the texts saved that day (objekt-files/notes/revision-
 project's readings): [our server against the Supabase and PostgreSQL docs](revision-shelf2-server.md),
 [what leaves the headset and what the player is told, against the law and research-ethics texts](revision-shelf2-client-law.md),
 [the report schema, the tests that hold the server, the codebook](revision-shelf2-schema-tests.md). The practitioners'
-layer is the one gathered on 11.10 (forums-data.md and its part 2).
+layer is the one gathered on 11.10 (forums-data.md and its part 2). How labs and regulators word a data page so no one has a claim (his request of 12.10):
+[docs/research/data-wording.md](../research/data-wording.md).
 
 ## Order
 
