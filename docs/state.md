@@ -17,6 +17,8 @@
   `runs` via `submit_run` (room 01 checked against supabase/schemas/01-control-1.json), `playtests` via `submit_playtest`; both
   insert-only for anon, verified. Sending is ON in code with consent; privacy page `privacy.html`
   (contact t.me/exxxit). Tests pin client fields to the SQL (`tests/results.test.mjs`, `tests/playtest.test.mjs`).
+  The Supabase CLI on the laptop was signed in to `objekt` and could run any SQL past our guard (found 12.10 by the
+  Cosmogram check); logged out the same day on his word («Можно»): no tool on the laptop holds a token to the live project.
 - Files outside the repo, one folder `C:\Users\admin\Documents\objekt-files\`: `papers\` (every paper as `<id>.pdf`
   and `<id>.txt`), `datasets\`, `imports\` (exports as downloaded), `notes\` (his messages, the review record); copied
   whole to `F:\objekt-files` (`node tools/health.mjs` checks it) and to Google Drive by its program; the card index of
