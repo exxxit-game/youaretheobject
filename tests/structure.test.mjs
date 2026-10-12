@@ -285,7 +285,8 @@ assert.ok(!author || author.endsWith('@users.noreply.github.com'), `git commits 
 // notes) and the experiment cards quote code as it was or elsewhere, and are left out.
 {
   const OTHERS = ['SETTINGS_PANEL_DISTANCE', 'TURN_THRESHOLD', 'ANSI_HFES_100',   // IWSDK's code; a standard
-    'APP_ID', 'APP_SECRET', 'WEBHOOK_SECRET_KEY', 'NAME_OF_SECRET', 'SUPABASE_SECRET_KEYS', 'GITHUB_TOKEN'];   // Meta's, Paddle's, Supabase's and GitHub's names, quoted in docs/research/data-purchases.md
+    'APP_ID', 'APP_SECRET', 'WEBHOOK_SECRET_KEY', 'NAME_OF_SECRET', 'SUPABASE_SECRET_KEYS', 'GITHUB_TOKEN',   // Meta's, Paddle's, Supabase's and GitHub's names, quoted in docs/research/data-purchases.md
+    'SUPABASE_ACCESS_TOKEN', 'SUPABASE_DB_URL'];   // Supabase's, quoted in docs/research/data-architectures.md
   const ours = new Set([...walk(path.join(ROOT, 'src')), ...walk(path.join(ROOT, 'tools')), ...walk(path.join(ROOT, 'tests')), path.join(ROOT, 'index.html')]
     .filter((f) => /\.(m?js|html)$/.test(f)).flatMap((f) => fs.readFileSync(f, 'utf8').match(/\b[A-Za-z_][A-Za-z0-9_]*\b/g) || []));
   const docsToCheck = [path.join(ROOT, 'CLAUDE.md'), path.join(ROOT, 'ARCHITECTURE.md'), ...walk(path.join(ROOT, 'docs'))]
