@@ -33,3 +33,49 @@
 - So today Supabase (and anyone with its service role or a database dump) reads every report in clear.
 
 ## Findings (appended as found)
+
+### Part 1. IETF DAP and VDAF: status (full text of the datatracker pages, read 2026-10-12)
+- DAP, https://datatracker.ietf.org/doc/draft-ietf-ppm-dap/ : latest draft-ietf-ppm-dap-19, last updated
+  2026-07-06; "Active Internet-Draft (ppm WG)"; WG state "WG Consensus: Waiting for Write-Up"; IESG state
+  "I-D Exists"; no RFC number. So DAP is NOT an RFC yet.
+- VDAF (Prio3 lives here), https://datatracker.ietf.org/doc/draft-irtf-cfrg-vdaf/ : latest draft-irtf-cfrg-vdaf-22,
+  2026-08-14; IRTF stream; IRTF state "Awaiting IRSG Reviews"; no RFC number. NOT an RFC yet.
+- The RFC it builds on: HPKE, RFC 9180 (part 3). DAP-19 section 4.4.2.1: each input share is sealed with
+  `SealBase(pk, ...)` "as specified in [HPKE], Section 6.1"; section 2.1: "Each share is encrypted to only one of
+  the two Aggregators."
+
+### Part 1. DAP draft-19: what the two servers guarantee (full text, https://datatracker.ietf.org/doc/html/draft-ietf-ppm-dap-19)
+- Section 1: "as long as at least one of them executes the protocol honestly, no measurement is ever seen in the
+  clear by any aggregator."
+- Section 8 (threat model): an attacker controlling "a subset of the Clients, one of the Aggregators, and the
+  Collector learns nothing about the honest Clients' measurements beyond their aggregate result."
+- Section 8: "Both Aggregators together can, purposefully or accidentally, share unencrypted input shares";
+  "DAP follows VDAF in providing privacy only if at least one Aggregator honestly follows the protocol."
+- Minimum batch: section 4.2 `min_batch_size` "is the smallest number of reports a batch is allowed to include";
+  section 8.6.3: "this document does not specify how to choose an appropriate minimum batch size"; "A larger
+  minimum batch size will yield a higher degree of privacy".
+- Sybil (our "nine fake runs" problem, revision-shelf2-fixes.md question 3): section 8.1 "sending known
+  measurements to the Aggregators can allow a Collector to shrink the effective anonymity set"; mitigations named:
+  Client authentication "likely paired with rate-limiting uploads", anonymizing proxies, and differential privacy
+  (section 8.5, noise added by each Aggregator: "privacy can be guaranteed even if all but one of the Aggregators
+  is malicious").
+- For us (inference): DAP does not fix the "nine fake runs" weakness of a live average either; it names the same
+  remedies we have (a rate limit) plus noise.
+
+### Part 1. Prio (full text; Corrigan-Gibbs & Boneh, NSDI 2017, https://www.usenix.org/system/files/conference/nsdi17/nsdi17-corrigan-gibbs.pdf; saved objekt-files/papers/corrigan-gibbs-2017.pdf/.txt)
+- Abstract: "As long as at least one server is honest, the Prio servers learn nearly nothing about the clients'
+  private data, except what they can infer from the aggregate statistics".
+- How (section 3): the client splits x into s random shares that add up to x and sends one to each server; each
+  server adds what it gets; the published sums add up to the total. "An adversary who gets hold of any subset of
+  up to s - 1 shares of x learns nothing, in an information-theoretic sense, about x from the shares."
+- Without proofs it is not robust: "A single malicious client can completely corrupt the protocol output by
+  submitting (for example), a random integer r in Fp to each server." SNIPs fix that: if all servers are honest
+  and the input is invalid, "the servers will reject x with overwhelming probability"; if the client and one
+  server are honest, the servers learn nothing "except that Valid(x) = 1". So a range check (our JSON Schema's
+  0..100) can be done on shares, not on clear values.
+- "Prio is robust only against adversarial clients--not against adversarial servers."
+- "Prio does not natively provide differential privacy ... since the system adds no noise".
+- Cost: a 434-question true/false survey: "the client performs only 26 ms of computation"; servers process
+  "each client submission in under 2 ms"; overall "a 5.7x slowdown over a naive data-collection" system. Table 3
+  (phone = "Samsung Galaxy SIII, 1.4 GHz Cortex A9"): 10 four-bit integers 0.112 s, 100 integers 1.059 s (87-bit
+  field). Our report is about 12 numbers (inference: well under a second even on a 2012 phone; Quest 2 not measured).

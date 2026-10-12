@@ -8072,6 +8072,25 @@
    "text": "ok",
    "status": "no card",
    "source": "https://www.lib.tsu.ru/mminfo/000373515/000373515.pdf"
+  },
+  {
+   "id": "corrigan-gibbs-2017",
+   "authors": "Corrigan-Gibbs, Boneh",
+   "year": "2017",
+   "title": "Prio: Private, Robust, and Scalable Computation of Aggregate Statistics",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "private aggregation",
+    "secret sharing",
+    "data protection",
+    "cryptography"
+   ],
+   "type": "conference paper",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://www.usenix.org/system/files/conference/nsdi17/nsdi17-corrigan-gibbs.pdf"
   }
  ]
 }
