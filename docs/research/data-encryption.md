@@ -79,3 +79,33 @@
   "each client submission in under 2 ms"; overall "a 5.7x slowdown over a naive data-collection" system. Table 3
   (phone = "Samsung Galaxy SIII, 1.4 GHz Cortex A9"): 10 four-bit integers 0.112 s, 100 integers 1.059 s (87-bit
   field). Our report is about 12 numbers (inference: well under a second even on a 2012 phone; Quest 2 not measured).
+
+### Part 1. Deployments: Divvi Up (ISRG), Firefox, Exposure Notifications (full text of each page, read 2026-10-12)
+- Who: https://divviup.org/about/ "Divvi Up is a privacy-respecting telemetry service brought to you by the
+  nonprofit Internet Security Research Group (ISRG)" (the Let's Encrypt people); "you will need a second data
+  share processor server"; "The second data share processor can be operated by your organization or another
+  provider." No price on the page.
+- Price: https://divviup.org/ "contact our team to learn more about a paid pilot or pricing on our production
+  environments". No free tier and no public price found -> cost for us: unverified (an e-mail to them).
+- Firefox: https://divviup.org/blog/divvi-up-in-firefox/ (12 Oct 2023): "One goes to a Divvi Up aggregator and
+  the other goes to an aggregator run by Mozilla." Mozilla's own page on it (firefox-source-docs .../dap/) gave 404.
+- Scale and small users: https://divviup.org/blog/pepr-26/ (22 Jul 2026): "over 4.5 billion reports" in more than
+  three years; "ISRG operates one aggregator as a service; you operate the other, or vice versa"; "If you can
+  instrument your application to send telemetry to a REST endpoint, you can use DAP"; client libraries for
+  TypeScript, Rust, Java; client encoding "sub-millisecond" on constrained devices; Janus (their server) "does not
+  require exotic infrastructure to run"; a Docker tutorial "in 5 minutes". It also says one still needs data
+  science and privacy engineering skill (summary of the page, not a quote).
+- Exposure Notifications Private Analytics: https://divviup.org/blog/lessons-from-running-mpc-at-scale/ (5 May
+  2022): servers "run by ISRG, NCI, MITRE, Apple and Google", on AWS and Google Cloud; clients "millions of Apple
+  and Google mobile devices"; ran "over the last two years". Lessons: cross-cloud credential federation was
+  complex and each misstep "a potential security gap"; end-to-end testing across organisations was hard; corrupt
+  outputs look like valid ones. Report counts and cost: not on the page. Whether it still runs: not stated.
+
+### Part 1. Two non-colluding servers: what it means for us (inference from the quotes above)
+- The guarantee holds only if the two servers belong to two parties that do not share data. If we run both (two
+  Supabase projects, or Supabase plus Cloudflare under our one account), the owner of that account can join the
+  shares: privacy against us is gone, and against a thief only if he breaks into both.
+- What it still buys if we run one side and Divvi Up the other: Supabase alone (or a thief of our database) holds
+  only random-looking shares; no single party sees a player's numbers. The aggregate (the live average) is the
+  only thing anyone learns. Individual rows for science are then never available to us either: Prio gives aggregates
+  (sums, histograms, even "a least-squares regression", its abstract), not rows; per-player analysis needs a second, separate channel (part 3).
