@@ -65,6 +65,14 @@ experienced users wrote: [docs/research/forums-claude-code.md](../research/forum
 shelves: [docs/research/forums-data.md](../research/forums-data.md) (shelf 9) and
 [docs/research/forums-rooms.md](../research/forums-rooms.md) (rooms) and [docs/research/forums-store-money.md](../research/forums-store-money.md) (shelf 14).
 
+## Shelf 2, the server and players' data (12.10)
+
+Three parts, each against the texts saved that day (objekt-files/notes/revision-shelf2-2026-10-12/, with the live
+project's readings): [our server against the Supabase and PostgreSQL docs](revision-shelf2-server.md),
+[what leaves the headset and what the player is told, against the law and research-ethics texts](revision-shelf2-client-law.md),
+[the report schema, the tests that hold the server, the codebook](revision-shelf2-schema-tests.md). The practitioners'
+layer is the one gathered on 11.10 (forums-data.md and its part 2).
+
 ## Order
 
 1. Rules and Claude Code: his word (docs/board.md).
