@@ -59,9 +59,8 @@ checks of shelf 2 (revision-shelf2-server.md, -client-law.md, -schema-tests.md) 
 - Replace both GitHub logins on the laptop (gh: gist, read:org, repo; git's own login: gist, repo, workflow; read 12.10) with one
   narrow key without Deployments, Workflows or Administration (the last covers repository settings, main's rule among them); workflow files then go in by the owner on
   GitHub's site, step by step.
-- ElevenLabs: his screenshot showing "Unlimited" was taken before the step to set 10000; the restricted key
-  cannot read the cap. He looks at elevenlabs.io/app/developers/api-keys, key objekt. Sound effects access is
-  set by the steps, not confirmed by a probe.
+- ElevenLabs: done 12.10. He set the key's cap to 20000 per refresh period himself; sound effects access is set
+  by the steps, not confirmed by a probe.
 - The real call to learn whether the player's real IP reaches the database (his yes of 12.10): one row through
   the player's path. It must stay out of the statistics and "you and others" (src/app/session.js: our own
   checks must not reach the statistics); design that first. What it decides: if the player's real address
