@@ -7617,6 +7617,24 @@
    "source": "https://ec.europa.eu/newsroom/article29/redirection/document/51025"
   },
   {
+   "id": "edpb-2023-breach",
+   "authors": "European Data Protection Board",
+   "year": "2023",
+   "title": "Guidelines 9/2022 on personal data breach notification under GDPR, version 2.0",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "GDPR",
+    "data breach",
+    "notification"
+   ],
+   "type": "guideline",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://www.edpb.europa.eu/system/files/2023-04/edpb_guidelines_202209_personal_data_breach_notification_v2.0_en.pdf"
+  },
+  {
    "id": "ombudsman-2014",
    "authors": "Ukrainian Parliament Commissioner for Human Rights",
    "year": "2014",
