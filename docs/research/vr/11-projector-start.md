@@ -248,3 +248,9 @@ our 1979.
   each of the respective minigames by picking up the named snowglobe". A search summary adds an
   announcer voice and a "Face-Mounted Portal Sphere" held near the head (Combine OverWiki, refused
   connection; unverified). Trigger: the player's action. Briefing and tutorial: not described.
+- **Moss (Polyarc, 2018): the player is "the Reader" before a book, and a narrator reads; the
+  pages turn between scenes.** Contaldi L., DualShockers review, 28 Jul 2018,
+  https://www.dualshockers.com/moss-review-psvr-ps4-oculus-vive/ (summary): "The entirety of Moss
+  is told out of the perspective of a storybook, with a narrator providing voiceover". That the
+  game opens in a library with the book laid out in front of the player, and that page sounds mark
+  scene changes: search summaries of other reviews only, unverified. Trigger and skip: not found.
