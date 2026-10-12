@@ -2,7 +2,7 @@
 
 ## Where things are
 - Repo `exxxit-game/youaretheobject` (folder `C:\Users\admin\Documents\GitHub\objekt`). Site:
-  https://youaretheobject.com (GitHub Pages from `main`; `main` is an OLD package; since 12.10, his yes, main takes changes only by a pull request with the test check green, no bypass: ruleset 24770045). Work: `room-polish`.
+  https://youaretheobject.com (GitHub Pages from `main`; `main` is an OLD package; since 12.10, his yes, main takes changes only by a pull request with the test check green, no bypass: ruleset 24770045, the test check pinned to GitHub Actions). My GitHub access since 12.10: one fine-grained key he made (this repo and object-preview; contents, pull requests, workflows write; actions, statuses read; no administration, no deployments; expires in 90 days), git through gh; the old logins removed. Work: `room-polish`.
   Each session: one visible thing for him plus internal work (the board). Each session works in its own worktree, made from the main
   folder's HEAD (`.claude/settings.json` worktree.baseRef head; the default was old main); no turn ends until
   the main folder (room-polish) holds the session branch (stop hook). Push the session branch every turn (power cuts), room-polish at a step's end (CodeRabbit, trial to 23.10, reads PR #10 into reviewed, 10 pushes an hour); main only on his word.
