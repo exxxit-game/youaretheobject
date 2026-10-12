@@ -2246,6 +2246,27 @@
    "source": "https://doi.org/10.1080/00221309.1977.9920835"
   },
   {
+   "id": "eder-2022",
+   "authors": "Eder et al.",
+   "year": "2022",
+   "title": "Motivations underlying self-infliction of pain during thinking for pleasure",
+   "sections": [
+    "decisions-self"
+   ],
+   "tags": [
+    "boredom",
+    "thinking for pleasure",
+    "self-administered shock",
+    "replication",
+    "curiosity"
+   ],
+   "type": "article",
+   "text": "ok",
+   "status": "no card",
+   "relation": "replication of wilson-2014",
+   "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9253005/"
+  },
+  {
    "id": "edpb-2025-pseudonymisation",
    "authors": "European Data Protection Board",
    "year": "2025",
@@ -2279,6 +2300,25 @@
    "text": "ok",
    "status": "no card",
    "source": "https://arxiv.org/abs/2502.11497"
+  },
+  {
+   "id": "ely-1970",
+   "authors": "Ely et al. (Educational Facilities Laboratories)",
+   "year": "1970",
+   "title": "Instructional Hardware/A Guide to Architectural Requirements",
+   "sections": [
+    "vr-norms-hardware"
+   ],
+   "tags": [
+    "1970s audiovisual equipment",
+    "projection screens",
+    "viewing distance",
+    "classroom planning"
+   ],
+   "type": "report",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://files.eric.ed.gov/fulltext/ED043959.pdf"
   },
   {
    "id": "erb-2016",
@@ -3043,6 +3083,44 @@
    "status": "card",
    "card": "docs/cards/hindriks-douven-2018.md",
    "source": "https://doi.org/10.1080/09515089.2017.1406600"
+  },
+  {
+   "id": "hiroto-1974",
+   "authors": "Hiroto",
+   "year": "1974",
+   "title": "Locus of control and learned helplessness",
+   "sections": [
+    "decisions-self"
+   ],
+   "tags": [
+    "learned helplessness",
+    "locus of control",
+    "escapable noise",
+    "human shuttlebox"
+   ],
+   "type": "article",
+   "text": "ocr",
+   "status": "no card",
+   "source": "https://www.appstate.edu/~steelekm/classes/psy5300/Documents/Hiroto1974-learned-helplessness.pdf"
+  },
+  {
+   "id": "hiroto-seligman-1975",
+   "authors": "Hiroto & Seligman",
+   "year": "1975",
+   "title": "Generality of learned helplessness in man",
+   "sections": [
+    "decisions-self"
+   ],
+   "tags": [
+    "learned helplessness",
+    "insoluble problems",
+    "anagrams",
+    "escapable noise"
+   ],
+   "type": "article",
+   "text": "ocr",
+   "status": "no card",
+   "source": "https://www.appstate.edu/~steelekm/classes/psy5300/Documents/Hiroto&Seligman1975-learned-helplessness.pdf"
   },
   {
    "id": "hirschhorn-2024",
@@ -4059,6 +4137,26 @@
    "source": "https://doi.org/10.1177/0956797614529797"
   },
   {
+   "id": "lindqvist-2020",
+   "authors": "Lindqvist, Östling & Cesarini",
+   "year": "2020",
+   "title": "Long-run effects of lottery wealth on psychological well-being",
+   "sections": [
+    "decisions-self"
+   ],
+   "tags": [
+    "hedonic adaptation",
+    "lottery winners",
+    "life satisfaction",
+    "preregistered",
+    "replication"
+   ],
+   "type": "article",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://doi.org/10.1093/restud/rdaa006"
+  },
+  {
    "id": "lingonblad-2015",
    "authors": "Lingonblad et al.",
    "year": "2015",
@@ -4153,6 +4251,44 @@
    "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4941792/"
   },
   {
+   "id": "macnamara-burgoyne-2023",
+   "authors": "Macnamara & Burgoyne",
+   "year": "2023",
+   "title": "Do growth mindset interventions impact students' academic achievement? A systematic review and meta-analysis with recommendations for best practices",
+   "sections": [
+    "decisions-self"
+   ],
+   "tags": [
+    "growth mindset",
+    "meta-analysis",
+    "publication bias",
+    "replication"
+   ],
+   "type": "article",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://englelab.gatech.edu/articles/2022/Macnamara and Burgoyne (2022) - Do Growth Mindset Interventions Impact Students’ Academic Achievement.pdf"
+  },
+  {
+   "id": "macnamara-burgoyne-2023-reply",
+   "authors": "Macnamara & Burgoyne",
+   "year": "2023",
+   "title": "A spotlight on bias in the growth mindset intervention literature: A reply to commentaries that contextualize the discussion (Oyserman, 2023; Yan & Schuetze, 2023) and illustrate the conclusion (Tipton et al., 2023)",
+   "sections": [
+    "decisions-self"
+   ],
+   "tags": [
+    "growth mindset",
+    "meta-analysis",
+    "publication bias"
+   ],
+   "type": "article",
+   "text": "ok",
+   "status": "no card",
+   "relation": "reply on macnamara-burgoyne-2023",
+   "source": "https://hhs.purdue.edu/skill-learning-and-performance-lab/wp-content/uploads/sites/43/2024/08/2023-90931-004.pdf"
+  },
+  {
    "id": "madary-2016",
    "authors": "Madary & Metzinger",
    "year": "2016",
@@ -4169,6 +4305,25 @@
    "text": "ok",
    "status": "no card",
    "source": "https://doi.org/10.3389/frobt.2016.00003"
+  },
+  {
+   "id": "maier-seligman-2016",
+   "authors": "Maier & Seligman",
+   "year": "2016",
+   "title": "Learned helplessness at fifty: Insights from neuroscience",
+   "sections": [
+    "decisions-self"
+   ],
+   "tags": [
+    "learned helplessness",
+    "controllability",
+    "review",
+    "neuroscience"
+   ],
+   "type": "review",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4920136/"
   },
   {
    "id": "maruhn-2021",
@@ -6058,6 +6213,25 @@
    "relation": "supplement of Simonsohn 2015 (the main paper is not in the library)"
   },
   {
+   "id": "sisk-2018",
+   "authors": "Sisk, Burgoyne, Sun, Butler & Macnamara",
+   "year": "2018",
+   "title": "To what extent and under which circumstances are growth mind-sets important to academic achievement? Two meta-analyses",
+   "sections": [
+    "decisions-self"
+   ],
+   "tags": [
+    "growth mindset",
+    "meta-analysis",
+    "academic achievement",
+    "replication"
+   ],
+   "type": "article",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://hhs.purdue.edu/skill-learning-and-performance-lab/wp-content/uploads/sites/43/2024/08/sisk-et-al-2018-to-what-extent-and-under-which-circumstances-are-growth-mind-sets-important-to-academic-achievement-two.pdf"
+  },
+  {
    "id": "sitzmann-2018",
    "authors": "Sitzmann, Serrano, Pavel, Agrawala, Gutierrez, Masia & Wetzstein",
    "year": "2018",
@@ -6665,6 +6839,26 @@
    "status": "no card"
   },
   {
+   "id": "van-horen-2024",
+   "authors": "van Horen, Meijers, Zhang, Delaney, Nezami & Van Lange",
+   "year": "2024",
+   "title": "Observing the earth from space: Does a virtual reality overview effect experience increase pro-environmental behaviour?",
+   "sections": [
+    "emotion-morality-culture"
+   ],
+   "tags": [
+    "overview effect",
+    "awe",
+    "virtual reality",
+    "pro-environmental behaviour",
+    "null result"
+   ],
+   "type": "article",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://doi.org/10.1371/journal.pone.0299883"
+  },
+  {
    "id": "van-zelderen-2026",
    "authors": "van Zelderen, Masters-Waage, Affinito, Bekbergenova, Cowan et al.",
    "year": "2026",
@@ -7044,6 +7238,44 @@
    "text": "ok",
    "status": "no card",
    "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12663962/"
+  },
+  {
+   "id": "yeager-2019",
+   "authors": "Yeager et al.",
+   "year": "2019",
+   "title": "A national experiment reveals where a growth mindset improves achievement",
+   "sections": [
+    "decisions-self"
+   ],
+   "tags": [
+    "growth mindset",
+    "preregistered",
+    "field experiment",
+    "academic achievement"
+   ],
+   "type": "article",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6786290/"
+  },
+  {
+   "id": "wilson-2014",
+   "authors": "Wilson, Reinhard, Westgate, Gilbert, Ellerbeck, Hahn, Brown & Shaked",
+   "year": "2014",
+   "title": "Just think: The challenges of the disengaged mind",
+   "sections": [
+    "decisions-self"
+   ],
+   "tags": [
+    "boredom",
+    "thinking for pleasure",
+    "self-administered shock",
+    "solitude"
+   ],
+   "type": "article",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4330241/"
   },
   {
    "id": "wiesing-2020",
@@ -7722,6 +7954,66 @@
    "text": "ok",
    "status": "no card",
    "source": "https://ukdataservice.ac.uk/app/uploads/introanonymisation2025-05-22.pdf"
+  },
+  {
+   "id": "deci-1971",
+   "authors": "Deci",
+   "year": "1971",
+   "title": "Effects of externally mediated rewards on intrinsic motivation",
+   "sections": [
+    "decisions-self"
+   ],
+   "tags": [
+    "intrinsic motivation",
+    "undermining effect",
+    "free-choice period",
+    "Soma puzzle",
+    "self-determination theory"
+   ],
+   "type": "article",
+   "text": "ocr",
+   "status": "no card",
+   "source": "https://selfdeterminationtheory.org/SDT/documents/1971_Deci.pdf"
+  },
+  {
+   "id": "deci-koestner-ryan-1999",
+   "authors": "Deci, Koestner & Ryan",
+   "year": "1999",
+   "title": "A meta-analytic review of experiments examining the effects of extrinsic rewards on intrinsic motivation",
+   "sections": [
+    "decisions-self"
+   ],
+   "tags": [
+    "intrinsic motivation",
+    "undermining effect",
+    "meta-analysis",
+    "self-determination theory"
+   ],
+   "type": "article",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://depts.washington.edu/techdocs/papers/deciExtrinsicRewardsAndIntrinsicMotivation99.pdf"
+  },
+  {
+   "id": "klein-2022-manylabs4",
+   "authors": "Klein, Cook, Ebersole, Vitiello, Nosek, Hilgard et al.",
+   "year": "2022",
+   "title": "Many Labs 4: Failure to replicate mortality salience effect with and without original author involvement",
+   "sections": [
+    "decisions-self"
+   ],
+   "tags": [
+    "mortality salience",
+    "terror management theory",
+    "replication",
+    "Many Labs",
+    "null result"
+   ],
+   "type": "article",
+   "text": "ok",
+   "status": "no card",
+   "note": "text of the PsyArXiv preprint (doi:10.31234/osf.io/vef2c); published in Collabra: Psychology 8(1):35271",
+   "source": "https://doi.org/10.1525/collabra.35271"
   }
  ]
 }

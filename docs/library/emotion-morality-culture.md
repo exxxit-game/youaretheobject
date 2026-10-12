@@ -1,7 +1,7 @@
 # emotion, morality, culture
 
 Generated from `docs/library/papers.json` by `node tools/build-library.mjs`. Do not edit by hand.
-46 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
+47 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
 in the library folder's papers\ as `<id>.txt` (a data set: `<dir>/<id>.txt` from the library folder); "text: ocr" marks a scan's
 text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 
@@ -45,6 +45,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **slater-2006** Slater et al. 2006. A virtual reprise of the Stanley Milgram obedience experiments · obedience, Milgram, virtual human, empathy · [card](../cards/slater-2006.md)
 - **slater-2023** Slater et al. 2023. The sentiment of a virtual rock concert · virtual concert, sentiment, presence · no card
 - **tawil-2021** Tawil et al. 2021. The living space: Psychological well-being and mental health in response to interiors presented in virtual reality · curvature preference, interiors, architecture, well-being · [card](../cards/tawil-2021.md)
+- **van-horen-2024** van Horen et al. 2024. Observing the earth from space: Does a virtual reality overview effect experience increase pro-environmental behaviour? · overview effect, awe, virtual reality, pro-environmental behaviour, null result · no card
 - **von-castell-2018** von Castell et al. 2018. Bright paint makes interior-space surfaces appear farther away · room size perception, brightness, interior surfaces, architecture · [card](../cards/von-castell-2018.md)
 - **wang-liman-2022** Wang et al. 2022. Validating a Tool to Dramatically Increase the Diversity of Samples in Psychological Research · sample diversity, Eastern samples, validation · no card
 - **wang-liman-2023** Wang et al. 2023. Western researchers can and should be accessing Eastern samples: scientific validation and practical guidance · Eastern samples, cross-cultural samples, online panels · no card

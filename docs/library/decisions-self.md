@@ -1,7 +1,7 @@
 # decisions and self-knowledge
 
 Generated from `docs/library/papers.json` by `node tools/build-library.mjs`. Do not edit by hand.
-52 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
+65 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
 in the library folder's papers\ as `<id>.txt` (a data set: `<dir>/<id>.txt` from the library folder); "text: ocr" marks a scan's
 text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 
@@ -12,12 +12,15 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **benvenuti-2018** Benvenuti et al. 2018. Behavior and illusions: a model to study superstition in a participant replacement experiment · superstition, causal illusion, participant replacement, cultural transmission · [card](../cards/benvenuti-2018.md)
 - **chevreul-biorxiv** Cantergi et al. 2019. Moving by thoughts alone? Amount of finger movement and pendulum length determine success in the Chevreul Pendulum Illusion · Chevreul pendulum, ideomotor action, suggestion · [card](../cards/chevreul-biorxiv.md)
 - **croucher-2002** Croucher et al. 2002. Naive optics: Understanding the geometry of mirror reflections · naive optics, mirror reflection, intuitive physics · [card](../cards/croucher-2002.md)
+- **deci-1971** Deci 1971. Effects of externally mediated rewards on intrinsic motivation · intrinsic motivation, undermining effect, free-choice period, Soma puzzle, self-determination theory · no card · text: ocr
+- **deci-koestner-ryan-1999** Deci et al. 1999. A meta-analytic review of experiments examining the effects of extrinsic rewards on intrinsic motivation · intrinsic motivation, undermining effect, meta-analysis, self-determination theory · no card
 - **dehaene-2008** Dehaene et al. 2008. Log or linear? Distinct intuitions of the number scale in Western and Amazonian indigene cultures · number line, logarithmic numbers, Munduruku, culture · [card](../cards/dehaene-2008.md)
 - **denisova-cairns-2015** Denisova & Cairns 2015. The placebo effect in digital games: phantom perception of adaptive artificial intelligence · placebo effect, adaptive AI, expectation, video games · [card](../cards/denisova-cairns-2015.md)
 - **dev-moore-johnson-garrett-2022** Dev et al. 2022. Sadder ≠ Wiser: Depressive Realism is not Robust to Replication · depressive realism, illusion of control, contingency judgment, replication · no card · replication of alloy-abramson-1979
 - **duncker-1945** Duncker 1945. On problem-solving (translated by L. S. Lees) · functional fixedness, candle problem, problem solving · [card](../cards/duncker-1945.md) · text: ocr
 - **easton-1974-thesis** Easton 1974. An information processing interpretation of ideomotor behavior in the Chevreul pendulum illusion · Chevreul pendulum, ideomotor action, feedback · no card · text: ocr · chapter V = experiments VI-VII on feedback of the swing, the topic of Easton & Shor 1977; same data not confirmed
 - **easton-shor-1975** Easton & Shor 1975. Information processing analysis of the Chevreul pendulum illusion · Chevreul pendulum, ideomotor action, visual feedback · [card](../cards/easton-shor-1975.md) · text: ocr
+- **eder-2022** Eder et al. 2022. Motivations underlying self-infliction of pain during thinking for pleasure · boredom, thinking for pleasure, self-administered shock, replication, curiosity · no card · replication of wilson-2014
 - **fazio-2015** Fazio et al. 2015. Knowledge does not protect against illusory truth · illusory truth effect, repetition, knowledge · [card](../cards/fazio-2015.md)
 - **fehr-gachter-2002** Fehr & Gächter 2002. Altruistic punishment in humans · altruistic punishment, public goods game, cooperation, behavioural economics · [card](../cards/fehr-gachter-2002.md)
 - **glucksberg-1962** Glucksberg 1962. The influence of strength of drive on functional fixedness and perceptual recognition · candle problem, functional fixedness, incentives, drive · [card](../cards/glucksberg-1962.md) · text: ocr · the card (written before the scan was found) still says no full text; the archive.org scan and its OCR text are on disk
@@ -25,9 +28,16 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **hall-2012** Hall et al. 2012. Lifting the veil of morality: Choice blindness and attitude reversals on a self-transforming survey · choice blindness, attitude reversal, self-transforming survey, moral attitudes · [card](../cards/hall-2012.md)
 - **hertwig-2004** Hertwig et al. 2004. Decisions from experience and the effect of rare events in risky choice · decisions from experience, rare events, risky choice, description-experience gap · [card](../cards/hertwig-2004.md)
 - **hindriks-douven-2018** Hindriks & Douven 2018. Nozick's experience machine: An empirical study · experience machine, Nozick, status quo bias, thought experiment · [card](../cards/hindriks-douven-2018.md)
+- **hiroto-1974** Hiroto 1974. Locus of control and learned helplessness · learned helplessness, locus of control, escapable noise, human shuttlebox · no card · text: ocr
+- **hiroto-seligman-1975** Hiroto & Seligman 1975. Generality of learned helplessness in man · learned helplessness, insoluble problems, anagrams, escapable noise · no card · text: ocr
 - **johansson-2005** Johansson et al. 2005. Failure to detect mismatches between intention and outcome in a simple decision task · choice blindness, faces, introspection, confabulation · [card](../cards/johansson-2005.md) · the .pdf is the whole thesis (Johansson 2006, Choice Blindness); the .txt holds only the reprint pages 63-92
 - **johansson-2006** Johansson et al. 2006. How something can be said about Telling More Than We Can Know · choice blindness, introspection, telling more than we can know · no card
+- **klein-2022-manylabs4** Klein et al. 2022. Many Labs 4: Failure to replicate mortality salience effect with and without original author involvement · mortality salience, terror management theory, replication, Many Labs, null result · no card · text of the PsyArXiv preprint (doi:10.31234/osf.io/vef2c); published in Collabra: Psychology 8(1):35271
 - **lind-2014** Lind et al. 2014. Speakers' acceptance of real-time speech exchange indicates that we use auditory feedback to specify the meaning of what we say · choice blindness, speech exchange, auditory feedback, self-monitoring · [card](../cards/lind-2014.md)
+- **lindqvist-2020** Lindqvist et al. 2020. Long-run effects of lottery wealth on psychological well-being · hedonic adaptation, lottery winners, life satisfaction, preregistered, replication · no card
+- **macnamara-burgoyne-2023** Macnamara & Burgoyne 2023. Do growth mindset interventions impact students' academic achievement? A systematic review and meta-analysis with recommendations for best... · growth mindset, meta-analysis, publication bias, replication · no card
+- **macnamara-burgoyne-2023-reply** Macnamara & Burgoyne 2023. A spotlight on bias in the growth mindset intervention literature: A reply to commentaries that contextualize the discussion (Oyserman,... · growth mindset, meta-analysis, publication bias · no card · reply on macnamara-burgoyne-2023
+- **maier-seligman-2016** Maier & Seligman 2016. Learned helplessness at fifty: Insights from neuroscience · learned helplessness, controllability, review, neuroscience · no card
 - **maruhn-2021** Maruhn 2021. VR pedestrian simulator studies at home: comparing Google Cardboards to simulators in the lab and reality · road crossing, gap acceptance, pedestrian safety, VR at home · [card](../cards/maruhn-2021.md)
 - **mckay-2025** McKay et al. 2025. 'I Once Was Blind': Experimental Manipulation of Religious Attitudes via Choice Blindness · choice blindness, religious attitudes, attitude change · no card
 - **mckay-2025-published** McKay et al. 2025. "I once was blind": experimental manipulation of religious attitudes via choice blindness · choice blindness, religious attitudes, attitude change · no card · duplicate of mckay-2025 (the published version; mckay-2025 is the authors' manuscript)
@@ -43,12 +53,15 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **remington-2024** Remington et al. 2024. Choice blindness in autistic and non-autistic people · choice blindness, autism · no card
 - **rigoni-2010** Rigoni et al. 2010. Post-action determinants of the reported time of conscious intentions · Libet clock, conscious intention, sense of agency, free will · [card](../cards/rigoni-2010.md)
 - **selivanov-2019** Selivanov 2019. Theory of thinking as a process: experimental confirmation (in Russian) · thinking as a process, Brushlinsky, problem solving · no card
+- **sisk-2018** Sisk et al. 2018. To what extent and under which circumstances are growth mind-sets important to academic achievement? Two meta-analyses · growth mindset, meta-analysis, academic achievement, replication · no card
 - **trueblood-2013** Trueblood et al. 2013. Not just for consumers: context effects are fundamental to decision making · decoy effect, attraction effect, compromise effect, context effects, perceptual choice · [card](../cards/trueblood-2013.md)
 - **vonasch-2023** Vonasch et al. 2023. "Less Is Better" in Separate Evaluations Versus "More Is Better" in Joint Evaluations: Mostly Successful Close Replication and Extension... · less is better, joint vs separate evaluation, replication · no card · replication of Hsee 1998 (not in the library)
 - **weijers-2014** Weijers 2014. Nozick's experience machine is dead, long live the experience machine! · experience machine, status quo bias, thought experiment · [card](../cards/weijers-2014.md)
 - **wen-2015** Wen et al. 2015. The sense of agency during continuous action: performance is more important than action-feedback association · sense of agency, secret assistance, performance, control · [card](../cards/wen-2015.md)
 - **wiesing-2024** Wiesing & Zimmermann 2024. Intentional binding - Is it just causal binding? A replication study of Suzuki et al. (2019) · intentional binding, sense of agency, causal binding, replication · [card](../cards/wiesing-2024.md) · replication of Suzuki et al. 2019 (not in the library)
+- **wilson-2014** Wilson et al. 2014. Just think: The challenges of the disengaged mind · boredom, thinking for pleasure, self-administered shock, solitude · no card
 - **yang-2023** Yang et al. 2023. Toward quantifying trust dynamics: how people adjust their trust after moment-to-moment interaction with automation · trust in automation, trust dynamics, human factors · [card](../cards/yang-2023.md)
+- **yeager-2019** Yeager et al. 2019. A national experiment reveals where a growth mindset improves achievement · growth mindset, preregistered, field experiment, academic achievement · no card
 
 ## Not in the library
 

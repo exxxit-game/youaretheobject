@@ -1,0 +1,79 @@
+# Shelf 2: the fixes and the open checks (12.10)
+
+The owner's word on these (12.10): fix all that is needed (his words in docs/owner-decisions-history.md). Done one at a time,
+those that do not touch the live database first; the player's wording goes to him as options. The live
+database changes only by a migration he runs, except the one real call below. Sources for each item: the three
+checks of shelf 2 (revision-shelf2-server.md, -client-law.md, -schema-tests.md) and the page's fact-checks.
+
+## What the player is told
+- privacy.html says the game sends nothing without recording, but the end of a room always asks the server for
+  the average, recording or not (only the room and version in the request; Supabase keeps the IP in its logs
+  7 days). Say so.
+- In the headset with controllers, A-Frame loads their models from cdn.aframe.io before consent; privacy.html
+  does not name that address. Ship the models with the game (licence first) or name the address.
+- Consent (src/app/texts.ru.js:24): without recording nothing is kept [Russian, at the cited line], yet the headset keeps marks and, for an adult, the drawn name
+  and signature. In meaning: "…nothing goes into the statistics".
+- privacy.html says in one place a result cannot be found, in another that while Supabase keeps its logs
+  (7 days) it could in principle be linked to the IP address (privacy.html:58 [Russian, at the cited line]). Say one thing: a kept result cannot be taken back; we
+  do not match the logs with results.
+- privacy.html's date (10 October; changed on the 11th); what the logs hold besides the IP (city, request path).
+- Science (his decision 6, 12.10): privacy.html:42 still says science only after an ethics committee and
+  that no such study exists yet [Russian, at the cited line]. Rewrite to science now in our lab after the preregistration; the separate
+  consent mark for science goes into consent version 2 (a migration).
+
+## Tests and code
+- The tests miss 9 of 16 mutations made one at a time in a copy of the code: teach them to read the fields
+  and limits from the schema and the migrations.
+- A run with more than 1000 presses outside the window or more than 1000 repeats is rejected whole by the
+  server and lost silently: clamp at 1000, as the playtest report does.
+- A tester's run goes as an ordinary one today (into the statistics, the first one into "you and others").
+  His decision 2 (B): only into the testers' table.
+- Room 101's description confuses whether the chosen answer's position goes to the server (it does not).
+
+## With the next migration
+- Schema 2: whole numbers, exactly 40 trials, scales in steps of 5, required fields; a data dictionary.
+- An explicit deny on the 7 tables (Supabase's advice); drop the histogram and the presses mean from
+  compare_room (the game reads neither).
+- The IP-hash key changed daily, as Plausible does, so hashes of different days cannot be linked.
+- The testers' table takes the whole run without gender and age (today 12 fields: 5 answers, 7 measures;
+  0004:26-27).
+- The consent's science mark (above).
+
+## Signals (Cosmogram's lessons)
+- Know when results stop arriving: Cosmogram's longest outages, about 7 and 10 days, went unnoticed.
+- A test per migration that every new function is closed to outsiders (its mistake of 05.09), and after each
+  migration a read-back of the rights.
+
+## Keys and access
+- Replace both GitHub logins on the laptop (gh: repo; git's own login: repo and workflow, read 12.10) with one
+  narrow key without Deployments, Workflows or Administration; workflow files then go in by the owner on
+  GitHub's site, step by step.
+- ElevenLabs: his screenshot showing "Unlimited" was taken before the step to set 10000; the restricted key
+  cannot read the cap. He looks at elevenlabs.io/app/developers/api-keys, key objekt. Sound effects access is
+  set by the steps, not confirmed by a probe.
+- The real call to learn whether the player's real IP reaches the database (his yes of 12.10): one row through
+  the player's path. It must stay out of the statistics and "you and others" (src/app/session.js: our own
+  checks must not reach the statistics); design that first.
+
+## Question 3 in detail (batched updates of the shown average)
+Anyone can ask the server for the average before and after a friend's run (the game key is public); the
+server answers to 0.1 (0010:56), so at 10 players the friend's answer shows to about a point; the share of
+«0» shows whether the friend answered «0». The game itself shows the average rounded to a whole number
+(reveal.js:56). Option B, a batch of at least 10 new first runs with the control answer in the condition,
+usually stops a simple subtraction. It fails where the answers fall into one pattern (all «0», or all but
+one; all who did not answer «0» answered «100»): the friend's answer is then seen exactly only if all
+answered the same, otherwise narrowed to two or three values, and the batch's sum is exact while the
+condition has fewer than about 50 players (average to 0.1, answers in steps of 5 in the real game); if all
+or none answered «0», whether the friend did is seen. Nine deliberate fake runs beat it, and the limit of
+30 results in 5 minutes per address does not stop them (0009); the handbook raises the threshold where
+people can pool their data. All this is my inference from the server's arithmetic and the handbook's
+minimum rule (Hundepool 2025), not a published method for a live average.
+
+## Not checked
+- Whether GDPR applies to the game; one consent for the result and for error reports or two: a lawyer
+  (decision D).
+- The role the Supabase connector in the chat runs as (people on Reddit say full rights; our guard holds it
+  to reading, in windows opened from the project folder).
+- In the Supabase panel: SSL enforced, network restrictions, a second organisation owner, the spend cap.
+- Meta's rules (6.3) ask for a clear way to request deletion: whether that concerns us in the Meta store,
+  given his decision that a kept result cannot be taken back.

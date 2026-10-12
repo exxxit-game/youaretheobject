@@ -1,7 +1,7 @@
 # VR norms and hardware
 
 Generated from `docs/library/papers.json` by `node tools/build-library.mjs`. Do not edit by hand.
-98 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
+99 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
 in the library folder's papers\ as `<id>.txt` (a data set: `<dir>/<id>.txt` from the library folder); "text: ocr" marks a scan's
 text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 
@@ -34,6 +34,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **dodgson-2004** Dodgson 2004. Variation and extrema of human interpupillary distance · interpupillary distance, anthropometry · no card
 - **duzmanska-2018** Duzmańska et al. 2018. Can Simulator Sickness Be Avoided? A Review on Temporal Aspects of Simulator Sickness · simulator sickness, exposure time, review · no card
 - **elchemaly-2025** El Chemaly et al. 2025. Geometry Aware Passthrough Mitigates Cybersickness · passthrough, cybersickness, geometry-aware rendering · no card
+- **ely-1970** Ely et al. 1970. Instructional Hardware/A Guide to Architectural Requirements · 1970s audiovisual equipment, projection screens, viewing distance, classroom planning · no card
 - **exppsy-2022-2** Experimental Psychology (Russia), ed. Barabanschikov 2022. Experimental Psychology (Russia), vol. 15, no. 2 (whole issue, in Russian with English abstracts) · VR studies in Russia, journal issue, side effects · no card
 - **farmani-2020** Farmani & Teather 2020. Evaluating discrete viewpoint control to reduce cybersickness in virtual reality · viewpoint control, snap turning, cybersickness · no card
 - **fernandes-2016** Fernandes & Feiner 2016. Combating VR Sickness through Subtle Dynamic Field-Of-View Modification · field-of-view restriction, vignette, cybersickness · no card
