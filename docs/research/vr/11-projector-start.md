@@ -146,3 +146,105 @@ our 1979.
   unverified). For us: the "slide-tape" show (Carousel + cassette deck, one start button, stops
   itself) is the period's form for a recorded talk with pictures; it fits a voice over still
   pictures better than a 16 mm film would.
+- **Sound of the roller and the projector: recordings exist; their licence is personal and
+  educational only.** BBC Sound Effects archive (searched through its own API, 12.10):
+  "Household: Roller Blind, lowered and raised" 07027123 (6.4 s) and 07027124 (5.1 s); "Local
+  Train, ratchet-type window blind raised & lowered" 07033162 (12.1 s); "16mm RCA cine projector.
+  Start, run, stop" 07004204 (348.9 s); "Film running out on 16 mm projector. (24 f.p.s.)" 07076045
+  (15.8 s). The site says its effects are for "your own personal/educational projects, or licence
+  them for use" (https://sound-effects.bbcrewind.co.uk/licensing): a paid game needs the paid
+  licence. No recording of a projection screen itself and none of a Carousel was found there.
+- **How fast a screen rolls up: not found.** No maker's figure for a 1970s spring roller or an
+  electric screen's travel speed was found (two searches); the BBC roller-blind takes (lowered and
+  raised in 5–6 s in all) are the nearest measure, unverified as a screen's speed.
+- **A period photo: "1975 Classroom", Eastern Oregon University, 11 Dec 1975**,
+  https://library-archives.eou.edu/items/show/18599 (record and photo opened; CC BY-NC-ND 3.0 US,
+  so a reference for shape, not for use in the game). The record names "an overhead projector,
+  and a pull-down screen" and a bulletin board. Seen in the photo: the screen's case sits at the
+  ceiling line of a lay-in tile ceiling with 2 × 4 ft troffers (like our corridor's), the white
+  surface has a black border, a pull cord hangs from its bottom bar, and the screen hangs beside,
+  not over, the framed bulletin board.
+- **Throw across our corridor is too short for 16 mm with its standard lens.** ACOFS (Australian
+  Council of Film Societies), *Film Society Handbook*, ch. 3 "Technical aspects – film", Dec 2009,
+  https://acofs.org.au/Film%20Screening%20Handbook/Ch3%20technical%20film.pdf (chapter read):
+  "the projection distance equals 5.20 times the width of the image" for the "standard 2 inch
+  (50mm) lens"; 1 1/2 in: "3.98 x width"; "Throw (m) = Focal length (mm) x width (m) / 9.65".
+  Our corridor is 1.8 m wall to wall, so a cart against the south wall throws about 1.5 m: with
+  the 2 in lens the picture is 1.5 / 5.2 = 0.29 m wide, with 1 1/2 in 0.38 m (computed from the
+  handbook's ratios). A 1.0–1.2 m picture on the board needs 5–6 m of throw: along the corridor,
+  not across it. A slide projector with a short lens throws wider (its aperture is wider than
+  16 mm's), but no Kodak lens table was read: **unverified**.
+- **A cart across the corridor puts the player in the beam.** The arrival spot (z 3.05) lies
+  between the south wall and the board (z 1.8): a projector behind the player throws his shadow
+  on the screen (geometry from `plan.js`). Da-Lite's rule is the reverse case of the same fact:
+  the picture's bottom "above the heads of viewers". A projector hung high and tilted down (the
+  owner's idea) keeps the beam over the head; the period answer to the tilt is the keystone
+  eliminator above.
+- **Exit signs and corridors (US workplace rule, today's text, which keeps the 1970s content in
+  new numbering).** OSHA 29 CFR 1910.37, https://www.osha.gov/laws-regs/regulations/standardnumber/1910/1910.37
+  (opened in the browser pane; history line "39 FR 23502, June 27, 1974 … 67 FR 67963, Nov. 7,
+  2002"): (a)(3) "Exit routes must be free and unobstructed. No materials or equipment may be
+  placed, either permanently or temporarily, within the exit route"; (b)(2) "Each exit must be
+  clearly visible and marked by a sign reading 'Exit.'"; (b)(4) "the line-of-sight to an exit sign
+  must clearly be visible at all times"; (b)(6) lit to "at least five foot-candles (54 lux)".
+  The pre-2002 numbering was 1910.37(q): a 1973 OSHA letter quotes (q)(6) "Every exit sign shall
+  be suitably illuminated by a reliable light source giving a value of not less than five foot
+  candles" (search result only; https://osha.prod.pace.dol.gov/laws-regs/standardinterpretations/1973-02-27
+  returned 403). For us: (1) a code EXIT sign may never be hidden or appear later; the "exit" on
+  our board is the game's leave poster (`exit.js`), not a code sign, so the rule does not bind it,
+  but our own rule does: a participant may leave "at any moment" (`exit.js`, owner's ethics
+  line). Hiding the leave poster behind the screen during the film breaks that; it needs another
+  way out in view while the film runs. (2) A projector cart left standing in a 1.8 m corridor is
+  "equipment … within the exit route": a ceiling- or wall-hung projector, or one in a doorway or
+  alcove, is the lawful place.
+- **Half-Life: Alyx (Valve, 2020): the briefing is a video call on an in-world screen that the
+  player starts; it was moved twice, away from the first view and away from the tutorial.**
+  Developer commentary, node "Greenhouse" (Chris Emond), transcript at
+  https://combineoverwiki.net/wiki/Developer_commentary/Half-Life:_Alyx (Wayback snapshot
+  15 Dec 2024, opened in the browser pane, nodes Introduction, Greenhouse, Refuge, Olga read in
+  full): first in the refuge, but "players were often too engrossed in interacting with all the
+  detail in the room to pay attention"; then on the starting balcony, where "it distracted from
+  the establishing shot" and "came at a time when players were still figuring out core game
+  elements"; "That collision made simple things hard, like when to show the player a movement
+  tooltip if they immediately started the video call"; final place: the greenhouse, "an area with
+  a slightly obscured vista and fewer interactable objects", after players are "past the initial
+  gameplay moments". Trigger: the player's action ("started the video call"). Briefing and
+  tutorial: deliberately separated in space and time. Skip/replay: not stated. Screen: not in the
+  first view; in its own small room after the first one. Node "Shotgun Gate 2" (Dan Ginsburg):
+  "The combination of a timer and a look trigger is a common trick" (already in 05b).
+- **Job Simulator (Owlchemy Labs, 2016): the hub is a "job museum" run by robots "which resemble
+  a floating CRT computer monitor with faces"; in each job a robot supervisor gives the
+  instructions; even a setting is a world object: "a panel near the ground level of the museum
+  kiosk behind which is a switch"** (Giant Bomb wiki, https://giantbomb.com/wiki/Games/Job_Simulator_The_2050_Archives,
+  opened in the browser pane, full). The briefing is a character with a screen for a face, talking
+  as the player works: briefing and tutorial merged. Trigger, skip and screen position at the
+  first view: not stated there (how a job is picked: a cartridge, per a trophy guide's search
+  snippet only, unverified). The exit is a burrito (05b §4).
+- **SUPERHOT VR (SUPERHOT Team, 2016): two physical acts start a level, both in the room the
+  player stands in: a 3.5 in disk into a drive, then a headset pulled down from the ceiling.**
+  Price D., "Getting Superhot in VR", FutureFive NZ, 12 Jul 2017,
+  https://futurefive.co.nz/story/getting-superhot-vr (summary): "a room full of old knocked
+  together computers", "prompting you to insert an old 3.5-inch disc into a drive", "You then
+  pull down a VR-like headpiece from the ceiling and enter the game". Trigger: the player's action.
+  Briefing: text on the old computer's screen in front of the player (unverified in detail).
+  Skip/replay: not stated. A Steam thread notes a disk could not be put down once grabbed
+  (https://steamcommunity.com/app/617830/discussions/0/1290691308577147758, search result only).
+- **Red Matter (Vertical Robot, 2018): the boss briefs the astronaut at the start, and the
+  tutorial is folded into a suit check.** Mogura VR (Japanese), 17 Sep 2019,
+  https://www.moguravr.com/?p=108660 (summary): 「ゲーム開始後、…「コードネーム：Epsilon」は、
+  上司からミッションのブリーフィングを受けます。」 ("after the game starts, Epsilon receives a
+  mission briefing from the boss"); 「宇宙服のチェックを兼ねたチュートリアルが行われます」 ("a
+  tutorial that doubles as a spacesuit check"). Briefing first, then the tutorial disguised as a
+  task. Trigger, medium of the briefing, skip: not stated (unverified).
+- **Lone Echo (Ready At Dawn, 2017): a character briefs and teaches at once: the player, a robot,
+  "booting up" in a room with the captain; systems come online one by one, each with a small
+  task.** Amwake D., "Lone Echo", The VR Grid, 5 Feb 2018, https://www.thevrgrid.com/?p=66864
+  (summary): "This bootup sequence is used as a mini tutorial that has you slowly "rebooting"
+  different systems as needed", "providing you with a small task to accomplish using the new
+  concept/tool"; listed drawback: "Tutorial feels a little forced". Trigger: the character
+  (timed by the story). Briefing and tutorial: merged. Skip: not stated.
+- **The Lab (Valve, 2016): a hub where each experience is entered by picking up its object.**
+  Wikipedia, https://en.wikipedia.org/wiki/The_Lab_(video_game) (summary): "The player enters
+  each of the respective minigames by picking up the named snowglobe". A search summary adds an
+  announcer voice and a "Face-Mounted Portal Sphere" held near the head (Combine OverWiki, refused
+  connection; unverified). Trigger: the player's action. Briefing and tutorial: not described.

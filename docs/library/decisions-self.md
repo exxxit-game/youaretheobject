@@ -1,7 +1,7 @@
 # decisions and self-knowledge
 
 Generated from `docs/library/papers.json` by `node tools/build-library.mjs`. Do not edit by hand.
-65 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
+68 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
 in the library folder's papers\ as `<id>.txt` (a data set: `<dir>/<id>.txt` from the library folder); "text: ocr" marks a scan's
 text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 
@@ -21,11 +21,13 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **easton-1974-thesis** Easton 1974. An information processing interpretation of ideomotor behavior in the Chevreul pendulum illusion · Chevreul pendulum, ideomotor action, feedback · no card · text: ocr · chapter V = experiments VI-VII on feedback of the swing, the topic of Easton & Shor 1977; same data not confirmed
 - **easton-shor-1975** Easton & Shor 1975. Information processing analysis of the Chevreul pendulum illusion · Chevreul pendulum, ideomotor action, visual feedback · [card](../cards/easton-shor-1975.md) · text: ocr
 - **eder-2022** Eder et al. 2022. Motivations underlying self-infliction of pain during thinking for pleasure · boredom, thinking for pleasure, self-administered shock, replication, curiosity · no card · replication of wilson-2014
+- **eisenberger-1992** Eisenberger 1992. Learned industriousness · learned industriousness, effort, persistence, review · no card
 - **fazio-2015** Fazio et al. 2015. Knowledge does not protect against illusory truth · illusory truth effect, repetition, knowledge · [card](../cards/fazio-2015.md)
 - **fehr-gachter-2002** Fehr & Gächter 2002. Altruistic punishment in humans · altruistic punishment, public goods game, cooperation, behavioural economics · [card](../cards/fehr-gachter-2002.md)
 - **glucksberg-1962** Glucksberg 1962. The influence of strength of drive on functional fixedness and perceptual recognition · candle problem, functional fixedness, incentives, drive · [card](../cards/glucksberg-1962.md) · text: ocr · the card (written before the scan was found) still says no full text; the archive.org scan and its OCR text are on disk
 - **hall-2010** Hall et al. 2010. Magic at the marketplace: Choice blindness for the taste of jam and the smell of tea · choice blindness, taste, smell, jam and tea · no card
 - **hall-2012** Hall et al. 2012. Lifting the veil of morality: Choice blindness and attitude reversals on a self-transforming survey · choice blindness, attitude reversal, self-transforming survey, moral attitudes · [card](../cards/hall-2012.md)
+- **hanselman-2017** Hanselman et al. 2017. New evidence on self-affirmation effects and theorized sources of heterogeneity from large-scale replications · self-affirmation, values affirmation, replication, null result, field experiment · no card
 - **hertwig-2004** Hertwig et al. 2004. Decisions from experience and the effect of rare events in risky choice · decisions from experience, rare events, risky choice, description-experience gap · [card](../cards/hertwig-2004.md)
 - **hindriks-douven-2018** Hindriks & Douven 2018. Nozick's experience machine: An empirical study · experience machine, Nozick, status quo bias, thought experiment · [card](../cards/hindriks-douven-2018.md)
 - **hiroto-1974** Hiroto 1974. Locus of control and learned helplessness · learned helplessness, locus of control, escapable noise, human shuttlebox · no card · text: ocr
@@ -55,6 +57,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **selivanov-2019** Selivanov 2019. Theory of thinking as a process: experimental confirmation (in Russian) · thinking as a process, Brushlinsky, problem solving · no card
 - **sisk-2018** Sisk et al. 2018. To what extent and under which circumstances are growth mind-sets important to academic achievement? Two meta-analyses · growth mindset, meta-analysis, academic achievement, replication · no card
 - **trueblood-2013** Trueblood et al. 2013. Not just for consumers: context effects are fundamental to decision making · decoy effect, attraction effect, compromise effect, context effects, perceptual choice · [card](../cards/trueblood-2013.md)
+- **vedeneeva-2009** Vedeneeva 2009. The motivational component of personal helplessness at different ages (thesis summary, in Russian) · learned helplessness, personal helplessness, Russian psychology, Tsiring · no card
 - **vonasch-2023** Vonasch et al. 2023. "Less Is Better" in Separate Evaluations Versus "More Is Better" in Joint Evaluations: Mostly Successful Close Replication and Extension... · less is better, joint vs separate evaluation, replication · no card · replication of Hsee 1998 (not in the library)
 - **weijers-2014** Weijers 2014. Nozick's experience machine is dead, long live the experience machine! · experience machine, status quo bias, thought experiment · [card](../cards/weijers-2014.md)
 - **wen-2015** Wen et al. 2015. The sense of agency during continuous action: performance is more important than action-feedback association · sense of agency, secret assistance, performance, control · [card](../cards/wen-2015.md)
