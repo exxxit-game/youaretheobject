@@ -73,5 +73,6 @@ enough. A new decision: its line here, the rest there. A risk list or a general 
 - Ethics: consent, 18+ for recording, «start without recording», quit any time, debrief, anonymous data; science only after ethics approval, preregistration and a separate consent.
 - Floor 1 free, then paid packs («потом… купить дополнительный контент» 8.10); chosen to work even when the trick is known; education licences; university partners.
 - Playtest: 5–10 testers from his Telegram VR community; 5 approved questions; releases only on his word.
+- A kept result cannot be taken back, and the player is told so politely and plainly, not curtly: no ads, we are a lab, thanks to those who share, fine for those who would rather not («Мне больше нравится первый вариант. Но только… без грубости» 12.10); the data told so carefully that no one has a claim («как нам аккуратно поступить, чтобы к нам не было претензий» 12.10).
 - Payouts go to Ukraine («украина» 10.10).
 - The tool revision (https://claude.ai/artifact/ShHre3dd8yNXUJcCnXn65D; «нужно всё вносить и исправлять, улучшать» 10.10): Blender and compression tools; the site published by GitHub Actions, only the game's files public; one live migration (date only, random key, consent version, a schema per room, a rate limit); IWER in the GitHub test.
