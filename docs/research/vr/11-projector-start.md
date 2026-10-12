@@ -131,7 +131,7 @@ What each way of starting costs, from the sources found here and in 05a/05b:
 | Way to start | For it | Against it | Sources |
 |---|---|---|---|
 | The player switches the projector on (one press on a real switch) | Unmissable: he did it, so he is looking; the period's own act (the Carousel's "Power/Fan/Lamp" switch, the loop projector's "start button", the slide-tape patent's "single push"); every screen briefing found starts this way | One more act before the corridor's task; the switch must be found (the first-minute view is narrow: 90% never looked beyond 75°, Pausch 1996, 05a) | 11a; IEYTD, SUPERHOT, HL:A above |
-| Looking at it (head direction held) | No hands; our engine already has look events (`opening.js`) | Quest 3 has no eye tracking, so "look" is head direction; dwell selection's "Midas Touch" is that "users unintentionally select onscreen objects by gazing upon them" (Mohan et al., ISMAR-Adjunct 2018, doi:10.1109/ISMAR-Adjunct.2018.00039, abstract only); a look is not a "clear confirmation" | Consensus search 12.10; 05b §3 |
+| Looking at it (head direction held) | No hands; our engine already has look events (`opening.js`) | Quest 3 has no eye tracking, so "look" is head direction; dwell selection's "Midas Touch" is that "users unintentionally select onscreen objects by gazing upon them" (Mohan et al., ISMAR-Adjunct 2018, https://consensus.app/papers/details/b5a22d4411d85edeb36b0b5ebbdbd9f2/, abstract only; DOI not checked); a look is not a "clear confirmation" | Consensus search 12.10; 05b §3 |
 | Timer plus look trigger | Starts early if he looks, starts anyway if not: Valve's "common trick" | Can start a talking film while he is still learning the controls, the collision Valve moved its call to avoid | HL:A "Shotgun Gate 2", "Greenhouse" |
 | A voice prompt ("press the switch to begin") | Several channels at once (Meta's onboarding blog, 05a) | Our corridor's voice is serious and the welcome exists; a prompt before the film is a second briefing; an announcer telling where to press is the non-diegetic cue the guidance research rates lower for presence (Rothe 2019, 05b) | 05a, 05b |
 | The game detects he is settled (stood still, looked round) | No act at all; matches the current silent arrival and the sign's start rule (`sign.js` arrivalStep) | Not a confirmation; settling took about 40 s in Lost (Unseld 2015, 05a) and 30 s to 30 min on Alyx's balcony; a film starting on a guess is the "starts by itself unnoticed" the owner rejected | 05a; HL:A |
@@ -143,3 +143,67 @@ spend 30 seconds on the opening balcony, and others 30 minutes" (above); "the mo
 the more chance there is that a player misses something important" (HL:A "Introduction"). On
 forced waiting no VR study was found in this pass (gap); Gaming Trend's "don't skip them" shows
 IEYTD's opening credits can be skipped.
+
+## Options for the owner
+
+Each option names what it copies. Shared facts: the board's centre is about 51° left of the
+arrival view; the corridor allows at most about 1.6 m of viewing distance across it; the corridor
+must stay clear of standing equipment (OSHA 1910.37(a)(3), 11a); the leave poster must stay
+reachable while anything plays (`exit.js`); the film's words need print beside the voice (Meta
+captions, 11b).
+
+**A. Classroom screen over the board, slide-tape show (his favourite, 12.10).** A wall screen in a
+steel case on a map rail above the board, already down over the cork when the player arrives (left
+down, as in a classroom between lessons); a Kodak Carousel with a cassette deck on a wall shelf
+high on the opposite wall, beam over the head. The player presses the projector (with the laser
+or the hand) once: lamp on, slides and voice run, then lamp off and the screen rolls up by its
+motor, showing the clipboard, flyer and poster that were behind it. Copies: the 1970s classroom
+(Pennsylvania checklist: screen, "keystone eliminator", tack boards, "mounting rails installed
+above chalk boards or tack boards"; Ely 1970: screens "rolled out of the way either manually or
+electrically"; the slide-tape "single push of the start button" that "ends with turning off of
+the projectors"); IEYTD's reel into projector; Valve's player-started call. Needs: the screen, its
+case and motor, the projector, a sound for each (BBC recordings are not licensed for a paid game,
+11a), captions on the slides. Risks: a 1.0 m square screen at 1.6 m spans 35° (over the 2W rule
+and the ±15° glance zone; a smaller picture on the screen, about 0.85 m, keeps it at 30°); the
+throw of about 1.5 m needs a short slide lens (Kodak table not read: unverified); a 1979 electric
+classroom screen's look and speed and a wall projector shelf have no period source yet; the poster
+behind the screen breaks "leave at any moment" unless the poster sits outside the screen or the
+projector's press also stops the show; the sign over door 1 plays first, so the projector must
+wait for it (05b: one cue at a time).
+
+**B. The same screen, rolled up by hand-free spring, started at the screen.** As A, but the
+control is a small start/stop plate on the wall at the board (Ely's "lectern control panel" for
+"Room lights … Screen … 16mm sound movie projector" in one place), so the player walks to the
+board he needs anyway; the projector stays out of reach. Copies: Ely 1970 §III.I; the film-loop
+projector's "start button". Needs and risks: as A; one more object (the plate); its 1970s look is
+unverified.
+
+**C. TV on a tall cart beside the board, video cassette (his "or a TV", board item 7).** A 23–25 in
+monitor (Ely: "the most commonly used group-viewing monitors") on a cart parked against the wall
+next to the board, at about 1 m from the player's natural stop in front of the board (Meta's 1 m);
+the player presses play; nothing hides the board, so nothing is revealed. Copies: Ely's monitors
+"mounted onto a mobile unit"; Job Simulator's CRT-faced robots; HL:A's call on a screen. Needs: the
+set, the cart, a player deck of the period (U-matic or similar: unverified). Risks: a cart standing
+in the corridor is "equipment … within the exit route"; no reveal; a small picture.
+
+**D. No projector.** The welcome voice and the board as now (the baseline he named: "if not, then
+not"). Copies: Unseld's settle-then-cue and Pausch's goal-first advice (05a). Risk: the lottery-
+ticket talk (board, 12.10) has no place to be seen.
+
+## Gaps
+
+- Shipped games not reached: Vacation Simulator, The Room VR, Thief Simulator VR, The Walking Dead:
+  Saints & Sinners, museum and art VR. Most game entries rest on reviews read through a fetch
+  summary, not on developers' own words (HL:A is the exception).
+- Period: no 1970s Da-Lite or Draper catalogue, no date for electric classroom screens or the
+  controlled slow return, no photo of a projector on a corridor wall shelf or ceiling in 1979, no
+  Kodak slide lens/throw table, no screen roll-up speed.
+- Forced waiting: no VR study found. Gaze dwell: abstracts only.
+- Forums in Russian and German were not searched (time); one Japanese source (Mogura VR) used.
+
+## For the owner (pages a person can open)
+
+- https://osha.prod.pace.dol.gov/laws-regs/standardinterpretations/1973-02-27 (403 here): OSHA's
+  1973 letter quoting the 1970s exit-sign rule 1910.37(q).
+- https://www.combineoverwiki.net/wiki/The_Lab (refused here): how The Lab's hub starts, its
+  announcer.
