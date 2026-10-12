@@ -28,6 +28,8 @@ enough. A new decision: its line here, the rest there. A risk list or a general 
 - Bots: a hashed IP kept 10 minutes («Отпечаток IP на 10 минут»).
 
 ## Order
+- The revision goes through all 14 shelves, filled from what exists first («Мы будем идти по всем 14 полкам. Надо сначала полки наполнить… мы всегда должны отталкиваться от настоящего» 12.10).
+- Pointed work, no branching: what belongs to the step is done in it at once; a thought ahead is only written down at once (the board's end) («если оно по делу, оно должно сразу быть. А если это просто наперед мысли… это где-то сразу записывается» 12.10).
 - The corridor is the reference every room is built on (after the process rebuild), finished before anything else («доделать эталонный коридор, на который мы опираемся» 9.10); its order «Подпись, печать, лаборатории, картины… указатель… свет» (8.10), visuals first, texts after (9.10).
 - Until it is done: one window at a time, the others closed; one corridor item start to finish, then a picture and his yes or fix; anything else one line at the board's end unless he says urgent; the board's first line counts items done («Да» 10.10).
 - The headset check before the next room («Мы все время откладывали эту проверку» 9.10).
