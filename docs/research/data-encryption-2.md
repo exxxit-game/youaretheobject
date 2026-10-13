@@ -206,6 +206,37 @@ from desktop and phone numbers (parts 1-3); nothing was measured on the Quest 2 
 Whoever decrypts a shown average can decrypt any single row; shown decryptions leak keys (Li & Micciancio 2021,
 Checri 2024, Guo 2024); ciphertexts of about 110 KB; no range check (part 2). It solves none of A-C's problems.
 
+## Part 9. What Meta's browser sees (read 2026-10-13)
+Only Meta's own documents, read 2026-10-13 through a fetch that returns short exact quotes; nothing inferred.
+- Meta Quest Browser Privacy Notice, https://www.meta.com/legal/quest/browser-privacy-notice/ ("Effective August
+  15, 2025"). Sites: "We collect the domain name of each website visited (e.g., Meta.com), the amount of time people
+  spend on that domain"; "We only collect the domain name and not the full URL of pages visited."; "This information
+  is disassociated from your account." Crashes: "We collect crash reports to help fix and improve product stability."
+  Usage: "We collect information related to your usage of the following:" New Tab Page, domains, Browser features
+  and technical data; "Technical data includes Browser version, device type (e.g., what VR headset you're using), your
+  country and language," then OS, network information, update results. Private mode: "In private browsing mode, we do
+  not collect information about the websites you visit"; "We still collect other usage statistics, such as browser
+  features and technical data, and crash reports in private mode" ... "unless you opt out."
+- Supplemental Meta Platforms Technologies Privacy Policy, https://www.meta.com/legal/privacy-policy/ ("Effective
+  October 12, 2026"), under "Meta VR Product activity": "For example, we collect information about your Meta Quest
+  browser usage"; under "Device information": "When a Meta VR Product experiences a crash, a log about the crash is
+  sent to Meta." (the log: time, user ID, device ID, IP address, per the fetch's summary, not quoted); "You may
+  choose to share additional data with Meta about how you use your device".
+- Help "Use the Browser with Meta Quest", https://www.meta.com/help/quest/1095931284237787/ ("Updated: 7 weeks ago"):
+  "Sharing usage statistics and crash reports is on by default."; off: "select Settings in the Browser menu and toggle
+  the switch next to Analytics to Off"; still: "your Meta Quest device collects information about how often and how
+  long you use applications, including Browser."
+- Help "Control what additional data you share...", https://www.meta.com/help/quest/614185856801362/ ("Updated: 39
+  weeks ago"): headset Settings > "Privacy and safety" > "Data and Analytics" > "Share additional data"; the Browser
+  is among the apps it covers (example: "if you use full-screen mode in the browser").
+- Developer docs, https://developers.meta.com/horizon/documentation/web/browser-specs/ (2026-07-21): "Browser uses
+  the Chromium rendering engine, but both products change over time."; nothing on privacy or telemetry. Chromium's
+  own docs not read: they describe Google's browser, not what Meta collects.
+- Not found in any of these: full URLs (expressly not collected), page content, form input or JavaScript data, a
+  "browsing history" setting or Meta's steps to clear history or site data, Safe Browsing or URL checks, sync.
+- Unverified: release notes of Oculus Browser 6.2 add a telemetry opt-out (search snippet only,
+  https://developers.meta.com/horizon/release-notes/web/ not opened).
+
 ## Not done or unverified
 - Divvi Up's price and whether it takes a one-person lab: only by writing to their contact address (his choice).
 - A Quest 2 measure of sealing (typage + noble) before any choice: the quest-look tool, by me.
