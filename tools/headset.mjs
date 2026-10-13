@@ -78,18 +78,29 @@ const devtools = async (what) => {
   if (!r.ok) throw new Error(`the headset browser refused ${what}: ${r.status}`);
   return r;
 };
+// The browser keeps its debug link open only while it is in front: behind the headset's menu (its
+// power button opens the quick menu) or another app it runs with none (seen 13.10: no
+// chrome_devtools_remote socket until it came to the front, then one at once). So a running browser
+// that does not answer is brought to the front on the address and asked again.
+const listAfterFront = async (url, ms = 15000) => {
+  openUrl(url);
+  for (const end = Date.now() + ms; Date.now() < end; await new Promise((r) => setTimeout(r, 500))) {
+    try { forwardDevtools(); return await fetch(`${DEVTOOLS}/list`); } catch (e) { /* not yet */ }
+  }
+  return null;
+};
 export async function openGame(url) {
   forwardDevtools();
   // a browser that is not running (it closes while the headset sleeps) has no debug link: it is
-  // started on the address instead. A running browser that does not answer stops the opening, since
-  // its other game tabs could not be closed
+  // started on the address instead. A running one in the background is brought to the front; if it
+  // still does not answer, the opening stops, since its other game tabs could not be closed
   let list;
   try { list = await fetch(`${DEVTOOLS}/list`); } catch (e) {
     let running = '';
     try { running = adb('shell', 'pidof', 'com.oculus.browser'); } catch (err) { /* pidof exits 1 when none runs */ }
-    if (running) throw new Error('the headset browser runs but its tab list did not answer: its game tabs cannot be closed first');
-    openUrl(url);
-    return 0;
+    if (!running) { openUrl(url); return 0; }
+    list = await listAfterFront(url);
+    if (!list) throw new Error('the headset browser runs but its tab list did not answer even in front: its game tabs cannot be closed first');
   }
   if (!list.ok) throw new Error(`the headset browser refused list: ${list.status}`);
   const game = (await list.json()).filter((t) => t.type === 'page' && /object-preview\/|localhost:3000/.test(t.url));
@@ -109,7 +120,10 @@ export async function openGame(url) {
 // instead of leaving the tool waiting.
 export async function page(match, { noAnswerMs = 120000 } = {}) {
   forwardDevtools();
-  const tabs = await (await fetch('http://127.0.0.1:9222/json/list')).json();
+  let tabs;
+  try { tabs = await (await fetch('http://127.0.0.1:9222/json/list')).json(); } catch (e) {
+    throw new Error('the headset browser has no debug link: it is not running or not in front (the headset slept, or its menu or another app is in front); open the game first (quest-look open)');
+  }
   const tab = tabs.find((t) => t.type === 'page' && match.test(t.url));
   if (!tab) return null;
   const ws = new WebSocket(tab.webSocketDebuggerUrl);
