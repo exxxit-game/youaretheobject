@@ -62,10 +62,30 @@ closed when what breaks it is in place; it stays here, marked, as the memory of 
 - Breaks it: a page is written only from the checked research and from files read while writing; fewer claims;
   quote rather than retell; our own inference labelled as ours.
 
+## 5a. The same circle, 13.10 (fourth window)
+- Done: the nine tips for players took three rounds of two fact-checks for nine lines; the usage page three rounds,
+  its numbers retold from helpers' reports instead of read from the tool's output; the game's menu four rounds of the
+  practice and paper reviews (about three hours), each round finding holes in the last round's own fixes.
+- His words: «повторять по 500 раз одно и то же… какая-то глупость»; «Ты потратил весь день сегодня на свои, по
+  сути, галлюцинации»; «Зачем ты фантазировал… если у нас есть четкие документации?»
+- Breaks it: see 13; numbers on a page only from the tool's own output; the rule «two checks, and on each edit
+  too» (his, 12.10) is what makes a small page circle: a change of it is his to make (asked 14.10).
+
 ## 6. Claims from memory — open
 - Done: 13.10 the baseline's times and conditions (two fact-checks found them wrong); 13.10 "Claude Code deletes
   transcripts after 30 days" (the general rule, read without its exception for the desktop app).
 - Breaks it: read the thing itself first (docs/tools.md), and read the whole rule, exceptions included.
+
+## 13. My own first idea before the documented pattern — open
+- Done: 13.10 the game's menu: built as a panel of my own design (index 7 from the input registry while our own probe
+  of his Quest 3 had already found the Menu button at 12, docs/headset-capabilities.md; a depth test turned off; rays
+  to guess a free distance), then patched after each review, until it became Meta's own theater mode, the pattern
+  that existed from the start (developers.meta.com/horizon/design/panels/). 157 commits that day, 12 to the game.
+- Cost: his day; the exit he asked for at once («Сделай выход прямо сейчас») not in his headset by night.
+- Why us: I start writing as soon as I see a way, and the reviews come after the code; each fix is again my own idea.
+- Breaks it: his own loop, kept in order (docs/owner-decisions.md: «Искать, воплощать»): first the pattern, three
+  lines «делаем как …» with its link (a Meta page, a shipped sample, our own earlier probe), then the practice
+  reviewer on that plan, then the code, then one review.
 
 ## 7. Process instead of the game — watch
 - Done: Cosmogram, 07.10: «Я думал, что мы два месяца стартуем, а оказалось, что мы два месяца хуюем». Here, 12.10:
