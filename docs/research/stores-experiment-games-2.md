@@ -27,7 +27,7 @@ categories, date) and `appreviews/<id>?json=1` (review count).
   "This is done locally and no personal information is required"; "several minigames". No experiment, author or
   paper is named anywhere in the store text. What the tasks are, from the reviews: "four VR experiences that you can
   do with score that are interpreted as psychological trait insights" with "a report about what it gleans from your
-  choices at the end" (review 19 Jun 2020); the four are a rowing boat, hitting a hole in the ice ("apparently I am
+  choices at the end" (review 19 Jun 2020); three of the four named in reviews are a rowing boat, hitting a hole in the ice ("apparently I am
   VERY persistent", 24 Apr 2022), an animal choice ("choose one: dog or cat ... you must be a dog person!", 31 Jul
   2020); a German review (19 Jan 2019, translated): "based on studies and normal psychological tests ... in 4 small
   tests". Reviews: 29, "Mostly Positive" (23 up, 6 down); playtime mostly 6-25 minutes. Verdict: the player is the
@@ -123,7 +123,8 @@ through ("experiment" alone gave 99, mostly ContentsDa school science labs).
 - Teacher's Lens Beta, Debias VR, an "Oculus Launch Pad winning project" (OculusDB lists it for Rift, hmd 0)
   [seen: OculusDB description]. "the first virtual reality app to translate the Harvard Implicit Association Test
   (IAT) into a game play simulation"; aimed at teachers' unconscious bias. A published test (the IAT) turned into a
-  VR game with the player as the subject; release date, reach and whether a result is shown: unverified.
+  VR game with the player as the subject. OculusDB metadata [read, API]: Rift, publisher Debias VR, "appCanBeBought":
+  false, "is_approved": false, no release date: not on sale now. Whether a result is shown: unverified.
 - LIMINAL ("Relax. Unwind. Engage. Explore."), Quest app, store search shows 4.5 from 1.9K ratings; its page read
   by WebFetch showed 185 reviews, 3.8 (the two counts disagree; page not reread) [read].
   https://www.meta.com/experiences/liminal/1645146858877576/ . "apply research by neuroscientists and
