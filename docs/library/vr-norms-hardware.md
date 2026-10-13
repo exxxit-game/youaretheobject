@@ -1,7 +1,7 @@
 # VR norms and hardware
 
 Generated from `docs/library/papers.json` by `node tools/build-library.mjs`. Do not edit by hand.
-101 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
+102 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
 in the library folder's papers\ as `<id>.txt` (a data set: `<dir>/<id>.txt` from the library folder); "text: ocr" marks a scan's
 text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 
@@ -16,6 +16,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **brown-2022** Brown et al. 2022. The simulator sickness questionnaire, and the erroneous zero baseline assumption · simulator sickness questionnaire, baseline, measurement · no card
 - **carmack-2021-tweet** Carmack 2021. The design focal distance for the Quest/Quest 2 optics is 1.3 meters · Quest optics, focal distance · no card
 - **carnevale-2022** Carnevale et al. 2022. Virtual Reality for Shoulder Rehabilitation: Accuracy Evaluation of Oculus Quest 2 · tracking accuracy, Quest 2, rehabilitation · no card
+- **caserman-2019** Caserman et al. 2019. Effects of end-to-end latency on user experience and performance in immersive virtual reality applications · latency, cybersickness, performance · no card
 - **caserman-2021** Caserman et al. 2021. Cybersickness in current-generation virtual reality head-mounted displays: systematic review and outlook · cybersickness, current headsets, systematic review · no card
 - **cauz-2024** Cauz et al. 2024. Text readability in augmented reality: a multivocal literature review · text readability, augmented reality, literature review · no card
 - **cesanek-2024** Cesanek et al. 2024. Ouvrai opens access to remote virtual reality studies of human behavioural neuroscience · remote VR studies, Ouvrai, online VR experiments, motor learning · no card

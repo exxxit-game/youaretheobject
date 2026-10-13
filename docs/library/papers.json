@@ -8382,6 +8382,24 @@
    "text": "ok",
    "status": "no card",
    "source": "https://doi.org/10.1109/tvcg.2023.3247057"
+  },
+  {
+   "id": "caserman-2019",
+   "authors": "Caserman, P., Martinussen, M., Göbel, S.",
+   "year": "2019",
+   "title": "Effects of end-to-end latency on user experience and performance in immersive virtual reality applications",
+   "sections": [
+    "vr-norms-hardware"
+   ],
+   "tags": [
+    "latency",
+    "cybersickness",
+    "performance"
+   ],
+   "type": "chapter",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://doi.org/10.1007/978-3-030-34644-7_5"
   }
  ]
 }
