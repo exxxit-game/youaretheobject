@@ -24,6 +24,12 @@ export function speak(text) {
   return new Promise((resolve) => onUnlock(() => resolve(play(text))));
 }
 
+// Stops the line being spoken (the player left the room in the middle of it); its promise resolves as
+// when a line ends, and what waited on it decides whether to go on (room.js: within).
+export function hush() {
+  if (current) { try { current.stop(); } catch (e) { /* already stopped */ } current = null; }
+}
+
 function play(text) {
   const ctx = getContext();
   if (!ctx) return Promise.resolve(false);

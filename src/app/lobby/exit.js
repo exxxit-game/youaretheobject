@@ -10,7 +10,8 @@ import { LOBBY_T } from './texts.ru.js';
 // end of a room, with consent.
 // sheet: the corridor's clipboard (src/engine/ui/sheet.js). Returns off(): the poster stops
 // answering (the player went through a door: the corridor stays in the scene behind the room,
-// and the lasers reach through walls to anything clickable).
+// and the lasers reach through walls to anything clickable); off.on() makes it answer again (the
+// player came back from the room).
 const HOVER_LIGHT = 0.75;   // how bright the dimmed print turns under the laser or mouse (our choice)
 
 export function leaveButton(scene, sheet) {
@@ -34,10 +35,12 @@ export function leaveButton(scene, sheet) {
     pressable(poster, false);
     tint(rest);
   }
+  off.on = () => { on = true; pressable(poster, !sheet.isAsking()); };
   return off;
 }
 
-async function leave(scene, done) {
+// Leaving the game, from the poster or from the game's menu (src/app/menu.js)
+export async function leave(scene, done = LOBBY_T.exit.done) {
   await scene.querySelector('#cam').components.fader.to(1);
   if (scene.is('vr-mode')) await scene.exitVR();
   getContext()?.suspend();

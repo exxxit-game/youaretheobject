@@ -24,10 +24,14 @@ import '../engine/merge-static.js';
 import '../engine/prewarm.js';
 import { stageHTML } from './stage.js';
 import { corridorHTML, runLobby } from './lobby/lobby.js';
+import { leave as leaveGame } from './lobby/exit.js';
+import { createMenu } from './menu.js';
+import { APP_T } from './texts.ru.js';
 import { ROOM1_DOOR, roomPlace, toCorridor, areaToCorridor } from './lobby/plan.js';
 
 // room: the room's module (the shell loads it, src/main.js): its markup, where its doorway is, what
-// the corridor needs before its door (ENTRY), mount (it is in the scene) and enter (the player is in)
+// the corridor needs before its door (ENTRY), mount (it is in the scene), enter (the player is in),
+// hold (the game's menu is open) and leave (the player left it through the menu)
 export function start(room) {
   const place = roomPlace(ROOM1_DOOR, room.DOORWAY);
   // the room's own metres (data-frame): its tiles are laid from its own centre (surface.js)
@@ -39,8 +43,25 @@ export function start(room) {
   // a failure anywhere before the room's flow takes over reaches the shell, which shows it
   return loaded.then(async () => {
     room.mount(document.querySelector('#roomPlace'));
+    // the game's menu (menu.js): in the corridor it offers to stop taking part, as the poster does; in
+    // the room, to leave it: under the fade the room ends its run, the player is back in the corridor,
+    // and door 1 takes them in again (lobby.js, back)
+    const menu = createMenu(scene);
+    const corridor = { items: [{ label: APP_T.menu.leaveGame, run: () => leaveGame(scene) }] };
+    menu.set(corridor);
     const { seat, area, ...entry } = room.ENTRY;
-    const withRecording = await runLobby({ ...entry, seat: { ...seat, ...toCorridor(place, seat) }, area: areaToCorridor(place, area) });
+    const { withRecording, back } = await runLobby({ ...entry, seat: { ...seat, ...toCorridor(place, seat) }, area: areaToCorridor(place, area) });
+    const inRoom = { note: APP_T.menu.roomNote, hold: (on) => room.hold(on), items: [{ label: APP_T.menu.leaveRoom, run: leaveRoom }] };
+    async function leaveRoom() {
+      menu.set(null);
+      await scene.querySelector('#cam').components.fader.to(1);
+      room.leave();
+      menu.set(corridor);
+      await back();
+      menu.set(inRoom);
+      room.enter(withRecording);
+    }
+    menu.set(inRoom);
     room.enter(withRecording);
   });
 }

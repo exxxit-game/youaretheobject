@@ -7,9 +7,9 @@ import '../../engine/shapes.js';
 import '../../engine/decal.js';
 import '../../engine/merge-static.js';
 import { eventLog } from '../../engine/log.js';
-import { unlock } from '../../engine/audio.js';
+import { unlock, getContext } from '../../engine/audio.js';
 import { loadSounds, playSound } from '../../engine/sfx.js';
-import { loadVoice, speak } from '../../engine/voice.js';
+import { loadVoice, speak, hush } from '../../engine/voice.js';
 import { pulse } from '../../engine/haptics.js';
 import { pressable } from '../../engine/laser-beam.js';
 import { createChoice } from '../../engine/ui/choice.js';
@@ -43,6 +43,11 @@ const INK = '#f2efe8';
 const $ = (s) => document.querySelector(s);
 const screen = () => $('#screen').components.panel;
 const delay = (ms) => new Promise((r) => setTimeout(r, ms));
+// Leaving through the game's menu (leave()) ends this run of the room: every step of the old run still waiting
+// (a line, an answer, a pause, the trials) goes nowhere instead of going on in the corridor.
+let run = 0;
+const never = () => new Promise(() => {});
+const within = (n, p) => p.then((v) => (n === run ? v : never()));
 // Places in the room's own metres (scene.js); the corridor stands the room behind its door.
 // Behind the player, where the door would be.
 const DOOR = { x: 0.7, y: 1.0, z: 1.5 };
@@ -65,7 +70,7 @@ export const ENTRY = {
   seat: { x: 0, z: 0.35, yaw: 0, pitch: -16 }, area: { minX: -1.4, maxX: 1.4, minZ: 0.3, maxZ: 1.55 }
 };
 
-let scene, root, choice, lowChoice, scale, shownScale, session, trials = null;
+let scene, root, choice, lowChoice, scale, shownScale, session, trials = null, meter = null, ambient = null;
 // a point of the room in the world's metres, for what takes world places (sounds, the away meter)
 const inWorld = ({ x, y, z }) => { const v = root.object3D.localToWorld(new THREE.Vector3(x, y, z)); return { x: v.x, y: v.y, z: v.z }; };
 let seated = false;
@@ -102,15 +107,16 @@ function show(text, top = false) {
 
 // Shows the line and waits until it has been spoken (or read, without audio).
 async function say(text, top = false) {
+  const n = run;
   show(text, top);
-  if (SPEED > 1) { speak(text); await delay(150); return; }
-  const spoken = await speak(text);
-  await delay(spoken ? 450 : 1500 + text.length * 55);
+  if (SPEED > 1) { speak(text); await within(n, delay(150)); return; }
+  const spoken = await within(n, speak(text));
+  await within(n, delay(spoken ? 450 : 1500 + text.length * 55));
 }
 
 // Buttons under a text that fills the screen (pages, checks). top: from writeTop.
 function pick(labels, top) {
-  return new Promise((resolve) => lowChoice.show(labels, resolve, top));
+  return within(run, new Promise((resolve) => lowChoice.show(labels, resolve, top)));
 }
 
 // Shows a question at the top of the screen and returns where the answers may
@@ -149,13 +155,14 @@ async function intro() {
   await say(T.leave);
   playSound('door', inWorld(DOOR), 0.8);
   screen().write([]);
-  await delay(4000 / SPEED);
+  await within(run, delay(4000 / SPEED));
 }
 
 async function runTrials() {
   setState('run');
   phase('run');
-  const meter = createAwayMeter($('#cam'), inWorld(STAND), paused);
+  const n = run;
+  meter = createAwayMeter($('#cam'), inWorld(STAND), paused);
   meter.start();
   eventLog.reset();
   eventLog.begin();
@@ -166,9 +173,9 @@ async function runTrials() {
     speed: SPEED,
     paused
   });
-  await trials.run();
+  await within(n, trials.run());
   trials = null;
-  awaySecs = meter.stop();
+  awaySecs = meter.stop(); meter = null;
   return condition;
 }
 
@@ -176,7 +183,7 @@ async function questions() {
   setState('questions');
   phase('questions');
   playSound('door', inWorld(DOOR), 0.8);
-  await delay(1500 / SPEED);
+  await within(run, delay(1500 / SPEED));
   await say(T.back);
   // the experimenter rereads the part about control (p. 452)
   for (const line of T.concept.slice(1)) await say(line);
@@ -192,7 +199,7 @@ async function reveal(condition) {
   session.finish({ condition, ...r, seated, speed: SPEED });
   await say(T.thanks);
   // test runs never ask the live server
-  const others = SPEED === 1 ? await compareRoom(ROOM_ID, ROOM_VERSION) : null;
+  const others = SPEED === 1 ? await within(run, compareRoom(ROOM_ID, ROOM_VERSION)) : null;
   const pages = revealPages(r, condition, others);
   const page = { pad: 2048 * 0.07 };
   for (let i = 0; i < pages.length; i++) {
@@ -208,10 +215,8 @@ async function reveal(condition) {
 async function playtest(r) {
   await say(APP_T.playtest.intro, true);
   const answers = await askPlaytest({ ask, scale, choice });
-  session.finishPlaytest(playtestReport({
-    finished: true, secs: phaseSecs, away: awaySecs, presses: r.presses, voided: r.voided,
-    seated, userAgent: navigator.userAgent
-  }, answers));
+  session.finishPlaytest(playtestReport({ finished: true, secs: phaseSecs, away: awaySecs, presses: r.presses, voided: r.voided,
+    seated, userAgent: navigator.userAgent }, answers));
   await pick([APP_T.again], ask(APP_T.playtest.thanks));
 }
 
@@ -228,11 +233,10 @@ async function play(withRecording) {
 
 /* ---------- the response button ---------- */
 function pressButton(e) {
-  if (state !== 'run' || !trials) return;
+  if (state !== 'run' || !trials || held) return;   // held: the game's menu is open
   trials.press();
-  const cap = $('#buttonCap');
-  cap.object3D.position.y = 0.001;
-  setTimeout(() => { cap.object3D.position.y = 0.006; }, 120);
+  const cap = $('#buttonCap').object3D;
+  cap.position.y = 0.001; setTimeout(() => { cap.position.y = 0.006; }, 120);
   if (e && e.detail && e.detail.cursorEl) pulse(e.detail.cursorEl, 0.6, 40);
 }
 
@@ -271,6 +275,25 @@ export function enter(withRecording) {
   unlock();
   document.title = T.pageTitle(ROOM1_NUMBER);
   showHint({ title: T.hint.title(ROOM1_NUMBER), body: T.hint.body });
-  playSound('room', null, 0.12, true);
+  ambient = playSound('room', null, 0.12, true);
   play(withRecording);
+}
+
+// The game's menu is open (src/app/menu.js): the room holds as under the headset's own menu, a trial cut by it
+// is not counted (trials.js voids a cut window), and the button waits.
+export function hold(on) {
+  held = on;
+  pressable($('#buttonCap'), !on && state === 'run');
+  const ctx = getContext(); if (ctx) (on ? ctx.suspend() : ctx.resume()).catch(() => {});   // the voice and sounds pause too
+}
+
+// The player leaves through the menu, under the fade to black: nothing of this run is sent (results go only at
+// the debrief) and the room stands as before its first entry; the corridor offers what it was (lobby.js).
+export function leave() {
+  run++;
+  held = false; getContext()?.resume().catch(() => {});   // the menu held the sound: the corridor's plays again
+  trials?.stop(); trials = null; meter?.stop(); meter = null; hush(); ambient?.stop(); ambient = null;
+  for (const w of [choice, lowChoice, scale, shownScale]) w.hide();
+  screen().write([]);
+  setState('idle');
 }

@@ -224,6 +224,13 @@ export function createSheet(scene, { inside = null } = {}) {
     return new Promise((resolve) => pg.show({ blocks, labels, onPick: resolve }));
   }
 
+  // A second question on a sheet already cut in on (interrupt), before resume() puts it back: a
+  // follow-up to the answer just given. Null when no question has cut in.
+  function next(blocks, labels) {
+    if (!asking) return Promise.resolve(null);
+    return new Promise((resolve) => pg.show({ blocks, labels, onPick: resolve }));
+  }
+
   async function resume() {
     if (!saved) return;
     asking = false;   // answered: the game goes on (a door opens) while the sheet goes back
@@ -277,5 +284,5 @@ export function createSheet(scene, { inside = null } = {}) {
   // whether a question has cut in (the caller holds other actions until it is answered)
   const isAsking = () => asking;
 
-  return { el, open, close, say, choose, fill, hang, take, back, interrupt, resume, isAsking };
+  return { el, open, close, say, choose, fill, hang, take, back, interrupt, next, resume, isAsking };
 }

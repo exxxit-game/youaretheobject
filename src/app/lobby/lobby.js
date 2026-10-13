@@ -1,5 +1,5 @@
 import { askConsent } from '../consent.js';
-import { askAfterLeaving, leftBefore } from '../left-early.js';
+import { askAfterLeaving, leftBefore, markReached } from '../left-early.js';
 import { writePlaque } from '../brand.js';
 import { APP_T } from '../texts.ru.js';
 import { loadVoice, speak } from '../../engine/voice.js';
@@ -112,6 +112,7 @@ function onFirstGesture(fn) {
 // and three.js then rebuilds every lit material in the middle of play.
 function lightCorridor(sheet) {
   const room = [...document.querySelectorAll('.room-light')].map((el) => [el, el.getAttribute('light').intensity]);
+  const hall = [...document.querySelectorAll('.corridor-light')].map((el) => [el, el.getAttribute('light').intensity]);
   const inside = [...document.querySelectorAll('.room-interior')];
   const set = (el, v) => el.setAttribute('light', 'intensity', v);
   for (const [el] of room) set(el, 0);
@@ -123,9 +124,17 @@ function lightCorridor(sheet) {
     },
     enter: () => {
       for (const [el, v] of room) { el.removeAttribute('animation__light'); set(el, v); }
-      for (const el of document.querySelectorAll('.corridor-light')) set(el, 0);
+      for (const [el] of hall) set(el, 0);
       $('#corridor').object3D.visible = false;
       sheet.el.object3D.visible = false;
+    },
+    // the player left the room: the corridor as it was before its door, the room dark and undrawn
+    back: () => {
+      for (const [el] of room) { el.removeAttribute('animation__light'); set(el, 0); }
+      for (const [el, v] of hall) set(el, v);
+      for (const el of inside) el.object3D.visible = false;
+      $('#corridor').object3D.visible = true;
+      sheet.el.object3D.visible = true;
     }
   };
 }
@@ -145,7 +154,8 @@ function hangPrints(visits) {
 
 // room: { id, debrief, seat: { x, z, yaw }, area: { minX, maxX, minZ, maxZ }, extra, real }, its
 // seat and area in the corridor's metres (src/app/lab.js)
-// Resolves with true when the player chose to start with recording, once inside the room.
+// Resolves, once the player is inside the room, with whether they chose to start with recording and
+// back(): the way back to the corridor and through door 1 again, for a player who left the room.
 export async function runLobby(room) {
   const scene = $('a-scene');
   // first, before anything waits: a press of the VR button while the clipboard is still being
@@ -198,6 +208,31 @@ export async function runLobby(room) {
   await sheet.back([...cover, { t: LOBBY_T.chooseDoor, role: 'title', gap: 0.04, from: HOOK_READ }]);
   await spoken;
   speak(LOBBY_T.chooseDoor);
+  await throughDoor({ sheet, leaf, light, room, exitOff });
+  // the player can leave the room through the game's menu (src/app/lab.js): back in the corridor at
+  // its start, the room's early-leaving choice on the clipboard (left-early.js), then door 1 again
+  const back = async () => {
+    light.back();
+    door1Shut();
+    $('#rig').setAttribute('locomotion', `${bounds(AREA)}; ${comfort()}`);
+    placePlayer(SPOT, AREA);
+    document.title = LOBBY_T.title;
+    await delay(250);
+    await $('#cam').components.fader.to(0);
+    exitOff.on();
+    const pick = await sheet.interrupt([{ t: APP_T.leftEarly.now, role: 'body' }], [APP_T.leftEarly.again, APP_T.leftEarly.learn]);
+    if (pick === 1) await sheet.next([{ t: APP_T.leftEarly.now, role: 'body' }, { t: room.debrief, role: 'soft', gap: 0.02 }], [APP_T.leftEarly.again]);
+    if (room.real) markReached(room.id);
+    await sheet.resume();
+    await throughDoor({ sheet, leaf, light, room, exitOff });
+  };
+  return { withRecording, back };
+}
+
+const door1Shut = () => { const door = $('#door1'); door.removeAttribute('animation'); door.setAttribute('rotation', '0 0 0'); };
+
+// Door 1 answers the ray, and once pressed opens into the room: the view fades and the player is at the table.
+async function throughDoor({ sheet, leaf, light, room, exitOff }) {
   const door = $('#door1');
   // while the leave question is open the door waits for its answer, and the ray does not mark it
   // (Meta: the ray is off where "it would conflict with another interaction")
@@ -206,13 +241,13 @@ export async function runLobby(room) {
   sheet.el.addEventListener('asking', onAsk);
   document.documentElement.dataset.lobby = 'door';
   await new Promise((resolve) => {
-    const onDoor = () => { if (sheet.isAsking()) return; leaf.removeEventListener('click', onDoor); resolve(); };
+    const onDoor = () => { if (sheet.isAsking() || document.documentElement.dataset.menu) return; leaf.removeEventListener('click', onDoor); resolve(); };
     leaf.addEventListener('click', onDoor);
   });
   sheet.el.removeEventListener('asking', onAsk);
   pressable(leaf, false);
   delete document.documentElement.dataset.lobby;
-  exitOff();   // rooms are left another way (left-early.js)
+  exitOff();   // rooms are left another way: the game's menu (src/app/menu.js)
 
   door.setAttribute('animation', { property: 'rotation', to: '0 95 0', dur: DOOR_MS, easing: 'easeInOutQuad' }); // into the room
   light.peek(DOOR_MS);
@@ -221,9 +256,7 @@ export async function runLobby(room) {
   light.enter();
   $('#rig').removeAttribute('locomotion');   // the room is played where the original was
   placePlayer(room.seat, room.area);
-  door.removeAttribute('animation');
-  door.setAttribute('rotation', '0 0 0');
+  door1Shut();
   await delay(250);
   await $('#cam').components.fader.to(0);
-  return withRecording;
 }

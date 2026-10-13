@@ -51,6 +51,14 @@ export const APP_T = {
     learn: 'Узнать, что это было',
     again: 'Пройти заново'
   },
+  // The game's menu (src/app/menu.js): the Menu button on the left controller, Escape on a computer.
+  menu: {
+    title: 'Меню',
+    resume: 'Продолжить',
+    leaveRoom: 'Выйти из опыта',
+    roomNote: 'Если выйти, этот проход опыта не сохранится. Войти снова можно из коридора.',
+    leaveGame: 'Прекратить участие'
+  },
   understood: 'Понятно',
   repeat: 'Повторить',
   next: 'Дальше',
