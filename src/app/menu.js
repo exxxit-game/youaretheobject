@@ -10,44 +10,25 @@ import { APP_T } from './texts.ru.js';
 // menu", developers.meta.com/horizon/design/controllers/). One menu for the whole game: where the player
 // is says what it holds (lab.js sets it: the corridor, a room), and later items (settings) join the same
 // list, so nothing is rebuilt for them. "Continue" stands first and is what the Menu button again or
-// B / Y does ("Back out, cancel", Meta's default mapping). An item that cannot be undone asks once more,
-// as the corridor's poster does (exit.js: the act first, staying second) and as a confirmation before an
-// action that cannot be undone is usually asked, its answers saying what happens
-// (nngroup.com/articles/confirmation-dialog/); the second press of a hurried double press lands on staying.
-// A pause menu stands in the world where the player looked when it opened, as a panel in front of them. It
-// is drawn as the world is, so the laser and the controllers stay in front of it; nothing may stand between
-// it and the eyes either (a menu drawn over a nearer thing gives the eyes two depths at once: Meta,
-// developers.meta.com/horizon/design/display/), so when a wall or the room's stand is nearer than its
-// distance it comes closer, scaled down with the distance so it looks the same size and its letters keep
-// their angle. While it is open the place holds (place.hold) and nothing else answers the rays.
-// Its distance is our choice, inside the reach Meta gives panels; letters and buttons keep the reading
-// rules of every page in the game at that distance (sheet-math.js: 24 mm at 1 m, buttons 2.5°).
-const DIST = 1.2;            // metres in front of the eyes (our choice)
-const DROP = 0.12;           // its centre this far under the eyes, where a reading panel sits (our choice)
-const W = 0.8, H = 0.6;      // the panel, metres
+// B / Y does ("Back out, cancel", Meta's default mapping).
+// While it is open the world goes dark around it, as Meta's theater mode darkens the surroundings of a
+// panel (developers.meta.com/horizon/design/panels/): the corridor, the room's inside and the clipboard are
+// not drawn (their lights stay, since a hidden light rebuilds every lit material), so no wall, stand or
+// page can stand between it and the eyes, and it stands where Meta puts menus, 1 m away ("1 meter is a
+// comfortable distance for menus", developers.meta.com/horizon/design/display/). The laser and the
+// controllers stay drawn in front of it. The panel takes the rays itself, so nothing behind it answers.
+// An item that cannot be undone asks once more, as the corridor's poster does (exit.js: the act first,
+// staying second), its answers saying what happens (nngroup.com/articles/confirmation-dialog/); its
+// buttons come a second later, so a hurried second press meets nothing (our choice of the delay).
+const DIST = 1.0;            // metres in front of the eyes
+const DROP = 0.1;            // its centre this far under the eyes, where a reading panel sits (our choice)
+const W = 0.8, H = 0.7;      // the panel, metres
 const DENSITY = pxPerM(DIST);
 // the smallest letter at that distance; the menu's own text a size and a half and twice above it, as the
 // lab's wall screen reads larger than its minimum (our choice)
 const LETTER = letterFrom(0.024, DIST);
-const NEAREST = 0.45;        // the closest it comes (our choice: a page held at reading distance)
-const CLEAR = 0.08;          // how far it stays in front of what would stand nearer (our choice)
-
-// How far the panel can stand along the view before something drawn is nearer: rays from the eyes to its
-// middle and four corners at DIST, against everything shown but the player and the menu itself
-const ray = new THREE.Raycaster();
-function freeDistance(scene, head, dirs, skip) {
-  const shown = (o) => { for (let p = o; p; p = p.parent) { if (!p.visible || skip.includes(p)) return false; } return true; };
-  let d = DIST;
-  for (const dir of dirs) {
-    const len = dir.length();
-    ray.set(head, dir.clone().normalize());
-    ray.far = len;
-    const hit = ray.intersectObjects(scene.object3D.children, true).find((h) => h.object.isMesh && shown(h.object));
-    // the corner on this ray stands at len scaled with the panel: it must stay CLEAR in front of the hit
-    if (hit) d = Math.min(d, DIST * (hit.distance - CLEAR) / len);
-  }
-  return Math.max(NEAREST, Math.min(DIST, d));
-}
+const CONFIRM_MS = 1000;
+const DARK = '#corridor, .room-interior, .sheet';   // what is not drawn while the menu is open
 
 export function createMenu(scene) {
   const root = document.createElement('a-entity');
@@ -62,15 +43,19 @@ export function createMenu(scene) {
   let place = null;
   let open = false;
   let waiting = [];   // what the rays could reach before the menu opened, given back when it closes
+  let darkened = [];  // what was drawn before the menu opened, drawn again when it closes
+  let pending = 0;    // a confirmation's buttons on their way: a newer page or closing cancels them
 
   scene.addEventListener('menu-button', () => (open ? close() : show()));
   scene.addEventListener('menu-back', () => { if (open) close(); });
 
-  function page(blocks, labels, onPick) {
+  function page(blocks, labels, onPick, later = 0) {
+    choice.hide();
     const sizes = [Math.round(LETTER * 2 * DENSITY), Math.round(LETTER * 1.5 * DENSITY)];
     const bottom = panelEl.components.panel.write(blocks.map((t, i) => ({ t, size: sizes[i ? 1 : 0], weight: i ? 400 : 600, color: INK,
       gap: Math.round(LETTER * DENSITY) })), { top: true });
-    choice.show(labels, onPick, H / 2 - bottom - 0.04);
+    const n = ++pending;
+    setTimeout(() => { if (open && n === pending) choice.show(labels, onPick, H / 2 - bottom - 0.04); }, later);
   }
 
   function show() {
@@ -82,48 +67,48 @@ export function createMenu(scene) {
     scene.camera.getWorldPosition(head);
     scene.camera.getWorldQuaternion(q);
     const yaw = new THREE.Euler().setFromQuaternion(q, 'YXZ').y;
-    const fwd = new THREE.Vector3(-Math.sin(yaw), 0, -Math.cos(yaw)), right = new THREE.Vector3(Math.cos(yaw), 0, -Math.sin(yaw));
-    const at = (x, y) => fwd.clone().multiplyScalar(DIST).addScaledVector(right, x).add(new THREE.Vector3(0, y - DROP, 0));
-    const skip = [root.object3D, document.querySelector('#rig')?.object3D].filter(Boolean);
-    const d = freeDistance(scene, head, [at(0, 0), at(-W / 2, H / 2), at(W / 2, H / 2), at(-W / 2, -H / 2), at(W / 2, -H / 2)], skip);
-    const k = d / DIST;
-    root.object3D.position.set(head.x + fwd.x * d, head.y - DROP * k, head.z + fwd.z * d);
+    root.object3D.position.set(head.x - Math.sin(yaw) * DIST, head.y - DROP, head.z - Math.cos(yaw) * DIST);
     root.object3D.rotation.set(0, yaw, 0);
-    root.object3D.scale.setScalar(k);
-    root.setAttribute('visible', true);
+    darkened = [...document.querySelectorAll(DARK)].filter((el) => el.object3D.visible);
+    for (const el of darkened) el.object3D.visible = false;
     waiting = [...scene.querySelectorAll('.clickable')].filter((el) => !root.contains(el));
     for (const el of waiting) pressable(el, false);
+    pressable(panelEl, true);
+    root.setAttribute('visible', true);
     place.hold?.(true);
     const items = typeof place.items === 'function' ? place.items() : place.items;
     page([APP_T.menu.title], [APP_T.menu.resume, ...items.map((i) => i.label)], (i) => (i ? choose(items[i - 1]) : close()));
   }
 
-  // an item that asks first: its own yes, then staying (confirm.no)
+  // an item that asks first: its own yes, then staying (confirm.no), a second later
   function choose(item) {
     if (!item.confirm) return run(item);
-    page([APP_T.menu.title, item.confirm.ask], [item.confirm.yes, item.confirm.no], (i) => (i ? close() : run(item)));
+    page([APP_T.menu.title, item.confirm.ask], [item.confirm.yes, item.confirm.no], (i) => (i ? close() : run(item)), CONFIRM_MS);
   }
 
   // the menu shuts and the place goes on as it was
   function close() {
     if (!open) return;
-    choice.hide();
     shut();
+    for (const el of darkened) el.object3D.visible = true;
     for (const el of waiting) if (el.isConnected) pressable(el, true);
-    waiting = [];
+    darkened = []; waiting = [];
     place?.hold?.(false);
   }
 
-  // an item runs: what waited behind the menu is not given back, the item decides what comes next (a room
-  // left is reset, the game ended), so nothing answers in between
+  // an item runs: it takes the world as the menu left it, dark and answering nothing, and the place it goes to
+  // shows and makes pressable what it needs (a room left: the corridor's way back, lobby.js; the game ended)
   async function run(item) {
     shut();
-    waiting = [];
+    darkened = []; waiting = [];
     await item.run();
   }
 
   function shut() {
     open = false;
+    pending++;
+    choice.hide();
+    pressable(panelEl, false);
     root.setAttribute('visible', false);
     delete document.documentElement.dataset.menu;
   }

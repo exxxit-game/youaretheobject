@@ -114,7 +114,7 @@ async function say(text, top = false) {
 
 // Buttons under a text that fills the screen (pages, checks). top: from writeTop.
 function pick(labels, top) {   // shown once the room no longer holds: no button comes up under a menu
-  return flow.within(delay(0).then(() => new Promise((resolve) => lowChoice.show(labels, resolve, top))));
+  const n = flow.id; return flow.within(delay(0), n).then(() => flow.within(new Promise((resolve) => lowChoice.show(labels, resolve, top)), n));
 }
 
 // Shows a question at the top of the screen and returns where the answers may
@@ -286,8 +286,8 @@ function syncSound() { const ctx = getContext(); if (ctx) (heldByMenu || heldByE
 // Whether the player is inside a run, before the truth of its debrief is shown (reveal)
 export const running = () => ['intro', 'run', 'questions'].includes(state) || (state === 'done' && !debriefed);
 
-// The player leaves through the menu, under the fade to black: nothing of this run is sent (results go only at
-// the debrief) and the room stands as before its first entry; the corridor offers what it was (lobby.js).
+// The player leaves through the menu, before the fade to black: before the truth of the debrief nothing of the run
+// is sent (reveal), and the room stands as before its first entry; the corridor offers what it was (lobby.js).
 export function leave() {
   flow.end();
   heldByExit = heldByMenu = false; syncSound(); document.querySelector('#left-early')?.remove();   // sound back; the left-VR box ends with the run

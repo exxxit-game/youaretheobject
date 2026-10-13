@@ -59,8 +59,9 @@ trial-level predictions, not for the end-of-task rating; the depression link did
 | Press outside the window | Logged as "stray", no effect | Instruction: press once, right after yellow |
 | Second press in a window | Logged, no effect | "once and only once" |
 | Headset menu / tab hidden during a trial | Trial voided, tapes not moved, repeated after the player is back and a minimum interval (10 s) | A trial the player could not see is not a trial |
-| The game's menu open (the left controller's Menu button, src/app/menu.js) | The room holds as under the headset's menu: a trial cut by it is voided and repeated the same way; the button does nothing; the voice and sounds pause | The same rule as the headset's menu |
-| Leaving through the menu, at any moment | The run ends: nothing of it is sent, the corridor offers "start again" or "what was it" (the short debrief), and door 101 starts the room again from the instructions with a new condition drawn | Withdrawal at any time is the consent's own promise ("прекратить участие можно в любой момент"); a run cut short is not a run |
+| The game's menu open (the left controller's Menu button, src/app/menu.js) | The room holds as under the headset's menu: a trial cut by it is voided and repeated the same way; the button does nothing; the voice, the sounds and the experimenter's pauses stop. Not changed by it: an interval cut by the menu goes on where it stopped, so the next yellow light can come soon after the menu closes; a green light lit when the menu opened stays lit under it | The same rule as the headset's menu |
+| Leaving through the menu, before the debrief's truth page | Asked once more («Выйти из опыта? Этот проход не сохранится.»); the run ends, nothing of it is sent, the corridor offers "start again" or "what was it" (the short debrief), and door 101 starts the room again from the instructions with a new condition drawn; a second run in the visit is sent as a repeat | Withdrawal at any time is the consent's own promise ("прекратить участие можно в любой момент"); a run cut short is not a run. A selection to keep in mind: only runs that reached the truth page are sent, and nothing records who left in which condition |
+| Leaving through the menu after the truth page | Asked once more («Выйти в коридор? Что ещё осталось в комнате, не покажется.»); the result was sent as the truth page was shown; the corridor asks nothing | The debrief has been given (p. 452) |
 | Press arriving after 3 s | Stray, even if the timer tick is late | The 3 s rule |
 | Certainty scale | 0–100 step 5 | Format not given |
 | Order of the reason choices | Random per player, "other" last; the log keeps the option, not its position | Avoids a first-position advantage |
@@ -70,9 +71,9 @@ trial-level predictions, not for the end-of-task rating; the depression link did
 `idle` (the corridor: welcome, consent) → `intro` (instructions, check; concept with the empty scale, check) → `run` (40 trials, experimenter out)
 → `questions` (experimenter back, concept reread, 4 scales, certainty, evidence, hypotheses, gender, prior knowledge)
 → `done` (reveal: what you did → the truth → original → replication → other players → differences).
-From `intro`, `run` or `questions` the game's menu can take the player out: back to `idle`, the player in the corridor.
+From any state the game's menu can take the player out, back to `idle` in the corridor: before the truth page of `done` as leaving early, after it as the end of the room.
 
-## Data sent (only with consent, only at full speed; the privacy page is privacy.html)
+## Data sent (only with consent, only at full speed, as the debrief's truth page is shown; the privacy page is privacy.html)
 The condition and the whole result of `src/rooms/01-control/report.js` (counts, percentages, actual
 control, heuristics, discrepancies, voided and stray presses, every answer with its shown position),
 plus seated, speed and first/repeat. No raw event times. The server whitelist must list these fields.

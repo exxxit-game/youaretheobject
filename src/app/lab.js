@@ -59,7 +59,7 @@ export function start(room) {
     // is only back to the corridor
     const inRoom = { hold: (on) => room.hold(on), items: () => (room.running()
       ? [{ label: M.leaveRoom, confirm: { ask: M.leaveRoomAsk, yes: M.leaveRoomYes, no: APP_T.leftEarly.back }, run: () => leaveRoom(true) }]
-      : [{ label: M.toCorridor, confirm: { ask: M.toCorridorAsk, yes: M.leaveRoomYes, no: APP_T.leftEarly.back }, run: () => leaveRoom(false) }]) };
+      : [{ label: M.toCorridor, confirm: { ask: M.toCorridorAsk, yes: M.leaveRoomYes, no: M.stay }, run: () => leaveRoom(false) }]) };
     async function leaveRoom(early) {
       menu.set(null);
       room.leave();   // first, under the menu: nothing of the run answers during the fade
