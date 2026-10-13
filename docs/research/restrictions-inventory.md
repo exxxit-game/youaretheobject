@@ -173,7 +173,7 @@ a complaint is no reason for a new guard.
 | 080a485 13.10 09:31 | a report counts only when its marker starts the last block | CodeRabbit on PR 10 |
 | b133a5f 13.10 09:38 | (data side) doors to the database closed; connector read-only user | his decision 13.10 |
 | c61ab96 13.10 13:01 | measure.mjs: review gate, paper gate, worn check | the baseline measure in his headset |
-| ad9744f 13.10 14:37 | merge refusal widened (joined GraphQL options, --input=, REST with a query string, gh alias); GIT_CONFIG_GLOBAL/SYSTEM and a GIT_CONFIG_KEY_0 set through .NET refused | CodeRabbit remarks (10.17, 10.10) |
+| ad9744f 13.10 14:37 | merge refusal widened (joined GraphQL options, --input=, REST with a query string, gh alias); the git config-file variables and a GIT_CONFIG_KEY_0 set through .NET refused | CodeRabbit remarks (10.17, 10.10) |
 | 0a146a6 13.10 14:44 | agent/skill headers read by a YAML parser; comment rule widened to possessives and bare day.month | CodeRabbit (#11, 10.09) |
 | 7d7a87f 13.10 14:26 | start line: answer each CodeRabbit remark naming @coderabbitai | unnamed replies stood two days |
 
