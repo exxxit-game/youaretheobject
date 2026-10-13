@@ -66,10 +66,10 @@ making a WebXR game (A-Frame 1.8.0, no build step) for Meta Quest.
 8. Human + agent: the agent's failure is "looks done" without a check; the cure is checks it runs itself,
    evidence shown, a fresh-context reviewer, one feature at a time, a machine-held list of what passes (Anthropic,
    four pages); people keep taste and design (Anthropic's survey); felt speed misleads (METR); AI amplifies the
-   process it runs in, for better and worse, and seven capabilities decide which (DORA 2025).
+   process it runs in, for better and worse, and seven capabilities amplify its positive impact (DORA 2025).
 
-Not done or unverified (13.10.2026): Chandler's handbook (only the alpha quote); the Sea of Thieves talks and
-Librande's (free on the Vault, not watched); an authoritative bug severity scale (Irish defines class A only);
+Not done or unverified (13.10.2026): Chandler's handbook (only the alpha quote); the two GDC Sea of Thieves
+talks (Masella's, Golding's) and Librande's (free on the Vault, not watched), and Baker's Unreal Fest talk; an authoritative bug severity scale (Irish defines class A only);
 Gregory's 4th edition has no team-structure section (the 3rd edition's Russian translation used). Read since the
 first draft: Owlchemy's talk from its captions, DORA 2025 itself, Irish's handbook (2005).
 
@@ -101,8 +101,9 @@ first draft: Owlchemy's talk from its captions, DORA 2025 itself, Irish's handbo
   the risks to individual owners" (lines 8927–8934); a decision is made by "securing all relevant information,
   asking for recommendations and advice from other stakeholders, setting a deadline before which the decision
   must be made, and then making the decision and announcing it and the reasoning behind it to all who are
-  involved" (p. 3, lines 903–906); "If you change one factor, the others must change as well" (resources, quality, time; p. 80, lines 3930–3931); feature creep is held by a feature request list, each change accepted or rejected, the decision told to
-  everyone and "documented properly" (p. 238, lines 9959–9967); "Cut features early and often." (p. 221, line
+  involved" (p. 3, lines 903–906); "If you change one factor, the others must change as well" (resources,
+  quality, time; p. 80, lines 3931–3932); feature creep is held by a feature request list, each change accepted
+  or rejected, the decision told to everyone and "documented properly" (p. 238, lines 9959–9967); "Cut features early and often." (p. 221, line
   9472). The foreword: "Once any team grows beyond 10 people, our industry accepts that managing this team
   successfully requires the guidance of a producer" (p. iv, lines 79–80); nothing on teams under 10. Holds: the
   risk, decision and change rules; aged: the publisher contracts, the crunch it takes for granted (p. 26).
@@ -186,8 +187,8 @@ first draft: Owlchemy's talk from its captions, DORA 2025 itself, Irish's handbo
   "player behavior fully defined", "enemy/obstacle behavior fully defined", "art direction in place", "all local
   features included", "a touch of variety", "scope of game defined", "basic technology done". Slide 19: cancel if
   the "Team cannot create 'Publishable' First Playable": "Your project will not miraculously get better during
-  Production!" Slide 24, the Macro Game Design is "five pages": character and moveset, level structure, size
-  and count, level contents, overall structure, a macro chart. Slide 15 warns against "'ALPHA = FIRST PLAYABLE'".
+  Production!" Slide 24, the Macro Game Design is "five pages": character and moveset, exotic mechanics, level
+  structure, size and count, level contents, "overarching structure – linear, hub", a macro chart. Slide 15 warns against "'ALPHA = FIRST PLAYABLE'".
 - **Alpha in Chandler's handbook** [read, quote only; the book itself not opened] — Heather Maxwell Chandler,
   *The Game Production Handbook* (the quotes page names no edition: unverified), via
   https://www.goodreads.com/work/quotes/22237702: "Alpha: At this milestone, key gameplay functionality is
@@ -229,7 +230,7 @@ first draft: Owlchemy's talk from its captions, DORA 2025 itself, Irish's handbo
   guide met, most testers get through alone, target frame rate in most measured places), gold (all testers alone,
   target frame rate in every measured place, no serious defect open).
 
-- **An engine vendor's stage model for small teams** [read] — Unity Learn, "Game development in a nutshell",
+- **An engine vendor's stage model for games for impact (smaller projects named in passing)** [read] — Unity Learn, "Game development in a nutshell",
   tutorial "Production and Post-release",
   https://learn.unity.com/course/game-development-in-a-nutshell/tutorial/production-and-post-release (undated;
   the course's stages: ideation and pre-production, production, post-release). End of pre-production: "In

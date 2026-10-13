@@ -77,9 +77,9 @@ Third file of docs/research/studio-process.md (the question, the marks and the i
   Ben Hopkins (principal graphics engineer, Owlchemy Labs), "Building Big Games on Little Headsets", GDC 2023,
   Future Realities Summit, https://gdcvault.com/play/1029093/Future-Realities-Summit-Building-Big (tagged "free
   content"; its captions saved by tools/gdc-captions.mjs: objekt-files/notes/gdc-talks/2023-owlchemy-building-big-
-  games.txt). The Vault's overview names only SplatTech, but the talk's first half, 01:00–03:00, is the A/B test
-  framework: RenderDoc's timings "are all relative", so they "use Meta's metric API to get the GPU time" and run
-  tests "deterministically on device. For this, we disable head tracking and Fixed Foveated Rendering, and we make
+  games.txt). The Vault's overview names only SplatTech, but the talk's first half, "some of our custom optimization
+  tooling and some bite size tricks" (00:00), opens with the A/B test framework (01:00–03:00): RenderDoc's
+  timings "are all relative", so they "use Meta's metric API to get the GPU time" and run tests "deterministically on device. For this, we disable head tracking and Fixed Foveated Rendering, and we make
   sure that every test is duplicated, other than the things that we're actually trying to get timing for"; "Every
   frame, we record the GPU time, we calculate the average, store the results in a JSON file". Takeaways (30:00):
   "use methodical deterministic testing to keep yourself honest"; "if the tools you need don't exist, write

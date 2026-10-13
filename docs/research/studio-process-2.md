@@ -132,17 +132,17 @@ Second file of docs/research/studio-process.md (the question, the marks and the 
 - **AI as an amplifier of the team's own practice** [read] — DORA (Google Cloud), "State of AI-assisted Software
   Development 2025", v. 2025.2 (no date printed; the PDF's creation date 15 Oct 2025), CC BY-NC-SA 4.0; saved:
   objekt-files/papers/dora-2025.txt (lines given). Method and limits: a survey of "4,867 respondents" run
-  "between June 13 and July 21, 2025" (lines 73, 4379–4382), 78 interviews (76 in the U.S.); "we interpret our
+  "between June 13 and July 21, 2025" (lines 74, 4379–4382), 78 interviews (76 in the U.S.); "we interpret our
   results as principled comparisons, acknowledging the limitations of observational data" (5443–5446); firms of
   1–10 people are 5.3% of the sample, the self-employed 1.6% (4696–4698); nothing on solo developers or two-person
   teams. Findings: "AI's primary role in software development is that of an amplifier. It magnifies the strengths
-  of high-performing organizations and the dysfunctions of struggling ones." (62–66); "AI adoption now improves
+  of high-performing organizations and the dysfunctions of struggling ones." (62–67); "AI adoption now improves
   software delivery throughput... However, it still increases delivery instability." (77–81); 90% use AI at work
   (1061–1064), but 61% "'never'" use it in an agentic mode (1350–1354); the 2024 figures, now read in this report:
   "an estimated 1.5% reduction in software delivery throughput and an estimated 7.2% increase in software delivery
   instability for every 25% increase in AI adoption" (1605–1609). On checking: "This 'trust but verify' approach
   is a sign of mature adoption." (141–143); "whether code is created by hand or by AI, the same automated testing
-  and deployment processes are applied" (3224–3229); "As developers delegate more work to AI tools, tasks like
+  and deployment processes are applied" (3223–3229); "As developers delegate more work to AI tools, tasks like
   verification, orchestration, and workflow design become more central." (3764–3767).
   The DORA AI Capabilities Model: seven capabilities, chosen from "15 candidate capabilities", that "amplified" the
   difference AI made (2342–2351); the report gives bands (small, medium, large), no effect sizes:
@@ -153,8 +153,8 @@ Second file of docs/research/studio-process.md (the question, the marks and the 
      systems"; amplifies individual effectiveness and "code quality" (2522–2541).
   4. Strong version control practices: "in the presence of frequent commits, AI's positive influence on individual
      effectiveness is amplified"; "in the presence of more frequent rollbacks, AI's positive influence on team
-     performance is amplified" (2583–2592); "The ability to undo changes swiftly and without fuss is not just a
-     convenience; it's a critical enabler of speed and resilience" (2602–2606).
+     performance is amplified" (2589–2601); "The ability to undo changes swiftly and without fuss is not just a
+     convenience; it's a critical enabler of speed and resilience" (2603–2607).
   5. Working in small batches: "product performance is amplified", friction falls, but "benefits for individual
      effectiveness are slightly reduced" (2650–2668); "it is harder to review larger batches of code" (2623–2624).
   6. User-centric focus: "in the absence of a user-centric focus, AI adoption has a negative impact on team
