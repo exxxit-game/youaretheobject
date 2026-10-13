@@ -19,10 +19,15 @@
 // ?multiview=0 turns it off, so the headset's measure can compare (tools/quest-look.mjs perf).
 const MULTIVIEW = new URLSearchParams(globalThis.location?.search || '').get('multiview') !== '0';
 const LASER = 'raycaster="objects: .clickable; far: 8; lineColor: #f0c96a; lineOpacity: .6" grab-press controller-batch laser-beam';
+// A-Frame's inspector, which every scene gets, loads from unpkg.com on Ctrl+Alt+I, on a link with
+// ?inspector=1 or on a message from another page, so another site's code could run inside the game;
+// its README sets "local, development, or custom builds" with inspector="url: ...": our copy of its
+// npm 1.8.0 build (the owner's word of 13.10: nothing from other sites; tests/vendor.test.mjs)
+const INSPECTOR = 'vendor/aframe-inspector/aframe-inspector-1.8.0.min.js';
 
 // inside: the markup of the places, put in before the scene loads, so their static parts are merged
 // and their tiles laid with everything else
-export const stageHTML = (inside) => `<a-scene prewarm="show: .room-interior" renderer="antialias: true; colorManagement: true; foveationLevel: 0; multiviewStereo: ${MULTIVIEW}" background="color: #0b0b0d"
+export const stageHTML = (inside) => `<a-scene inspector="url: ${INSPECTOR}" prewarm="show: .room-interior" renderer="antialias: true; colorManagement: true; foveationLevel: 0; multiviewStereo: ${MULTIVIEW}" background="color: #0b0b0d"
          cursor="rayOrigin: mouse" raycaster="objects: .clickable; far: 8"
          vr-mode-ui="enabled: true" loading-screen="enabled: false" xr-mode-ui="enabled: true">
   <a-entity id="rig" position="0 0 0" recenter>

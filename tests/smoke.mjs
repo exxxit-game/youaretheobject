@@ -8,6 +8,7 @@ import { chromium } from 'playwright';
 import { startServer } from './static-server.mjs';
 import { nearFaces } from './near-faces.mjs';
 import { playVR } from './smoke-vr.mjs';
+import { watchOutside } from './outside.mjs';
 import { WALLS, CEIL } from '../src/app/lobby/scene.js';
 import { BOOTH, DOORWAY } from '../src/rooms/01-control/scene.js';
 import { ROOM1_DOOR, roomPlace, toCorridor, areaToCorridor } from '../src/app/lobby/plan.js';
@@ -34,6 +35,7 @@ async function playRoom(url, playtest, { leave = false } = {}) {
   const errors = [];
   page.on('pageerror', (e) => errors.push(e.message));
   page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
+  const outside = watchOutside(page, url);
 
   const waitState = (s, timeout = 60000) =>
     page.waitForFunction((x) => document.documentElement.dataset.roomState === x, s, { timeout });
@@ -217,6 +219,7 @@ async function playRoom(url, playtest, { leave = false } = {}) {
       await pick(0);
       await page.waitForFunction(() => document.documentElement.dataset.left === '1' && document.querySelector('#hint.show'), null, { timeout: 30000 });
       assert.deepEqual(errors, [], `page errors: ${errors.join(' | ')}`);
+      assert.deepEqual(outside, [], `the game asked other sites: ${outside.join(' | ')}`);
       return;
     }
     if (!playtest) await exitThenStay();   // the clipboard waits on its hook to be taken
@@ -342,6 +345,7 @@ async function playRoom(url, playtest, { leave = false } = {}) {
     }
     await waitState('intro');
     assert.deepEqual(errors, [], `page errors: ${errors.join(' | ')}`);
+    assert.deepEqual(outside, [], `the game asked other sites: ${outside.join(' | ')}`);
   } finally {
     await page.close();
   }

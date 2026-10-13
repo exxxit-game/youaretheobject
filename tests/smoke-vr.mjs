@@ -8,6 +8,7 @@
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { drawCalls, FRAME_BUDGET, QUEST2_FRAME } from './draw-calls.mjs';
+import { watchOutside, watchAll } from './outside.mjs';
 
 const IWER = createRequire(import.meta.url).resolve('iwer/build/iwer.min.js');
 // Each eye sees what a Quest 3 eye sees, 110 degrees across and 96 down (Meta, "Compare headsets":
@@ -44,6 +45,7 @@ export async function playVR(browser, url, { corridor, room }) {
   const errors = [];
   page.on('pageerror', (e) => errors.push(e.message));
   page.on('console', (m) => { if (m.type() === 'error') errors.push(m.text()); });
+  const outside = watchOutside(page, url), asked = watchAll(page);
   const frames = (n) => page.evaluate((k) => new Promise((done) => { const next = () => (k-- > 0 ? requestAnimationFrame(next) : done()); next(); }), n);
   const pick = async (i) => {
     await page.waitForFunction((n) => [...document.querySelectorAll('.answer')].some((e) => +e.dataset.index === n && e.dataset.ready), i, { timeout: 30000 });
@@ -118,6 +120,9 @@ export async function playVR(browser, url, { corridor, room }) {
     const roomCalls = await page.evaluate(drawCalls, room);
     assert.ok(roomCalls.calls < FRAME_BUDGET.room, `the room's worst view draws ${roomCalls.calls} calls a frame in VR (${JSON.stringify(roomCalls)}), held under ${FRAME_BUDGET.room}`);
     assert.deepEqual(errors, [], `page errors in VR: ${errors.join(' | ')}`);
+    // the emulated Quest 3's controllers took their model from the game itself, and nothing came from elsewhere
+    assert.ok(asked.some((u) => u.includes('/vendor/aframe-assets/controllers/meta/quest-touch-plus-')), `the controllers' model was not taken from vendor/aframe-assets: ${asked.filter((u) => u.includes('controllers')).join(' | ') || 'no model asked for'}`);
+    assert.deepEqual(outside, [], `the game asked other sites in VR: ${outside.join(' | ')}`);
     return `draw calls a frame in VR, both eyes, worst view: corridor ${corridorCalls.calls}, room ${roomCalls.calls} (held under ${FRAME_BUDGET.corridor} and ${FRAME_BUDGET.room}; Quest 2 needs under ${QUEST2_FRAME}); the clipboard taken with the trigger`;
   } finally {
     await page.close();
