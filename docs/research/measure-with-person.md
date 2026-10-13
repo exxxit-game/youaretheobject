@@ -86,8 +86,8 @@ Pages read with `metavr docs fetch` on 14.10.2026 unless marked.
 ## The plan for the redo of tools/measure.mjs (14.10, before any code; for the practice review)
 
 What failed on 13.10 (docs/owner-decisions-history-2.md, the fourth window): each step showed 8 s and hid, he
-stood still at spots, did not understand what to do («Я не понял, что надо делать»), and went into room 101 before
-the step asked; he called it «хуйня тупая». Still spots are what the stand measures (tools/stand-measure.mjs).
+stood still at spots, did not understand what to do (his words: he did not understand what was to be done), and went
+into room 101 before the step asked; he called measuring this way pointless (all his words: the history file, «On leaving room 101»). Still spots are what the stand measures (tools/stand-measure.mjs).
 
 The pattern, in three lines:
 - Meta's performance check is a person using the app as a player would, the frame log read for long stretches
@@ -96,15 +96,15 @@ The pattern, in three lines:
   tester may take the headset off at any time (findings 4 and 5).
 - His decision of 13.10: with him only what needs him, the head, the hands and how it feels; the rest on the stand.
 
-What he does: one walk, about 5 minutes, told before in the chat and in the headset («одна прогулка, около
-5 минут; стоять не нужно, играйте как обычно»). Each step's text stays in view until the game shows it is done,
+What he does: one walk, about 5 minutes, told before in the chat and in the headset (one walk, about
+5 minutes, no standing still, play as usual). Each step's text stays in view until the game shows it is done,
 then the next one replaces it with a short vibration:
 1. The corridor's start as a player: sign, clipboard, consent, up to the doors (done: the doors are offered).
 2. Look around the corridor, turning the head as quickly as is comfortable, then move with the sticks: a few
    teleports and turns (done: three moves of the player, locomotion's 'player-moved').
 3. Press door 101 and go in (done: the room's procedure has begun).
 4. Play the trials as usual for about a minute (done: 60 s into the trials).
-5. ≡ on the left controller, «Выйти из опыта», confirm (done: back in the corridor).
+5. ≡ on the left controller, leave the experiment, confirm (done: back in the corridor).
 Then in the chat, two questions (Meta's guide: one or two, soon after): was anything unpleasant, and where did
 it jerk, if anywhere.
 
@@ -113,4 +113,4 @@ headset's clock), its length, the place (as now), the head's turning speed at th
 was aiming, moving, or had the menu open; the GPU's stages once a second for the whole walk (one
 ovrgpuprofiler run); heat and memory at the start and the end; when each step's text was shown and removed, so
 a late frame can be set against it. No OVR Metrics overlay and no Perfetto trace during the walk: both cost
-frames, and the 13.10 overlay's dips are still unexplained (docs/board.md, «Исходная мерка»).
+frames, and the 13.10 overlay's dips are still unexplained (docs/board.md, the baseline's line).
