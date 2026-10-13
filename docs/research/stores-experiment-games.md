@@ -161,3 +161,40 @@ through ("experiment" alone gave 99, mostly ContentsDa school science labs).
   Perspectives on Bias (workplace empathy video); Augmented Life Suite / Experience (tools for therapists);
   Placebo communicatie (Dutch: practice for clinicians in placebo/nocebo communication); cognitive-training apps
   (NEUROFY, Oroi Cognitive, Cognitive Assessment, Mastermind Cognitive Training, We Train Your Brain).
+- HURRAH, more (14.10.2026): the research group page (https://www.helsinki.fi/en/researchgroups/equality-through-research-and-art-in-vr/our-research
+  [read]) describes the ERA-VR group's aims ("identity and inequality in virtual environments") but names no HURRAH
+  experience, no re-created experiment and no debrief. What each HURRAH encounter does: unverified.
+- LIMINAL's "lab experiments", more: a web search found no official description of what they are; unverified.
+
+### 4. SideQuest
+
+Method (14.10.2026): SideQuest's own search API `https://api.sidequestvr.com/v2/apps?search=<term>&limit=40`, 35
+terms: psychology, psychological experiment, experiment, social experiment, cognitive bias, illusion, perception,
+Milgram, Asch, rubber hand, change blindness, placebo, conformity, obedience, bystander, self-knowledge, know
+yourself, brain test, cognitive, neuroscience, research study, study, science, citizen science, test subject, bias,
+personality, embodiment, body ownership, full body illusion, presence, stroop, reaction time, memory test, decision.
+The search is fuzzy (40 results for "Milgram", none about Milgram). 984 unique apps; the 152 whose name or summary
+holds psycholog-, experiment, study, research, university, illusion, bias, participant, thesis, perception, embodi-,
+ownership, cognitive, neuroscien- or self-knowledge were read [seen: API summaries].
+
+- No app re-creating a named psychology experiment for the public with a reveal.
+- Remote university studies, the player a participant [seen]: "Comfortable spaces in VR (University Experiment)"
+  (6 Apr 2020, 138 downloads, "Experiment is now over"); "Hand-tracking interactions (University experiment)"
+  (2083 dl); "Hand Guidance Experiment" ("A remote experiment by University of Copenhagen", 2021); a Brown
+  University group "conducting an experiment on how people move in VR" with an Amazon gift card (2020, 2058 dl);
+  "Research Study in VR" (2021, 802 dl); "Whac-A-Mole Research Game" ("win $100!", 2022); "VR_Experiment" ("A
+  scientific Experiment about cognitive performance from the University of Goettingen", 17 Nov 2023, 111 dl); "VR
+  Work Study" (University of Notre Dame "through Prolific", 2024); "VR Body Experiment" ("Experiment on the
+  perception of avatars and movements in VR", 19 Aug 2024, 1273 dl); "SDP Study 2 - Passthrough Camera Effects"
+  (2025, 14102 dl). These are new studies run on volunteers, mostly HCI; no reveal promised.
+- "VPRL Presents Life and Death Moral Dilemmas" (16 Jul 2021, 546 dl) [seen]: "An academic research project that
+  studies decision making in life-and-death moral dilemmas". A research app on moral dilemmas; the player a
+  participant; reveal unverified.
+- "High school - the world of sight" (ContentsDa, 17 Jan 2025, 12 dl) [seen]: "Experience different optical
+  illusions in virtual reality and learn how they work". The player undergoes illusions and is told how they work:
+  the reveal pattern, for textbook illusions, not published experiments with results; school content.
+- "Lost in Place" (2 Feb 2022, 937 dl) [seen]: "Dear Volunteer ... We'll be testing your cognitive and motor
+  functions": a fictional framing in a game.
+- Clinical or training tools [seen]: VREW Psychology - Phobias, PsyTech VR (for clinicians), Enhance VR (106482 dl,
+  brain training "designed by neuroscientists"), Upgrade VR, cognitive-rehabilitation games; dyslexia-empathy
+  pieces ("The Magic Potion. In the shoes of dyslexic students", 2024).
