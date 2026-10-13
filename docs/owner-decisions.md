@@ -53,12 +53,14 @@ enough. A new decision: its line here, the rest there. A risk list or a general 
 - An object: many pictures of the real thing from every side (shops' product photos), then how it is made, then the build («это можно как правило поставить» 11.10).
 - Rooms are faithful re-creations of published experiments, no invented mechanics; our own new experiments too, live, on the closest studies, he picks from the candidates in docs/research/own-experiments-now.md («мы можем ставить свои эксперименты» 9.10).
 - The whole before a part, each step weighed, not the simplest («весь мотор пересобирать» 10.10).
+- The projector's film in the style of Moderat's "Bad Kingdom" video («У Moderat Bad Kingdom офигенный стиль клипа. Мы возьмем такой.» 13.10; its picture, no music).
 - The corridor's start: a small projector the player switches on himself; a screen pulled down over the notice board rolls up when the film ends and shows the clipboard, the notice and the exit poster («Шикарная идея… Отличная идея» 12.10); the film can be skipped («Тот, кто захочет, ее пропустит» 12.10); the exit poster under the screen for the film is fine, taking the headset off always leaves («А мы выход не прячем… это не страшно» 12.10); maximum comfort, no extra actions («максимальный комфорт без лишних действий» 12.10).
 - No light from nowhere: the scene's lights, fixed once for the whole corridor («проблема решается глобально» 9.10).
 - Guy Ritchie's "Revolver", not Portal: replayed to be understood, built detail by detail («деталька за деталькой» 9.10); Portal's humour all the same («без юмора ты там просто как лабораторная крыса» 10.10).
 - Readability beats period look («Читаемость» 8.10); pictures before the game (8.10); beauty within the weakest headset's budget («максимум красоты, ну не в нагрузку» 9.10).
 - Looks rise later, one thing at a time; now the build method and the frame budget («а поднять потом качество в максимум… думаю норм» 10.10).
 - What is left to imagination goes to him as real options («Есть несколько вариантов, и я выбираю» 9.10).
+- When the headset is needed, I say so at once and he connects it at once («если надо всегда проверить очки, я сразу же их подключу, ты просто скажи… Сразу же говори» 13.10).
 - In the headset every step he is to do goes inside it (quest-look.mjs say), never only the chat («а ты мне говорил в очках» 10.10); he puts it on only when asked («если ты не попросил, я в них сидеть не буду» 11.10).
 - New numbers and conclusions reach him only on a fact-checked page; in the chat a link and one line («Делай» 10.10).
 - The fact-check is always two runs that do not see each other, on a new page and on its edits alike («Всегда две проверки, как сейчас» 12.10).
