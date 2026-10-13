@@ -60,13 +60,17 @@ export function verdicts(samples, marks) {
 // The long run read minute by minute from its samples: the rate in each minute (VRC.Quest.Performance.1: never below
 // 60 fps for long), late frames, whether the session stayed visible and the override on, the heat's course (the
 // first throttling threshold of his Quest 3 is the virtual surface sensor's 48 °C: long-measure.md), the GPU's clocks
-// and the page's memory (the browser's largest sandboxed process: the page's, by the trial's 64 MiB proof).
+// and the memory of each of the browser's sandboxed processes by its pid.
 export function longSummary(rows) {
   const minutes = new Map();
   for (const x of rows) { const m = Math.floor((x.s - x.dt / 2) / 60); const a = minutes.get(m) || { frames: 0, t: 0, late: 0 }; a.frames += x.page.frames; a.t += x.dt; a.late += x.page.late; minutes.set(m, a); }
   const perMinute = [...minutes.entries()].map(([m, a]) => ({ m, fps: Number((a.frames / a.t).toFixed(1)), late: a.late }));
   const heat = rows.filter((x) => x.thermal).map((x) => ({ s: x.s, status: x.thermal.status, surface: x.thermal.current['surf-virt-usr'] ?? null, soc: x.thermal.current['soc-usr'] ?? null, battery: x.thermal.battery, level: x.thermal.level }));
-  const pages = rows.filter((x) => x.pss).map((x) => ({ s: x.s, pageKb: Math.max(...Object.values(x.pss)) }));
+  // each of the browser's sandboxed processes by its pid, first and last: the largest is not always the same one
+  // (the first long run: the largest changed five times), and which is the page is proven only by an allocation
+  const byPid = {};
+  for (const x of rows.filter((r) => r.pss)) for (const [pid, kb] of Object.entries(x.pss)) (byPid[pid] ||= []).push([x.s, kb]);
+  const pages = Object.entries(byPid).map(([pid, v]) => ({ pid, firstKb: v[0][1], lastKb: v.at(-1)[1], maxKb: Math.max(...v.map((p) => p[1])), samples: v.length }));
   return {
     perMinute, minFps: perMinute.length ? Math.min(...perMinute.map((p) => p.fps)) : null,
     minutesUnder60: perMinute.filter((p) => p.fps < 60).length, lateFrames: rows.reduce((a, x) => a + x.page.late, 0),

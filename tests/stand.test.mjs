@@ -49,7 +49,8 @@ const long = longSummary(rows);
 assert.deepEqual(long.perMinute.map((p) => p.fps), [90, 54, 90], 'the rate of each minute from its samples');
 assert.equal(long.minutesUnder60, 1);
 assert.equal(long.stayedVisible, true);
-assert.deepEqual(long.memory, [{ s: 40, pageKb: 285000 }], 'the page\'s memory is the largest sandboxed process');
+assert.deepEqual(long.memory, [{ pid: '11665', firstKb: 200000, lastKb: 200000, maxKb: 200000, samples: 1 }, { pid: '11822', firstKb: 285000, lastKb: 285000, maxKb: 285000, samples: 1 }],
+  'each sandboxed process by its own pid, never the largest of the moment');
 assert.equal(long.heat.length, 6);
 const lost = longSummary(rows.map((x, i) => (i === 7 ? { ...x, prox: 'DISABLED', page: { ...x.page, visibility: 'hidden' } } : x)));
 assert.equal(lost.stayedVisible, false); assert.deepEqual(lost.notVisibleAt, [80]); assert.equal(lost.stayedAwake, false);

@@ -76,18 +76,27 @@ Raw files: objekt-files/notes/headset/perf-2026-10-13/. Two fact-checks of 13.10
   headset.
 
 ## The long run on the stand (13.10, 19:48 to 20:33 Kyiv time)
-`node tools/stand-measure.mjs long` after its trial proved each tool on a known change (docs/research/long-measure.md,
-"The trial"). His Quest 3 unworn on the floor, lit, on the laptop's USB cable, Meta's proximity override on; the game
-from the laptop at commit ee618fd, in the corridor at its start, the view turned 45° a minute, OVR Metrics' HUD off.
-Raw log and dumps: objekt-files/notes/headset/stand-long-2026-10-13T16-48-01/ (summary.json made from log.jsonl).
-- 45.2 minutes; 90 fps in every minute in play (89.6 in the first, with 16 of the run's 44 late frames: the start);
-  never below Meta's 60 (VRC.Quest.Performance.1) while the game was shown.
-- 18 to 22 minutes: the power cut of his outage schedule (DTEK, 20:00 to 22:00) left the room dark; the headset lost its
-  place, the session went "hidden" from 1074.6 s to 1300.4 s and the game drew nothing; it came back at 90 fps by
-  itself once there was light. Under Meta's rule a system overlay is no frame drop of the app.
-- Heat flat: the virtual surface sensor 37.2 to 38.9 °C (its first throttling threshold 48.0), the SoC up to 58.5 °C
-  (89), the battery up to 42 °C (58); thermal status 0 throughout. The GPU at 456, 492 and 545 MHz by the system's choice.
-- GPU resources the same at the start and the end (257 geometries, 40 textures, 53 programs): nothing piles up in
-  the corridor over 45 minutes. The page's process 198 068 kB at the start, 208 385 kB at the end, 222 325 kB at most.
-- Battery 95 % to 69 % while charging from the laptop's USB.
+`node tools/stand-measure.mjs long` after its trial proved four tools on a known change each (frames, draw calls,
+late frames, the page's memory; docs/research/long-measure.md, "The trial"; heat, battery and the GPU clock had no
+such proof). His Quest 3 unworn, on the laptop's USB cable, Meta's proximity override on; the room lit for the first
+17 minutes, then dark nearly to the end by his messages (20:05 the room fully dark, 20:24 no light, 20:31 the light
+coming back soon); the game from the laptop at commit ee618fd, in the corridor at its start, the view turned 45° about every
+64 s in place, OVR Metrics' HUD off. Raw log and dumps: objekt-files/notes/headset/stand-long-2026-10-13T16-48-01/.
+Two fact-checks of the first account corrected the light, the memory, the fan and the charging.
+- 45.2 minutes; 90 fps in every minute in play (89.6 in the first, 89.9 in two others); never below Meta's 60
+  (VRC.Quest.Performance.1) while the game was shown. Late frames: 41 in play, 16 of them in the first minute (the
+  start), and 3 more in the sample where the game came back.
+- 1074.6 s to 1300.4 s: the session "hidden" and the game drew nothing, starting about half a minute after the room
+  went dark; the cause is not in the record (likely the headset lost its place). It came back by itself and ran the
+  remaining 23 minutes at 90 fps in the dark, tracking mode unknown. After it recenter.js placed the player again (the
+  view's turn back to its start). Under Meta's rule a system overlay is no frame drop of the app.
+- Heat flat: the virtual surface sensor surf-virt-usr 37.2 to 38.9 °C, the SoC (soc-usr) up to 58.5 °C, against the
+  first entries of their own threshold tables, 48.0 and 89.0 (that these are the first throttling steps: the slot order
+  is our reading, unverified); thermal status 0 in all 87 dumps; the fan (pwm-tach-fan0) at step 1 throughout. The
+  battery service's temperature up to 42 °C (its HAL sensor has no thresholds). The GPU at 456, 492 and 545 MHz.
+- GPU resources the same at the start and the end (257 geometries, 40 textures, 53 programs). The browser's foreground
+  sandboxed process (pid 7498, the game's) 169 360 kB to 208 385 kB, at most 222 325 kB (kB as dumpsys prints them,
+  1024 bytes): growing about 39 MB over 45 minutes while the GPU counts stayed flat, to be found; another sandboxed
+  process stayed at 198 068 to 198 968 kB.
+- Battery 95 % to 69 % on the cable: the charger read weak (900 mA at 5 V) and the battery discharging most of the run.
 - Not in it: room 101, the corridor's flow (the sign, the clipboard, the doors), a person's moves, a Quest 2.
