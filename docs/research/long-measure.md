@@ -139,6 +139,6 @@ His Quest 3 unworn on the stand, Meta's proximity override on, 2.09 minutes in V
   sources, not one sensor; both kept, neither the other's check.
 Found by the way: the first 10 s in VR held 20 late frames, the worst 53.6 ms, while the reflections take their
 pictures (with the 100 extra renders above): the stutter on entering VR that check E foresaw (shelf 3).
-Setup learned: in a dark room, lying on a blanket, the headset lost tracking ("Поиск местоположения в комнате"), so
+Setup learned: in a dark room, lying on a blanket, the headset lost tracking (its notice "finding your position in the room"), so
 VR was held; lit and facing the room it tracked. Something close in front of the lenses reads as worn: the tool then
 refuses, as it must.
