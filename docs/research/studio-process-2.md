@@ -198,5 +198,6 @@ cover.
 - Documentation: the agent, in the same commit as the change (Google's rule; today held only in part); the
   owner's own words kept as he
   said them (docs/owner-decisions.md).
-- What neither can cover: art made by hand by a skilled artist, voice actors. These are bought in or designed around (Cubism's minimal look).
+- Art: the agent, with the owner's photos and taste; voices and sounds: ElevenLabs (tools/make-voice.mjs,
+  tools/make-sounds.mjs), paid for and used to the full (his words of 13.10 in docs/owner-decisions-history-2.md). These are bought in or designed around (Cubism's minimal look).
 
