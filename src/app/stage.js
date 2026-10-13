@@ -29,7 +29,7 @@ const INSPECTOR = 'vendor/aframe-inspector/aframe-inspector-1.8.0.min.js';
 // and their tiles laid with everything else
 export const stageHTML = (inside) => `<a-scene inspector="url: ${INSPECTOR}" prewarm="show: .room-interior" renderer="antialias: true; colorManagement: true; foveationLevel: 0; multiviewStereo: ${MULTIVIEW}" background="color: #0b0b0d"
          cursor="rayOrigin: mouse" raycaster="objects: .clickable; far: 8"
-         vr-mode-ui="enabled: true" loading-screen="enabled: false" xr-mode-ui="enabled: true">
+         loading-screen="enabled: false" xr-mode-ui="enabled: true">
   <a-entity id="rig" position="0 0 0" recenter>
     <a-entity id="cam" camera fader look-controls="pointerLockEnabled: false" wasd-controls="acceleration: 12" position="0 1.6 0" room-bounds></a-entity>
     <a-entity laser-controls="hand: left" ${LASER}></a-entity>
