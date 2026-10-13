@@ -38,7 +38,7 @@
   game from GitHub): `node tools/publish-preview.mjs` before he looks; it sends no results (it still asks the live average: a fix on the shelf-2 list). From 9.10 the
   headset stays on the laptop's USB cable (his choice); it charges slowly and power is cut daily: wake it
   only to check, end with `quest-look.mjs sleep`, push work often. I check in the headset myself:
-  `tools/quest-look.mjs` (open [local port], reload, vr, frame, eval, sleep); opening 8.10: sign +10 s, 90 fps (no saved log: re-measure with a log, plan step 4.3).
+  `tools/quest-look.mjs` (open [local port], reload, vr, frame, eval, sleep); opening 8.10: sign +10 s, 90 fps; the measured baseline of 13.10 (each place, heat, memory, loading): docs/baseline.md.
 - Voice: ElevenLabs key in ~/.elevenlabs-key.txt; Daniel, eleven_v3; `tools/make-voice.mjs`, `tools/check-voice.mjs`.
 
 ## Skills and tools, and when to use them
