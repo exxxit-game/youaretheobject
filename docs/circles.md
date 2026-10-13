@@ -90,6 +90,8 @@ closed when what breaks it is in place; it stays here, marked, as the memory of 
   menu with the way out of room 101 (14.10, «Работает»).
 - Why us: I apply a check rule wider than its words (a page, then a draft, then a search), and each of his side
   remarks becomes a search, a page and checks.
+- His reading (14.10, history file): calling a thing small does not make its errors fewer; the small thing, gone round
+  for hours, grows huge. So the cost of a step is measured (tools/usage.mjs), not judged by how small it looks.
 - Breaks it: his word of 14.10 (a plain search goes to him unchecked); a side remark gets one line on the board and,
   if he asks for a search, its answer in the chat, not a page.
 
