@@ -294,7 +294,8 @@ assert.ok(!author || author.endsWith('@users.noreply.github.com'), `git commits 
     'APP_ID', 'APP_SECRET', 'WEBHOOK_SECRET_KEY', 'NAME_OF_SECRET', 'SUPABASE_SECRET_KEYS', 'GITHUB_TOKEN',   // Meta's, Paddle's, Supabase's and GitHub's names, quoted in docs/research/data-purchases.md
     'SUPABASE_ACCESS_TOKEN', 'SUPABASE_DB_URL',   // Supabase's, quoted in docs/research/data-architectures.md
     'COMPOSITOR_SKIP_RENDERING', 'ENABLE_CSV', 'DISABLE_CSV', 'ENABLE_STAT', 'LOG_STATE', 'GET_PROPERTY', 'SET_PROPERTY',
-    'SET_PROXIMITY_CLOSE', 'DURATION_MS', 'HZDB_MQST_PIN', 'SESSION_ID'];   // Meta's and metavr's names, quoted in docs/research/long-measure.md
+    'SET_PROXIMITY_CLOSE', 'DURATION_MS', 'HZDB_MQST_PIN', 'SESSION_ID',   // Meta's and metavr's names, quoted in docs/research/long-measure.md
+    'PROJECT_CLAUDE'];   // the file IWSDK's agent tooling generates, quoted in docs/research/ai-and-vr.md
   const ours = new Set([...walk(path.join(ROOT, 'src')), ...walk(path.join(ROOT, 'tools')), ...walk(path.join(ROOT, 'tests')), path.join(ROOT, 'index.html')]
     .filter((f) => /\.(m?js|html)$/.test(f)).flatMap((f) => fs.readFileSync(f, 'utf8').match(/\b[A-Za-z_][A-Za-z0-9_]*\b/g) || []));
   const docsToCheck = [path.join(ROOT, 'CLAUDE.md'), path.join(ROOT, 'ARCHITECTURE.md'), ...walk(path.join(ROOT, 'docs'))]
