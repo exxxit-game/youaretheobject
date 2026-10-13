@@ -67,6 +67,7 @@ export function start(room) {
       menu.set(null);
       room.leave();   // first, under the menu: nothing of the run answers during the fade
       await scene.querySelector('#cam').components.fader.to(1);
+      menu.unveil();   // under black: the world as it was, for the corridor's way back to set
       menu.set(corridor);
       await back(early);
       menu.set(inRoom);

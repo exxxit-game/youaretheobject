@@ -92,17 +92,20 @@ export function createMenu(scene) {
   function close() {
     if (!open) return;
     shut();
-    for (const el of darkened) el.object3D.visible = true;
-    darkened = [];
+    unveil();
     place?.hold?.(false);
   }
 
-  // an item runs: it takes the world as the menu left it, dark, and the place it goes to shows what it needs
-  // (a room left: the corridor's way back, lobby.js; the game ended)
+  // an item runs: it takes the world as the menu left it, dark; once its fade to black is down it gives the
+  // world back (unveil), and the place it goes to then shows and hides what it needs (lobby.js back)
   async function run(item) {
     shut();
-    darkened = [];
     await item.run();
+  }
+
+  function unveil() {
+    for (const el of darkened) el.object3D.visible = true;
+    darkened = [];
   }
 
   // every ray of the scene (the controllers' lasers, the mouse's cursor) aims at these targets
@@ -126,5 +129,5 @@ export function createMenu(scene) {
     place = next;
   }
 
-  return { set, isOpen: () => open };
+  return { set, unveil, isOpen: () => open };
 }
