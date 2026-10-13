@@ -3,7 +3,8 @@
 // tools missed, would let the 45-minute run be trusted before its tools were (docs/research/long-measure.md).
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { sandboxedPids, pssOf, proximityOf, verdicts, MARKS, longSummary } from '../tools/stand-measure.mjs';
+import { sandboxedPids, pssOf, proximityOf, verdicts, MARKS, longSummary, heatStop, SURFACE_STOP_C } from '../tools/stand-measure.mjs';
+import { thermalOf } from '../tools/measure.mjs';
 
 const read = (f) => fs.readFileSync(new URL(`fixtures/quest3/${f}`, import.meta.url), 'utf8');
 assert.deepEqual(sandboxedPids(read('meminfo-whole.txt')), [11822, 11665], 'the browser\'s sandboxed processes, once each');
@@ -55,4 +56,15 @@ assert.equal(long.heat.length, 6);
 const lost = longSummary(rows.map((x, i) => (i === 7 ? { ...x, prox: 'DISABLED', page: { ...x.page, visibility: 'hidden' } } : x)));
 assert.equal(lost.stayedVisible, false); assert.deepEqual(lost.notVisibleAt, [80]); assert.equal(lost.stayedAwake, false);
 
-console.log('stand tests: ok (the headset\'s processes, memory and proximity read as printed; each known change must be seen)');
+// the stop for heat, read from his Quest 3's own dumps: calm as saved; stopped at the surface's 45 °C, at a throttling
+// status, and when the heat cannot be read; 45 is 3 °C under the surface sensor's first threshold in its own table
+const dump = read('thermalservice.txt'), batt = read('battery.txt');
+assert.equal(heatStop(thermalOf(dump, batt)), null, 'a calm headset stopped the run');
+const warm = dump.replace(/mValue=33\.714(, mType=3, mName=surf-virt-usr)/, 'mValue=45.2$1');
+assert.equal(heatStop(thermalOf(warm, batt)), 'surface 45.2 °C', 'a surface at 45.2 °C did not stop the run');
+assert.equal(heatStop(thermalOf(dump.replace('Thermal Status: 0', 'Thermal Status: 1'), batt)), 'thermal status 1', 'light throttling did not stop the run');
+assert.equal(heatStop(thermalOf('error: device offline', '')), 'the heat could not be read', 'an unread heat let the run go on');
+const first = Number(dump.match(/mName=surf-virt-usr, mHotThrottlingThresholds=\[NaN, ([\d.]+)/)[1]);
+assert.equal(SURFACE_STOP_C, first - 3, `the stop is not 3 °C under the surface's first threshold (${first})`);
+
+console.log('stand tests: ok (the headset\'s processes, memory and proximity read as printed; each known change must be seen; heat stops a run)');

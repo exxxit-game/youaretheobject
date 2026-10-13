@@ -82,6 +82,18 @@ export function longSummary(rows) {
   };
 }
 
+// The headset spared, not stressed: a run stops 3 °C under the virtual surface sensor's first threshold (48.0 °C in
+// his Quest 3's table, tests/fixtures/quest3) or at any throttling status (AOSP thermal mitigation: 1 LIGHT and up);
+// a heat that cannot be read is not watched, so it stops the run too (a model naming its sensors otherwise is fixed first).
+export const SURFACE_STOP_C = 45;
+export function heatStop(t) {
+  const surface = t?.current?.['surf-virt-usr'];
+  if (!t || !Number.isFinite(t.status) || !Number.isFinite(surface)) return 'the heat could not be read';
+  if (t.status >= 1) return `thermal status ${t.status}`;
+  if (surface >= SURFACE_STOP_C) return `surface ${surface} °C`;
+  return null;
+}
+
 // the trial's timeline, seconds after VR: each known change at its mark
 export const MARKS = { vr: 0, to72: 30, to90: 60, boxOn: 75, boxOff: 85, stall: 95, memOn: 105, end: 125 };
 
@@ -131,7 +143,10 @@ async function main() {
   const LOG = path.join(DIR, 'log.jsonl');
   const log = (step, data = {}) => { const e = { at: now(), step, ...data }; fs.appendFileSync(LOG, JSON.stringify(e) + '\n'); return e; };
   const keep = (name, text) => fs.writeFileSync(path.join(DIR, name), String(text));
-  const thermal = (tag) => { const t = sh('dumpsys thermalservice'), b = sh('dumpsys battery'); keep(`thermal-${tag}.txt`, `${t}\n${b}`); return thermalOf(t, b); };
+  // every heat read is also the stop check (heatStop): the trial throws, the long run ends and keeps what it gathered
+  let stoppedFor = null;
+  const thermal = (tag) => { const t = sh('dumpsys thermalservice'), b = sh('dumpsys battery'); keep(`thermal-${tag}.txt`, `${t}\n${b}`);
+    const r = thermalOf(t, b), why = heatStop(r); if (why && !stoppedFor) { stoppedFor = why; log('stopped: heat', { why, tag }); } return r; };
   const sandboxPss = (tag) => { const all = sh('dumpsys meminfo'); keep(`meminfo-${tag}.txt`, all);
     return Object.fromEntries(sandboxedPids(all).map((pid) => [pid, pssOf(sh(`dumpsys meminfo ${pid}`))])); };
 
@@ -143,6 +158,7 @@ async function main() {
       browser: (sh('dumpsys package com.oculus.browser').match(/versionName=(\S+)/) || [])[1], commit: git('rev-parse', '--short', 'HEAD'),
       dirty: git('status', '--porcelain').length > 0, vrruntime: metavr('device', 'vrruntime', 'get'), proximity: metavr('device', 'proximity', '--status'),
       gpuIds: ids, thermal: thermal('start') });
+    if (stoppedFor) throw new Error(`not started: ${stoppedFor}`);
     // Meta's own command keeps an unworn headset awake and re-enables the sensor by itself after 2 hours
     // (metavr device proximity --disable; its binary passes "prox_close --ei duration 7200000")
     log('proximity off', { out: metavr('device', 'proximity', '--disable') });
@@ -203,9 +219,10 @@ async function main() {
         if (ids['GPU Frequency'] && at - gpuAt >= 300000) { gpuAt = at; x.gpu = gpuSamples(sh(`timeout 5 ovrgpuprofiler --realtime="${Object.values(ids).join(',')}"`)); }
         if (at - turnAt >= 60000) { turnAt = at; x.yaw = await run('(() => { const r = document.querySelector("#rig").object3D; r.rotation.y += Math.PI / 4; return +r.rotation.y.toFixed(2); })()'); }
         lastAt = at; lastFrame = p.renderFrame; rows.push(x); log('sample', x);
+        if (stoppedFor) break;
       }
       const end = log('end', { thermal: thermal('end') });
-      const summary = { dir: DIR, minutes: Number(((end.at - t0) / 60000).toFixed(2)), ...longSummary(rows) };
+      const summary = { dir: DIR, minutes: Number(((end.at - t0) / 60000).toFixed(2)), stoppedFor, ...longSummary(rows) };
       fs.writeFileSync(path.join(DIR, 'summary.json'), JSON.stringify(summary, null, 1));
       console.log(JSON.stringify(summary, null, 1));
       return;
@@ -222,7 +239,7 @@ async function main() {
       const x = { s: Number(((at - t0) / 1000).toFixed(1)), dt: (at - lastAt) / 1000, page: p, prox, renderFrames: lastFrame === null ? undefined : p.renderFrame - lastFrame };
       // the heat every 30 s, so a rise shows while it happens, not only between start and end
       if (at - heatAt >= 30000) { heatAt = at; x.thermal = thermal(`s${Math.round(x.s)}`); }
-      lastAt = at; lastFrame = p.renderFrame; samples.push(x); log('sample', x); return x;
+      lastAt = at; lastFrame = p.renderFrame; samples.push(x); log('sample', x); if (stoppedFor) throw new Error(`stopped: ${stoppedFor}`); return x;
     };
     const until = async (mark) => { while (secs() < mark) { const wait = Math.min(10, mark - secs()); await pause(wait * 1000); if (secs() >= mark || wait >= 9.5) await sample(); } };
     const act = (name, js) => run(js).then((out) => log(name, { out }));
