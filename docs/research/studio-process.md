@@ -22,6 +22,12 @@ making a WebXR game (A-Frame 1.8.0, no build step) for Meta Quest.
 5. Documentation: GDD vs living docs, technical design docs, decision records, keeping docs true to the build.
 6. Tools and pipeline: version control, branching and releases, asset pipeline, build/CI, one source of truth.
 7. What postmortems say goes wrong most often and what fixed it.
+8. (Added by the owner, 13.10, same priority) Human + AI-agent teams: what AI coding agents do reliably and
+   where they fail (studies; Anthropic's own guidance on Claude Code and agents), what stays with the human
+   (judgement, taste, feel, wearing the headset, payments, accounts, decisions), how solo developers working
+   with AI agents organise work (experience reports with visible authors), human-in-the-loop practice
+   (review gates, verification, hand-off). The aim: set up OUR two-member studio so each does what he does
+   best and they cover each other fully.
 
 ## Findings (written as they come)
 
@@ -115,4 +121,37 @@ making a WebXR game (A-Frame 1.8.0, no build step) for Meta Quest.
   corridor plus one room, finished to the bar, with the player's behaviour defined, the art direction set, the
   scope of the game written, and the basic technology (loading, saving results, frame budget) done. Production
   (more rooms) waits until it passes; if it cannot pass, the plan changes rather than production starting.
+
+### Part 8. Human + AI-agent team (added 13.10 at the owner's word)
+
+- **Anthropic, "Best practices for Claude Code"** [read 13.10.2026] — https://code.claude.com/docs/en/best-practices
+  (patterns "proven effective across Anthropic's internal teams"; undated page).
+  - The one constraint: "Claude's context window fills up fast, and performance degrades as it fills"; "Claude
+    may start 'forgetting' earlier instructions or making more mistakes".
+  - Verification is the core of the hand-off: "Claude stops when the work looks done. Without a check it can
+    run, 'looks done' is the only signal available, and you become the verification loop". Four strengths of
+    gate: in one prompt; across a session (`/goal`); "As a deterministic gate: a Stop hook"; "By a second
+    opinion: a verification subagent ... so the agent doing the work isn't the one grading it". "Have Claude
+    show evidence rather than asserting success: the test output, the command it ran and what it returned, or a
+    screenshot of the result."
+  - Workflow: Explore, Plan, Implement, Commit; "If you could describe the diff in one sentence, skip the plan."
+  - Specs: for larger features "have Claude interview you" and write a spec; "The most useful specs are
+    self-contained: they name the files and interfaces involved, state what is out of scope, and end with an
+    end-to-end verification step".
+  - Rules files: "Bloated CLAUDE.md files cause Claude to ignore your actual instructions!"; "Unlike CLAUDE.md
+    instructions which are advisory, hooks are deterministic and guarantee the action happens."
+  - Correction: "If you've corrected Claude more than twice on the same issue in one session, the context is
+    cluttered with failed approaches. Run `/clear` and start fresh".
+  - Review: "A fresh context improves code review since Claude won't be biased toward code it just wrote"
+    (Writer/Reviewer pattern); but "A reviewer prompted to find gaps will usually report some, even when the work
+    is sound ... Tell the reviewer to flag only gaps that affect correctness or the stated requirements".
+  - Failure patterns named: kitchen-sink session, correcting over and over, over-specified CLAUDE.md, "The
+    trust-then-verify gap. Claude produces a plausible-looking implementation that doesn't handle edge cases" —
+    "If you can't verify it, don't ship it." — and infinite exploration.
+- For us: the agent's weak point is the one the owner already met (a feature claimed done that did nothing):
+  "looks done" without a check. So every task the agent takes needs its check named before work starts (a test,
+  a measure on the headset, a screenshot against the approved shot), the result shown as evidence, and a
+  second, fresh-context reviewer for anything the owner will rely on. What no machine check can give (feel,
+  taste, comfort in the headset) is exactly the owner's part; he should never be the loop for things a script
+  can check.
 
