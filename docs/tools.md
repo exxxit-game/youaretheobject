@@ -6,6 +6,7 @@ once); what it names is read or run only for its task. One line per situation; t
 - A decision whose line is not enough (all his words, how it came, the texts he accepted): docs/owner-decisions-history.md.
 - Before adding or changing a guard, hook, rule, check, tool or step of the process: docs/circles.md (the circles
   we keep coming back to, and what breaks each).
+- Who does what, where we are on the route, the loop of every step: docs/studio-map.md.
 - A room, new or changed: the new-room skill (its room recipe), then the paper-reviewer agent.
 - A paper: docs/library.md, then its card in docs/cards, then its text in
   C:\Users\admin\Documents\objekt-files\papers\. A note on one paper: research-desk research-litnote;

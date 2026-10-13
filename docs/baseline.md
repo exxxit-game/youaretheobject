@@ -44,7 +44,8 @@ Raw files: objekt-files/notes/headset/perf-2026-10-13/. Two fact-checks of 13.10
   about 3.8 s after the open command; `quest-look vr` to VR: 1.25 s.
 - Heat between 12:36:22 and 12:39:07 (2 min 45 s, starting warm, after an earlier time in VR at 12:32 to 12:34):
   SoC 50.5 °C to 55.1 °C, the NSP 50.3 °C to 54.5 °C, battery 35.0 °C to 37.0 °C; thermal status 0 at the start
-  and the end; the headset's first throttling threshold is 89 °C.
+  and the end; the headset's first throttling threshold is its virtual surface sensor's 48.0 °C (then the battery's 58.0 °C; the SoC's is
+  89 °C), read from its own `dumpsys thermalservice` thresholds (tests/fixtures/quest3/thermalservice.txt; docs/research/long-measure.md).
 - Memory at 12:39 of the browser's main process only (PID 10885; the page itself runs in its sandboxed process, not
   measured; graphics memory could not be read): resident 415 612 kB (procfs), proportional 224 563 kB (dumpsys
   meminfo); available on the headset 2 652 628 kB.
