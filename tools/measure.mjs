@@ -104,7 +104,10 @@ async function main() {
   const thermal = (tag) => { const t = sh('dumpsys thermalservice'), b = sh('dumpsys battery'); keep(`thermal-${tag}.txt`, `${t}\n${b}`); return thermalOf(t, b); };
   const memory = (tag) => { const m = sh('dumpsys meminfo com.oculus.browser'), all = sh('dumpsys meminfo'); keep(`meminfo-${tag}.txt`, `${m}\n${all}`); return memoryOf(m, all); };
   const git = (...a) => execFileSync('git', a, { cwd: ROOT, encoding: 'utf8' }).trim();
-  const notKnown = ['the CPU and GPU levels and the foveation the browser ran at were not locked (Meta locks them before comparing: tools-per-frame-gpu)',
+  // An app only hints its CPU and GPU levels and the system sets them (Meta, essentials/cpu-gpu-levels: the OS keeps
+  // them "at the lowest value within a range that preserves your application's framerate"); every app is boosted for
+  // its first 45 s (essentials/boost-cpu-gpu-levels), so no window starts sooner than that after the page opens
+  const notKnown = ['the CPU and GPU levels the system chose were not read (the system sets them from the app\'s hints; a page cannot fix them)',
     'three windows a spot is our choice (his word on repeating), not a published rule',
     'the room\'s spots fall in its intro, not in its trials',
     'the game served is the working tree of the commit named (the dirty flag says whether it differs)'];
@@ -128,6 +131,7 @@ async function main() {
     run = async (js) => { const v = await game.run(js); if (v && v.error) throw new Error(v.error); return v; };
     for (let i = 0; i < 80 && (await run("!!document.querySelector('a-scene')?.hasLoaded")) !== true; i++) await pause(250);
     log('loaded', { navigation: await run("(({domContentLoadedEventEnd: d, loadEventEnd: l}) => ({domReady: Math.round(d), load: Math.round(l)}))(performance.getEntriesByType('navigation')[0])") });
+    const opened = log('opened');   // the browser may have been launched just now: its launch boost lasts 45 s
     const asked = log('vr asked');
     const vr = log('vr', { answer: await run("document.querySelector('a-scene').enterVR().then(() => 'in VR', (e) => 'failed: ' + e.message)") });
     if (vr.answer !== 'in VR') throw new Error(`VR: ${vr.answer}`);
@@ -192,6 +196,8 @@ async function main() {
     await step('Пройдите начало коридора как игрок: табличка, планшет, согласие', 'надпись исчезнет; дойдите до выбора двери и стойте у дверей');
     const doors = await waitFor('the doors', "document.documentElement.dataset.lobby === 'door'", 600, toCorridor);
     if (!doors) throw new Error('the corridor did not reach the doors in 10 minutes');
+    const sinceOpen = now() - opened.at;
+    if (sinceOpen < 45000) { log('boost wait', { ms: 45000 - sinceOpen }); await pause(45000 - sinceOpen); }
     await spot('corridor, by the doors, standing', 'Стойте спокойно у дверей, смотрите прямо');
     await spot('corridor, along it towards door 101', 'Повернитесь к двери 101 и смотрите вдоль коридора на неё');
     const toRoom = log('walk', { part: 'door 101' });
