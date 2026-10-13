@@ -35,15 +35,22 @@ checks of shelf 2 (revision-shelf2-server.md, -client-law.md, -schema-tests.md) 
 
 ## With the next migration
 - Schema 2: whole numbers, exactly 40 trials, scales in steps of 5, required fields; a data dictionary.
-- An explicit deny on the 7 tables (Supabase's advice); drop the histogram and the presses mean from
-  compare_room (the game reads neither).
-- The IP-hash key changed daily, as Plausible does, so hashes of different days cannot be linked.
+- WRITTEN 13.10 in supabase/migrations/0011_doors.sql, not run yet: an explicit deny on the 7 tables (Supabase's
+  advice); drop the histogram and the presses mean from compare_room (the game reads neither).
+- WRITTEN 13.10 in 0011_doors.sql, not run yet: the IP-hash key changed daily, as Plausible does, so hashes of
+  different days cannot be linked.
 - The testers' table takes the whole run without gender and age (today 12 fields: 5 answers, 7 measures;
   0009:210-211, the same list as 0004).
 - The consent's science mark (above).
 
 ## Server and migrations
-- compare_room has no rate cap (revision-shelf2-server.md R2; Cosmogram, exposed, low).
+- compare_room has no rate cap (revision-shelf2-server.md R2; Cosmogram, exposed, low). WRITTEN 13.10 in
+  0011_doors.sql, not run yet: the result's cap (30 per 5 minutes an address, 300 a minute), before any read.
+- Auth sign-ups are open (read 13.10: the project's public Auth settings say "disable_signup":false, email
+  sign-in on, "mailer_autoconfirm":false; auth.users holds 0 rows). The game never calls Auth and a signed-up
+  user holds no right on our data, but anyone with the public key can create accounts and make Supabase send
+  mail. Closed by the owner's click: "Allow new users to sign up" off ("If this config is disabled, only
+  existing users can sign in", supabase.com/docs/guides/auth/general-configuration).
 - Rename the migration files, move the schema JSON, add the drift job (revision-shelf2-server.md section 6, F5, F7,
   F8); the deploy task of step 3 needs them; Supabase's guide also uses a separate staging project.
 - Every migration one transaction (begin…commit): 0009 and 0010 are, 0001–0008 are not; a test that every new
@@ -91,8 +98,8 @@ minimum rule (Hundepool 2025), not a published method for a live average.
 - What cdn.aframe.io logs; whether a Draco decoder is also fetched from www.gstatic.com.
 - Whether GDPR applies to the game; one consent for the result and for error reports or two: a lawyer
   (decision D).
-- The role the Supabase connector in the chat runs as (people on Reddit say full rights; our guard holds it
-  to reading, in windows opened from the project folder).
+- CHECKED 13.10, the role the Supabase connector in the chat runs as: supabase_read_only_user, transaction
+  read-only, no write grants, bypasses row level security (reads every row); docs/state.md.
 - In the Supabase panel: SSL enforced, network restrictions, a second organisation owner, the spend cap.
 - Meta's rules (6.3) ask for a clear way to request deletion: whether that concerns us in the Meta store,
   given his decision that a kept result cannot be taken back.
