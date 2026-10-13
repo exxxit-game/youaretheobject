@@ -73,3 +73,22 @@ trial-level predictions, not for the end-of-task rating; the depression link did
 The condition and the whole result of `src/rooms/01-control/report.js` (counts, percentages, actual
 control, heuristics, discrepancies, voided and stray presses, every answer with its shown position),
 plus seated, speed and first/repeat. No raw event times. The server whitelist must list these fields.
+
+## Check of 13.10 (the paper reviewer, after the engine's fixes of shelf 3; the room is set aside, the fixes wait for its shelf)
+Today's engine changes leave the procedure as it was. Found in the room itself:
+1. Major: each tape has exactly 1 (or 3) greens in every block of 4 (schedule.js), so a player who tracks the block
+   gets real control: in a simulation of random pressing, P(green | press) and P(green | no press) given the history
+   differ by 25.7 points a trial, while the player is told there was none. Independent tapes, one 40-trial sequence used
+   whatever the response, or the dependency declared and the texts softened.
+2. A laser or mouse press counts on release (`click`), a hand or Space press on press-down: count `mousedown`.
+3. The spec says each answer goes with its shown position; report.js and schema 1 send the value only.
+4. The order of the scales rests on p. 454; pp. 450-451 and p. 460 read the other way: to weigh again.
+5. The evidence choices have "green often" and no "green rarely".
+6. Footnote 2 is on p. 449, not p. 450.
+7. Deviations not listed: the age question, standing play, computer play pooled with the headset, the consent's
+   «часть деталей раскроют только в конце», the condition drawn 50/50 per run rather than balanced by sex (p. 457).
+8. The reveal's "about 25 %" can contradict the player's own rates shown just before it with few presses.
+9. Hidden time can count as seen time between two ticks.
+10. The fader skipped every step over 200 ms with no end, so a device that slow would stay in black: fixed the same
+    day (a long step counts as 200 ms).
+11. report.js's header omits the `extra` event and `rt`; the experimenter's return plays his exit's footsteps.
