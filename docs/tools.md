@@ -3,6 +3,10 @@
 Loaded with CLAUDE.md at every start (a tool on demand only is a tool forgotten: two reviewers here never ran
 once); what it names is read or run only for its task. One line per situation; the first tool named goes first.
 
+- Spending (his words of 14.10 in the history file: senseless spending instead of reasonable actions, 25% gone in a day): about 10 weekly
+  points a day; `node tools/usage.mjs` at a step's start and end; a step past 3 points stops and is told to him. A search's
+  answer and small answers go in the chat; a page only when he decides from it; a remark of his in passing is one board
+  line and no work until he asks for it.
 - A decision whose line is not enough (all his words, how it came, the texts he accepted): docs/owner-decisions-history.md.
 - Before adding or changing a guard, hook, rule, check, tool or step of the process: docs/circles.md (the circles
   we keep coming back to, and what breaks each).
