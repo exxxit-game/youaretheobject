@@ -178,13 +178,15 @@ Each line: the studio role (Gregory §1.1; Part 2 in studio-process.md), who hol
 - Game director / lead designer (vision, scope, what is cut): the owner. Cover: the agent brings the options with
   their sources and costs (Anthropic: people keep "taste" and "high-level thinking and design").
 - Producer (order of work, gates, risks): the owner decides the order; the agent keeps the board, the gate lists
-  and the risk list true, and says when a gate is not met (Washburn: small teams name obstacles about twice as often).
+  and the risk list true, and says when a gate is not met (Washburn: small teams name obstacles about twice as
+  often).
 - Engineers, tools programmer, technical artist, lighting, audio implementation: the agent. Cover: automatic
   checks it runs itself, and a second agent in a fresh context reviewing what the owner will rely on (Claude Code
   best practices: "the agent doing the work isn't the one grading it").
 - Performance engineer: the agent, on the headset, by the repeated-run method (studio-process-3.md, Part 3).
   Cover: numbers written by the tool, not by memory.
-- QA (automated): the agent, tests there from the start (as Rare built Sea of Thieves). QA (the build as a player meets it in the
+- QA (automated): the agent, tests there from the start (as Rare built Sea of Thieves). QA (the build as a player
+  meets it in the
   headset), playtest lead, the final word on comfort and feel: the owner, with the 5–10 testers; the agent prepares
   each session so the owner does one thing at a time.
 - Certification: the agent keeps the VRC checklist and checks it; the owner does every account action (developer

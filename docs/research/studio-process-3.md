@@ -9,7 +9,8 @@ Third file of docs/research/studio-process.md (the question, the marks and the i
   workflow", last updated 2026-07-21, https://developers.meta.com/horizon/documentation/web/webxr-perf-workflow/.
   Steps in order: (1) set a frame budget from the target rate (listed: "60 FPS = 16.6 milliseconds per frame",
   "72 FPS = 13.7 milliseconds per frame", "90 FPS = 11.1 milliseconds per frame"; 1000/72 is 13.9, so the 72 line
-  is Meta's rounding slip, as docs/research/vr/01-meta.md already notes); (2) measure frame time on device with the OVR Metrics Tool's Performance HUD (or MQDH logs
+  is Meta's rounding slip, as docs/research/vr/01-meta.md already notes); (2) measure frame time on device with
+  the OVR Metrics Tool's Performance HUD (or MQDH logs
   and metrics); (3) CPU- or GPU-bound: temporarily disable all rendering: "If the app's framerate is not affected
   or affected very little when not rendering anything, the app is likely CPU bound"; (4) if GPU-bound, set the
   render scale very low (e.g. 0.01): no change means vertex-bound, a gain means fragment-bound; (5) fix the
@@ -19,7 +20,8 @@ Third file of docs/research/studio-process.md (the question, the marks and the i
   (Performance Counter Viewer by GPU duration), cheaper materials, fewer lights, compressed textures (ETC/ASTC),
   FFR, framebuffer scale as a last resort; (6) "Iterate", since fixing one bottleneck can expose another. The
   page says nothing on repeated runs, warm-up or heat.
-- **Per-device budgets and the store floor** [already verified in docs/research/vr/01-meta.md, sections 8, 10 and 13]:
+- **Per-device budgets and the store floor** [already verified in docs/research/vr/01-meta.md, sections 8, 10 and
+  13]:
   VRC.Quest.Performance.1 (required) "Apps must maintain a rendering rate of at least 60 fps"
   (https://developers.meta.com/horizon/resources/vrc-quest-performance-1/); Meta's device comparison (2026-05-11,
   https://developers.meta.com/horizon/resources/device-optimization-comparison/): Quest 3 under 200 draw calls
@@ -79,7 +81,8 @@ Third file of docs/research/studio-process.md (the question, the marks and the i
   content"; its captions saved by tools/gdc-captions.mjs: objekt-files/notes/gdc-talks/2023-owlchemy-building-big-
   games.txt). The Vault's overview names only SplatTech, but the talk's first half, "some of our custom optimization
   tooling and some bite size tricks" (00:00), opens with the A/B test framework (01:00–03:00): RenderDoc's
-  timings "are all relative", so they "use Meta's metric API to get the GPU time" and run tests "deterministically on device. For this, we disable head tracking and Fixed Foveated Rendering, and we make
+  timings "are all relative", so they "use Meta's metric API to get the GPU time" and run tests
+  "deterministically on device. For this, we disable head tracking and Fixed Foveated Rendering, and we make
   sure that every test is duplicated, other than the things that we're actually trying to get timing for"; "Every
   frame, we record the GPU time, we calculate the average, store the results in a JSON file". Takeaways (30:00):
   "use methodical deterministic testing to keep yourself honest"; "if the tools you need don't exist, write
@@ -91,7 +94,8 @@ Third file of docs/research/studio-process.md (the question, the marks and the i
   for the element you want to profile and compare". Run counts: not given in either.
 - For us: this is the practice a studio uses to settle "is A cheaper than B" on the headset: the same view (head
   tracking off), foveation held, one change at a time, numbers saved on the device, every claimed optimisation
-  proven by such a run. What we have is different: tools/measure.mjs (committed in c61ab96, mended in 180b5a5, 0b26ea7, e66dbcf) walks
+  proven by such a run. What we have is different: tools/measure.mjs (committed in c61ab96, mended in 180b5a5,
+  0b26ea7, e66dbcf) walks
   the game as a player does and records the head's pose rather than fixing it, so it is a baseline, not an A/B
   test; the A/B run is still missing. Whether a WebXR page can hold the view still while the headset tracks: not
   checked.
@@ -187,7 +191,8 @@ Third file of docs/research/studio-process.md (the question, the marks and the i
   documentation, written also as in-house marketing, dwelt on "the 'whos' and the 'wheres'" instead of "the
   'hows' and 'whys'".
 - **One-page designs instead of a design bible** [read; a commentary piece about the talk; the talk is free on
-  the Vault ("free content") but not watched] — Danielle Riendeau, "'The goal of design is to efficiently communicate ideas'", Game Developer,
+  the Vault ("free content") but not watched] — Danielle Riendeau, "'The goal of design is to efficiently
+  communicate ideas'", Game Developer,
   16 Jul 2026, https://www.gamedeveloper.com/design/-the-goal-of-design-is-to-efficiently-communicate-ideas- :
   Stone Librande's single-page format answers thick "design bibles" and the "disconnected nature of design
   wikis". (Talk: Stone Librande, "One-Page Designs", GDC 2010, https://gdcvault.com/play/1012356, not watched.)
@@ -212,7 +217,8 @@ Third file of docs/research/studio-process.md (the question, the marks and the i
   with its reason and a "superseded" mark instead of deletion. Ours only half do it: docs/decisions.md keeps
   "Three lines each: what, why, consequence" but has no status and no "superseded" mark; docs/owner-decisions.md
   holds only the decision in force, one line each ("a change comes only from the owner"), and his earlier words
-  stay in its history files, not marked in the line itself. The rule that keeps docs true is mechanical: the doc changes in the same commit as the code
+  stay in its history files, not marked in the line itself. The rule that keeps docs true is mechanical: the doc
+  changes in the same commit as the code
   it describes (Google; Irish: a task is not complete until its technical note is), and a dead doc is deleted.
 
 ### Part 6. Tools and pipeline

@@ -69,7 +69,8 @@ making a WebXR game (A-Frame 1.8.0, no build step) for Meta Quest.
    process it runs in, for better and worse, and seven capabilities amplify its positive impact (DORA 2025).
 
 Not done or unverified (13.10.2026): Chandler's handbook (only the alpha quote); the two GDC Sea of Thieves
-talks (Masella's, Golding's) and Librande's (free on the Vault, not watched), and Baker's Unreal Fest talk; an authoritative bug severity scale (Irish defines class A only);
+talks (Masella's, Golding's) and Librande's (free on the Vault, not watched), and Baker's Unreal Fest talk; an
+authoritative bug severity scale (Irish defines class A only);
 Gregory's 4th edition has no team-structure section (the 3rd edition's Russian translation used). Read since the
 first draft: Owlchemy's talk from its captions, DORA 2025 itself, Irish's handbook (2005).
 
@@ -103,7 +104,8 @@ first draft: Owlchemy's talk from its captions, DORA 2025 itself, Irish's handbo
   must be made, and then making the decision and announcing it and the reasoning behind it to all who are
   involved" (p. 3, lines 903–906); "If you change one factor, the others must change as well" (resources,
   quality, time; p. 80, lines 3931–3932); feature creep is held by a feature request list, each change accepted
-  or rejected, the decision told to everyone and "documented properly" (p. 238, lines 9959–9967); "Cut features early and often." (p. 221, line
+  or rejected, the decision told to everyone and "documented properly" (p. 238, lines 9959–9967); "Cut features
+  early and often." (p. 221, line
   9472). The foreword: "Once any team grows beyond 10 people, our industry accepts that managing this team
   successfully requires the guidance of a producer" (p. iv, lines 79–80); nothing on teams under 10. Holds: the
   risk, decision and change rules; aged: the publisher contracts, the crunch it takes for granted (p. 26).
@@ -156,7 +158,8 @@ first draft: Owlchemy's talk from its captions, DORA 2025 itself, Irish's handbo
 
 - **155 Gamasutra postmortems** [read] — M. Washburn Jr., P. Sathiyanarayanan, M. Nagappan, T. Zimmermann,
   C. Bird, "'What went right and what went wrong': an analysis of 155 postmortems from game development",
-  ICSE 2016 SEIP; author copy https://www.microsoft.com/en-us/research/wp-content/uploads/2016/06/washburn-icse-2016-2.pdf
+  ICSE 2016 SEIP; author copy
+  https://www.microsoft.com/en-us/research/wp-content/uploads/2016/06/washburn-icse-2016-2.pdf
   (saved: objekt-files/papers/washburn-2016.txt). Went wrong most: obstacles 37%, schedule 25% ("common problems
   in estimation and optimistic scheduling"), development process 24% (no planning before development), game
   design 22% ("overly ambitious game designs"). Went right most: game design 50%, development process 43% (three
@@ -168,7 +171,8 @@ first draft: Owlchemy's talk from its captions, DORA 2025 itself, Irish's handbo
   The authors' recommendations: risk management; "an iterative development process, and utilize prototypes as a
   method of proving features and concepts before committing them to your design"; "don't be overly ambitious";
   "If you make an estimate that initially feels optimistic to you, don't give that estimate to your stakeholders."
-- For us: small teams name obstacles about twice as often as large ones (50% against 26%), so a written risk list with a plan for each matters more for
+- For us: small teams name obstacles about twice as often as large ones (50% against 26%), so a written risk list
+  with a plan for each matters more for
   us than for a big studio; prototype each room's core before building it fully; keep a record of what was
   built and why (our docs/decisions.md and docs/state.md are that record, if kept true).
 - **A short postmortem at every milestone** [book] — Irish 2005, p. 219–220 (lines 9392–9409): "At the end of every
@@ -188,7 +192,8 @@ first draft: Owlchemy's talk from its captions, DORA 2025 itself, Irish's handbo
   features included", "a touch of variety", "scope of game defined", "basic technology done". Slide 19: cancel if
   the "Team cannot create 'Publishable' First Playable": "Your project will not miraculously get better during
   Production!" Slide 24, the Macro Game Design is "five pages": character and moveset, exotic mechanics, level
-  structure, size and count, level contents, "overarching structure – linear, hub", a macro chart. Slide 15 warns against "'ALPHA = FIRST PLAYABLE'".
+  structure, size and count, level contents, "overarching structure – linear, hub", a macro chart. Slide 15 warns
+  against "'ALPHA = FIRST PLAYABLE'".
 - **Alpha in Chandler's handbook** [read, quote only; the book itself not opened] — Heather Maxwell Chandler,
   *The Game Production Handbook* (the quotes page names no edition: unverified), via
   https://www.goodreads.com/work/quotes/22237702: "Alpha: At this milestone, key gameplay functionality is
@@ -230,7 +235,8 @@ first draft: Owlchemy's talk from its captions, DORA 2025 itself, Irish's handbo
   guide met, most testers get through alone, target frame rate in most measured places), gold (all testers alone,
   target frame rate in every measured place, no serious defect open).
 
-- **An engine vendor's stage model for games for impact (smaller projects named in passing)** [read] — Unity Learn, "Game development in a nutshell",
+- **An engine vendor's stage model for games for impact (smaller projects named in passing)** [read] — Unity
+  Learn, "Game development in a nutshell",
   tutorial "Production and Post-release",
   https://learn.unity.com/course/game-development-in-a-nutshell/tutorial/production-and-post-release (undated;
   the course's stages: ideation and pre-production, production, post-release). End of pre-production: "In
