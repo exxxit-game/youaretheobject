@@ -18,7 +18,7 @@
 <p>Проверка контроллеров и рук. Кнопку нажимает ноутбук, сами её не нажимайте. Всё, что нужно делать, будет написано внутри очков.</p>
 <button id="input">Начать в очках</button>
 <pre id="out">Результатов пока нет.</pre>
-<a-scene id="scene" vr-mode-ui="enabled: false" background="color: #121212"
+<a-scene id="scene" inspector="url: ../vendor/aframe-inspector/aframe-inspector-1.8.0.min.js" vr-mode-ui="enabled: false" background="color: #121212"
   webxr="optionalFeatures: local-floor, hand-tracking, body-tracking">
   <a-entity id="head" camera look-controls position="0 1.6 0"></a-entity>
   <a-entity meta-touch-controls="hand: left; buttonHighlightColor: #e8b84a"></a-entity>

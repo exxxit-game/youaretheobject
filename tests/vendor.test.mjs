@@ -29,14 +29,15 @@ for (const f of fs.readdirSync(new URL('../tools/', import.meta.url)).filter((n)
   if (loads < 0) continue;
   const set = page.indexOf("<script>window.AFRAME_CDN_ROOT = '../vendor/aframe-assets/';</script>");
   assert.ok(set > 0 && set < loads, `tools/${f} loads A-Frame without AFRAME_CDN_ROOT set to vendor/aframe-assets/ first`);
+  for (const scene of page.match(/<a-scene\b[^>]*>/g) || []) assert.ok(scene.includes('inspector="url: ../vendor/aframe-inspector/aframe-inspector-1.8.0.min.js"'), `tools/${f}: its scene's inspector would load from unpkg.com`);
 }
 // Every model A-Frame 1.8.0 names for these controllers and hands, byte for byte its licensed origin (SHA-256):
 // WebXR Input Profiles' assets, MIT (controllers/LICENSE.md), and A-Frame's hands, MIT (controllers/hands/LICENSE).
 // The models of the HTC Vive, Vive Focus, Windows Mixed Reality, Magic Leap One, Oculus Go and the first Touch
-// controllers carry no licence and are not shipped: on those headsets the hands stay empty, no model and no ray
-// (laser-controls aims its ray only on controllermodelready; the practice review of 13.10), until every headset
-// takes its model through three.js's loader (the owner's choice A of 13.10, docs/board.md): not to be published
-// before it.
+// controllers carry no licence and are not shipped: on those headsets no controller is drawn, only the ray
+// (A-Frame 1.8.0's laser-controls makes it on controllerconnected, model or not; src/components/laser-controls.js),
+// aimed without the model's correction, until every headset takes its model through three.js's loader (the
+// owner's choice A of 13.10, docs/board.md): not to be published before it.
 const MODELS = {
   'meta/quest-touch-plus-left.glb': '41a35b80221398d37029cbfaa9e39084ccd43e0206be72a5e8460f52e7882cb4',
   'meta/quest-touch-plus-right.glb': '5126d638fb1d03e05d16d8eec3b31b9588df88eaa8b42cc21b857fac3bd44916',
