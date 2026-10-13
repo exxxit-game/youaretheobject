@@ -127,7 +127,10 @@ The targets (F1, each with its page in the report):
   (VRC.Quest.Functional.10).
 - People start to leave after about 2 s of waiting: a video's start delay costs 5.8 % more viewers each second after 2 s
   (Krishnan and Sitaraman 2012); web users "might not return" past 4 s (Galletta and others 2004). Dated, the
-  direction holds.
+  direction holds. A wait between rounds, read in full (Nakamura and others 2025, the paper the owner saved): 84 325
+  players of a mobile game, a delay added on the loading screen between rounds; daily playtime against no delay
+  −3.01 % at 1 s, −10.31 % at 5 s, −14.31 % at 10 s (none significant); at 10 s fewer came back, by 10.77 % on day 1
+  and 27.69 % by day 7 (significant). A wait at every door adds up the same way.
 - The stalls come from the first drawing, not the download: "When materials and textures are drawn for the first
   time, the browser will hang and block while uploading to the GPU" (A-Frame 1.8.0 best-practices.md); three.js r184
   has initTexture and compileAsync to do it ahead.

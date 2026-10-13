@@ -1,7 +1,7 @@
 # games and platforms
 
 Generated from `docs/library/papers.json` by `node tools/build-library.mjs`. Do not edit by hand.
-35 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
+37 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
 in the library folder's papers\ as `<id>.txt` (a data set: `<dir>/<id>.txt` from the library folder); "text: ocr" marks a scan's
 text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 
@@ -25,6 +25,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **liu-2024** Liu et al. 2024. Waiting to play: measuring game load times and their effects on player quality of experience · loading time, games, quality of experience · no card
 - **lumsden-2016** Lumsden et al. 2016. The effects of gamelike features and test location on cognitive test performance and participant enjoyment · gamelike features, test location, enjoyment, cognitive tests · no card
 - **mateer-2017** Mateer 2017. Directing for Cinematic Virtual Reality: how the traditional film director's craft applies to immersive environments and notions of presence · cinematic VR, film directing, presence · no card
+- **nakamura-2025** Nakamura et al. 2025. Ethical disengagement in mobile games: the effects of loading delay and grayscale on user engagement · loading time, retention, randomised field experiment · no card
 - **neves-filho-2020** Neves Filho et al. 2020. Re-Search: recriando experimentos da psicologia · Re-Search, Portal 2, recreating experiments, teaching · no card
 - **nicholson-2015** Nicholson 2015. Peeking Behind the Locked Door: A Survey of Escape Room Facilities · escape rooms, survey · no card
 - **nicholson-2016** Nicholson 2016. Ask Why: Creating a Better Player Experience Through Environmental Storytelling and Consistency in Escape Room Design · escape room design, environmental storytelling · no card
@@ -40,3 +41,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **washburn-2016** Washburn et al. 2016. What went right and what went wrong: an analysis of 155 postmortems from game development · game development, postmortems, process · no card
 - **wen-2015** Wen et al. 2015. The sense of agency during continuous action: performance is more important than action-feedback association · sense of agency, secret assistance, performance, control · [card](../cards/wen-2015.md)
 - **wu-2023** Wu et al. 2023. Design and application of a game-based WeChat mini-program for screening cognitive impairments in Chinese older adults · game-based screening, cognitive impairment, WeChat mini-program, older adults · no card
+
+## Not in the library
+
+- **nah-2004** Nah, F. F.-H. 2004. A study on tolerable waiting time: how long are Web users willing to wait? · waiting, loading time, feedback · wanted (wanted.md)

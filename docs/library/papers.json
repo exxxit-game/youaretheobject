@@ -8400,6 +8400,44 @@
    "text": "ok",
    "status": "no card",
    "source": "https://doi.org/10.1007/978-3-030-34644-7_5"
+  },
+  {
+   "id": "nakamura-2025",
+   "authors": "Nakamura, Y., Takao, R., Fukushima, S., Arakawa, Y.",
+   "year": "2025",
+   "title": "Ethical disengagement in mobile games: the effects of loading delay and grayscale on user engagement",
+   "sections": [
+    "games-platforms"
+   ],
+   "tags": [
+    "loading time",
+    "retention",
+    "randomised field experiment"
+   ],
+   "type": "article",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://doi.org/10.1145/3712281"
+  },
+  {
+   "id": "nah-2004",
+   "authors": "Nah, F. F.-H.",
+   "year": "2004",
+   "title": "A study on tolerable waiting time: how long are Web users willing to wait?",
+   "sections": [
+    "games-platforms"
+   ],
+   "tags": [
+    "waiting",
+    "loading time",
+    "feedback"
+   ],
+   "type": "article",
+   "text": "none",
+   "status": "wanted",
+   "priority": "low",
+   "reason": "Taylor & Francis paywall; only the abstract read, from the publisher's citation file the owner saved 13.10 (tolerable waiting about 2 s; feedback prolongs it)",
+   "source": "https://doi.org/10.1080/01449290410001669914"
   }
  ]
 }
