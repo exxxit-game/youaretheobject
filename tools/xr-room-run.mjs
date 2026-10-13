@@ -81,10 +81,15 @@ const t0 = Date.now();
 // page keeps its record in the headset meanwhile, so nothing is lost while the link is down
 const ask = async (js) => {
   for (let i = 0; i < 3; i++) {
-    let v;
-    try { v = await room.run(js); } catch (e) { v = { error: String(e) }; }
-    if (!(v && v.error)) return v;
-    log('link to the page lost, trying again:', String(v.error).slice(0, 80));
+    // a lost link throws, a call the page could not run says "page threw"; the page's state also has an
+    // error field (the XR session's own failure), which is an answer, not a lost link
+    let v, failed = null;
+    try {
+      v = await room.run(js);
+      if (typeof v?.error === 'string' && v.error.startsWith('page threw')) failed = v.error;
+    } catch (e) { failed = String(e); }
+    if (!failed) return v;
+    log('link to the page lost, trying again:', failed.slice(0, 80));
     await sleep(5000);
     try { room.close(); } catch (e) { /* already closed */ }
     // finding the page again waits on the headset's tab list and socket with no limit of their own:
@@ -103,7 +108,9 @@ while (Date.now() - t0 < total * 1000) {
   await sleep(5000);
   const s = await ask('window.__roomState()');
   if (s && s.stepAt !== last) { last = s.stepAt; log('step', s.stepAt, 'of', STEPS.length); }
-  if (s && (s.ended || (s.done && !s.running))) break;
+  // a session that failed or stopped mid-run ends the wait too, so he is not left in the headset for the rest of
+  // the 15 minutes; the page's own error comes back as state.error, a lost link as no state at all
+  if (s && (s.ended || s.error || (s.started && !s.running) || (s.done && !s.running))) break;
 }
 // the result, or where it stays when the link never comes back
 let summary = null;

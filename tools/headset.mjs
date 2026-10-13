@@ -102,7 +102,11 @@ export async function openGame(url) {
   let list;
   try { list = await fetch(`${DEVTOOLS}/list`); } catch (e) {
     let running = '';
-    try { running = adb('shell', 'pidof', 'com.oculus.browser'); } catch (err) { /* pidof exits 1 when none runs */ }
+    // pidof exits 1 when none runs; adb also fails when the headset itself is gone, and that is no
+    // "not running" to open the game on
+    try { running = adb('shell', 'pidof', 'com.oculus.browser'); } catch (err) {
+      if (!connected()) throw new Error('the headset is not on the cable: its browser cannot be asked');
+    }
     if (!running) { openUrl(url); return 0; }
     list = await listAfterFront();
     if (!list) throw new Error('the headset browser runs but its tab list did not answer even in front: its game tabs cannot be closed first');
