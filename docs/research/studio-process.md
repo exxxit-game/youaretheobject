@@ -2,7 +2,9 @@
 
 The owner's request (13.10.2026, translated): find out how game studios do it, since they have a clear
 process for all of this; we are at step 0 and cannot move until it is clear how to move, where to, with what
-(the engine, the wiring, the fuel). Asked of the deep-research agent on 13.10.2026.
+(the engine, the wiring, the fuel). Asked of the deep-research agent on 13.10.2026. Sharpened by him the same
+day: the aim is to set up our own two-member studio (him and an AI coding agent) so each does what he does best
+and they cover each other fully; studio practice is the base, the human + agent team is part 8.
 
 Marks: **[read]** the page or file was opened and the quote is in it; **[book]** read in a book in
 objekt-files/books (page given); **[unverified]** not confirmed from a primary page. "For us" lines are
