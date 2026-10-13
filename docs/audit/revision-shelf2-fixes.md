@@ -93,3 +93,6 @@ minimum rule (Hundepool 2025), not a published method for a live average.
 - In the Supabase panel: SSL enforced, network restrictions, a second organisation owner, the spend cap.
 - Meta's rules (6.3) ask for a clear way to request deletion: whether that concerns us in the Meta store,
   given his decision that a kept result cannot be taken back.
+
+## Encryption (his request 12.10)
+- What exists for reading results only ourselves, its costs and the options: docs/research/data-encryption.md (continued in data-encryption-2.md).

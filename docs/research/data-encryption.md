@@ -4,7 +4,7 @@
 > nobody but us reads a player's individual data (not Supabase, not Meta, not a thief, not a later quantum
 > computer), while players still see "you and other players". Nothing here is acted on until it goes to him
 > on a checked page. "Full text" = the page or paper itself was read; "abstract" = only its summary was read.
-> Continued in data-encryption-2.md when this file reaches 300 lines.
+> Parts 5-8 and the options for the owner continue in docs/research/data-encryption-2.md.
 
 ## Parts (each gets an answer or "not found")
 1. Aggregation without seeing single values: Prio (NSDI 2017); IETF DAP and VDAF/Prio3 (status, RFC numbers,
