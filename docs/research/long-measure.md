@@ -121,3 +121,24 @@ Lacks for 45 min unattended:
 - Memory: a page allocation of a known size -> the sandboxed renderer's PSS rises by about that size, the main process's not.
 - Proximity/visibility: dumpsys vrpowermanager "Virtual proximity state: CLOSE" and XRSession.visibilityState "visible" each minute; `metavr device proximity --status`.
 - OVR Metrics: LOG_STATE read-back; CSV for browser expected absent (Meta staff 2025-01-02).
+
+## The trial of 13.10 (tools/stand-measure.mjs trial; raw log objekt-files/notes/headset/stand-trial-2026-10-13T16-27-19)
+His Quest 3 unworn on the stand, Meta's proximity override on, 2.09 minutes in VR. Each tool against its known change
+(verdicts recomputed from the log by `judge` after the windows were fixed to the samples' real times):
+- Frame rate asked 90, 72, 90 (updateTargetFrameRate): the page counted 89.6, 72.0, 90.0 frames a second. Passed.
+- The two frame counters (the page's XR frames, three.js's renderer.info.render.frame): equal in every sample after
+  the first 20 s; in the first samples 100 renders more than frames, the reflections' cube pictures (four, six faces
+  each, every 2.5 s for 15 s: reflect-env.js). Passed.
+- One box: draw calls 26 to 27, triangles 25 044 to 25 056 (+12), geometries and programs +1, all back after removal.
+  One call: multiview draws both eyes at once. Passed.
+- Ten frames held 25 ms: 13 late frames counted in that window, none in the one before. Passed.
+- 64 MiB written in the page: one sandboxed process rose 63 793 kB. Passed.
+- The session stayed "visible" and the override "CLOSE" in every sample. Passed.
+- GPU clock 456 MHz in all 5 samples (one of the levels the plan lists), load 32-34 %.
+- Battery: the thermal service read 35 °C and the battery service 33 °C at the start, 35 and 35 at the end: two
+  sources, not one sensor; both kept, neither the other's check.
+Found by the way: the first 10 s in VR held 20 late frames, the worst 53.6 ms, while the reflections take their
+pictures (with the 100 extra renders above): the stutter on entering VR that check E foresaw (shelf 3).
+Setup learned: in a dark room, lying on a blanket, the headset lost tracking ("Поиск местоположения в комнате"), so
+VR was held; lit and facing the room it tracked. Something close in front of the lenses reads as worn: the tool then
+refuses, as it must.

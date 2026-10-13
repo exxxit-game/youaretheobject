@@ -6,6 +6,7 @@
 // it. Every time is the headset's own clock; every tool's raw output is kept beside the log (as tools/measure.mjs).
 // Usage: node tools/stand-measure.mjs trial      (about three minutes; the owner does not wear it)
 //        node tools/stand-measure.mjs restore    (the headset given back as it was, after a run cut short)
+//        node tools/stand-measure.mjs judge <run folder>   (a run's verdicts again from its log)
 // The boundary is not paused (a safety setting of his headset): the stand stands inside his play area, lit, so it
 // does not rise; a VR entry it holds is given up after 20 s and the browser restarted before the headset sleeps,
 // the cure of docs/mistakes.md ("the headset browser had lost its link to the VR system for hours").
@@ -28,16 +29,22 @@ export const proximityOf = (dump) => (String(dump).match(/Virtual proximity stat
 // late, renderFrame, calls, triangles, visibility, rate }, prox }. Rates: the session asks 90, then 72 (W3C WebXR
 // updateTargetFrameRate), then 90; a frame-count per second within 6 % of the asked rate counts as following it.
 export function verdicts(samples, marks) {
-  const at = (from, to) => samples.filter((x) => x.s > from && x.s <= to && x.page);
+  // a sample counts the time from the one before it to itself (s - dt, s]; it is read just after its mark, so a
+  // window takes the samples whose time lies within it, give or take the reading's own second and a half
+  const at = (from, to) => samples.filter((x) => x.page && x.s - x.dt >= from - 0.5 && x.s <= to + 1.5);
   const fps = (xs) => { const f = xs.reduce((a, x) => a + x.page.frames, 0), t = xs.reduce((a, x) => a + x.dt, 0); return t ? f / t : null; };
   const near = (v, want) => v !== null && Math.abs(v - want) / want <= 0.06;
   const v = {};
   const before = fps(at(marks.vr + 2, marks.to72)), slow = fps(at(marks.to72 + 2, marks.to90)), after = fps(at(marks.to90 + 2, marks.boxOn));
   v.frameRate = { pass: near(before, 90) && near(slow, 72) && near(after, 90), before, slow, after };
-  // three.js counts every render in renderer.info.render.frame, the page counts every XR frame: one per frame each
-  const gaps = samples.filter((x) => x.page && x.renderFrames !== undefined).map((x) => x.renderFrames - x.page.frames);
-  v.twoCounters = { pass: gaps.length > 0 && gaps.every((g) => Math.abs(g) <= 3), gaps };
-  const plain = at(marks.boxOn - 10, marks.boxOn), withBox = at(marks.boxOn + 1, marks.boxOff), last = (xs) => xs[xs.length - 1]?.page;
+  // three.js counts every render in renderer.info.render.frame, the page counts every XR frame: one per frame each,
+  // once the start is over; at the start the reflections' cube pictures are renders too (reflect-env.js: four, six
+  // faces each, every 2.5 s for 15 s), so the renders over the frames there are kept apart, as what the start draws
+  const counted = samples.filter((x) => x.page && x.renderFrames !== undefined);
+  const settled = counted.filter((x) => x.s - x.dt >= marks.vr + 20), early = counted.filter((x) => x.s - x.dt < marks.vr + 20);
+  const gaps = settled.map((x) => x.renderFrames - x.page.frames);
+  v.twoCounters = { pass: gaps.length > 0 && gaps.every((g) => Math.abs(g) <= 3), gaps, extraRendersAtStart: early.map((x) => x.renderFrames - x.page.frames) };
+  const plain = at(marks.boxOn - 10, marks.boxOn), withBox = at(marks.boxOn, marks.boxOff), last = (xs) => xs[xs.length - 1]?.page;
   const dCalls = (last(withBox)?.calls ?? NaN) - (last(plain)?.calls ?? NaN), dTris = (last(withBox)?.triangles ?? NaN) - (last(plain)?.triangles ?? NaN);
   // one box: one draw call and 12 triangles, or twice that if each eye is drawn on its own (no multiview)
   v.box = { pass: [1, 2].includes(dCalls) && dTris === 12 * dCalls, dCalls, dTris };
@@ -49,11 +56,20 @@ export function verdicts(samples, marks) {
   return v;
 }
 
+// the trial's timeline, seconds after VR: each known change at its mark
+export const MARKS = { vr: 0, to72: 30, to90: 60, boxOn: 75, boxOff: 85, stall: 95, memOn: 105, end: 125 };
+
 if (import.meta.url === pathToFileURL(process.argv[1] || '').href) await main();
 
 async function main() {
   const mode = process.argv[2];
-  if (!['trial', 'restore'].includes(mode)) { console.log('usage: node tools/stand-measure.mjs trial | restore'); process.exit(1); }
+  if (!['trial', 'restore', 'judge'].includes(mode)) { console.log('usage: node tools/stand-measure.mjs trial | restore | judge <run folder>'); process.exit(1); }
+  // a run's verdicts again from its own log, with no headset (the samples are all in it)
+  if (mode === 'judge') {
+    const lines = fs.readFileSync(path.join(process.argv[3], 'log.jsonl'), 'utf8').trim().split(/\r?\n/).map((l) => JSON.parse(l));
+    console.log(JSON.stringify(verdicts(lines.filter((l) => l.step === 'sample'), MARKS), null, 1));
+    return;
+  }
   const { adb, serveToHeadset, localPort, openGame, page, wornByPerson, connected, sleepNow, restartBrowser, screencap } = await import('./headset.mjs');
   const PREVIEW = 'https://exxxit-game.github.io/object-preview/';
   const { requireReview, requirePaper } = await import('./review-gate.mjs');
@@ -138,7 +154,7 @@ async function main() {
     await readPage();
 
     // the timeline, seconds after VR: each known change at its mark, a sample every 10 s
-    const marks = { vr: 0, to72: 30, to90: 60, boxOn: 75, boxOff: 85, stall: 95, memOn: 105, end: 125 };
+    const marks = MARKS;
     const t0 = now(), secs = () => (now() - t0) / 1000;
     const samples = [];
     let lastAt = t0, lastFrame = null;
@@ -185,9 +201,9 @@ async function main() {
     const best = rises.sort((a, b) => b.riseKb - a.riseKb)[0];
     v.memory = { pass: !!best && best.riseKb > 0.75 * 65536 && best.riseKb < 1.25 * 65536, rises, wantKb: 65536 };
     const startT = JSON.parse(fs.readFileSync(LOG, 'utf8').split('\n')[0]).thermal;
-    // two reads of one sensor: the thermal service's battery and the battery service's own (tenths of a degree)
-    v.batteryTwoWays = { pass: [startT, end.thermal].every((t) => Number.isFinite(t.current.battery) && Math.abs(t.current.battery - t.battery) <= 0.5),
-      start: [startT.current.battery, startT.battery], end: [end.thermal.current.battery, end.thermal.battery] };
+    // the thermal service's battery and the battery service's own are two sources, not one sensor read twice (the first
+    // trial read 35 and 33 °C at its start, 35 and 35 at its end): both kept, neither taken as the other's check
+    v.batteryTwoSources = { start: [startT.current.battery, startT.battery], end: [end.thermal.current.battery, end.thermal.battery] };
     // the GPU's clock read at one of the levels the system sets (an unlisted value would mean a misread)
     v.gpuClock = { seen: gpu ? [...new Set(gpu['GPU Frequency'] || [])] : null, meanLoad: gpu ? mean(gpu['GPU % Utilization'] || []) : null };
     const summary = { dir: DIR, marks, verdicts: v, samples: samples.length, minutes: Number(((end.at - t0) / 60000).toFixed(2)) };
