@@ -320,9 +320,9 @@ async function playRoom(url, playtest, { leave = false } = {}) {
       assert.equal(await page.evaluate(() => [...document.querySelectorAll('.clickable')].filter((el) => !el.closest('#menu')).length), 0,
         'with the menu open something else answers the rays');
       await page.evaluate(() => document.querySelector('#menu .answer[data-index="1"]').emit('click'));   // leave the room
-      // it asks once more, "continue" first again
+      // it asks once more, as the poster does: the act first, staying second
       await page.waitForFunction(() => document.querySelectorAll('#menu .answer[data-ready]').length === 2, null, { timeout: 10000 });
-      await page.evaluate(() => document.querySelector('#menu .answer[data-index="1"]').emit('click'));
+      await page.evaluate(() => document.querySelector('#menu .answer[data-index="0"]').emit('click'));
       await waitState('idle', 10000);
       await page.waitForFunction(() => document.querySelector('.sheet[data-open]') && document.querySelectorAll('.sheet .answer').length === 2, null, { timeout: 30000 });
       assert.ok(await page.evaluate(() => document.querySelector('#corridor').object3D.visible), 'back from the room the corridor is not drawn');
