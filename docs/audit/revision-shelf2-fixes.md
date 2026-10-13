@@ -97,7 +97,20 @@ minimum rule (Hundepool 2025), not a published method for a live average.
 - Meta's rules 11A on data computed from body and hands (seated, away).
 - ePrivacy and the four keys the game keeps on the device.
 - Whether the Quest Browser keeps or clears a site's data.
-- What cdn.aframe.io logs; whether a Draco decoder is also fetched from www.gstatic.com.
+- What cdn.aframe.io logs. CHECKED 13.10, the Draco decoder: www.gstatic.com is never asked. The game loads no glTF of its
+  own (src, index.html); the 8 models A-Frame 1.8.0 fetches for Quest controllers and hands (meta/quest-touch-plus and
+  -pro, oculus touch v3, oculus-hands v4) declare no glTF extension (read whole from cdn.aframe.io), and the vendored
+  GLTFLoader builds its Draco extension, whose constructor preloads the decoder, only for KHR_draco_mesh_compression
+  (vendor/aframe-1.8.0.min.js; gltf-model's setDecoderPath only stores the path).
+- CHECKED 13.10 in the code, A-Frame's inspector: the scene adds it always (setupRendererAndLoadingScreen); it loads
+  https://unpkg.com/aframe-inspector@1.8.x on keydown I with Ctrl+Alt or AltGraph, on ?inspector= with any value but
+  false, or on a window message INJECT_AFRAME_INSPECTOR from any origin; the component has no remove handler, so
+  removing the attribute leaves the listeners; its README sets the source with inspector="url: ...". A paired
+  keyboard on the headset: not tried.
+- The project's secret API keys: visible only in the Supabase panel (Settings, API Keys); the owner's screenshot.
+- OVR Metrics Tool, installed by the owner on 13.10 (Meta: "highly recommended that you keep this HUD up and running
+  throughout development", webxr-perf-tools): installed or not, the HUD over adb (ENABLE_OVERLAY broadcast, Meta's
+  ts-ovrmetricstool page), and whether its CSV records the Browser (one forum report says HUD only) - measure.
 - Whether GDPR applies to the game; one consent for the result and for error reports or two: a lawyer
   (decision D).
 - CHECKED 13.10, the role the Supabase connector in the chat runs as: supabase_read_only_user, transaction
