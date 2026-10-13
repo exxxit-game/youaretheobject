@@ -83,34 +83,54 @@ Pages read with `metavr docs fetch` on 14.10.2026 unless marked.
   (how in-headset instructions are shown: until done vs timed, voice vs text) were not searched in this pass.
   SSQ (Kennedy 1993) and FMS as used by Gottsacker 2026 are already in docs/research/vr/03b-sickness.md.
 
-## The plan for the redo of tools/measure.mjs (14.10, before any code; for the practice review)
+## The plan for the redo of tools/measure.mjs (14.10, second form after the practice review of the first)
 
 What failed on 13.10 (docs/owner-decisions-history-2.md, the fourth window): each step showed 8 s and hid, he
 stood still at spots, did not understand what to do (his words: he did not understand what was to be done), and went
-into room 101 before the step asked; he called measuring this way pointless (all his words: the history file, «On leaving room 101»). Still spots are what the stand measures (tools/stand-measure.mjs).
+into room 101 before the step asked; he called measuring this way pointless (all his words: the history file, «On leaving room 101»).
+Still spots are what the stand measures (tools/stand-measure.mjs).
 
 The pattern, in three lines:
 - Meta's performance check is a person using the app as a player would, the frame log read for long stretches
   below the bar (finding 2, VRC.Quest.Performance.1), not still views.
-- Meta's playtest guide: the facilitator says each step and asks one or two questions soon after a section; the
-  tester may take the headset off at any time (findings 4 and 5).
+- Meta's playtest guide: the facilitator says each step, does not corral the tester into the intended path ("Avoid
+  corralling them into the path you had intended"), tells him he may take the headset off at any time, has him set
+  his origin, practises the script, and asks soon after a section (findings 4 and 5).
 - His decision of 13.10: with him only what needs him, the head, the hands and how it feels; the rest on the stand.
 
-What he does: one walk, about 5 minutes, told before in the chat and in the headset (one walk, about
-5 minutes, no standing still, play as usual). Each step's text stays in view until the game shows it is done,
-then the next one replaces it with a short vibration:
-1. The corridor's start as a player: sign, clipboard, consent, up to the doors (done: the doors are offered).
-2. Look around the corridor, turning the head as quickly as is comfortable, then move with the sticks: a few
-   teleports and turns (done: three moves of the player, locomotion's 'player-moved').
-3. Press door 101 and go in (done: the room's procedure has begun).
-4. Play the trials as usual for about a minute (done: 60 s into the trials).
-5. ≡ on the left controller, leave the experiment, confirm (done: back in the corridor).
-Then in the chat, two questions (Meta's guide: one or two, soon after): was anything unpleasant, and where did
-it jerk, if anywhere.
+What he is told before, in the chat and in the first note: one walk, play as usual, nothing to stand still for,
+the headset may come off at any time and the measure then simply stops; the cable behind him. The length is
+said from the dry run's own time, not guessed (the corridor's start alone took 76 s on 13.10).
 
-What the machine records the whole walk, no still windows: every frame, each late one with its time (the
-headset's clock), its length, the place (as now), the head's turning speed at that frame, and whether the player
-was aiming, moving, or had the menu open; the GPU's stages once a second for the whole walk (one
-ovrgpuprofiler run); heat and memory at the start and the end; when each step's text was shown and removed, so
-a late frame can be set against it. No OVR Metrics overlay and no Perfetto trace during the walk: both cost
-frames, and the 13.10 overlay's dips are still unexplained (docs/board.md, the baseline's line).
+The walk, advancing on the game's own states in whatever order he plays them (no step blocks another):
+1. Hold the Meta button to set the view straight (his origin), then the corridor's start as a player: sign,
+   clipboard, consent, up to the doors.
+2. At the doors: move about with the sticks a little (teleports, turns) and then go through door 101, in either
+   order; the note counts his moves (1 of 3, 2 of 3...) and does not hold the door back. Too few moves is written
+   down as such, not waited for.
+3. In the room: the room's own voice and screen lead; no note while its screen speaks. After 60 s of its trials
+   one note: ≡ on the left controller, leave the experiment, confirm. It hides when the menu opens.
+Notes follow the view while a step is open (Meta, IWSDK HUD: "Use viewer-following UI only when information must
+remain discoverable"), sit below the room's screen and the menu, never over them, and change with a short
+vibration. No head turns are asked for: playing as usual is the measure (VRC.Quest.Performance.1, "Use the app").
+
+Then in the chat, two questions: one number for how he feels, 0 to 10, 0 no symptoms and 10 severe sickness
+(the FMS as VERA asked it, Gottsacker et al. 2026, gottsacker-2026.txt), and where it jerked, if anywhere.
+
+What the machine records the whole walk, no still windows: every frame, each late one with its time, its length,
+the frame callback's own duration and the draw calls (so a GPU-bound frame is told from a CPU-bound one, as the
+OVR Metrics page tells them by App T against the budget), the place (as now), the head's own turning speed from
+the viewer pose (the camera's local rotation: a snap turn of the rig is not a head turn), and whether he was
+aiming, moving, or had the menu open; the first 45 s after the page opens marked as Meta's launch boost, not
+waited out; heat and memory at the start and the end; when each note was shown and hidden. No OVR Metrics overlay
+and no Perfetto trace during the walk. Every recorder's own cost is proved first on the stand, with and without it,
+as stand-measure.mjs proves its tools on a known change (the GPU sampler and the per-line clock read over adb
+included; one that costs frames is dropped). Taking the headset off mid-walk stops the measure and keeps what was
+recorded. At the end the tool clears the "left the room early" mark leaving through the menu sets (left-early.js),
+so his next start is as before.
+
+Before he is called: the whole walk run once on the stand by tools/stand-flow.mjs (the script practised), its
+time and every recorder's cost read from that run.
+
+Not read: Meta's Quest 3 health and safety warnings on cables
+(https://www.meta.com/legal/quest/health-and-safety-warnings/), to be read before he is called.
