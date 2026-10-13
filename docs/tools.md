@@ -24,6 +24,10 @@ once); what it names is read or run only for its task. One line per situation; t
 - Code and docs against the finished picture, after a large change: the architecture-auditor agent.
 - The headset: the practice review runs before he is called to it, never while he waits in it;
   node tools/quest-look.mjs (look, measure, `say` for each step while he wears it; sleep after). Meta's own
-  checks and traces: metavr, the Meta VR CLI (device, perf, vrc-local); install and store: the meta-vr skills
+  checks and traces: metavr, the Meta VR CLI (device, perf, vrc-local); live frame rate, CPU and GPU in the headset: OVR
+  Metrics Tool's HUD, on and off over adb (installed by the owner 13.10); CPU- or GPU-bound: `metavr perf capture`,
+  read with Perfetto's trace_processor (installed 13.10, metavr tools); one draw's GPU cost: RenderDoc Meta fork
+  (installed 13.10, C:\Program Files\RenderDocForMetaQuest; `metavr tools install` failed with MSI 1639, so its MSI
+  from metavr's downloads was run by msiexec); install and store: the meta-vr skills
   hz-store-pwa and hz-store-submit; comfort: hz-immersive-designer.
 - The laptop: node tools/health.mjs (it also runs at every session start).
