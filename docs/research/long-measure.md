@@ -142,3 +142,18 @@ pictures (with the 100 extra renders above): the stutter on entering VR that che
 Setup learned: in a dark room, lying on a blanket, the headset lost tracking (its notice "finding your position in the room"), so
 VR was held; lit and facing the room it tracked. Something close in front of the lenses reads as worn: the tool then
 refuses, as it must.
+
+## The flow run (tools/stand-measure.mjs flow; built 13.10, not yet run in the headset)
+What the long run lacked (docs/baseline.md, "Not in it"): room 101 and the corridor's flow. The player
+(tools/stand-flow.mjs) runs inside the game's page and presses what tests/smoke.mjs presses, the normal path: the
+sign, the clipboard taken, the welcome, the consent signed by hand, the age, "start without recording" (nothing is
+sent), door 101, the room's intro, its 40 trials pressed in about half the windows at a moment inside the 3 s, the
+10 questions, the 6 reveal pages, back to the room's start. A person's reading time before each press: 2 s. The game
+at its real speed (the room's trials alone about 11 minutes: 40 x 3 s and a mean 14 s between).
+Read: a sample every 5 s (frames, late frames, the GPU's resources, visibility, the override), the heat every 30 s
+with its stop, the sandboxed processes' memory every minute; each late frame kept with its time and the step it fell
+in; per step in the summary (tools/stand-judge.mjs flowSummary): its length, its late frames and the worst, a rough
+rate, and the geometries, textures and programs at its first and last sample (what it loaded).
+Proved so far: the player went through every step in the browser pane on the laptop at ?speed=20 (13.10: 40 windows,
+13 presses, no error, the room back at its start); the summary's arithmetic by tests/stand.test.mjs. In the headset:
+by daylight, after the trial (the board: measures by DTEK's schedule).
