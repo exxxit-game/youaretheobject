@@ -16,13 +16,13 @@ excerpt). A phenomenon by name: search `docs/library/papers.json`, every record 
 - [social](library/social.md) (72): evacuation, conformity, cooperation, culture, proxemics, replication, synchrony, Asch conformity, Ringelmann effect, avatars
 - [emotion, morality, culture](library/emotion-morality-culture.md) (47): culture, awe, thought experiment, trolley problem, moral action, presence, Eastern samples, Milgram, Moral Machine, architecture
 - [VR norms and hardware](library/vr-norms-hardware.md) (99): cybersickness, presence, video passthrough, mixed reality, anthropometry, locomotion, SteamVR, VR interface design, augmented reality, cinematic VR
-- [methods, ethics, law](library/methods-ethics-law.md) (98): online experiments, GDPR, attention checks, crowdsourcing, data quality, online surveys, research ethics, AI coding agents, careless responding, citizen science
+- [methods, ethics, law](library/methods-ethics-law.md) (100): online experiments, GDPR, attention checks, crowdsourcing, data quality, online surveys, research ethics, AI coding agents, careless responding, citizen science
 - [games and platforms](library/games-platforms.md) (32): citizen science, video games, crowdsourcing, game development, gamelike features, playtesting, postmortems, process, usability, Disney Aladdin
 - [data sets](library/data-sets.md) (11): anthropometry, ANSUR II, body measurements, demographics, eye height, interpupillary distance, survey, Beat Saber, NHANES, Norway
 
 ## Status
 
-408 records: card 144 · no card 248 · wanted 10 · read-not-saved 5 · dropped 1. Text of the papers on disk: ok 353 · ocr 32 · placeholder 2 · none 5.
+410 records: card 144 · no card 250 · wanted 10 · read-not-saved 5 · dropped 1. Text of the papers on disk: ok 355 · ocr 32 · placeholder 2 · none 5.
 Relations: data 2 · derived 1 · duplicate 1 · replication 9 · reply 1 · supplement 10.
 Not in the library (wanted, read but not saved, dropped): [wanted](library/wanted.md). Areas searched
 for rooms: [coverage](library/coverage.md). Experiment cards: [catalog](catalog.md).

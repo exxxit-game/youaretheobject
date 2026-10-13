@@ -8256,6 +8256,42 @@
    "text": "ok",
    "status": "no card",
    "source": "https://cloud.google.com/dora"
+  },
+  {
+   "id": "hollnagel-2015",
+   "authors": "Hollnagel, E., Wears, R. L., Braithwaite, J.",
+   "year": "2015",
+   "title": "From Safety-I to Safety-II: a white paper",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "safety",
+    "process",
+    "resilience"
+   ],
+   "type": "report",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://www.england.nhs.uk/signuptosafety/wp-content/uploads/sites/16/2015/10/safety-1-safety-2-whte-papr.pdf"
+  },
+  {
+   "id": "reason-2000",
+   "authors": "Reason, J.",
+   "year": "2000",
+   "title": "Human error: models and management",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "human error",
+    "safety",
+    "process"
+   ],
+   "type": "journal article",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://doi.org/10.1136/bmj.320.7237.768"
   }
  ]
 }

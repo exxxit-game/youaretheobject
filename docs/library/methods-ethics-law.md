@@ -1,7 +1,7 @@
 # methods, ethics, law
 
 Generated from `docs/library/papers.json` by `node tools/build-library.mjs`. Do not edit by hand.
-98 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
+100 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
 in the library folder's papers\ as `<id>.txt` (a data set: `<dir>/<id>.txt` from the library folder); "text: ocr" marks a scan's
 text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 
@@ -49,6 +49,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **hawkins-2013** Hawkins et al. 2013. Gamelike features might not improve data · gamelike features, data quality, motivation · no card
 - **hedge-2018** Hedge et al. 2018. The reliability paradox: Why robust cognitive tasks do not produce reliable individual differences · reliability paradox, individual differences, cognitive tasks · no card
 - **hoch-2023** Hoch & Chenette 2023. The value of enhanced ethics checks: Initial experiences with PLOS ONE's updated Human Subjects Research policy · ethics checks, journal policy, PLOS ONE · no card
+- **hollnagel-2015** Hollnagel et al. 2015. From Safety-I to Safety-II: a white paper · safety, process, resilience · no card
 - **horing-2016** Hoering et al. 2016. A virtual experimenter to increase standardization for the investigation of placebo effects · virtual experimenter, placebo, standardization · no card
 - **hravnak-2018** Hravnak et al. 2018. A call to alarms: current state and future directions in the battle against alarm fatigue · alarm fatigue, warnings · no card
 - **huber-2020** Huber & Gajos 2020. Conducting online virtual environment experiments with uncompensated, unsupervised samples · online experiments, virtual reality, unsupervised samples, replication · no card
@@ -77,6 +78,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **pedersen-2023** Pedersen et al. 2023. Measuring Cognitive Abilities in the Wild: Validating a Population-scale Game-Based Cognitive Assessment · game-based assessment, cognitive abilities, citizen science · no card
 - **ratcliffe-2021** Ratcliffe et al. 2021. Extended Reality (XR) Remote Research: a Survey of Drawbacks and Opportunities · remote XR research, survey of researchers · no card
 - **ratliff-2024** Ratliff & Smith 2024. The Implicit Association Test · Implicit Association Test, implicit bias · no card
+- **reason-2000** Reason, J. 2000. Human error: models and management · human error, safety, process · no card
 - **reinecke-2015** Reinecke & Gajos 2015. LabintheWild: Conducting Large-Scale Online Experiments With Uncompensated Samples · LabintheWild, online experiments, uncompensated samples · no card
 - **rivu-2021** Radiah et al. 2021. Remote VR Studies: A Framework for Running Virtual Reality Studies Remotely Via Participant-Owned HMDs · remote VR studies, participant-owned headsets, framework · no card
 - **rivu-2022** Rivu et al. 2022. 'Can you Set It Up On Your Own?' - Investigating Users' Ability To Participate in Remote-Based Virtual Reality Studies · remote VR studies, setup ability · no card
