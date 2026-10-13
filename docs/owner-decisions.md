@@ -30,6 +30,7 @@ enough. A new decision: its line here, the rest there. A risk list or a general 
 - Bots: a hashed IP kept 10 minutes («Отпечаток IP на 10 минут»).
 
 ## Order
+- Strictly the revision's shelf order: work begun off its shelf goes onto its shelf and waits for it; a new window starts at the next shelf («Да» 13.10, to the shelf order after his «Шаг 15, шаг 30, шаг 50… Где… шаг номер один»).
 - The revision goes through all 14 shelves, filled from what exists first («Мы будем идти по всем 14 полкам. Надо сначала полки наполнить… мы всегда должны отталкиваться от настоящего» 12.10).
 - Everything marked not checked gets checked, fully: the revision fills the gaps and takes the tools it needs («все, что не проверено, нам надо все будет проверять. Полностью все… Заполняем пробелы» 13.10).
 - The process before the game until he is sure of it, explained to him bit by bit («мы все только донастраиваем… Мы пока дальше не двигаемся, потому что мы не уверены в процессе… понемногу объясняем мне это все» 13.10).
