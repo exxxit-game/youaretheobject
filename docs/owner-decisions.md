@@ -19,6 +19,7 @@ enough. A new decision: its line here, the rest there. A risk list or a general 
 - Paid tools only when they help decisively («не готов платить за лишнюю херню» 10.10).
 - CodeRabbit kept only if useful («А если он нам будет очень полезен, я, может, и дальше за него буду платить» 10.10); moved forward by a robot on GitHub, never by the session under review («да, этот» 10.10); it replaces the PR review toolkit («делай» 10.10); its trial and the pull request it reads: docs/state.md.
 - He never takes, edits or pastes pieces of code (GitHub tasks and the like): code is mine, his part is clicks, keys he creates by steps, and his yes; what can go wrong in code is not handed to him («если я должен брать куски кода, там что-то исправлять, вставлять… ты перекидываешь на меня те вещи, где я могу ошибиться» 12.10); a whole file copied, pasted and run as it is (Supabase's SQL editor) is fine, nothing to understand or change inside («Скопировал, вставил, run, вот там все супер» 12.10).
+- We are our own studio of two, a human and an AI: each takes the tasks done best by them, and where one cannot, the other covers it fully; what is needed is paid for, connected, installed and set up; the research is how to set up this studio, not how others work («мы теперь сами с тобой себе студия… Там, где один не может, там полностью ему помогает второй» 13.10).
 - He sets up and connects; I check it all as one whole («Все, что надо настроить, подключить, я настрою и подключу» 10.10).
 
 ## The goal
