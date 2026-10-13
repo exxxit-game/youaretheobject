@@ -1,0 +1,37 @@
+
+===================================================================
+  Perfetto Trace Analysis: 6ACDFAE8_capture
+===================================================================
+
+  App:      com.oculus.browser
+  Duration: 10.0s | 5 processes | 305665 slices
+  Summary:  MetricAPI measures 0.00ms mean main-thread active work, 6.19ms mean app-attributed GPU work, and a 0.00ms mean app start interval
+
+  Frame Timing
+  -----------------------------------------------------------
+  FPS:          n/a avg (UNKNOWN)
+  Frame time:   n/a avg | n/a p95 | n/a max | 11.1ms target @90fps
+  Slow frames:  n/a (0 frames; trace carries no per-frame intervals)
+
+  GPU Frame Time  (40 frames, source: app_gpu_ms_counter)
+  -----------------------------------------------------------
+  avg   6.19 ms   max   8.72 ms   p75   6.36 ms
+
+  Top Threads
+  -----------------------------------------------------------
+  Thread                Running  Runnable  Sleeping  Blocked  Prio
+  ------                -------  --------  --------  -------  ----
+  CrRendererMain          33.4%      1.5%     63.7%     0.0%   116
+  VrShellGL.OVRMo         14.4%      0.4%     83.8%     0.0%   120
+  CrGpuMain               11.4%      0.4%     86.8%     0.0%   116
+  ServiceWorker t          5.0%      2.0%      2.9%     0.0%   120
+  AudioOutputDevi          4.5%      0.4%     93.7%     0.0%   104
+
+  Data Quality
+  -----------------------------------------------------------
+  [~] no colour passes in the capture to scope GPU counters to; counters cover the whole capture
+  [~] fewer than 30 main-thread frame work samples
+  [~] fewer than 30 app frame intervals samples
+
+  Use -f json for full machine-readable output.
+

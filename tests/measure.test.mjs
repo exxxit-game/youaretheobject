@@ -4,7 +4,7 @@
 // baseline's spans and conditions wrong).
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { thermalOf, gpuIds, gpuSamples, windowStats, SLOW_MS, lateMs, mean } from '../tools/measure.mjs';
+import { thermalOf, memoryOf, gpuIds, gpuSamples, traceGpuOf, windowStats, SLOW_MS, lateMs, mean } from '../tools/measure.mjs';
 
 const read = (f) => fs.readFileSync(new URL(`fixtures/quest3/${f}`, import.meta.url), 'utf8');
 
@@ -29,6 +29,15 @@ assert.equal(g['% Time Shading Fragments'].length, 5);
 assert.equal(g['% Time Shading Fragments'][0], 97.615);
 assert.equal(mean(g['% Time Shading Fragments']), 97.6);
 assert.equal(mean(g['% Time Shading Vertices']), 2.4);
+
+// memory: the browser's own summary line, in kB (dumpsys meminfo com.oculus.browser)
+const mem = memoryOf(read('meminfo-browser.txt'));
+assert.equal(mem.pssKb, 193403);
+assert.equal(mem.rssKb, 411284);
+// a trace's GPU frame time, as metavr perf analyze-trace prints it (the corridor of 13.10)
+assert.deepEqual(traceGpuOf(read('perfetto-analysis.txt')), { frames: 40, avgMs: 6.19, maxMs: 8.72, p75Ms: 6.36 });
+assert.deepEqual(traceGpuOf('no GPU data'), { frames: 0, avgMs: null, maxMs: null, p75Ms: null });
+assert.deepEqual(windowStats([], 90), { frames: 0 }, 'a window with no frames says so');
 
 // a window: the rate over the frames' own span; late past 1.5 refreshes of the session's rate (a frame that
 // missed a refresh comes after two); the 72 Hz bar of tools/quest-look.mjs perf (1000/72 + 2 ms) beside it

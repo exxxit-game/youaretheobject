@@ -35,7 +35,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { adb, serveToHeadset, localPort, worn, sleepNow, openUrl, page, wornByPerson, restartBrowser, openGame, screencap } from './headset.mjs';
+import { adb, serveToHeadset, localPort, worn, sleepNow, openUrl, page, wornByPerson, restartBrowser, openGame, screencap, noteScript } from './headset.mjs';
 import { requireReview, requirePaper } from './review-gate.mjs';
 
 const PREVIEW = 'https://exxxit-game.github.io/object-preview/';
@@ -168,85 +168,8 @@ if (cmd === 'reload') {
 } else if (cmd === 'eval') {
   console.log(JSON.stringify(await run(arg), null, 1));
 } else if (cmd === 'say') {
-  // The owner's next step, inside the headset, so he does not take it off to read the chat (his
-  // practice, docs/owner-decisions.md). The input probe's panel and type as they were reviewed
-  // (tools/xr-probe-input.html, docs/audit/probe-review.md), cut to its two lines, and placed as Meta
-  // places captions: at the edge of the view, not over what he looks at ("at the top or bottom of their
-  // 40-degree field of view", developers.meta.com/horizon/design/accessibility), here 15 degrees above
-  // the horizon, since what he is asked to look at mostly stands lower (the extinguisher, the desk, the
-  // clipboard; placed 15 degrees under it, a note covered the extinguisher he was to look at); 1 m away, or nearer when a wall is closer, never under 0.5 m (Meta, design/display),
-  // scaled with its distance so the text keeps its size to the eye. Every new step buzzes both
-  // controllers, as the probe does, so he knows one came ("Provide sounds and haptic feedback").
-  // "say off" takes it away.
-  const [main, small] = [String(arg || ''), process.argv[4] || ''];
-  const v = await run(`new Promise((resolve) => {
-    const s = document.querySelector('a-scene'), main = ${JSON.stringify(main)}, small = ${JSON.stringify(small)};
-    let p = document.getElementById('ownerNote');
-    if (main === 'off') { if (p) p.object3D.visible = false; resolve({ hidden: true }); return; }
-    if (!p) {
-      p = document.createElement('a-entity');
-      p.id = 'ownerNote';
-      p.setAttribute('panel', 'w: 1; h: 0.34; px: 1432; ref: 1024; bg: #1c1c1c');
-      s.appendChild(p);
-    }
-    const show = () => {
-      p.components.panel.write([
-        { t: main, size: 54, weight: 500, color: '#dadada' },
-        ...(small ? [{ t: small, size: 34, color: '#9a9a9a', gap: 30 }] : [])
-      ]);
-      // Where it stands, as the clipboard finds where it is read (src/engine/ui/sheet-math.js readingPose):
-      // straight ahead first, then the nearest turn to either side up to 20 degrees (the panel spans about
-      // 27 degrees each side of its centre, and Quest 3 sees 55: Meta's IWSDK keeps such UI within 30, "Compact
-      // global UI that must remain discoverable", documentation/iwsdk/concepts/spatial-ui/hud), at 1 m or
-      // nearer down to 0.5 m, the first place where no surface stands on the lines from the eye to the
-      // panel's centre and four corners, nor 10 cm past them.
-      // A hint cut by a wall or a thing in front of it could not be read (the owner, 11.10). If nowhere is
-      // clear, it stands 0.5 m ahead drawn over everything, so it is read all the same (Meta: captions "never
-      // obstructed by spatial elements", design/accessibility), at the cost of a depth that contradicts the
-      // wall's (design/display): the reply says so, and the next hint asks him to step back.
-      const at = new THREE.Vector3(), ahead = new THREE.Vector3();
-      s.camera.getWorldPosition(at); s.camera.getWorldDirection(ahead);
-      ahead.y = 0;
-      if (ahead.lengthSq() < 1e-4) ahead.set(0, 0, -1);
-      ahead.normalize();
-      p.object3D.visible = false;
-      // what stands in the room: visible, and not the player's own rig (his controllers, their rays)
-      const seen = (o) => { for (; o; o = o.parent) if (!o.visible || (o.el && o.el.id === 'rig')) return false; return true; };
-      const ray = new THREE.Raycaster();
-      const firstHit = (to) => {
-        const v = to.clone().sub(at), len = v.length();
-        ray.set(at, v.normalize()); ray.far = len + 0.1;
-        return ray.intersectObjects(s.object3D.children, true).some((h) => h.object.isMesh && seen(h.object));
-      };
-      const UP = new THREE.Vector3(0, 1, 0), tilt = Math.PI / 12;
-      const place = (yaw, d) => {
-        const dir = ahead.clone().applyAxisAngle(UP, yaw).multiplyScalar(Math.cos(tilt)).setY(Math.sin(tilt));
-        const centre = at.clone().addScaledVector(dir, d);
-        const right = new THREE.Vector3().crossVectors(dir, UP).normalize(), up = new THREE.Vector3().crossVectors(right, dir).normalize();
-        const corners = [[-1, -1], [1, -1], [1, 1], [-1, 1]].map(([a, b]) => centre.clone().addScaledVector(right, a * 0.5 * d).addScaledVector(up, b * 0.17 * d));
-        return [centre, ...corners].some(firstHit) ? null : centre;
-      };
-      let spot = null, d = 1;
-      search: for (const yaw of [0, 10, -10, 20, -20].map((g) => (g * Math.PI) / 180)) {
-        for (const dist of [1, 0.85, 0.7, 0.5]) { const c = place(yaw, dist); if (c) { spot = c; d = dist; break search; } }
-      }
-      const onTop = !spot;
-      if (onTop) { d = 0.5; spot = at.clone().addScaledVector(ahead.clone().multiplyScalar(Math.cos(tilt)).setY(Math.sin(tilt)), d); }
-      p.object3D.traverse((o) => { if (o.material) { o.material.depthTest = !onTop; o.renderOrder = onTop ? 999 : 0; } });
-      p.object3D.position.copy(spot);
-      p.object3D.scale.setScalar(d);
-      p.object3D.lookAt(at);
-      p.object3D.visible = true;
-      for (const src of (s.xrSession && s.xrSession.inputSources) || []) {
-        const h = src.gamepad && src.gamepad.hapticActuators && src.gamepad.hapticActuators[0];
-        if (h && h.pulse) h.pulse(0.6, 120);
-      }
-      resolve({ shown: main, vr: s.is('vr-mode'), metres: +d.toFixed(2), overEverything: onTop });
-    };
-    // a new entity's panel draws once A-Frame has run its init (its canvas exists), a frame or two later
-    const ready = (n) => (p.components.panel && p.components.panel.c ? show() : n > 0 ? setTimeout(() => ready(n - 1), 50) : resolve({ error: 'the panel did not start' }));
-    ready(60);
-  })`);
+  // The owner's next step inside the headset: where it stands and why, in tools/headset.mjs noteScript
+  const v = await run(noteScript(String(arg || ''), process.argv[4] || ''));
   console.log(JSON.stringify(v));
 } else if (cmd === 'frame') {
   // What the headset shows, both eyes, taken by the headset itself (screencap): reading the page's own
