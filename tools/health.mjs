@@ -12,7 +12,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { runSetup } from './health-setup.mjs';
-import * as yaml from '../vendor/js-yaml/js-yaml-5.4.2.mjs';
+import * as yaml from './vendor/js-yaml/js-yaml-5.4.2.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 // one folder for every file the project keeps outside the repository: papers\, datasets\, imports\,
@@ -218,7 +218,7 @@ export function agentLacks(text) {
 // Claude Code reads an agent's header as YAML and drops an agent whose header does not parse,
 // without a word: an unquoted value holding ": " is a second key to YAML, and two agents went
 // missing from every session that way while a check of their text passed. So the header is read by
-// a YAML parser (js-yaml, MIT, kept in vendor/js-yaml): a hand-made check caught only the cases it
+// a YAML parser (js-yaml, MIT, kept in tools/vendor/js-yaml: a tool's, so not in vendor/, which the site serves): a hand-made check caught only the cases it
 // was written for and passed others YAML refuses (a value starting with @ or `, a key twice, an
 // unclosed [)
 export function agentHeaderProblems(text) {
