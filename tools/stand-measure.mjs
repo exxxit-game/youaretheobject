@@ -54,7 +54,7 @@ if (import.meta.url === pathToFileURL(process.argv[1] || '').href) await main();
 async function main() {
   const mode = process.argv[2];
   if (!['trial', 'restore'].includes(mode)) { console.log('usage: node tools/stand-measure.mjs trial | restore'); process.exit(1); }
-  const { adb, serveToHeadset, localPort, openGame, page, wornByPerson, connected, sleepNow, restartBrowser } = await import('./headset.mjs');
+  const { adb, serveToHeadset, localPort, openGame, page, wornByPerson, connected, sleepNow, restartBrowser, screencap } = await import('./headset.mjs');
   const PREVIEW = 'https://exxxit-game.github.io/object-preview/';
   const { requireReview, requirePaper } = await import('./review-gate.mjs');
   const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -116,7 +116,12 @@ async function main() {
     // the risk named first in the plan: whether an unworn headset enters VR at all (the boundary window may hold it)
     const vr = log('vr', { answer: await run(`Promise.race([document.querySelector('a-scene').enterVR().then(() => 'in VR', (e) => 'failed: ' + e.message),
       new Promise((r) => setTimeout(() => r('held 20 s: the boundary window, or no tracking'), 20000))])`) });
-    if (vr.answer !== 'in VR') { held = true; throw new Error(`VR: ${vr.answer}`); }
+    if (vr.answer !== 'in VR') {
+      held = true;
+      // what holds it is what the headset shows (a boundary prompt, a tracking-lost notice): a frame of it kept
+      try { fs.writeFileSync(path.join(DIR, 'held.png'), screencap()); log('held: frame kept', { file: 'held.png' }); } catch (e) { log('held: no frame', { error: e.message }); }
+      throw new Error(`VR: ${vr.answer}`);
+    }
     log('session', { rate: await run('document.querySelector("a-scene").xrSession.frameRate ?? null'),
       rates: await run('Array.from(document.querySelector("a-scene").xrSession.supportedFrameRates || [])') });
     // every XR frame counted, a frame late when its display time steps more than 1.5 refreshes (W3C WebXR 5.1,
