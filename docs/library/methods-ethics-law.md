@@ -1,7 +1,7 @@
 # methods, ethics, law
 
 Generated from `docs/library/papers.json` by `node tools/build-library.mjs`. Do not edit by hand.
-97 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
+98 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
 in the library folder's papers\ as `<id>.txt` (a data set: `<dir>/<id>.txt` from the library folder); "text: ocr" marks a scan's
 text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 
@@ -30,6 +30,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **corrigan-gibbs-2017** Corrigan-Gibbs, Boneh 2017. Prio: Private, Robust, and Scalable Computation of Aggregate Statistics · private aggregation, secret sharing, data protection, cryptography · no card
 - **crump-2013** Crump et al. 2013. Evaluating Amazon's Mechanical Turk as a Tool for Experimental Behavioral Research · Mechanical Turk, online experiments, classic effects online · no card
 - **de-leeuw-2023** de Leeuw, J. R. 2023. DataPipe: Born-open data collection for online experiments · online experiments, open data, data storage · no card
+- **dora-2025** Google Cloud DORA 2025. State of AI-assisted Software Development 2025 · AI coding agents, software delivery, DORA AI Capabilities Model · no card
 - **edpb-2019** European Data Protection Board 2019. Guidelines 3/2018 on the territorial scope of the GDPR (Article 3), version 2.1 · GDPR, territorial scope, EU representative · no card
 - **edpb-2023-breach** European Data Protection Board 2023. Guidelines 9/2022 on personal data breach notification under GDPR, version 2.0 · GDPR, data breach, notification · no card
 - **edpb-2025-pseudonymisation** European Data Protection Board 2025. Guidelines 01/2025 on Pseudonymisation · pseudonymisation, GDPR, hashing · no card

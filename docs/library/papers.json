@@ -8238,6 +8238,24 @@
    "text": "ok",
    "status": "no card",
    "source": "https://doi.org/10.1145/1297105.1297033"
+  },
+  {
+   "id": "dora-2025",
+   "authors": "Google Cloud DORA",
+   "year": "2025",
+   "title": "State of AI-assisted Software Development 2025",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "AI coding agents",
+    "software delivery",
+    "DORA AI Capabilities Model"
+   ],
+   "type": "report",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://cloud.google.com/dora"
   }
  ]
 }
