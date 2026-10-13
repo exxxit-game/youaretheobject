@@ -151,6 +151,7 @@ const prData = (threads, { state = 'SUCCESS', description = 'Review completed', 
 assert.match(summarizeRemarks(prData([], { changedFiles: 999 })).line, /more than 100 remark threads/, 'threads past the first page are not taken for none');
 const said = (...a) => summarizeRemarks(prData(...a));
 assert.match(said([thread('coderabbitai'), thread('coderabbitai', true), thread('coderabbitai', false, true), thread('exxxit-game')]).line, /^CodeRabbit: 2 open remarks on .*pull\/10 \(src\/a\.js\)/, 'its open remarks count, an outdated one too: its line changed, the remark stands');
+assert.match(said([thread('coderabbitai')]).line, /naming @coderabbitai/, 'the line no longer says to name CodeRabbit: unnamed answers stood two days unread');
 // remarks with no thread, inside its review bodies, of the last day
 const withReviews = (bodies, at = '2026-10-10T09:00:00Z') => { const d = prData([]); d.data.repository.pullRequests.nodes[0].reviews = { nodes: bodies.map((body) => ({ author: { login: 'coderabbitai' }, submittedAt: at, body })) }; return d; };
 assert.match(summarizeRemarks(withReviews(['**Nitpick comments (2)**', 'Outside diff range comments (1)']), Date.parse('2026-10-10T10:00:00Z')).line, /2 nitpick and 1 outside-diff remarks/, 'nitpicks and outside-diff remarks went unseen');

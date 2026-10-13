@@ -41,6 +41,8 @@ export function summarize(data, now = Date.now()) {
   const { nitpicks, outside } = untracked(pr.reviews?.nodes, now);
   return nitpicks + outside ? { line: `${said.line}. Its reviews of the last day also hold ${nitpicks} nitpick and ${outside} outside-diff remarks with no thread: read each in the reviews (gh pr view ${pr.number} --comments) and fix it or answer it` } : said;
 }
+// CodeRabbit closes a remark only after its own check, and answers a reply only when it is named: our unnamed replies
+// of 11.10 stood two days unanswered, the named ones of 13.10 were checked and closed within five minutes
 function base(pr, now) {
   // an outdated thread is one whose line changed since; it stays a remark until CodeRabbit closes it
   const open = pr.reviewThreads.nodes.filter((t) => !t.isResolved && /^coderabbitai/.test(t.comments.nodes[0]?.author?.login || ''));
@@ -50,7 +52,7 @@ function base(pr, now) {
   const read = status?.state === 'SUCCESS' && !skipped;
   if (open.length) {
     const files = [...new Set(open.map((t) => t.comments.nodes[0].path).filter(Boolean))];
-    return { line: `CodeRabbit: ${open.length} open remark${open.length === 1 ? '' : 's'} on ${pr.url} (${files.slice(0, 4).join(', ')}${files.length > 4 ? ', …' : ''}): read them before other work (gh pr view ${pr.number} --comments), fix the real ones, answer the rest; CodeRabbit closes its own` };
+    return { line: `CodeRabbit: ${open.length} open remark${open.length === 1 ? '' : 's'} on ${pr.url} (${files.slice(0, 4).join(', ')}${files.length > 4 ? ', …' : ''}): read them before other work (gh pr view ${pr.number} --comments), fix the real ones, answer the rest; answer each in its thread naming @coderabbitai, so it checks the code and closes its own` };
   }
   if (skipped) return { line: `CodeRabbit skipped the last push (${status.description}) on ${pr.url}: ${pr.changedFiles > FILE_LIMIT ? `${pr.changedFiles} files against its limit of ${FILE_LIMIT}; ` : ''}ask it again with a comment "@coderabbitai review"` };
   if (!read) {
