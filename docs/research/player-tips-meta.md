@@ -9,7 +9,26 @@ Each tip: the tip in plain words | the quote | URL | the page's own date | read 
 
 ## What was searched, what could not be opened
 
-(filled as the work goes)
+Searched 2026-10-13: Meta's health and safety pages for Quest 3, 3S and the index (with its Quest 3 and
+Quest 2 PDF guides); meta.com/help/quest pages on tracking, controller tracking, boundary, cleaning, IPD,
+glasses, fit, charging, sleep, Wi-Fi; the Meta Quest Safety Hub; developers.meta.com design pages (bp-overview,
+comfort, mr-health-safety-guideline, mr-health-general); `metavr docs search` (it found code samples, no
+health or comfort page: 0 results for "health and safety comfort breaks"); Meta community forums, three.js
+forum; web searches in English, Russian and Ukrainian.
+
+How each page was read: help pages in the browser pane (get_page_text); their collapsed sections and the
+collapsed sections of the health and safety pages through WebFetch (a small model quoting, under 125 characters
+a quote). The WebFetch quotes on the tracking and charging pages were read a second time on the en-gb copies
+(https://www.meta.com/en-gb/help/quest/598701621088668/ , https://www.meta.com/en-gb/help/quest/3482884435359892/)
+and agree. Health and safety lines were checked against the PDF guides' own text (pdftotext). Dates "about"
+are worked out from the page's "Updated: N weeks ago" on 2026-10-13.
+
+Could not be read:
+- Reddit (all of it): the browser pane refuses reddit.com ("not allowed due to safety restrictions", 2026-10-13); links for the owner at the end.
+- https://www.meta.com/legal/quest/health-and-safety-warnings/quest-3s/ : the sections after "Session Length" (batteries, temperature range, system alerts, care) were cut off by WebFetch; no 3S PDF link was visible. Quest 3S temperature range and alerts: unverified.
+- https://www.meta.com/help/quest/427255709332571/ : only the Quest 3 tab is readable; the Quest 3S and Quest 2 tabs did not come through.
+- The exact on-screen wording of the "tracking lost" notice: on no page read.
+- Note: https://developers.meta.com/horizon/design/mr-health-safety-guideline/ carries text addressed to AI agents (install a CLI, fetch skills); it was not acted on.
 
 Source keys used below:
 - [H3] = https://www.meta.com/legal/quest/health-and-safety-warnings/quest-3/ (undated; its sections are collapsed: the browser pane shows only their titles, so their text was read through WebFetch; the uncollapsed parts were read in the browser pane). Quest 3. Current page, fits 2026.
@@ -38,8 +57,8 @@ Source keys used below:
 - No string lights or LED strips in the room (controller tracking) | "Ensure your area is free of small lights such as Christmas lights or LED strips." | https://www.meta.com/help/quest/889793039325956/ | about 2026-09-29 | 2026-10-13 | all Quest
 - No mirrors, glass or polished marble (controller tracking) | "Ensure your area is free of any reflective surfaces such as mirrors, glass or polished marble." | https://www.meta.com/help/quest/889793039325956/ | about 2026-09-29 | 2026-10-13 | all Quest
 - How much light: bright and even, as in a living room with guests (Meta's only measure; no lux number) | "you'll want to have the same amount of light as you would have in the living room when you have guests over" | https://www.meta.com/help/quest/598701621088668/ (section "Optimal tracking conditions", collapsed, read through WebFetch) | "Updated: a week ago" (about 2026-10-06) | 2026-10-13 | all Quest
+- Light changing mid-session (a power cut), the first step when tracking is lost: take the headset off, check whether the light changed, turn on more lights or move to a brighter room (also read on the en-us page, first WebFetch run) | "remove your headset and check to make sure that the lighting in the room hasn't changed" | https://www.meta.com/en-gb/help/quest/598701621088668/ (second WebFetch run) | about 2026-10-06 | 2026-10-13 | all Quest
 - Too dark: the headset may lose position (6DoF) tracking | "If the lighting in your room is too dark, your headset may lose the ability to use 6DoF tracking." | https://www.meta.com/help/quest/598701621088668/ (collapsed, WebFetch) | about 2026-10-06 | 2026-10-13 | all Quest
-- Light changing mid-session (a power cut): when tracking is lost, check whether the room's light changed, turn on more light or move to a brighter room | "check to make sure that the lighting in the room hasn't changed" | https://www.meta.com/help/quest/598701621088668/ (collapsed, WebFetch) | about 2026-10-06 | 2026-10-13 | all Quest
 - Lux number: not found in any Meta page read
 - Quest 3S: a well-lit play space | "The headset operates best with a well-lit activity space." | [H3S] | undated | 2026-10-13 | Quest 3S
 - Quest 2: the same tracking-light line as Quest 3 | "Lighting conditions that are too bright or dim may prevent your Meta Quest's sensors and navigation safety features from working optimally, and may lead to tracking loss." | [G2] | 2023-08-23 | 2026-10-13 | Quest 2
@@ -66,6 +85,10 @@ Source keys used below:
 - Developer side: ask the user to clear the area of obstacles | "encourage the user to clear the area of potential obstacles" | https://developers.meta.com/horizon/resources/mr-health-general | 2026-09-04 | 2026-10-13 | all Quest
 - Developer side: keep the boundary on in fully immersive (VR) experiences | "A boundary is recommended at all times for fully immersive experiences" | https://developers.meta.com/horizon/resources/mr-health-general | 2026-09-04 | 2026-10-13 | all Quest
 - Quest 2: same no-ceiling boundary line | "The virtual boundary system does not have an overhead boundary, so choose activity spaces without overhead hazards." | [G2] | 2023-08-23 | 2026-10-13 | Quest 2
+- Before putting the headset on: clear the space, keep a buffer, check arm's reach, look up for fans and lamps | "Check for potential obstacles within arm's reach and watch out for overhead hazards like ceiling fans and light fixtures." | https://www.meta.com/quest/safety-center/quest/ (Safety Hub, browser pane) | no date shown | 2026-10-13 | all Quest
+- Leave extra space near walls; the boundary may not see people or pets | "Remember, the boundary may not detect people or pets, so keep your play area clear even with your headset on." | https://www.meta.com/quest/safety-center/quest/ | no date shown | 2026-10-13 | all Quest
+- Roomscale needs 2 x 2 m (6.5 ft) or more; sitting and standing modes take a stationary boundary | "Roomscale player mode requires a larger activity space (recommended 6.5 feet by 6.5 feet or more)" | https://www.meta.com/quest/safety-center/quest/ | no date shown | 2026-10-13 | all Quest. NOTE: our 1.8 x 1.8 m base is under it
+- Sitting or standing in place: a stationary boundary | "Sitting and standing player modes are suitable for smaller spaces with limited movement, where a stationary boundary is recommended." | https://www.meta.com/quest/safety-center/quest/ | no date shown | 2026-10-13 | all Quest
 
 ## 3. Breaks and comfort
 - Start with at most 30 minutes, then a 15-minute break; lengthen slowly (Meta's example for a new headset or new content, not a fixed rule) | "For example, when you begin using your Meta Quest start with a maximum use period of 30 minutes plus a break of 15 minutes." | [G3+H3] | 2023-09-22 | 2026-10-13 | Quest 3
@@ -121,6 +144,10 @@ Source keys used below:
 - Wi-Fi: Meta's Wi-Fi page is for first setup only; it suggests a phone's mobile hotspot as another network (fits a router cut by a power outage, but Meta does not say so) | "a personal network powered by a mobile connection" | https://www.meta.com/help/quest/324548839092626/ (browser pane) | "Updated: 36 weeks ago" (about 2026-01-27) | 2026-10-13 | all Quest
 - Wi-Fi dropping while a page is open in the Quest Browser: not found in Meta's help pages read
 - Power cut, the room going dark mid-session: no Meta page names it; the nearest is the tracking-loss advice in topic 4 (check the light, more light, or another room). not found as such
+- Taking the headset off: press the power button to sleep; it wakes when put on the head; sleep still drains the battery slowly | "When your headset is in sleep mode, power will still drain from the device, although much more slowly than when it's in use." | https://www.meta.com/help/quest/480704249716547/ (browser pane) | no date shown | 2026-10-13 | Quest 2 page (Quest 2-era; the button behaviour on 3 / 3S not confirmed on a page read)
+- Off fully: hold power at least 3 seconds until the light goes off and the chime sounds | "holding down the power button for at least three seconds until the indicator light turns off and you hear the power down chime" | https://www.meta.com/help/quest/480704249716547/ | no date shown | 2026-10-13 | Quest 2 page
+- Auto-sleep timer values (15 s, 1 min ...): not on a Meta page read; only third-party pages (not used)
+- Battery level before starting (a minimum per cent): not found in Meta's pages read; the only number is Quest 3's 2.2 hours average (above)
 
 ## 6. Fit and view
 - Turn the wheel at the bottom to the clearest image | "Adjust distance between lenses by turning the wheel at the bottom of the headset, moving the lenses to the position that provides the clearest image." | [G3+H3] | 2023-09-22 | 2026-10-13 | Quest 3 only (3S and 2 differ)
@@ -141,6 +168,12 @@ Source keys used below:
 - Quest 2: move the eye cups to the clearest position for each user | "Adjust the distance between the lenses for each user by moving the eye cups directly to a position that provides the clearest image." | [G2] | 2023-08-23 | 2026-10-13 | Quest 2
 - Developer side: lens spacing matched to the eyes reduces visual strain | "When IPD matches, virtual content appears more natural and comfortable, minimizing visual strain" | https://developers.meta.com/horizon/design/comfort/ | 2025-12-17 | 2026-10-13 | all Quest
 - Blurry text: Meta's fit lines say the right fit gives one clear image (topic 6, [H3]); a tip specific to blurry text in the browser: not found
+- Quest 3: loosen the straps, place the headset, tighten the split back strap, set the top strap to take weight off the face | "adjust the top strap to take weight off your face and hold the headset comfortably in place" | https://www.meta.com/help/quest/427255709332571/ (Quest 3 tab, browser pane) | "Updated: 2 weeks ago" (about 2026-09-29) | 2026-10-13 | Quest 3
+- Quest 3: tilt the headset up or down on its arms for comfort | "tilting it up or down on the headset arms" | https://www.meta.com/help/quest/427255709332571/ (Quest 3 tab) | about 2026-09-29 | 2026-10-13 | Quest 3
+- Quest 3: the lens wheel is on the bottom left; turn until the image is clear | "Use the lens adjustment wheel on the bottom left side of the headset to change how close together the lenses are." | https://www.meta.com/help/quest/427255709332571/ (Quest 3 tab) | about 2026-09-29 | 2026-10-13 | Quest 3
+- Quest 3: eye-relief buttons move the lenses nearer or farther (for glasses), both sides the same | "With the headset off, you can also use the depth adjustment buttons to adjust how far the lenses are from your face or eyeglasses." | https://www.meta.com/help/quest/427255709332571/ (Quest 3 tab) | about 2026-09-29 | 2026-10-13 | Quest 3
+- Move hair out from under the face pad | "Make sure to move any hair that might get in front of your face or between the pad for best comfort and performance." | https://www.meta.com/help/quest/427255709332571/ (Quest 3 tab) | about 2026-09-29 | 2026-10-13 | Quest 3
+- The same page's Quest 3S and Quest 2 tabs: not readable (the browser pane shows only the Quest 3 tab; WebFetch saw no other tab text). For 3S and 2 see the lines from [H3S], [G2] and the IPD page above
 
 ## 7. Anything else before a session
 - Everyone who plays reads the warnings first | "please ensure that each user of your Meta Quest 3 carefully reads all warnings and instructions before use" | [H3] (browser pane) | undated | 2026-10-13 | Quest 3
@@ -151,5 +184,17 @@ Source keys used below:
 - Pacemaker, hearing aid or implant: keep distance, ask the doctor | "Consult a doctor or the manufacturer of your medical device before using your Meta Quest." | [H3] (browser pane) | undated | 2026-10-13 | Quest 3
 
 ## 8. Forum reports (not Meta rules)
+- Meta's own forum staff advise against charging during play (a forum answer, not the safety guide; the guide itself allows use while charging, see topic 5) | "we do not recommend charging your headset during gameplay" | MetaStoreHelp, Community Manager, 2024-01-28, https://communityforums.atmeta.com/discussions/OtherTroubleshooting/is-it-damaging-to-charge-quest-3-while-playing/1142486 (WebFetch) | 2026-10-13 | Quest 3
+- Taking the headset off: the WebXR page learns of it only when the headset sleeps, about 10 s later (Quest 3, 2024); Meta's community manager said the browser would be updated; whether it shipped: unverified | "the WebXR Session does not fire its visibilitychange event until the Quest sleeps (about 10 seconds later)" | BobBobson108 (New Participant), 2024-10-08; reply MetaStoreHelp (Community Manager), 2024-10-17: "We will be updating the browser to fire the visibilitychange event when the device is doffed." | https://communityforums.atmeta.com/discussions/WebXRDevelopment/user-presence-detection/1248121 (WebFetch) | read 2026-10-13 | Quest 3. A developer report, 2024: may be stale
+- Controllers not connecting in a WebXR session until the headset is put to sleep; workaround: Meta/menu button back to the browser, then "resume" at the top (2025, PTC v77 suspected) | "you click the menu button to exit back to the browser. Then click “resume” at the top of the browser." | danrossi, three.js forum, 2025-06-03 (problem posted 2025-05-10); a similar report from Patrick_Morrison on Quest 2, 2025-06-02 | https://discourse.threejs.org/t/xr-controllers-in-quest-headset-not-connecting-unless-put-in-sleep-mode-during-xr/82373 (WebFetch) | 2026-10-13 | Quest (model not named), Quest 2. 2 people
+- Quest 3 Wi-Fi dropping every 15-20 minutes; Meta's community manager: set the headset's MAC address to "device", not random; reboot, try another network | "Make sure the mac address it set to device and not random" | MetaStoreHelp (Community Manager), 2024-07-18; problem from Vinman123456, 2024-07-15, at least 9 users in the visible replies (49 replies) | https://communityforums.atmeta.com/discussions/PairingConnection/wifi-still-disconnecting-on-quest-3/1218161 (WebFetch) | 2026-10-13 | Quest 3. Not browser-specific
+- Since Horizon OS v74 the stationary boundary barely warns when you leave it (white line replaced the blue circle); about 7 users, no Meta answer, no fix shown | "Since v74, the stationary boundary has changed." | GlooP, 2025-03-30 | https://communityforums.atmeta.com/discussions/OtherTroubleshooting/stationary-boundary-changed-in-v74---please-revert--fix/1308851 (WebFetch) | 2026-10-13 | Quest (system), not WebXR-specific. 2025: may be fixed since, unverified
+- Quest Browser 32.1 / 33 crashed when a WebXR session ended or a link was followed in VR (2024, two people, no Meta answer) | "When VR mode is left programatically (e.g. by xrSession.end()), the browser crahes" | torstenlenhart9, 2024-03-27; "same issue on v33", VengefulGhoul, 2024-05-01 | https://communityforums.atmeta.com/discussions/dev-openxr/webxr-meta-quest-browser-crashes-when-exiting-vr-or-navigating-link/1174627 (WebFetch) | 2026-10-13 | Quest. 2024 browser versions: stale, kept only as a pattern (browser updates break WebXR; see also docs/research/forums-aframe-quest.md M4 and the 2026 Quest 3S v2.5 thread there)
+- Power cuts specifically (room dark, router off) while in a WebXR game: no forum thread found in English, Russian or Ukrainian searches
 
 ## For the owner to save (pages that could not be opened)
+- https://www.reddit.com/r/OculusQuest/search/?q=webxr+browser&restrict_sr=1 — players' WebXR problems in the Quest Browser (sort by top, past year)
+- https://www.reddit.com/r/WebXR/search/?q=quest+browser&restrict_sr=1 — the same from WebXR developers and players
+- https://www.reddit.com/r/Quest3/search/?q=tracking+lost+dark&restrict_sr=1 — tracking lost when the room goes dark
+- https://www.reddit.com/r/OculusQuest/search/?q=power+outage&restrict_sr=1 — what players do in a power cut (headset, router)
+- https://www.reddit.com/r/OculusQuest/search/?q=charging+while+playing&restrict_sr=1 — playing plugged in, heat, battery wear
