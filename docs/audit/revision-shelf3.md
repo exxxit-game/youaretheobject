@@ -109,3 +109,36 @@ recenter's spot after every move) showed it sends him back only to his last move
 ### Loading and smoothness (his request of 13.10)
 Two more checks: F1, the targets (Meta, the web's standards, research on how waiting drives players away); F2, what
 our game loads, when, and where it waits.
+
+What we do now (F2, read in the code at 18ecf91 and measured on our two sites 13.10):
+- Everything loads at the start, room 101 too: 87 requests and 2 145 965 bytes before the first picture (A-Frame alone
+  1 323 381), in seven waits one after another (the page, main.js, the fonts, five rounds of modules; no modulepreload).
+  The corridor's sounds (602 001 bytes) and room 101's (2 845 011) start early; nothing waits for them.
+- At the door only visibility and lights change; nothing loads there. The corridor takes at least about 53 s in VR
+  before the door can be pressed (its voice lines' lengths, read with ffprobe).
+- During play the game waits on the network once, for the comparison with others, with a 4 s limit (results.js:25-27).
+- GitHub Pages sends gzip only and keeps files 10 minutes (max-age=600); the game has no service worker, so a second
+  visit downloads everything again.
+
+The targets (F1, each with its page in the report):
+- Never below 60 fps in play, aiming at our 72 Hz, 13.88 ms a frame, no stale frames (Meta VRC.Quest.Performance.1,
+  OVR stats); no freezes over 45 minutes or the whole content (VRC.Quest.Functional.1).
+- Something head-tracked within 4 s of launch, or a loading indicator in VR (VRC.Quest.Performance.3), never head-locked
+  (VRC.Quest.Functional.10).
+- People start to leave after about 2 s of waiting: a video's start delay costs 5.8 % more viewers each second after 2 s
+  (Krishnan and Sitaraman 2012); web users "might not return" past 4 s (Galletta and others 2004). Dated, the
+  direction holds.
+- The stalls come from the first drawing, not the download: "When materials and textures are drawn for the first
+  time, the browser will hang and block while uploading to the GPU" (A-Frame 1.8.0 best-practices.md); three.js r184
+  has initTexture and compileAsync to do it ahead.
+
+How it is done where it is solved (F1, part 8): Gregory, 3rd ed., 16.4.1 to 16.4.4 (one level at a time behind a
+loading screen; the airlock, a corridor walked while the next area loads, as in Halo and Jak 2; streaming; a loaded
+area's objects made hidden and inactive, then shown); Unity's LoadSceneAsync with allowSceneActivation (load in the
+background, switch at the door); Godot's load_threaded_request. The web parts all exist in Quest Browser by MDN's data
+(dynamic import, fetch priority, a service worker). The pattern for a corridor with rooms, put together from these
+sources (to be judged): the corridor first; the next room fetched in the background, built hidden, its textures sent to
+the GPU one a frame and its shaders compiled ahead; the door opens when the room says it is ready, with a fade if it is
+not; in room N, room N+1 the same way, room N freed once out of sight; a service worker keeps what was loaded on the
+headset for the next visit. Not measured yet: whether Quest 2 holds two rooms at once, whether compileAsync really runs
+in parallel there, how long one texture's upload takes (shelf 4).
