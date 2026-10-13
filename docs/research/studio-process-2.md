@@ -174,16 +174,18 @@ Second file of docs/research/studio-process.md (the question, the marks and the 
 
 ### Who covers which studio role in a two-member studio (derived from the sources above; not itself a source)
 
-Each line: the studio role (Gregory §1.1; Part 2 in studio-process.md), who holds it here, and the cover.
+Each line: the studio role (developers, artists, designers, producers and the publisher from Gregory §1.1, Part 2 in
+studio-process.md; performance, QA, certification and documentation from Parts 3–5), who holds it here, and the cover.
 - Game director / lead designer (vision, scope, what is cut): the owner. Cover: the agent brings the options with
   their sources and costs (Anthropic: people keep "taste" and "high-level thinking and design").
-- Producer (order of work, gates, risks): the owner decides the order; the agent keeps the board, the gate lists
-  and the risk list true, and says when a gate is not met (Washburn: small teams name obstacles about twice as
+- Producer (order of work, gates, risks): the owner decides the order; the agent keeps the board true, and the gate
+  lists and the risk list once they exist (studio-process.md: neither exists yet), and says when a gate is not met (Washburn: small teams name obstacles about twice as
   often).
 - Engineers, tools programmer, technical artist, lighting, audio implementation: the agent. Cover: automatic
   checks it runs itself, and a second agent in a fresh context reviewing what the owner will rely on (Claude Code
   best practices: "the agent doing the work isn't the one grading it").
-- Performance engineer: the agent, on the headset, by the repeated-run method (studio-process-3.md, Part 3).
+- Performance engineer: the agent, on the headset the owner wears when asked, by the repeated-run method
+  (studio-process-3.md, Part 3).
   Cover: numbers written by the tool, not by memory.
 - QA (automated): the agent, tests there from the start (as Rare built Sea of Thieves). QA (the build as a player
   meets it in the headset), playtest lead, the final word on comfort and feel: the owner, with the 5–10 testers;
@@ -191,7 +193,7 @@ Each line: the studio role (Gregory §1.1; Part 2 in studio-process.md), who hol
 - Certification: the agent keeps the VRC checklist and checks it; the owner does every account action (developer
   dashboard, agreements, pricing, submission, payouts), since these are his accounts and legal acts.
 - Publisher, marketing, community: the owner (store page text, Telegram community); the agent drafts.
-- Documentation: the agent, in the same commit as the change (Google's rule); the owner's own words kept as he
+- Documentation: the agent, in the same commit as the change (Google's rule; today held only in part); the owner's own words kept as he
   said them (docs/owner-decisions.md).
 - What neither can cover: art made by hand by a skilled artist, voice actors, outside playtesters who are not
   friends. These are bought in or designed around (Cubism's minimal look).
