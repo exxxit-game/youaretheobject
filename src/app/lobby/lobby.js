@@ -205,13 +205,14 @@ export async function runLobby(room) {
   const withRecording = await askConsent(sheet, { extra: room.extra });
 
   // 4. the clipboard goes back to its hook and says what to do; door 1 opens the room
-  await sheet.back([...cover, { t: LOBBY_T.chooseDoor, role: 'title', gap: 0.04, from: HOOK_READ }]);
+  await sheet.back([...cover, { t: LOBBY_T.chooseDoor, role: 'title', gap: 0.04, from: HOOK_READ }, { t: LOBBY_T.menuHint, role: 'body', gap: 0.03, from: HOOK_READ }]);
   await spoken;
   speak(LOBBY_T.chooseDoor);
   await throughDoor({ sheet, leaf, light, room, exitOff });
   // the player can leave the room through the game's menu (src/app/lab.js): back in the corridor at
-  // its start, the room's early-leaving choice on the clipboard (left-early.js), then door 1 again
-  const back = async () => {
+  // its start; if they left before the room's debrief, its early-leaving choice on the clipboard
+  // (left-early.js); then door 1 again
+  const back = async (early) => {
     light.back();
     door1Shut();
     $('#rig').setAttribute('locomotion', `${bounds(AREA)}; ${comfort()}`);
@@ -220,10 +221,12 @@ export async function runLobby(room) {
     await delay(250);
     await $('#cam').components.fader.to(0);
     exitOff.on();
-    const pick = await sheet.interrupt([{ t: APP_T.leftEarly.now, role: 'body' }], [APP_T.leftEarly.again, APP_T.leftEarly.learn]);
-    if (pick === 1) await sheet.next([{ t: APP_T.leftEarly.now, role: 'body' }, { t: room.debrief, role: 'soft', gap: 0.02 }], [APP_T.leftEarly.again]);
-    if (room.real) markReached(room.id);
-    await sheet.resume();
+    if (early) {
+      const pick = await sheet.interrupt([{ t: APP_T.leftEarly.now, role: 'body' }], [APP_T.leftEarly.again, APP_T.leftEarly.learn]);
+      if (pick === 1) await sheet.next([{ t: APP_T.leftEarly.now, role: 'body' }, { t: room.debrief, role: 'soft', gap: 0.02 }], [APP_T.leftEarly.again]);
+      if (room.real) markReached(room.id);
+      await sheet.resume();
+    }
     await throughDoor({ sheet, leaf, light, room, exitOff });
   };
   return { withRecording, back };

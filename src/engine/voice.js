@@ -6,6 +6,7 @@ import { getContext, onUnlock } from './audio.js';
 const raw = new Map();      // text -> Promise<ArrayBuffer | null>
 const decoded = new Map();  // text -> Promise<AudioBuffer | null>
 let current = null;
+let hushed = 0;   // hush() counts up: a line asked before it, still loading, never starts after it
 
 // lines: [{ text, file }]; file is resolved against baseUrl (the room module URL).
 export function loadVoice(lines, baseUrl) {
@@ -27,10 +28,12 @@ export function speak(text) {
 // Stops the line being spoken (the player left the room in the middle of it); its promise resolves as
 // when a line ends, and what waited on it decides whether to go on (room.js: within).
 export function hush() {
+  hushed++;
   if (current) { try { current.stop(); } catch (e) { /* already stopped */ } current = null; }
 }
 
 function play(text) {
+  const asked = hushed;
   const ctx = getContext();
   if (!ctx) return Promise.resolve(false);
   if (!decoded.has(text)) {
@@ -39,7 +42,7 @@ function play(text) {
       .catch(() => null));
   }
   return decoded.get(text).then((buffer) => {
-    if (!buffer) return false;
+    if (!buffer || asked !== hushed) return false;
     if (current) { try { current.stop(); } catch (e) { /* already stopped */ } }
     const src = ctx.createBufferSource();
     src.buffer = buffer;

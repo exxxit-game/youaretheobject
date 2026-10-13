@@ -56,7 +56,10 @@ export const APP_T = {
     title: 'Меню',
     resume: 'Продолжить',
     leaveRoom: 'Выйти из опыта',
-    roomNote: 'Если выйти, этот проход опыта не сохранится. Войти снова можно из коридора.',
+    leaveRoomAsk: 'Выйти из опыта? Этот проход не сохранится. Войти снова можно из коридора.',
+    leaveRoomYes: 'Выйти',
+    // after the debrief the run is kept: the way out is only back to the corridor
+    toCorridor: 'Выйти в коридор',
     leaveGame: 'Прекратить участие'
   },
   understood: 'Понятно',

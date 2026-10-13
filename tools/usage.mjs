@@ -16,8 +16,8 @@
 //   calls, they equal these sums on input and cache, and on output too in sessions with no open response;
 //   with open ones theirs is higher, by about a thousand tokens per open response.
 // - Some of Claude Code's side calls (the small model that reads web pages) and Claude chat on the web,
-//   desktop or phone write no transcript here, yet the plan counts them ("all activity in both tools
-//   counts against the same limits", support.claude.com/en/articles/11145838).
+//   desktop or phone write no transcript here, yet the plan counts them: Claude and Claude Code
+//   share the same limits (support.claude.com/en/articles/11145838).
 // - A session deleted in Claude Desktop takes its transcript with it.
 // - The plan's tier is read from Claude Code's account file (~/.claude.json) into each reading: a larger
 //   tier gives more tokens per percent, so readings compare only within one tier.
@@ -36,18 +36,17 @@ const SNAPS = path.join(HOME, 'Documents', 'objekt-files', 'notes', 'usage', 'sn
 // only the tier's name is read from the account file, nothing else in it
 const tier = () => { try { return JSON.parse(fs.readFileSync(path.join(HOME, '.claude.json'), 'utf8')).oauthAccount?.organizationRateLimitTier ?? null; } catch { return null; } };
 
-// The weekly limit "resets at a fixed time each week that is assigned to your account"
-// (support.claude.com/en/articles/11049741). This account's: Tuesday 06:00 UTC, the card's reset time;
-// the files agree (a "hit your weekly limit · resets 9am (Europe/Chisinau)" notice, and the app's
-// seven-day percent falling to 0 at that hour).
+// The weekly limit resets at a fixed time each week, set per account (support.claude.com/en/articles/11049741).
+// This account's: Tuesday 06:00 UTC, the card's reset time; the files agree (Claude Code's notice of a
+// weekly limit hit names 9am Europe/Chisinau for the reset, and the app's seven-day percent falls to 0 then).
 const RESET = Date.parse('2026-10-20T06:00:00Z');
 const WEEK = 7 * 864e5;
 export const weekStart = (t) => RESET + Math.floor((t - RESET) / WEEK) * WEEK;
 
 // One weighting for comparing kinds: the API's list price, which is how Claude Code itself prices tokens
-// for its own figure ("computes the dollar figure locally from token counts at list price",
-// code.claude.com/docs/en/costs). How the plan's percent weighs them is not published; Anthropic says
-// only that "cached portions count less against your limits than new content" (support article 9797557).
+// for its own dollar figure, from the token counts at list price (code.claude.com/docs/en/costs). How the
+// plan's percent weighs them is not published; Anthropic says only that cached content counts less
+// against the limits than new content (support.claude.com/en/articles/9797557).
 // USD per million tokens: input, 5-minute cache write, 1-hour cache write, cache read, output
 // (platform.claude.com/docs/en/about-claude/pricing, the model pricing table)
 export const PRICES = {

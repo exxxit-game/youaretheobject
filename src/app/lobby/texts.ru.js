@@ -17,6 +17,8 @@ export const LOBBY_T = {
   // the clipboard hangs on the experimenter's board left of door 1 (src/app/lobby/lobby.js)
   takeSheet: 'Возьмите планшетку: она висит на доске слева от двери.',
   chooseDoor: 'Выберите дверь. Сейчас открыта первая комната.',
+  // under the door's line on the clipboard's hook page, read, not spoken (src/app/menu.js)
+  menuHint: 'Меню и выход из комнаты — кнопка с тремя чёрточками на левом контроллере (на компьютере Esc).',
   // the computer player's line in the corridor (src/app/hint.js)
   hint: { title: 'You are the object.', body: 'Мышь: зажмите и тяните — оглядеться, щелчок — нажать. В шлеме: кнопка VR справа внизу.' },
   // the plaque by the stairs the player came up, in the middle of the corridor

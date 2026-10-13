@@ -25,6 +25,8 @@ import '../engine/prewarm.js';
 import { stageHTML } from './stage.js';
 import { corridorHTML, runLobby } from './lobby/lobby.js';
 import { leave as leaveGame } from './lobby/exit.js';
+import { LOBBY_T } from './lobby/texts.ru.js';
+import { getContext } from '../engine/audio.js';
 import { createMenu } from './menu.js';
 import { APP_T } from './texts.ru.js';
 import { ROOM1_DOOR, roomPlace, toCorridor, areaToCorridor } from './lobby/plan.js';
@@ -47,17 +49,24 @@ export function start(room) {
     // the room, to leave it: under the fade the room ends its run, the player is back in the corridor,
     // and door 1 takes them in again (lobby.js, back)
     const menu = createMenu(scene);
-    const corridor = { items: [{ label: APP_T.menu.leaveGame, run: () => leaveGame(scene) }] };
+    const M = APP_T.menu, E = LOBBY_T.exit;
+    // in the corridor the voice and sounds wait under the menu (the room holds its own: room.js hold)
+    const sound = (on) => { const ctx = getContext(); if (ctx) (on ? ctx.suspend() : ctx.resume()).catch(() => {}); };
+    const corridor = { hold: sound, items: [{ label: M.leaveGame, confirm: { ask: E.ask, yes: E.leave }, run: () => { sound(false); return leaveGame(scene); } }] };
     menu.set(corridor);
     const { seat, area, ...entry } = room.ENTRY;
     const { withRecording, back } = await runLobby({ ...entry, seat: { ...seat, ...toCorridor(place, seat) }, area: areaToCorridor(place, area) });
-    const inRoom = { note: APP_T.menu.roomNote, hold: (on) => room.hold(on), items: [{ label: APP_T.menu.leaveRoom, run: leaveRoom }] };
-    async function leaveRoom() {
+    // inside a run, leaving asks first (the run is lost); after its debrief the run is kept, and the way out
+    // is only back to the corridor
+    const inRoom = { hold: (on) => room.hold(on), items: () => (room.running()
+      ? [{ label: M.leaveRoom, confirm: { ask: M.leaveRoomAsk, yes: M.leaveRoomYes }, run: () => leaveRoom(true) }]
+      : [{ label: M.toCorridor, run: () => leaveRoom(false) }]) };
+    async function leaveRoom(early) {
       menu.set(null);
+      room.leave();   // first, under the menu: nothing of the run answers during the fade
       await scene.querySelector('#cam').components.fader.to(1);
-      room.leave();
       menu.set(corridor);
-      await back();
+      await back(early);
       menu.set(inRoom);
       room.enter(withRecording);
     }

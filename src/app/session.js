@@ -28,6 +28,9 @@ const MAX_ISSUES = 5;
 export function createSession(roomId, roomVersion) {
   let record = false;
   let first = true;
+  // a second run in one visit (the player left the room and came back) is a repeat even when the
+  // browser keeps no storage: the in-page mark stands for it
+  let begun = false;
   const queued = [];
   const seen = new Set();
   let sent = 0;
@@ -40,7 +43,8 @@ export function createSession(roomId, roomVersion) {
     // as its procedure begins: from here the player counts as having seen the experiment.
     begin(withRecording) {
       record = !!withRecording;
-      first = markPlayed(roomId);
+      first = markPlayed(roomId) && !begun;
+      begun = true;
       if (record) flush(); else queued.length = 0;
     },
     // Game errors: kept until the player chooses, sent only with recording.
