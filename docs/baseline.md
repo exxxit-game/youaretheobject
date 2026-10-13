@@ -78,16 +78,16 @@ Raw files: objekt-files/notes/headset/perf-2026-10-13/. Two fact-checks of 13.10
 ## The long run on the stand (13.10, 19:48 to 20:33 Kyiv time)
 `node tools/stand-measure.mjs long` after its trial proved four tools on a known change each (frames, draw calls,
 late frames, the page's memory; docs/research/long-measure.md, "The trial"; heat, battery and the GPU clock had no
-such proof). His Quest 3 unworn, on the laptop's USB cable, Meta's proximity override on; the room lit for the first
-17 minutes, then dark nearly to the end by his messages (20:05 the room fully dark, 20:24 no light, 20:31 the light
+such proof). His Quest 3 unworn, on the laptop's USB cable, Meta's proximity override on; the room lit at the start; the light went at a time not recorded before 20:05, and the room
+was dark nearly to the end by his messages (20:05 the room fully dark, 20:24 no light, 20:31 the light
 coming back soon); the game from the laptop at commit ee618fd, in the corridor at its start, the view turned 45° about every
 64 s in place, OVR Metrics' HUD off. Raw log and dumps: objekt-files/notes/headset/stand-long-2026-10-13T16-48-01/.
 Two fact-checks of the first account corrected the light, the memory, the fan and the charging.
 - 45.2 minutes; 90 fps in every minute in play (89.6 in the first, 89.9 in two others); never below Meta's 60
   (VRC.Quest.Performance.1) while the game was shown. Late frames: 41 in play, 16 of them in the first minute (the
   start), and 3 more in the sample where the game came back.
-- 1074.6 s to 1300.4 s: the session "hidden" and the game drew nothing, starting about half a minute after the room
-  went dark; the cause is not in the record (likely the headset lost its place). It came back by itself and ran the
+- 1074.6 s to 1300.4 s: the session "hidden" and the game drew nothing, starting about half a minute after his message that the room
+  was fully dark; the cause is not in the record (likely the headset lost its place). It came back (the tool did nothing; no cause recorded; he was at the headset then) and ran the
   remaining 23 minutes at 90 fps in the dark, tracking mode unknown. After it recenter.js placed the player again (the
   view's turn back to its start). Under Meta's rule a system overlay is no frame drop of the app.
 - Heat flat: the virtual surface sensor surf-virt-usr 37.2 to 38.9 °C, the SoC (soc-usr) up to 58.5 °C, against the
