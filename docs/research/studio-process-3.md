@@ -84,6 +84,18 @@ Third file of docs/research/studio-process.md (the question, the marks and the i
   13.10) are the start of it; whether they fix the view and compare one change at a time: unverified (not read in
   full for this report).
 
+- **Budgets enforced by the build, for a web app** [read] — Milica Mihajlija, "Performance budgets 101",
+  web.dev, last updated 2018-11-05, https://web.dev/articles/performance-budgets-101: a budget is "a set of limits
+  imposed on metrics that affect site performance"; three kinds: quantity-based (file sizes, counts), "useful in
+  the early stages of development"; milestone timings (load events); rule-based scores (Lighthouse). Put the
+  budgets in the build pipeline (Lighthouse CI and similar named); when a budget is exceeded the choices are to
+  optimise the feature or asset, remove it, or not add it.
+- For us: what a CI machine without the headset's GPU can hold honestly is the countable part (draw calls per
+  view in both eyes, triangles, texture sizes, download size, page errors); its frame times say nothing about a
+  Quest (our inference: GitHub renders with SwiftShader, a CPU renderer, tests/smoke.mjs), so timings are held
+  on the headset by the repeated-run method above. An exceeded budget has three answers only:
+  make it cheaper, remove it, or do not add it.
+
 ### Part 4. QA, playtests, certification
 
 - **Playtests are experiments on the design, not bug hunts** [read, project library] — Mike Ambinder (Valve),

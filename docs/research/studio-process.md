@@ -59,6 +59,19 @@ making a WebXR game (A-Frame 1.8.0, no build step) for Meta Quest.
   (store, marketing) is Meta's store plus the owner. Naughty Dog shows a studio can run without a producer when
   seniors share the duty, but the duty (schedule, order, what is cut) still has to sit with someone: the board.
 
+- **A solo VR developer's lessons (Quest's top-rated app in Nov 2020)** [read] — Thomas Van Bouwel, guest piece
+  on Cubism, Road to VR, 18 Nov 2020, https://roadtovr.com/cubism-solo-indie-developer-lessons-thomas-van-bouwel/:
+  "I developed Cubism on my own in my spare time" (prototype 2017, launch September 2020, per the article);
+  "Choosing the right scope for a game is the best way to ensure you can actually finish it"; "build a vertical
+  slice—a small but fully playable segment of your game idea—as soon as possible"; his weak spots were "3D
+  modelling, graphics programming and audio design", which he covered by choosing a minimal look that "removed
+  the need for detailed environment modelling or complex lighting" and by building his own editor tools; testers
+  who were mostly developers and enthusiasts hid an onboarding problem until "about a year and a half into
+  development".
+- For us: a solo studio covers a missing role in one of three ways: a style that does not need it (Cubism's
+  minimal look), a tool that does it (his editors; for us, the agent and scripted pipelines), or a person bought in
+  for that job. And testers must be the target players, not people like us, or onboarding faults stay hidden.
+
 ### Part 7. What postmortems say goes wrong (first source)
 
 - **200 postmortems, 927 problems** [read] — C. Politowski, F. Petrillo, G. C. Ullmann, Y.-G. Guéhéneuc,
