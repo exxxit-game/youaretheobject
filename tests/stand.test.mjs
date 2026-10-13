@@ -4,7 +4,7 @@
 // judges live apart from the headset in tools/stand-judge.mjs.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { sandboxedPids, pssOf, proximityOf, verdicts, MARKS, longSummary, heatStop, SURFACE_STOP_C } from '../tools/stand-judge.mjs';
+import { sandboxedPids, pssOf, proximityOf, verdicts, MARKS, longSummary, flowSummary, heatStop, SURFACE_STOP_C } from '../tools/stand-judge.mjs';
 import { thermalOf } from '../tools/measure.mjs';
 
 const read = (f) => fs.readFileSync(new URL(`fixtures/quest3/${f}`, import.meta.url), 'utf8');
@@ -68,4 +68,20 @@ assert.equal(heatStop(thermalOf('error: device offline', '')), 'the heat could n
 const first = Number(dump.match(/mName=surf-virt-usr, mHotThrottlingThresholds=\[NaN, ([\d.]+)/)[1]);
 assert.equal(SURFACE_STOP_C, first - 3, `the stop is not 3 °C under the surface's first threshold (${first})`);
 
-console.log('stand tests: ok (the headset\'s processes, memory and proximity read as printed; each known change must be seen; heat stops a run)');
+// the flow run step by step: each late frame counts in the step it carries, the worst of them is named, the GPU's
+// resources are read at a step's first and last sample (what it loaded), a late frame with no step is counted apart
+const T = 1_700_000_000_000;
+const steps = [[T, 'sign'], [T + 20000, 'door 101 pressed'], [T + 30000, 'room: intro']];
+const frow = (sec, frames, lates, g) => ({ s: sec, at: T + sec * 1000, dt: 5, page: { frames, late: lates.length, maxStep: 11.1, visibility: 'visible', geometries: g, textures: 40, programs: 53, lates } });
+const flowRows = [frow(5, 450, []), frow(10, 450, []), frow(15, 450, []), frow(20, 450, []),
+  frow(25, 400, [[T + 21000, 60.2, 'door 101 pressed'], [T + 22000, 33.4, 'door 101 pressed']], 257), frow(30, 450, [], 290),
+  frow(35, 450, [[T + 31000, 25, 'room: intro'], [T + 31500, 25, null]], 300), frow(40, 450, [], 300)];
+flowRows.slice(0, 4).forEach((x) => { x.page.geometries = 257; });
+const fl = flowSummary(flowRows, steps);
+assert.deepEqual(fl.perStep.map((p) => [p.name, p.seconds, p.lateFrames, p.worstLateMs]), [['sign', 20, 0, null], ['door 101 pressed', 10, 2, 60.2], ['room: intro', null, 1, 25]],
+  "each step's length, its late frames and the worst of them");
+assert.deepEqual(fl.perStep[1].resources, { first: [257, 40, 53], last: [290, 40, 53] }, "what the door's step loaded, from its first and last sample");
+assert.equal(fl.perStep[1].fpsRough, 85, 'the rough rate of a step from the samples that end inside it');
+assert.equal(fl.lateOutsideSteps, 1, 'a late frame with no step is counted apart, not lost');
+
+console.log('stand tests: ok (the headset\'s processes, memory and proximity read as printed; each known change must be seen; heat stops a run; a flow run read step by step)');

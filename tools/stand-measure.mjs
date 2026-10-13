@@ -6,6 +6,7 @@
 // it. Every time is the headset's own clock; every tool's raw output is kept beside the log (as tools/measure.mjs).
 // Usage: node tools/stand-measure.mjs trial      (about three minutes; the owner does not wear it)
 //        node tools/stand-measure.mjs long       (45 minutes in the corridor, the view turned a little each minute)
+//        node tools/stand-measure.mjs flow       (the corridor's start to room 101's end, played by tools/stand-flow.mjs)
 //        node tools/stand-measure.mjs restore    (the headset given back as it was, after a run cut short)
 //        node tools/stand-measure.mjs judge <run folder>   (a run's verdicts again from its log)
 // The boundary is not paused (a safety setting of his headset): the stand stands inside his play area, lit, so it
@@ -16,14 +17,15 @@ import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { thermalOf, gpuIds, gpuSamples, mean } from './measure.mjs';
-import { sandboxedPids, pssOf, proximityOf, verdicts, longSummary, heatStop, MARKS } from './stand-judge.mjs';
+import { sandboxedPids, pssOf, proximityOf, verdicts, longSummary, flowSummary, heatStop, MARKS } from './stand-judge.mjs';
+import { player } from './stand-flow.mjs';
 
 
 if (import.meta.url === pathToFileURL(process.argv[1] || '').href) await main();
 
 async function main() {
   const mode = process.argv[2];
-  if (!['trial', 'long', 'restore', 'judge'].includes(mode)) { console.log('usage: node tools/stand-measure.mjs trial | long [--minutes=N] | restore | judge <run folder>'); process.exit(1); }
+  if (!['trial', 'long', 'flow', 'restore', 'judge'].includes(mode)) { console.log('usage: node tools/stand-measure.mjs trial | long [--minutes=N] | flow | restore | judge <run folder>'); process.exit(1); }
   // a run's verdicts again from its own log, with no headset (the samples are all in it)
   if (mode === 'judge') {
     const lines = fs.readFileSync(path.join(process.argv[3], 'log.jsonl'), 'utf8').trim().split(/\r?\n/).map((l) => JSON.parse(l));
@@ -106,18 +108,21 @@ async function main() {
       rates: await run('Array.from(document.querySelector("a-scene").xrSession.supportedFrameRates || [])') });
     // every XR frame counted, a frame late when its display time steps more than 1.5 refreshes (W3C WebXR 5.1,
     // predictedDisplayTime; as tools/measure.mjs), read and reset at each sample
-    await run(`(() => { const s = document.querySelector('a-scene').xrSession, w = window.__stand = { frames: 0, late: 0, maxStep: 0, noTime: 0 }; let last = 0;
+    // (each late one also kept with its time and, in a flow run, the step the player was at: window.__flow)
+    await run(`(() => { const s = document.querySelector('a-scene').xrSession, w = window.__stand = { frames: 0, late: 0, maxStep: 0, noTime: 0, lates: [] }; let last = 0;
       const f = (t, frame) => { const p = frame && frame.predictedDisplayTime; if (!p) w.noTime++; const at = p || t;
-        if (last) { const dt = at - last; w.frames++; if (dt > 1.5 * 1000 / (s.frameRate || 90)) w.late++; if (dt > w.maxStep) w.maxStep = dt; } last = at; s.requestAnimationFrame(f); };
+        if (last) { const dt = at - last; w.frames++; if (dt > 1.5 * 1000 / (s.frameRate || 90)) { w.late++; if (w.lates.length < 500) w.lates.push([Math.round(performance.timeOrigin + at), +dt.toFixed(1), window.__flow ? window.__flow.step : null]); }
+          if (dt > w.maxStep) w.maxStep = dt; } last = at; s.requestAnimationFrame(f); };
       s.requestAnimationFrame(f); return true; })()`);
     const readPage = () => run(`(() => { const a = document.querySelector('a-scene'), w = window.__stand, r = a.renderer.info, s = a.xrSession;
       const out = { frames: w.frames, late: w.late, maxStep: +w.maxStep.toFixed(1), noTime: w.noTime, renderFrame: r.render.frame, calls: r.render.calls,
         triangles: r.render.triangles, geometries: r.memory.geometries, textures: r.memory.textures, programs: (r.programs || []).length,
-        visibility: s && s.visibilityState, rate: s && s.frameRate, heap: performance.memory ? performance.memory.usedJSHeapSize : null };
-      w.frames = 0; w.late = 0; w.maxStep = 0; w.noTime = 0; return out; })()`);
+        visibility: s && s.visibilityState, rate: s && s.frameRate, heap: performance.memory ? performance.memory.usedJSHeapSize : null, lates: w.lates,
+        flow: window.__flow ? { step: window.__flow.step, done: window.__flow.done, error: window.__flow.error, presses: window.__flow.presses, windows: window.__flow.windows } : null };
+      w.frames = 0; w.late = 0; w.maxStep = 0; w.noTime = 0; w.lates = []; return out; })()`);
     await readPage();
 
-    if (mode === 'long') {
+    if (mode === 'long' || mode === 'flow') {
       // Meta's test of VRC.Quest.Performance.1: "the length of the content or 45 minutes", in the corridor every room
       // stands on; the view turned 45° a minute, so a standing player's look round repeats every 8 minutes. Frames every
       // 10 s, heat every 30 s, the page's memory every minute, the GPU every 5 minutes; whether the session stays
@@ -135,6 +140,28 @@ async function main() {
       if (!got) { held = true; throw new Error('no VR frame in 180 s'); }
       log('frames began', { afterS: Number(((now() - asked) / 1000).toFixed(1)) });
       await readPage();
+      if (mode === 'flow') {
+        // the player plays from here; a sample every 5 s (a step can last seconds), the heat every 30 s, the page's
+        // memory every minute; the run ends with the player's last step, its error, the heat, or an hour
+        await run(`(${player.toString()})({})`);
+        const t0 = now(), rows = [];
+        let lastAt = t0, heatAt = 0, memAt = 0, f = null;
+        while (now() - t0 < 3600000) {
+          await pause(5000);
+          const p = await readPage(), at = now();
+          const x = { s: Number(((at - t0) / 1000).toFixed(1)), at, dt: (at - lastAt) / 1000, page: p, prox: proximityOf(sh('dumpsys vrpowermanager')) };
+          if (at - heatAt >= 30000) { heatAt = at; x.thermal = thermal(`s${Math.round(x.s)}`); }
+          if (at - memAt >= 60000) { memAt = at; x.pss = sandboxPss(`s${Math.round(x.s)}`); }
+          lastAt = at; rows.push(x); log('sample', x); f = p.flow;
+          if (stoppedFor || !f || f.done || f.error) break;
+        }
+        const steps = await run('window.__flow ? window.__flow.steps : []');
+        const end = log('end', { thermal: thermal('end'), steps, flow: f });
+        const summary = { dir: DIR, minutes: Number(((end.at - t0) / 60000).toFixed(2)), stoppedFor, flow: f, ...flowSummary(rows, steps), ...longSummary(rows) };
+        fs.writeFileSync(path.join(DIR, 'summary.json'), JSON.stringify(summary, null, 1));
+        console.log(JSON.stringify(summary, null, 1));
+        return;
+      }
       const t0 = now(), rows = [];
       let lastAt = t0, lastFrame = null, heatAt = 0, memAt = 0, gpuAt = 0, turnAt = t0;
       while (now() - t0 < minutes * 60000) {

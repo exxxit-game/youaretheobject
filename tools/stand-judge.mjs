@@ -66,6 +66,26 @@ export function longSummary(rows) {
   };
 }
 
+// The flow run read step by step (tools/stand-flow.mjs names each step with the page's time; the page and the tool
+// read the same headset's clock): each step's length, its late frames (each one carries the step it fell in, so
+// these are exact), the worst of them, and the GPU's resources at the step's first and last sample, which show what
+// the step loaded (geometries, textures, shader programs). Its frames a second are from the 5 s samples that end
+// inside it, so a short step's rate is only roughly its own.
+export function flowSummary(rows, steps) {
+  const lates = rows.flatMap((x) => x.page.lates || []);
+  const res = (x) => (x ? [x.page.geometries, x.page.textures, x.page.programs] : null);
+  const perStep = steps.map(([from, name], i) => {
+    const to = steps[i + 1] ? steps[i + 1][0] : Infinity;
+    const own = lates.filter((l) => l[2] === name), inside = rows.filter((x) => x.at > from && x.at <= to);
+    const t = inside.reduce((a, x) => a + x.dt, 0);
+    return { name, seconds: Number.isFinite(to) ? Number(((to - from) / 1000).toFixed(1)) : null, lateFrames: own.length,
+      worstLateMs: own.length ? Math.max(...own.map((l) => l[1])) : null,
+      fpsRough: t ? Number((inside.reduce((a, x) => a + x.page.frames, 0) / t).toFixed(1)) : null,
+      resources: { first: res(inside[0]), last: res(inside.at(-1)) } };
+  });
+  return { perStep, lateOutsideSteps: lates.filter((l) => !steps.some(([, n]) => n === l[2])).length };
+}
+
 // The headset spared, not stressed: a run stops 3 °C under the virtual surface sensor's first threshold (48.0 °C in
 // his Quest 3's table, tests/fixtures/quest3) or at any throttling status (AOSP thermal mitigation: 1 LIGHT and up);
 // a heat that cannot be read is not watched, so it stops the run too (a model naming its sensors otherwise is fixed first).
