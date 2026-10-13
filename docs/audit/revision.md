@@ -74,6 +74,11 @@ project's readings): [our server against the Supabase and PostgreSQL docs](revis
 layer is the one gathered on 11.10 (forums-data.md and its part 2). How labs and regulators word a data page so no one has a claim (his request of 12.10):
 [docs/research/data-wording.md](../research/data-wording.md). Data and purchases end to end, staged from now to many players: [docs/research/data-purchases.md](../research/data-purchases.md). Where to keep the data and who may change the live database, best to worst: [docs/research/data-architectures.md](../research/data-architectures.md). What people who run such systems wrote (16 Reddit threads): [docs/research/reddit-2026-10-12.md](../research/reddit-2026-10-12.md). The shelf's map (13.10, his word that each shelf ends with one): https://claude.ai/artifact/PMuT44Ja1pE4VuQgMTzHKQ, its file and the live readings behind it in objekt-files/notes/revision-shelf2-2026-10-12/ (map-published.html, live-readings-2026-10-13.md); it passed five rounds of two fact-checks.
 
+## Shelf 3, the engine (13.10)
+
+Five checks against the engine's own sources (A-Frame 1.8.0, three.js r184, WebXR and Meta, the versions upstream,
+Gregory's book), their reports in objekt-files/notes/revision-shelf3-2026-10-13/: [the shelf's record](revision-shelf3.md).
+
 ## Order
 
 1. Rules and Claude Code: his word (docs/board.md).
