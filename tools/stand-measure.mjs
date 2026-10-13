@@ -9,7 +9,7 @@
 //        node tools/stand-measure.mjs restore    (the headset given back as it was, after a run cut short)
 //        node tools/stand-measure.mjs judge <run folder>   (a run's verdicts again from its log)
 // The boundary is not paused (a safety setting of his headset): the stand stands inside his play area, lit, so it
-// does not rise; a VR entry it holds is given up after 20 s and the browser restarted before the headset sleeps,
+// does not rise; a VR entry it holds is given up after 90 s (a headset just woken took 38 s to find its place in the room) and the browser restarted before the headset sleeps,
 // the cure of docs/mistakes.md ("the headset browser had lost its link to the VR system for hours").
 import fs from 'node:fs';
 import path from 'node:path';
@@ -153,7 +153,7 @@ async function main() {
     log('loaded');
     // the risk named first in the plan: whether an unworn headset enters VR at all (the boundary window may hold it)
     const vr = log('vr', { answer: await run(`Promise.race([document.querySelector('a-scene').enterVR().then(() => 'in VR', (e) => 'failed: ' + e.message),
-      new Promise((r) => setTimeout(() => r('held 20 s: the boundary window, or no tracking'), 20000))])`) });
+      new Promise((r) => setTimeout(() => r('held 90 s: the boundary window, or no tracking'), 90000))])`) });
     if (vr.answer !== 'in VR') {
       held = true;
       // what holds it is what the headset shows (a boundary prompt, a tracking-lost notice): a frame of it kept
