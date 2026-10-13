@@ -65,7 +65,9 @@ closed when what breaks it is in place; it stays here, marked, as the memory of 
 ## 5a. The same circle, 13.10 (fourth window)
 - Done: the nine tips for players took three rounds of two fact-checks for nine lines; the usage page three rounds,
   its numbers retold from helpers' reports instead of read from the tool's output; the game's menu four rounds of the
-  practice and paper reviews (about three hours), each round finding holes in the last round's own fixes.
+  practice and paper reviews (by the review record 19:53-21:07 UTC; from his ask to his yes about two and a half hours),
+  each round finding holes in the last round's own fixes; a fifth, forced by the gate because the fourth's fixes touched
+  files it had not named, caught a real bug in the fourth round's own fix (14.10, src/engine/locomotion.js).
 - Across the day's four windows (their handoffs, docs/audit/handoff-2026-10-13*.md): 157 commits, 12 to the game; what he
   was shown was measures, process pages and their corrections, «по большей степени я смотрел на ерунду» (his words).
 - His words: «повторять по 500 раз одно и то же… какая-то глупость»; «Ты потратил весь день сегодня на свои, по
