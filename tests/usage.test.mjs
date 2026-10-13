@@ -2,7 +2,7 @@
 // response's message id and a copy of its usage, and only the last carries the final output count. A made-up
 // two-line transcript in the shape of the laptop's own, plus the week's edge and the list-price weighting.
 import assert from 'node:assert/strict';
-import { readText, usd, weekStart, sum, runs } from '../tools/usage.mjs';
+import { readText, usd, weekStart, sum, runs, noticeWindow, windows, tierAt } from '../tools/usage.mjs';
 
 const usage = (output) => ({ input_tokens: 2, output_tokens: output, cache_creation_input_tokens: 1000, cache_read_input_tokens: 50000,
   cache_creation: { ephemeral_5m_input_tokens: 0, ephemeral_1h_input_tokens: 1000 } });
@@ -37,4 +37,14 @@ assert.equal(weekStart(Date.parse('2026-10-13T06:00:00Z')), Date.parse('2026-10-
 // a fall in the weekly percent or a new week starts a new run of readings
 const t = (h) => Date.parse('2026-10-08T00:00:00Z') + h * 36e5;
 assert.deepEqual(runs([{ t: t(0), sd: 10 }, { t: t(1), sd: 20 }, { t: t(2), sd: 5 }, { t: t(130), sd: 7 }]).map((x) => x.length), [2, 1, 1]);
+// a session-limit notice names its window: resets 10pm in Chisinau (UTC+3 then) is 19:00 UTC, opened at 14:00
+const named = noticeWindow({ at: '2026-10-07T16:17:41.888Z', said: "You've hit your session limit · resets 10pm (Europe/Chisinau)" });
+assert.deepEqual([named.s, named.e], [Date.parse('2026-10-07T14:00:00Z'), Date.parse('2026-10-07T19:00:00Z')]);
+// five-hour windows open at the hour of the first response after the last one closed; one that would run
+// into a named window stops where it starts, and the named one is taken as named
+const at = (iso) => ({ at: Date.parse(iso) });
+const ws = windows([at('2026-10-07T12:10:00Z'), at('2026-10-07T14:30:00Z'), at('2026-10-07T19:20:00Z')], [named]);
+assert.deepEqual(ws.map((w) => [new Date(w.s).toISOString().slice(11, 16), new Date(w.e).toISOString().slice(11, 16), !!w.unsure]),
+  [['12:00', '14:00', true], ['14:00', '19:00', false], ['19:00', '00:00', false]]);
+assert.deepEqual([tierAt(Date.parse('2026-10-08T11:34:00Z')), tierAt(Date.parse('2026-10-09T04:11:00Z'))], ['max 5x', 'max 20x']);
 console.log('usage tests: ok');
