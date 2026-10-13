@@ -35,7 +35,7 @@
   His room as the headset reads it (11.10; records in objekt-files/notes/headset): https://claude.ai/artifact/CgxirtxxN4gPidXWnmiDjV; room 101 behind its door (11.10): https://claude.ai/artifact/RrNeo3s4Uk9WpzyrnoLGLH
 - Headset: Quest 3 over USB; `tools/quest-check.mjs` (11/11 PASS 08.10, old 60 fps bar, no log); `tools/xr-probe.html`.
   Owner plays the test copy https://exxxit-game.github.io/object-preview/ (bookmark in the headset, the
-  game from GitHub): `node tools/publish-preview.mjs` before he looks; it never sends data. From 9.10 the
+  game from GitHub): `node tools/publish-preview.mjs` before he looks; it sends no results (it still asks the live average: a fix on the shelf-2 list). From 9.10 the
   headset stays on the laptop's USB cable (his choice); it charges slowly and power is cut daily: wake it
   only to check, end with `quest-look.mjs sleep`, push work often. I check in the headset myself:
   `tools/quest-look.mjs` (open [local port], reload, vr, frame, eval, sleep); opening 8.10: sign +10 s, 90 fps (no saved log: re-measure with a log, plan step 4.3).

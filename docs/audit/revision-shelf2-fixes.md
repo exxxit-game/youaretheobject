@@ -32,6 +32,8 @@ checks of shelf 2 (revision-shelf2-server.md, -client-law.md, -schema-tests.md) 
 - A tester's run goes as an ordinary one today (into the statistics, the first one into "you and others").
   His decision 2 (B): only into the testers' table.
 - Room 101's description confuses whether the chosen answer's position goes to the server (it does not).
+- The test copy (object-preview) sends no results (src/app/session.js:14, SENDING_ENABLED) but still asks the live
+  compare_room: src/rooms/01-control/room.js:195 checks SPEED, not PREVIEW (found by the map's fact-check, 13.10).
 
 ## With the next migration
 - Schema 2: whole numbers, exactly 40 trials, scales in steps of 5, required fields; a data dictionary.
