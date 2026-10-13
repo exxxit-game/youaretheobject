@@ -31,6 +31,9 @@ Source keys used below:
 - Light too bright or too dim can make tracking fail | "Lighting conditions that are too bright or dim may prevent your Meta Quest's sensors and navigation safety features from working optimally, and may lead to tracking loss." | [G3+H3] | 2023-09-22 | 2026-10-13 | Quest 3
 - Poorly lit rooms, plain walls, mirror or glass walls break tracking and safety features | "in areas with undecorated plain walls, highly reflective glass or mirror walls or in areas that are poorly lit" | [G3+H3] | 2023-09-22 | 2026-10-13 | Quest 3
 - Never leave the lenses in direct sunlight | "Direct sunlight on lenses may damage or degrade your Meta Quest, including the optics and display." | [G3] | 2023-09-22 | 2026-10-13 | Quest 3
+- Light: enough to see clearly, but not direct sunlight (said for controller tracking) | "Ensure your area is well lit, with enough light to clearly see, but not direct sunlight." | https://www.meta.com/help/quest/889793039325956/ | "Updated: 2 weeks ago" (about 2026-09-29) | 2026-10-13 | all Meta Quest controllers (page not model-specific)
+- No string lights or LED strips in the room (controller tracking) | "Ensure your area is free of small lights such as Christmas lights or LED strips." | https://www.meta.com/help/quest/889793039325956/ | about 2026-09-29 | 2026-10-13 | all Quest
+- No mirrors, glass or polished marble (controller tracking) | "Ensure your area is free of any reflective surfaces such as mirrors, glass or polished marble." | https://www.meta.com/help/quest/889793039325956/ | about 2026-09-29 | 2026-10-13 | all Quest
 
 ## 2. Space
 - Set the play area by the headset's on-screen steps | "Follow on-screen instructions to define your activity space." | [H3] | undated | 2026-10-13 | Quest 3
@@ -65,6 +68,10 @@ Source keys used below:
 
 ## 4. Tracking loss
 - Tracking error alert: take the headset off, move to a safe spot, follow the headset's steps | "Remove the headset and move to a safe space. Then follow the instructions provided in your headset to address this issue." | [G3] (System Alerts) | 2023-09-22 | 2026-10-13 | Quest 3
+- Controller tracking: keep the headset's cameras clean | "Ensure the tracking cameras on your headset are clean following our recommended maintenance and care guidelines." | https://www.meta.com/help/quest/889793039325956/ | about 2026-09-29 | 2026-10-13 | all Quest
+- Controller tracking: nothing between the cameras and the controllers | "Ensure your environment is free of any obstructions between the tracking cameras and the controllers." | https://www.meta.com/help/quest/889793039325956/ | about 2026-09-29 | 2026-10-13 | all Quest
+- Controller tracking: take out the AA battery for 30 s, restart the headset, re-pair | "try removing the batteries from your controllers for at least 30 seconds before reinstalling" | https://www.meta.com/help/quest/889793039325956/ | about 2026-09-29 | 2026-10-13 | Quest 2 / 3 / 3S (controllers with removable batteries)
+- Controller covers, sleeves or stickers can break tracking | "If you're using unsupported third-party controller accessories, such as sleeves, covers, or stickers, you may experience issues with controller pairing or tracking." | https://www.meta.com/help/quest/889793039325956/ | about 2026-09-29 | 2026-10-13 | all Quest
 
 ## 5. Outages
 - Overheating alert: take the headset off at once and let it cool | "Immediately remove your headset and let it cool down before continuing use." | [G3] (System Alerts) | 2023-09-22 | 2026-10-13 | Quest 3
@@ -75,6 +82,10 @@ Source keys used below:
 - Follow any heat warning on the screen | "Follow any thermal warning or advisory that may appear on your headset's screen." | [G3] | 2023-09-22 | 2026-10-13 | Quest 3
 - Only Meta-authorised chargers, docks and cables | "Only use authorized charging docks, cables, and power adapters with your Meta Quest." | [G3] | 2023-09-22 | 2026-10-13 | Quest 3
 - The headset goes to networked standby after about 15 minutes idle | "the system will automatically enter “Networked Standby” after approximately 15 minutes of inactivity" | [H3] (browser pane) | undated | 2026-10-13 | Quest 3
+- A full charge takes about 2.5 hours from the wall with the included adapter | "the headset should fully charge in about 2 ½ hours" | https://www.meta.com/help/quest/3482884435359892/ | "Updated: 26 weeks ago" (about 2026-04-14) | 2026-10-13 | all Quest
+- Charger power: Quest 3 / 3S 18 W, Quest 2 10 W | "Meta Quest 3 and Meta Quest 3S 18W" | https://www.meta.com/help/quest/3482884435359892/ (browser pane) | about 2026-04-14 | 2026-10-13 | Quest 3 / 3S / 2
+- Playing plugged in: the battery may not fill if it gets too warm; it resumes when cool | "may not fully charge if it is plugged in while in use and exceeds the optimal charging temperature" | https://www.meta.com/help/quest/3482884435359892/ (collapsed section, read through WebFetch) | about 2026-04-14 | 2026-10-13 | all Quest
+- Quest 3 battery: about 2.2 hours on average, less for demanding apps; Battery Saver mode in power settings | "Meta Quest 3 is capable of providing 2.2 hours of use on average across a variety of activities" | https://www.meta.com/help/quest/3482884435359892/ (collapsed section, WebFetch) | about 2026-04-14 | 2026-10-13 | Quest 3
 
 ## 6. Fit and view
 - Turn the wheel at the bottom to the clearest image | "Adjust distance between lenses by turning the wheel at the bottom of the headset, moving the lenses to the position that provides the clearest image." | [G3+H3] | 2023-09-22 | 2026-10-13 | Quest 3 only (3S and 2 differ)
@@ -83,6 +94,14 @@ Source keys used below:
 - Glasses inside raise the risk of face injury in a fall | "Use with glasses may increase risk of facial injury if you fall or hit your face." | [G3+H3] | 2023-09-22 | 2026-10-13 | Quest 3
 - Wipe sweat off after use | "Wipe your Meta Quest dry from any sweat following use" | [G3+H3] | 2023-09-22 | 2026-10-13 | Quest 3
 - Clean only by Meta Support's instructions | "Improper cleaning can damage your Meta Quest and may impair its operation, increasing the risk of injury or property damage." | [G3] | 2023-09-22 | 2026-10-13 | Quest 3
+- Lens spacing should match your eyes' distance; Quest fits 56-70 mm | "Meta Quest headsets best accommodate IPDs between 56 and 70 mm, or about 95% of adults." | https://www.meta.com/help/quest/261777072346131/ | no date shown | 2026-10-13 | all Quest
+- Three-step slider: under 61 mm setting 1 (58 mm), 61-66 mm setting 2 (63 mm), over 66 mm setting 3 (68 mm) | "gently move the slider under your headset until your view is clear and comfortable" | https://www.meta.com/help/quest/261777072346131/ | no date shown | 2026-10-13 | Quest 2 and Quest 3S (three-position slider; Quest 3 has a wheel, see [G3])
+- Measure your eye distance with a mirror and a millimetre ruler, or at an optometrist | "You can also estimate your IPD using a mirror and a millimeter ruler." | https://www.meta.com/help/quest/261777072346131/ | no date shown | 2026-10-13 | all Quest
+- Glasses: frames up to 142 mm wide and 50 mm tall; put the included spacer under the facial interface | "Width: 142mm or less" | https://www.meta.com/help/quest/3920738394639999/ | "Updated: 2 weeks ago" (about 2026-09-29) | 2026-10-13 | Quest 3 / 3S (page links the Quest 3 / 3S fit article)
+- With glasses: put the headset on front to back, take it off by pulling forward first | "When you put on your headset with glasses, put it on from front to back." | https://www.meta.com/help/quest/3920738394639999/ | about 2026-09-29 | 2026-10-13 | Quest 3 / 3S
+- Lenses: dry microfibre cloth after each use; no alcohol, no chemical cleaners, no water | "Use a dry microfiber cloth after each use." | https://www.meta.com/help/quest/467048561217367/ | "Updated: 2 weeks ago" (about 2026-09-29) | 2026-10-13 | all Quest
+- Wipe the lens from the centre outwards in circles | "start from the center of the lens and gently wipe the lens in a circular motion moving outwards" | https://www.meta.com/help/quest/467048561217367/ | about 2026-09-29 | 2026-10-13 | all Quest
+- Never water or liquids on the device | "Do not use water or other liquids while cleaning." | https://www.meta.com/help/quest/467048561217367/ | about 2026-09-29 | 2026-10-13 | all Quest
 
 ## 7. Anything else before a session
 - Everyone who plays reads the warnings first | "please ensure that each user of your Meta Quest 3 carefully reads all warnings and instructions before use" | [H3] (browser pane) | undated | 2026-10-13 | Quest 3
