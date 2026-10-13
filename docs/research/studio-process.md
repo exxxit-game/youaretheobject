@@ -42,17 +42,22 @@ making a WebXR game (A-Frame 1.8.0, no build step) for Meta Quest.
 ## Short answers (13.10.2026; each backed by a finding below or in the parts files)
 
 1. Stages: concept → pre-production (ends with a playable piece at final quality: Cerny's "publishable first
-   playable", or for small teams Unity's "can be tested with players") → production in chunks → alpha / beta /
+   playable", or, for a small project and above all a game meant to change its player, Unity's lighter gate: it
+   "can be tested with players" and its effect is measured) → production in chunks → alpha / beta /
    gold, each a checkable list (Filament) → certification (Meta's VRCs; submit at least two weeks ahead) →
    launch → post-release from an archive that can rebuild any version.
 2. Roles: engineers, artists, designers, producers, support (Gregory). Two-member cover: studio-process-2.md, end.
 3. Performance: budget first, measured on the device, CPU/GPU split, iterate (Meta's workflow); warm-up cut off,
    several fresh runs, intervals not single numbers (Georges 2007; Unity's defaults); a separate long session for
-   heat (Meta: start-only profiling is "the most common shipping mistake"); A/B runs with a fixed view (Owlchemy).
-4. QA: automated tests written with each feature (Rare); playtests test the design on target players, watched
+   heat (Meta: start-only profiling is "the most common shipping mistake"; its frame-rate check runs 45 minutes or
+   the content's length, whichever is shorter); A/B runs on the device with head tracking off, identical but for
+   the one thing compared (Owlchemy's talk and article).
+4. QA: automated gameplay tests from the start (Rare's Sea of Thieves), a net that catches a bug as it is written
+   (Mojang); playtests test the design on target players, watched
    (Valve, Microsoft); VRC checklist, then ALPHA/BETA/RC channels (Meta). Bug severity: no primary source found.
 5. Docs: short, alive, changed in the same commit as the code (Google); decisions recorded with reasons and
-   marked superseded, never deleted (Nygard); the GDD is the doc most often left stale (Politowski).
+   marked superseded, never deleted (Nygard; our docs/decisions.md has no such mark yet); the GDD is "rarely
+   updated during the projects' life" (Politowski).
 6. Pipeline: version control even for one person (Gregory); assets' metadata as text in it; small batches merged
    daily (DORA); release ladder on the store's channels.
 7. Postmortems: problems are about people and planning more than technology; top causes: too few people,
@@ -108,8 +113,8 @@ severity scale; Gregory's 4th edition has no team-structure section (the 3rd edi
   134 (2021) 106538; preprint https://arxiv.org/abs/2009.02440 (full text saved:
   objekt-files/papers/politowski-2021.txt). "We analyzed 200 postmortems from 1997 to 2019, resulting in 927
   problems divided into 20 types." Groups: "46% of the problems relate to production, 45% to management, and 9%
-  to business"; "technical and game design, with 11% each" are the two most common types; the root causes are
-  "related to people, not technologies".
+  to business"; "technical and game design, with 11% each" are the two most common types; "the majority of the
+  main root causes are related to people, not technologies" (the abstract).
   Top 10 root causes (Table 3, count of problems): insufficient workforce 49; environment problems 48; wrong
   marketing strategy 35; underestimation 34; unclear game design vision 28; lack of fun 27; platform and
   technology constraints 24; game design complexity 23; inadequate or missing tools 22; misaligned teams 22.
@@ -128,7 +133,7 @@ severity scale; Gregory's 4th edition has no team-structure section (the 3rd edi
     financially costly".
 - For us: the owner's "we cannot move until it is clear how" is the postmortems' own lesson: settle the tools,
   the hardware limits (Quest 2/3 budgets) and the core loop in pre-production; freeze features on a date; keep
-  the design doc alive (it is the item most often left stale). Insufficient workforce, the first cause, is our
+  the design doc alive (the postmortems find it "rarely updated"). Insufficient workforce, the first cause, is our
   standing condition, so scope is the lever: fewer rooms done fully.
 
 - **155 Gamasutra postmortems** [read] — M. Washburn Jr., P. Sathiyanarayanan, M. Nagappan, T. Zimmermann,
@@ -145,7 +150,7 @@ severity scale; Gregory's 4th edition has no team-structure section (the 3rd edi
   The authors' recommendations: risk management; "an iterative development process, and utilize prototypes as a
   method of proving features and concepts before committing them to your design"; "don't be overly ambitious";
   "If you make an estimate that initially feels optimistic to you, don't give that estimate to your stakeholders."
-- For us: small teams meet twice the obstacles, so a written risk list with a plan for each matters more for
+- For us: small teams name obstacles about twice as often as large ones (50% against 26%), so a written risk list with a plan for each matters more for
   us than for a big studio; prototype each room's core before building it fully; keep a record of what was
   built and why (our docs/decisions.md and docs/state.md are that record, if kept true).
 
@@ -163,7 +168,7 @@ severity scale; Gregory's 4th edition has no team-structure section (the 3rd edi
   Production!" Slide 24, the Macro Game Design is "five pages": character and moveset, level structure, size
   and count, level contents, overall structure, a macro chart. Slide 15 warns against "'ALPHA = FIRST PLAYABLE'".
 - **Alpha in Chandler's handbook** [read, quote only; the book itself not opened] — Heather Maxwell Chandler,
-  *The Game Production Handbook* (Jones & Bartlett, 2nd ed. 2008/2009), via
+  *The Game Production Handbook* (the quotes page names no edition: unverified), via
   https://www.goodreads.com/work/quotes/22237702: "Alpha: At this milestone, key gameplay functionality is
   implemented, assets are 40–50% final (the rest are placeholders)"; "Alpha occurs 8 to 10 months before code
   release." Beta, code release and the rest of her milestone list: unverified (book not available here).
@@ -197,8 +202,11 @@ severity scale; Gregory's 4th edition has no team-structure section (the 3rd edi
   the course's stages: ideation and pre-production, production, post-release). End of pre-production: "In
   commercial games, this assessment is often done via a specific milestone known as a 'vertical slice'", where
   "some subset of the final game now exists, which is fully reflective of the final product"; but "In smaller
-  projects... a true vertical slice tends to be something of an unattainable luxury", and the page's lighter
-  gate is that "the game itself exists in a form that can be tested with players". Production: "While
+  projects, and particularly games for impact, a true vertical slice tends to be something of an unattainable
+  luxury", and the page's lighter gate, whole: "A different metric, particularly for a game designed to create
+  change in the player, might be that the game itself exists in a form that can be tested with players, and some
+  kind of measurement made in terms of its effectiveness (even if that measurement is just a simple survey or
+  interview)." (Re-read 13.10.2026; the course is written with games for impact in view.) Production: "While
   pre-production is about discovery and experiments, production is about hitting a target"; "Divide the work
   into chunks." "Estimate the time for each chunk." "Complete the game, one chunk at a time." Milestones "make
   great days for playtesting". Release: "There's no magic formula for knowing when to stop"; "An outsider is often
@@ -208,7 +216,10 @@ severity scale; Gregory's 4th edition has no team-structure section (the 3rd edi
 - For us: the stages studios use, and what each must hand on, as the sources above give them:
   concept (what the game is, one page) → pre-production (prototypes; tools, budgets and risks settled; ends with
   Cerny's first playable or Unity's "can be tested with players") → production (one chunk at a time, each to the
-  bar) → alpha / beta / gold (Filament's checkable lists) → certification (VRCs, two weeks of review) → launch
-  → post-release (patches from an archive that can rebuild any version). Where we stand on this ladder is the
-  owner's call; the sources suggest the corridor is pre-production's first playable.
+  bar) → alpha / beta / gold (Filament's checkable lists) → certification (VRCs; submitted at least two weeks
+  before the launch date) → launch → post-release (patches from an archive that can rebuild any version). Where
+  we stand on this ladder is the owner's call; our inference, no source's: the corridor is pre-production's first
+  playable. Also our inference: a game whose goal is to help each player open hidden abilities (the owner's goal,
+  docs/owner-decisions.md) is one "designed to create change in the player" in Unity's words, so Unity's lighter
+  gate fits it as written: playable with players, and its effect measured.
 
