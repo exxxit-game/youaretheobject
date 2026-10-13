@@ -74,3 +74,20 @@ Raw files: objekt-files/notes/headset/perf-2026-10-13/. Two fact-checks of 13.10
 - OVR Metrics Tool wrote no file for the browser: no CapturedMetrics folder after a VR session following an
   broadcast that switches its CSV on (Meta's ts-ovrmetricstool page; the setting not read back), as a Meta forum post said (HUD only); its HUD showed in his
   headset.
+
+## The long run on the stand (13.10, 19:48 to 20:33 Kyiv time)
+`node tools/stand-measure.mjs long` after its trial proved each tool on a known change (docs/research/long-measure.md,
+"The trial"). His Quest 3 unworn on the floor, lit, on the laptop's USB cable, Meta's proximity override on; the game
+from the laptop at commit ee618fd, in the corridor at its start, the view turned 45° a minute, OVR Metrics' HUD off.
+Raw log and dumps: objekt-files/notes/headset/stand-long-2026-10-13T16-48-01/ (summary.json made from log.jsonl).
+- 45.2 minutes; 90 fps in every minute in play (89.6 in the first, with 16 of the run's 44 late frames: the start);
+  never below Meta's 60 (VRC.Quest.Performance.1) while the game was shown.
+- 18 to 22 minutes: the power cut of his outage schedule (DTEK, 20:00 to 22:00) left the room dark; the headset lost its
+  place, the session went "hidden" from 1074.6 s to 1300.4 s and the game drew nothing; it came back at 90 fps by
+  itself once there was light. Under Meta's rule a system overlay is no frame drop of the app.
+- Heat flat: the virtual surface sensor 37.2 to 38.9 °C (its first throttling threshold 48.0), the SoC up to 58.5 °C
+  (89), the battery up to 42 °C (58); thermal status 0 throughout. The GPU at 456, 492 and 545 MHz by the system's choice.
+- GPU resources the same at the start and the end (257 geometries, 40 textures, 53 programs): nothing piles up in
+  the corridor over 45 minutes. The page's process 198 068 kB at the start, 208 385 kB at the end, 222 325 kB at most.
+- Battery 95 % to 69 % while charging from the laptop's USB.
+- Not in it: room 101, the corridor's flow (the sign, the clipboard, the doors), a person's moves, a Quest 2.
