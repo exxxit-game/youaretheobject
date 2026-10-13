@@ -1,4 +1,4 @@
--- The doors to the results, on the owner's word of 13.10 ("двери сейчас, шифрование потом").
+-- The doors to the results, on the owner's word of 13.10: doors now, encryption later (docs/owner-decisions.md).
 -- 1. An explicit rejection policy on each of the 7 tables. Row level security is on and no table has a
 --    policy, so the deny already holds ("If no policy exists for the table, a default-deny policy is
 --    used", PostgreSQL 17, ddl-rowsecurity); Supabase's advisors ask to say it: "some users may enable
