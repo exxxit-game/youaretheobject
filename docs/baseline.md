@@ -71,5 +71,5 @@ Raw files: objekt-files/notes/headset/perf-2026-10-13/. Two fact-checks of 13.10
 - Over the internet (the test copy) instead of the cable; on a Quest 2 (none here); a long run past 10 minutes,
   starting cold.
 - OVR Metrics Tool wrote no file for the browser: no CapturedMetrics folder after a VR session following an
-  ENABLE_CSV broadcast (the setting not read back), as a Meta forum post said (HUD only); its HUD showed in his
+  broadcast that switches its CSV on (Meta's ts-ovrmetricstool page; the setting not read back), as a Meta forum post said (HUD only); its HUD showed in his
   headset.
