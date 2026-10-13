@@ -17,6 +17,9 @@ checks of shelf 2 (revision-shelf2-server.md, -client-law.md, -schema-tests.md) 
   (7 days) it could in principle be linked to the IP address (privacy.html:58 [Russian, at the cited line]). Say one thing: a kept result cannot be taken back; we
   do not match the logs with results.
 - privacy.html's date (10 October; changed on the 11th); what the logs hold besides the IP (city, request path).
+- privacy.html:58 says Supabase keeps the logs and the backups 7 days; Supabase's docs say they are accessible 7 days
+  on Pro (logs: "accessible time"; backups: "can access the last 7 days"); how long Supabase itself keeps them is
+  not stated (the map's fact-check, 13.10).
 - Science (his decision 6, 12.10): privacy.html:42 still says science only after an ethics committee and
   that no such study exists yet [Russian, at the cited line]. Rewrite to science now in our lab after the preregistration; the separate
   consent mark for science goes into consent version 2 (a migration).
