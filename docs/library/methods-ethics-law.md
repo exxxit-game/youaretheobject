@@ -1,7 +1,7 @@
 # methods, ethics, law
 
 Generated from `docs/library/papers.json` by `node tools/build-library.mjs`. Do not edit by hand.
-91 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
+92 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
 in the library folder's papers\ as `<id>.txt` (a data set: `<dir>/<id>.txt` from the library folder); "text: ocr" marks a scan's
 text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 
@@ -52,6 +52,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **kim-2019** Kim et al. 2019. Preventing careless responding in online surveys with a mirror image (in Korean) · careless responding, mirror image, online surveys, self-awareness · no card
 - **kirwan-2020** Kirwan et al. 2020. Repetition of computer security warnings results in differential repetition suppression effects as revealed with functional MRI · warning fatigue, security warnings, habituation · no card
 - **klein-2018** Klein et al. 2018. Many Labs 2: Investigating Variation in Replicability Across Samples and Settings · Many Labs 2, replication, variation across samples · no card
+- **koe-2020** koe et al. 2020. Zero to Monero: Second Edition (v2.0.0) · Monero, Pedersen commitments, range proofs, cryptography · no card
 - **lakens-2022** Lakens 2022. Sample Size Justification · sample size justification, statistical power · no card
 - **lumsden-2016** Lumsden et al. 2016. The effects of gamelike features and test location on cognitive test performance and participant enjoyment · gamelike features, test location, enjoyment, cognitive tests · no card
 - **madary-2016** Madary & Metzinger 2016. Real Virtuality: A Code of Ethical Conduct. Recommendations for Good Scientific Practice and the Consumers of VR-Technology · VR ethics, code of conduct · no card

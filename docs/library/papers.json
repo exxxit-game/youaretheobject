@@ -8091,6 +8091,25 @@
    "text": "ok",
    "status": "no card",
    "source": "https://www.usenix.org/system/files/conference/nsdi17/nsdi17-corrigan-gibbs.pdf"
+  },
+  {
+   "id": "koe-2020",
+   "authors": "koe, Alonso, Noether",
+   "year": "2020",
+   "title": "Zero to Monero: Second Edition (v2.0.0)",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "Monero",
+    "Pedersen commitments",
+    "range proofs",
+    "cryptography"
+   ],
+   "type": "report",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://www.getmonero.org/library/Zero-to-Monero-2-0-0.pdf"
   }
  ]
 }

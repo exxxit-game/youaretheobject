@@ -109,3 +109,104 @@
   only random-looking shares; no single party sees a player's numbers. The aggregate (the live average) is the
   only thing anyone learns. Individual rows for science are then never available to us either: Prio gives aggregates
   (sums, histograms, even "a least-squares regression", its abstract), not rows; per-player analysis needs a second, separate channel (part 3).
+
+### Part 2. Homomorphic encryption (HE): libraries and speed (read 2026-10-13)
+- node-seal, https://github.com/s0l0ist/node-seal (README, full text): "an ESM-first, WebAssembly-powered wrapper
+  around the C++ Microsoft SEAL homomorphic encryption library"; "Currently aligned with Microsoft SEAL 4.1.2";
+  runs "anywhere WASM is allowed" (browsers named). No audit statement on the page.
+- Its benchmark, https://raw.githubusercontent.com/s0l0ist/node-seal/main/BENCHMARK.md (full text): Apple M1 Pro,
+  poly degree n=4096 (log q = 109), in microseconds; in Chrome: public key generation 5540, BFV encrypt with the
+  public key 5240, adding two ciphertexts 20, BFV decrypt 750. No phone or headset numbers.
+  Arithmetic (mine): one BFV ciphertext at n=4096 holds 2 x 4096 coefficients of 109 bits = about 110 KB before
+  compression, against our server's limit of 2048 bytes a report (0009).
+- tfhe-rs (Zama), https://docs.zama.org/tfhe-rs/integration/js-on-wasm-api.md (full text): browser WASM client
+  "includes functionality for key generation, encryption, and decryption. However, it does not support FHE
+  computations"; "Due to a lack of threading support in WASM, key generation can be too slow to be practical for
+  bigger parameter sets"; multithreading needs COOP/COEP headers for SharedArrayBuffer.
+- OpenFHE: https://github.com/openfheorg/OpenFHE-WASM — the search summary says an "Official Webassembly (NodeJS)
+  port", work in progress, dev branch only "as of April 2023"; the repository itself not opened -> unverified.
+- Paillier (additive only): Paillier 1999, "Public-Key Cryptosystems Based on Composite Degree Residuosity
+  Classes" (EUROCRYPT 1999; title only read). It rests on factoring, the problem Shor's algorithm solves on a
+  large quantum computer (see part 3 for NIST's wording), so it fails the owner's "later quantum computer" test.
+  BFV/BGV/CKKS rest on lattices (Ring-LWE), the same family as ML-KEM (inference from the schemes' families).
+
+### Part 2. HE's known weak points for an average that is shown to people (abstracts only, via Consensus)
+- No range check by itself: Prio's text (above) on encrypted sums: "a malicious client can send the servers an
+  encryption of a large integer value v instead of a zero/one bit"; "the servers cannot tell from inspecting the
+  ciphertext that v > 1". With HE alone our JSON Schema check (0..100) is gone; it needs zero-knowledge proofs.
+- Publishing decrypted results can leak the key: Li & Micciancio, EUROCRYPT 2021, "On the Security of Homomorphic
+  Encryption on Approximate Numbers" (abstract): passive attacks on CKKS "leading to complete key recovery with
+  high probability", tested on "HEAAN, SEAL, HElib and PALISADE", including "mean and variance computations".
+- Not only CKKS: Checri et al. 2024 (abstract): a key recovery attack "easily generalizes to other xHE schemes such
+  as BFV, BGV and TFHE"; "existing threshold variants of BFV, BGV and CKKS are particularly exposed"; it "typically
+  takes less than an hour on an average laptop PC". Guo et al. 2024 (USENIX Security, abstract): on OpenFHE
+  "recover the secret key using just one shared decryption output" when the noise flooding is estimated on average.
+- Lesson (inference): a live "you and others" average decrypted and shown to every player is exactly the
+  "shared decryption output" these attacks use; HE for our case needs expert parameter choice we cannot check.
+
+### Part 2. Who holds the decryption key: the crux (inference from the sources above)
+- Whoever can decrypt the sum can decrypt any single ciphertext too: HE keys do not tell a sum from a row.
+- If the server holds the key (to show a live average), Supabase, its staff and a thief of the server hold it:
+  nothing is gained over today. If only the owner holds it, no live average can be shown until he decrypts each
+  batch by hand. The only way out is splitting the key between two parties (threshold decryption), which is again
+  the two non-colluding servers of Prio/DAP, with more cost and the threshold attacks above.
+
+### Part 3. Data only the owner can read: public-key encryption on the headset (full texts, read 2026-10-13)
+- libsodium sealed boxes, https://doc.libsodium.org/public-key_cryptography/sealed_boxes : "designed to anonymously
+  send messages to a recipient given their public key"; "Without knowing the secret key used for a given message,
+  the sender cannot decrypt the message later"; uses "X25519 and XSalsa20-Poly1305"; the recipient "cannot verify
+  the identity of the sender". (Same primitive GitHub uses for its secrets: data-purchases.md.)
+- HPKE, RFC 9180, https://www.rfc-editor.org/rfc/rfc9180.html : February 2022, Informational, from the IRTF CFRG;
+  base mode "enable[s] encryption to the holder of a given KEM private key"; its analyses "do not consider
+  adversaries capable of quantum computation". So both sealed boxes and HPKE with X25519 are classical only.
+- How a game would use it (inference): the headset holds only the owner's PUBLIC key (in the public code, which is
+  fine); it seals the report; Supabase stores the sealed bytes; only the owner's private key opens them.
+
+### Part 3. Post-quantum (full texts unless marked)
+- FIPS 203, https://csrc.nist.gov/pubs/fips/203/final : "Module-Lattice-Based Key-Encapsulation Mechanism Standard",
+  published August 13, 2024; "At present, ML-KEM is believed to be secure, even against adversaries who possess a
+  quantum computer"; sets "ML-KEM-512, ML-KEM-768, and ML-KEM-1024".
+- X-Wing, https://datatracker.ietf.org/doc/draft-connolly-cfrg-xwing-kem/ : draft-11, 2026-09-23, "Active
+  Internet-Draft (individual)", Independent Submission, no RFC; "a general-purpose post-quantum/traditional hybrid
+  key encapsulation mechanism (PQ/T KEM) built on X25519 and ML-KEM-768."
+- HPKE with post-quantum KEMs, https://datatracker.ietf.org/doc/draft-ietf-hpke-pq/ : draft-05, 6 July 2026,
+  "WG Document", no RFC; lists ML-KEM-512/768/1024 and hybrids incl. X25519 with ML-KEM-768.
+- JS library, https://github.com/paulmillr/noble-post-quantum (README): ML-KEM per FIPS 203; "ml_kem768_x25519:
+  ML-KEM-768 + X25519, implementing X-Wing"; "The library has not been independently audited yet"; "This pure
+  JavaScript implementation does not claim constant-time execution". (Timing leaks matter where an attacker
+  measures the device; our headset encrypts once with a public key, no secret on it: inference.)
+- Harvest now, decrypt later: UK NCSC, https://www.ncsc.gov.uk/whitepaper/next-steps-preparing-for-post-quantum-cryptography
+  (v2.0, 14 Aug 2024): "there is a risk from an attacker collecting and storing data today and decrypting it at
+  some point in the future"; vulnerable: "algorithms based on integer factorisation (such as RSA)" and on "the
+  discrete logarithm problem (such as Finite Field Diffie-Hellman, ECDH, DSA, ECDSA, EdDSA)" (X25519 is such an
+  ECDH: inference); "existing symmetric algorithms with at least 128-bit keys (such as AES) can continue to be used".
+- AES-256 under Grover: NIST PQC FAQ, https://csrc.nist.gov/projects/post-quantum-cryptography/faqs : "Grover's
+  algorithm allows a quantum computer to perform a brute force key search"; "it is quite likely that Grover's
+  algorithm will provide little or no advantage in attacking AES"; "both AES 192 and AES 256 will still be safe for
+  a very long time".
+- Why secret shares are safe even from a quantum computer: Prio (above): "any subset of up to s - 1 shares of x
+  learns nothing, in an information-theoretic sense" — no key exists to break; each share alone is random.
+  EDPB Guidelines 01/2025 (library edpb-2025-pseudonymisation.txt, para 108): pseudonymisation secrets "may also be
+  divided up, e.g. by secret sharing, and stored by different entities". The weak link is the transport: DAP seals
+  each share with HPKE (classical X25519 today), so a recorded share could be opened later unless the HPKE KEM is
+  post-quantum (inference from DAP 4.4.2.1 and RFC 9180).
+
+### Part 4. Monero: how sums are checked while amounts stay hidden
+- Source: koe, Alonso & Noether, "Zero to Monero: Second Edition" v2.0.0, 4 Apr 2020, public domain, full text,
+  https://www.getmonero.org/library/Zero-to-Monero-2-0-0.pdf (saved objekt-files/papers/koe-2020.pdf/.txt).
+- Section 5.2: "A Pedersen commitment is a commitment that has the property of being additively homomorphic. If C(a)
+  and C(b) denote the commitments for values a and b respectively, then C(a + b) = C(a) + C(b)"; useful "to prove,
+  for instance, that inputs equal outputs, without revealing the amounts at hand." Verifiers check the commitments
+  sum to zero (inputs minus outputs minus the fee).
+- Section 5.5: without a range proof a negative amount would pass ("we have effectively created l more Moneroj");
+  each output is proven to lie in 0..2^64-1 with Bulletproofs. Bulletproofs, https://eprint.iacr.org/2017/1066
+  (abstract page): "they enable proving that a committed value is in a range"; "the proof size is only logarithmic
+  in the witness size"; "without a trusted setup".
+- RingCT, https://www.getmonero.org/resources/moneropedia/ringCT.html : "how transaction amounts are hidden in
+  Monero"; "After September 2017, this feature became mandatory".
+- Relevance for us (inference): Monero proves that hidden sums balance; it never computes or reveals a sum. Our
+  need is the opposite: reveal one number (the average) and nothing else. The same two ideas reappear in Prio:
+  additive hiding (shares instead of commitments) and a range proof per entry (Prio's SNIP / FLP instead of
+  Bulletproofs). So Monero is the right picture for the player ("hidden numbers whose total still adds up"), and
+  Prio/DAP is the tool that actually opens the total. The quantum question for Monero's commitments was not found
+  in the text read -> not claimed.
