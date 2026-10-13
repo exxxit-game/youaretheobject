@@ -4,7 +4,11 @@
 // No reading is trusted before its tool has shown a change made on purpose whose size is known beforehand
 // (long-measure.md, "Known-change proofs"): the trial makes each such change once and writes whether each tool saw
 // it. Every time is the headset's own clock; every tool's raw output is kept beside the log (as tools/measure.mjs).
-// Usage: node tools/stand-measure.mjs trial      (about two and a half minutes; the owner does not wear it)
+// Usage: node tools/stand-measure.mjs trial      (about three minutes; the owner does not wear it)
+//        node tools/stand-measure.mjs restore    (the headset given back as it was, after a run cut short)
+// The boundary is not paused (a safety setting of his headset): the stand stands inside his play area, lit, so it
+// does not rise; a VR entry it holds is given up after 20 s and the browser restarted before the headset sleeps,
+// the cure of docs/mistakes.md ("the headset browser had lost its link to the VR system for hours").
 import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
@@ -49,8 +53,9 @@ if (import.meta.url === pathToFileURL(process.argv[1] || '').href) await main();
 
 async function main() {
   const mode = process.argv[2];
-  if (mode !== 'trial') { console.log('usage: node tools/stand-measure.mjs trial'); process.exit(1); }
-  const { adb, serveToHeadset, localPort, openGame, page, wornByPerson, connected, sleepNow } = await import('./headset.mjs');
+  if (!['trial', 'restore'].includes(mode)) { console.log('usage: node tools/stand-measure.mjs trial | restore'); process.exit(1); }
+  const { adb, serveToHeadset, localPort, openGame, page, wornByPerson, connected, sleepNow, restartBrowser } = await import('./headset.mjs');
+  const PREVIEW = 'https://exxxit-game.github.io/object-preview/';
   const { requireReview, requirePaper } = await import('./review-gate.mjs');
   const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
   const sh = (cmd) => { try { return adb('shell', `${cmd} ; true`); } catch (e) { return `error: ${e.message}`; } };
@@ -60,6 +65,18 @@ async function main() {
   const git = (...a) => execFileSync('git', a, { cwd: ROOT, encoding: 'utf8' }).trim();
 
   if (!connected()) { console.log('the headset is not on the cable'); process.exit(1); }
+  // Meta: "Re-enable any disabled properties after your test" (ts-scriptable-testing); read back, not assumed
+  const giveBack = (why) => {
+    const out = metavr('device', 'proximity', '--enable');
+    if (why === 'restart') restartBrowser(PREVIEW);
+    sleepNow();
+    return { out, after: proximityOf(sh('dumpsys vrpowermanager')) };
+  };
+  if (mode === 'restore') {
+    if (wornByPerson()) { console.log('not now: the owner wears the headset'); process.exit(1); }
+    console.log(JSON.stringify(giveBack('restart')));
+    return;
+  }
   requireReview(ROOT, 'VR in the headset', { look: true });
   requirePaper(ROOT, 'VR in the headset', { look: true });
   // this run is for a headset nobody wears: on a person it would hold frames and rates against him
@@ -76,7 +93,7 @@ async function main() {
   const sandboxPss = (tag) => { const all = sh('dumpsys meminfo'); keep(`meminfo-${tag}.txt`, all);
     return Object.fromEntries(sandboxedPids(all).map((pid) => [pid, pssOf(sh(`dumpsys meminfo ${pid}`))])); };
 
-  let game = null, run = null;
+  let game = null, run = null, held = false;
   try {
     // the conditions, and proof that no debug override of levels or foveation is active (a forced level would make
     // the heat and the frames something no player gets: long-measure.md, Part 2)
@@ -97,8 +114,9 @@ async function main() {
     for (let i = 0; i < 80 && (await run("!!document.querySelector('a-scene')?.hasLoaded")) !== true; i++) await pause(250);
     log('loaded');
     // the risk named first in the plan: whether an unworn headset enters VR at all (the boundary window may hold it)
-    const vr = log('vr', { answer: await run("document.querySelector('a-scene').enterVR().then(() => 'in VR', (e) => 'failed: ' + e.message)") });
-    if (vr.answer !== 'in VR') throw new Error(`VR: ${vr.answer}`);
+    const vr = log('vr', { answer: await run(`Promise.race([document.querySelector('a-scene').enterVR().then(() => 'in VR', (e) => 'failed: ' + e.message),
+      new Promise((r) => setTimeout(() => r('held 20 s: the boundary window, or no tracking'), 20000))])`) });
+    if (vr.answer !== 'in VR') { held = true; throw new Error(`VR: ${vr.answer}`); }
     log('session', { rate: await run('document.querySelector("a-scene").xrSession.frameRate ?? null'),
       rates: await run('Array.from(document.querySelector("a-scene").xrSession.supportedFrameRates || [])') });
     // every XR frame counted, a frame late when its display time steps more than 1.5 refreshes (W3C WebXR 5.1,
@@ -119,9 +137,12 @@ async function main() {
     const t0 = now(), secs = () => (now() - t0) / 1000;
     const samples = [];
     let lastAt = t0, lastFrame = null;
+    let heatAt = 0;
     const sample = async () => {
       const p = await readPage(), at = now(), prox = proximityOf(sh('dumpsys vrpowermanager'));
       const x = { s: Number(((at - t0) / 1000).toFixed(1)), dt: (at - lastAt) / 1000, page: p, prox, renderFrames: lastFrame === null ? undefined : p.renderFrame - lastFrame };
+      // the heat every 30 s, so a rise shows while it happens, not only between start and end
+      if (at - heatAt >= 30000) { heatAt = at; x.thermal = thermal(`s${Math.round(x.s)}`); }
       lastAt = at; lastFrame = p.renderFrame; samples.push(x); log('sample', x); return x;
     };
     const until = async (mark) => { while (secs() < mark) { const wait = Math.min(10, mark - secs()); await pause(wait * 1000); if (secs() >= mark || wait >= 9.5) await sample(); } };
@@ -175,7 +196,7 @@ async function main() {
     // the sensor given back and the headset asleep, whatever happened (quest-look.mjs sleep)
     try { if (run) await run('document.querySelector("a-scene").xrSession?.end()'); } catch (e) { /* no session */ }
     if (game) game.close();
-    log('proximity on', { out: metavr('device', 'proximity', '--enable') });
-    sleepNow();
+    // a held entry leaves the browser unable to enter VR until it restarts (docs/mistakes.md): restarted first
+    log('given back', giveBack(held ? 'restart' : 'sleep'));
   }
 }

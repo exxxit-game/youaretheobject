@@ -1,8 +1,9 @@
 // Fades the view to black and back (moving between places without a jump). A black
 // sphere around the camera whose opacity follows a target; it runs in the scene's own
 // frame loop, so it also works inside a VR session, where window timers do not drive frames.
-// Our choice, as locomotion.js's: about three frames at 72 Hz.
-const MAX_STEP_MS = 40;
+// A step longer than this is a stall, and the fade moves nothing in it, as A-Frame 1.8.0's own wasd-controls
+// does with a step over 0.2 s (its tick in vendor/aframe-1.8.0.min.js)
+const STALL_MS = 200;
 AFRAME.registerComponent('fader', {
   schema: { ms: { default: 450 } },
   init() {
@@ -29,8 +30,9 @@ AFRAME.registerComponent('fader', {
     if (!this.done) return;
     // dt is the scene's timer's step, and its first one is the whole time since the scene was made
     // (A-Frame v1.8.0 a-scene.js:45, 693-694: a THREE.Timer, whose first update counts from its
-    // creation): a long frame counts as MAX_STEP_MS, so a fade asked for during loading still fades
-    const step = Math.min(dt, MAX_STEP_MS) / this.data.ms;
+    // creation): skipped as a stall, so a fade asked for during loading still fades
+    if (dt > STALL_MS) return;
+    const step = dt / this.data.ms;
     m.opacity = this.target > m.opacity ? Math.min(this.target, m.opacity + step) : Math.max(this.target, m.opacity - step);
     if (m.opacity === this.target) {
       this.mesh.visible = this.target > 0;

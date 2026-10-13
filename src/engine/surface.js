@@ -182,8 +182,9 @@ AFRAME.registerComponent('surface', {
     // world positions are final only once the scene has loaded (merge-static runs after this)
     if (grid && !sceneEl.hasLoaded) { sceneEl.addEventListener('loaded', () => this.apply(), { once: true }); return; }
     if (grid) {
-      // each laying makes this surface its own copy of the geometry; the copy made last time is freed
-      // once replaced, as A-Frame's shared one never is (three.js r184 manual, how-to-dispose-of-objects)
+      // each laying makes this surface its own copy of the geometry, which no one else frees: the copy made
+      // last time is freed once replaced (three.js r184 manual, how-to-dispose-of-objects); A-Frame frees its
+      // shared one itself once no entity uses it (its geometry system's unuseGeometry)
       const last = this.own;
       worldUV(mesh, grid, this.data.space, this.el.closest('[data-frame]')?.object3D);
       if (last && last !== mesh.geometry) last.dispose();
