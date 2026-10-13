@@ -156,7 +156,11 @@ post-quantum hybrid (ML-KEM-768 + X25519, part 3); only the private key opens it
 from desktop and phone numbers (parts 1-3); nothing was measured on the Quest 2 yet.
 
 ### A. Sealed rows, and the average computed by two independent parties (Prio/DAP with Divvi Up)
-- Player sees: the same "you and others", refreshed per batch (DAP's minimum batch = his batches of 10).
+- Player sees: the same "you and others", refreshed when a batch is collected. DAP's `min_batch_size` is "the
+  smallest number of reports a batch is allowed to include" (draft-ietf-ppm-dap-19, task configuration), set
+  to 10 as in his rule of at least 10 new players; a batch may hold more, and the Collector decides when it asks
+  the Leader for one (section 4.2.1), so how often the average refreshes is set by our collector job, not by
+  DAP (not yet configured, so unverified).
 - Supabase sees: sealed rows plus room, version, consent version and date; nothing it can read.
 - A thief gets: of Supabase, sealed bytes; of one aggregator, random shares; he needs both aggregators.
 - Science gets: every row, after the owner decrypts; the live average as now.
