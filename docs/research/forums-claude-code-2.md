@@ -220,3 +220,18 @@ Mark (b): one team's report, numbers their own, no link. For us: their re-review
 by the author against the findings); their tiering by what a change touches is worth setting beside ours (a person
 meets it: the practice review; a room: the paper review; a page for him: two fact-checks) on shelf 7, with our own
 count of what the reviewers cost (tools/usage.mjs does not yet split by helper).
+The thread itself (r/ClaudeCode, post 1x5afg9 by u/GreenCurious9895, 13 Oct 2026; read 14.10 through Reddit's RSS, which
+gave the post and 19 replies, ours not among them): the author's own numbers from his logs: median PR 18 files and about
+630 changed lines; "each PR got reviewed 3.5 times on average (median 2, worst one 23 times) because of re-reviews after
+fixes and new pushes"; a pass about 20 minutes. Replies, each one person's experience: the big CLAUDE.md "is sent with
+every request", keep the review rule book in its own file linked from it, and let the PR summary give the reasons so the
+agent digs less (u/yangqi); the top model only for judgment, a cheaper one for mechanical steps, one job's rules in a
+skill file, usage checked before and after each unit of work with progress written to a file, a cheap first pass that
+only flags (u/studioinafolder); Claude writes exhaustive, brittle tests and re-runs everything end to end, "every level
+of testing has its place" (u/LairBob); have Opus audit the process on past PRs before changing live ones
+(u/youreawizerdharry); a parent agent picks focused reviewers (security, correctness, performance), an adversarial pass
+removes false positives, higher effort only when warranted, tokens per reviewed line tracked (u/BlackAtomXT); "You can
+have 100 passing tests that all enforce the same incorrect assumption" (u/Professional_Ad705, who offers paid reviews);
+two replies advertise their own products.
+For us: our practice reviewer and fact-checker load CLAUDE.md with its imports (about 40 KB, found by the fact-check of
+14.10), so u/yangqi's point is ours too; usage before and after each piece of work is already on the board (shelf 7).
