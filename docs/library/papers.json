@@ -8110,6 +8110,25 @@
    "text": "ok",
    "status": "no card",
    "source": "https://www.getmonero.org/library/Zero-to-Monero-2-0-0.pdf"
+  },
+  {
+   "id": "bogdanov-2016",
+   "authors": "Bogdanov, Kamm, Kubo, Rebane, Sokk, Talviste",
+   "year": "2016",
+   "title": "Students and Taxes: a Privacy-Preserving Study Using Secure Computation",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "secure multi-party computation",
+    "official statistics",
+    "data protection",
+    "cryptography"
+   ],
+   "type": "article",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://petsymposium.org/popets/2016/popets-2016-0019.pdf"
   }
  ]
 }

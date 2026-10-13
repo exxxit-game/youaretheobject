@@ -16,13 +16,13 @@ excerpt). A phenomenon by name: search `docs/library/papers.json`, every record 
 - [social](library/social.md) (72): evacuation, conformity, cooperation, culture, proxemics, replication, synchrony, Asch conformity, Ringelmann effect, avatars
 - [emotion, morality, culture](library/emotion-morality-culture.md) (47): culture, awe, thought experiment, trolley problem, moral action, presence, Eastern samples, Milgram, Moral Machine, architecture
 - [VR norms and hardware](library/vr-norms-hardware.md) (99): cybersickness, presence, video passthrough, mixed reality, anthropometry, locomotion, SteamVR, VR interface design, augmented reality, cinematic VR
-- [methods, ethics, law](library/methods-ethics-law.md) (92): online experiments, GDPR, attention checks, crowdsourcing, data quality, online surveys, research ethics, careless responding, citizen science, debriefing
+- [methods, ethics, law](library/methods-ethics-law.md) (93): online experiments, GDPR, attention checks, crowdsourcing, data quality, online surveys, research ethics, careless responding, citizen science, cryptography
 - [games and platforms](library/games-platforms.md) (30): citizen science, video games, crowdsourcing, gamelike features, playtesting, usability, Disney Aladdin, FPS games, Foldit, GDPR
 - [data sets](library/data-sets.md) (11): anthropometry, ANSUR II, body measurements, demographics, eye height, interpupillary distance, survey, Beat Saber, NHANES, Norway
 
 ## Status
 
-400 records: card 144 · no card 240 · wanted 10 · read-not-saved 5 · dropped 1. Text of the papers on disk: ok 345 · ocr 32 · placeholder 2 · none 5.
+401 records: card 144 · no card 241 · wanted 10 · read-not-saved 5 · dropped 1. Text of the papers on disk: ok 346 · ocr 32 · placeholder 2 · none 5.
 Relations: data 2 · derived 1 · duplicate 1 · replication 9 · reply 1 · supplement 10.
 Not in the library (wanted, read but not saved, dropped): [wanted](library/wanted.md). Areas searched
 for rooms: [coverage](library/coverage.md). Experiment cards: [catalog](catalog.md).

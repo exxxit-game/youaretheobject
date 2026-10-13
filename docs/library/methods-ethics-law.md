@@ -1,7 +1,7 @@
 # methods, ethics, law
 
 Generated from `docs/library/papers.json` by `node tools/build-library.mjs`. Do not edit by hand.
-92 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
+93 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
 in the library folder's papers\ as `<id>.txt` (a data set: `<dir>/<id>.txt` from the library folder); "text: ocr" marks a scan's
 text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 
@@ -13,6 +13,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **aust-2013** Aust et al. 2013. Seriousness checks are useful to improve data validity in online research · seriousness check, data quality, online research · no card
 - **bargh-2000** Bargh & Chartrand 2000. Studying the mind in the middle: A practical guide to priming and automaticity research · priming, automaticity, awareness checks, funnel debriefing · no card · text: placeholder · excerpt only: manuscript pages 7, 8 and 37 transcribed by eye from an image-only scan
 - **blackhart-2012** Blackhart et al. 2012. Assessing the adequacy of postexperimental inquiries in deception research and the factors that promote participant honesty · deception, postexperimental inquiry, suspicion probe, debriefing · no card
+- **bogdanov-2016** Bogdanov et al. 2016. Students and Taxes: a Privacy-Preserving Study Using Secure Computation · secure multi-party computation, official statistics, data protection, cryptography · no card
 - **bps-2021-code** British Psychological Society 2021. BPS Code of Human Research Ethics · research ethics, code of conduct, consent · no card
 - **bps-2021-imr** British Psychological Society 2021. Ethics guidelines for internet-mediated research · internet-mediated research, research ethics, online consent · no card
 - **bps-2023-independent** British Psychological Society 2023. Statement on ethics review and independent research with human participants · ethics review, independent researchers · no card
