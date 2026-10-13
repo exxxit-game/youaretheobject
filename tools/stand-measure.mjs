@@ -201,10 +201,11 @@ async function main() {
       // 10 s, heat every 30 s, the page's memory every minute, the GPU every 5 minutes; whether the session stays
       // visible is read with every sample (Meta's safety page: standby after about 15 minutes with no interaction)
       const minutes = Number((process.argv.find((a) => a.startsWith('--minutes=')) || '').split('=')[1]) || 45;
-      // a headset just woken gave no frame for its first 38 s in VR while the session read "visible" (the long run's
-      // first try): that is the headset finding its place, not the game, so the run begins at the first frames
-      const asked = now();
-      for (let got = 0; !got && now() - asked < 180000;) { await pause(2000); got = (await readPage()).frames; }
+      // a headset just woken drew nothing for 38 s in VR while "visible" (the long run's first try): its place being found,
+      // so the run begins at the first frames; none in 3 minutes is no link to the VR system: restarted, as a held entry
+      const asked = now(); let got = 0;
+      while (!got && now() - asked < 180000) { await pause(2000); got = (await readPage()).frames; }
+      if (!got) { held = true; throw new Error('no VR frame in 180 s'); }
       log('frames began', { afterS: Number(((now() - asked) / 1000).toFixed(1)) });
       await readPage();
       const t0 = now(), rows = [];
