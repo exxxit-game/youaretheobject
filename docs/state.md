@@ -11,7 +11,7 @@
 - Migrations 0009 (date only, random key, consent version, room 01 JSON Schema, keyed IP limit) and 0010 (known consent
   versions, the comparison's gate; run 11.10, read back) are live: the owner ran 0009 in the SQL editor on 10.10
   (history 20261010151418), read back the same day (tables, functions, grants, the pg_cron launcher, compare_room
-  through the API); run again, it stops at the pg_cron setup and changes nothing. Open: on the first real results read app.recent.trusted (does CF-Connecting-IP arrive).
+  through the API); run again, it stops at the pg_cron setup and changes nothing. 0011 (the doors: rejection policies, a daily IP-hash key, the comparison's cap) run by the owner 13.10 and read back; app.recent.trusted true on its first calls: CF-Connecting-IP arrives.
 - Supabase `objekt` (`rkvdwzlymmewsxjysgma`, eu-west-1 Ireland), in the owner's organisation on the paid Pro plan (read
   10.10 with the Supabase connector's get_organization; a paid project is never paused), private schema `app`:
   `runs` via `submit_run` (room 01 checked against supabase/schemas/01-control-1.json), `playtests` via `submit_playtest`; both

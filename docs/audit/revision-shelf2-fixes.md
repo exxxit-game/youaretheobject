@@ -37,17 +37,17 @@ checks of shelf 2 (revision-shelf2-server.md, -client-law.md, -schema-tests.md) 
 
 ## With the next migration
 - Schema 2: whole numbers, exactly 40 trials, scales in steps of 5, required fields; a data dictionary.
-- WRITTEN 13.10 in supabase/migrations/0011_doors.sql, not run yet: an explicit deny on the 7 tables (Supabase's
+- LIVE 13.10 (0011_doors.sql, run by the owner, read back): an explicit deny on the 7 tables (Supabase's
   advice); drop the histogram and the presses mean from compare_room (the game reads neither).
-- WRITTEN 13.10 in 0011_doors.sql, not run yet: the IP-hash key changed daily, as Plausible does, so hashes of
+- LIVE 13.10 (0011, job new-limit-key at 00:00 GMT, read back): the IP-hash key changed daily, as Plausible does, so hashes of
   different days cannot be linked.
 - The testers' table takes the whole run without gender and age (today 12 fields: 5 answers, 7 measures;
   0009:210-211, the same list as 0004).
 - The consent's science mark (above).
 
 ## Server and migrations
-- compare_room has no rate cap (revision-shelf2-server.md R2; Cosmogram, exposed, low). WRITTEN 13.10 in
-  0011_doors.sql, not run yet: the result's cap (30 per 5 minutes an address, 300 a minute), before any read.
+- compare_room has no rate cap (revision-shelf2-server.md R2; Cosmogram, exposed, low). LIVE 13.10 (0011,
+  read back: compare_room volatile, the cap in its body, no histogram): the result's cap (30 per 5 minutes an address, 300 a minute), before any read.
 - Auth sign-ups are open (read 13.10: the project's public Auth settings say "disable_signup":false, email
   sign-in on, "mailer_autoconfirm":false; auth.users holds 0 rows). The game never calls Auth and a signed-up
   user holds no right on our data, but anyone with the public key can create accounts and make Supabase send
@@ -73,6 +73,8 @@ checks of shelf 2 (revision-shelf2-server.md, -client-law.md, -schema-tests.md) 
   GitHub's site, step by step.
 - ElevenLabs: done 12.10. He set the key's cap to 20000 per refresh period himself; sound effects access is set
   by the steps, not confirmed by a probe.
+- ANSWERED 13.10 without a result row: two calls of compare_room from the laptop after 0011 left two rows in
+  app.recent with trusted = true, so CF-Connecting-IP reaches the database and the cap counts each address.
 - The real call to learn whether the player's real IP reaches the database (his yes of 12.10): one row through
   the player's path. It must stay out of the statistics and "you and others" (src/app/session.js: our own
   checks must not reach the statistics); design that first. What it decides: if the player's real address
