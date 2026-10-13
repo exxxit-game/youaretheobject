@@ -19,10 +19,10 @@ closed when what breaks it is in place; it stays here, marked, as the memory of 
 ## 1. A guard for every complaint or remark — open
 - Done: Cosmogram's hooks 1 (25.08) → 7 → 12 → 22 → 34 → 53 (30.09), cut to 12 the same day: "раздутые правила, хуки
   и записи сами мешали работе" (569191c). Here: the process review of 11.10 removed five guards; on 13.10 nine command
-  forms were added to the merge guard after CodeRabbit's remarks, and he said: «Ограничения, ограничения… снова
+  forms were added to the merge and hooks-path guards after CodeRabbit's remarks, and he said: «Ограничения, ограничения… снова
   понаставляем… ставить ограничения на ограничения, это не особо разумно».
-- Cost: after 11.10 the command guard refused 4 times in 10,237 calls, all false; each form added never fired
-  (docs/research/restrictions-inventory.md).
+- Cost: after 11.10 the command guard refused 4 times in 10,237 calls, all false; the forms added before 13.10 never
+  fired (docs/research/restrictions-inventory.md).
 - Why us: I fix the finding in front of me (Reason 2000: active failures "can be swatted one by one, but they still
   keep coming"); a client-side guard can always be got round by another form, so there is always another remark.
 - Breaks it: a lock where it cannot be bypassed (the server, the agent's own identity); a new lock only after a real
@@ -40,7 +40,8 @@ closed when what breaks it is in place; it stays here, marked, as the memory of 
 ## 3. Two checks that lock each other — open
 - Done: Cosmogram's worst-case gate demanded what its full-suite warning forbade (hook audit 02.10). Here: a helper
   saves a paper outside the repository, the library test fails every commit, the Stop hook holds every turn for the
-  unsaved work: 23 of 29 holds after 11.10, loops of 25 tries (12.10).
+  unsaved work: up to 17 of the 29 "not saved" holds after 11.10 came with it, loops of 25 tries (12.10); the
+  rest came with helpers writing drafts inside the repository.
 - Why us: each check is added alone; no one asks what other check can force the state it fails on.
 - Breaks it: a check runs only where its input changes (docs/research/restrictions.md, item 1).
 
@@ -53,7 +54,8 @@ closed when what breaks it is in place; it stays here, marked, as the memory of 
   «наденьте очки».
 
 ## 5. Rounds of fixes that make new errors — open
-- Done: 12.10 «проверка, перепроверка… уже десятая»; 13.10 the studio page took three rounds of two fact-checks.
+- Done: 12.10 «проверка, перепроверка… уже десятая»; 13.10 the studio page took four rounds of two fact-checks, and
+  the restrictions analysis miscounted every time in the direction of its own conclusion (its fact-checks).
 - Why us: I shorten and translate sources from memory and write our setup's state from memory; each shortening
   makes a source stronger or narrower.
 - Breaks it: a page is written only from the checked research and from files read while writing; fewer claims;
@@ -75,15 +77,15 @@ closed when what breaks it is in place; it stays here, marked, as the memory of 
 - Done: Cosmogram ran its 330+ Playwright guards on the laptop 1436 times in one 21-day session; he caught it on
   24.09, 25.09, 30.09. Here: the smoke test runs only on GitHub (tests/smoke.mjs, .github/workflows/test.yml).
 
-## 9. Guards that silently do not run — closed
+## 9. Guards that silently do not run — closed in part
 - Done: Cosmogram's hooks failed to start ("bash is not recognized", "node: command not found") and reminders went to
-  stderr, which never reached the agent. Here: a crashed guard blocks (.claude/settings.json), and each guard is
-  proved to fire on GitHub (tools/prove-guards.mjs).
+  stderr, which never reached the agent. Here: a crashed command or MCP guard blocks (.claude/settings.json; the
+  Write/Edit guard and the Stop hook do not), and each guard is proved to fire on GitHub (tools/prove-guards.mjs).
 
 ## 10. Work straight on the live site — closed
 - Done: Cosmogram, 1385 of its 1538 commits went straight to main, the live site. Here: branches, and main only by a
   pull request with the test check green (GitHub ruleset, 12.10).
 
 ## 11. One endless window — closed in part
-- Done: Cosmogram's main session ran 21 days at about 570,000 tokens a request. Here: a window a day, a handoff
-  written at its end, the whole dialogue kept (docs/owner-decisions.md).
+- Done: Cosmogram's main session ran 21 days at about 570,000 tokens a request. Here: windows end with a written
+  handoff, and the whole dialogue is kept (docs/owner-decisions.md).

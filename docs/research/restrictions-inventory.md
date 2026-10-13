@@ -183,7 +183,7 @@ a complaint is no reason for a new guard.
   the ruleset (PR + green test, no bypass). Since the ruleset, a direct push to main is refused by GitHub, so the OBJECT_LIVE path
   of pre-push no longer leads anywhere; the classifier refused both pushes to main that had his word (11.10).
 - The live database is held three times: the guard's SQL check, 10 deny rules, and since 13.10 a read-only database user.
-- The review record refusal fired 4 times after the review and 6 times in all; none was an attempt to write the record.
+- The review record refusal fired 2 times after the review and 4 times in all; none was an attempt to write the record.
 - The commit check's library test reads a folder outside the repository, so a helper saving a paper there stops every commit;
   the Stop hook then holds every turn for the unsaved work: 23 of 29 "not saved" holds after the review came from this pair.
 - The structure test's doc caps and the board's start-size cap stopped 16 pushes and commits after the review; none touched the game.

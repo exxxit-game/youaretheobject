@@ -27,12 +27,13 @@ How each of us is built, and the circles we keep coming back to: [docs/circles.m
    only" (charles-337); GitHub's own agent "can only push to that branch", and its requester cannot approve its pull
    request (GitHub docs). Issue #61953 shows the arms race a client guard invites: rule, hook, workaround, hook,
    "(next circumvention TBD)".
-5. Make it undoable rather than guarded: commit often, revert easily (Anthropic teams; DORA 2025: AI's benefits
-   "depend on respondents' frequency of version control commits"; Reason 2000: build systems that "tolerate the
-   occurrence of errors").
+5. Make it undoable as well as guarded: commit often, revert easily (Anthropic teams; DORA 2025: AI's benefits
+   "depend on respondents' frequency of version control commits"); Reason 2000 names "two components": limiting
+   errors, and systems "better able to tolerate the occurrence of errors".
 6. Add a guard after a real failure; remove what never fires (features overview: "You don't need to configure
    everything up front"; Shankar; Google SRE: "Every page should be actionable"; abrarqasim: "delete the ones that
-   never fired"). Swatting each failure "one by one" is the person approach (Reason 2000).
+   never fired"). Our reading, not Reason's words: answering each failure with its own guard is what his mosquito
+   line warns of, "swatted one by one, but they still keep coming" (Reason 2000; his remedy: "drain the swamps").
 7. Gate at commit, push or stop, not in the middle of work, and give a gate a fuse (Shankar: "Blocking an agent
    mid-plan confuses or even frustrates it"; Claude Code overrides a Stop hook after eight blocks in a row).
 
@@ -42,21 +43,25 @@ Not found: an Anthropic text against the number of hooks as such; a before/after
 
 45 restrictions: 18 block an action, 4 demand an action before a turn ends, 4 gate what the owner meets, 10 check at
 commit, push or on GitHub, 7 are text rules, 2 are start lines and a log. Since the process review of 11.10:
-- The command guard refused 4 times in 10,237 calls, every one false (0 real catches). The variants added after
-  CodeRabbit's remarks never fired.
-- The Stop hook held 39 times in 301 runs: 6 real (my own unsaved work), 10 mechanical (bring room-polish up, one
-  command each), 23 from one pair of checks that lock each other: a helper saves a paper outside the repository, the
-  library test then fails every commit, and the Stop hook holds every turn for the unsaved work.
+- The command guard refused 4 times in 10,237 calls, every one false (0 real catches). The forms added before 13.10
+  never fired; those added on 13.10 were measured for 26 minutes only.
+- The Stop hook held 39 times in 301 runs, naming 47 items: not saved 29 (6 real), room-polish behind 10 (one
+  command each), not pushed 6 (3 real), a long command 2 (1 real). Of the 29 "not saved", up to 17 came with a
+  library-test stop (a helper saved a paper outside the repository, the test then failed every commit, and the Stop
+  hook held every turn for the unsaved work); the rest came with helpers writing drafts inside the repository.
 - Commit and push checks stopped 31 times: 11 for doc upkeep, 9 the library test (7 while helpers were adding
   papers), 5 the start-message size, 5 secret matches (4 false), 1 real (the vendored inspector's line ends).
-- Gates before the owner: one real catch (a browser restart refused while he wore the headset, 13.10); the review
-  gate fired after he had been called to the headset, twice.
+- Gates before the owner: 4 real by their rule (among them a browser restart refused while he wore the headset,
+  13.10, and a pre-check before he was called), 2 of which came after he had been called to the headset; 2 friction
+  (VR refused because nobody wore the headset).
 - Claude Code's own classifier refused both pushes to main that had his word (11.10).
 
 The decisive fact (read from GitHub 13.10): the ruleset on main requires a pull request and the `test` check, and
-**0 approvals**; the token the agent works with has **admin** rights. So "main only on his word" rests on our
-client-side guard alone, which can be bypassed by forms it does not know, and the agent's credential could change
-the ruleset itself. This is why every new CodeRabbit remark found another form to add.
+**0 approvals**. The key the agent works with is the narrow one he approved on 12.10 («Звучит логично. Да.»): a
+fine-grained key with no administration (docs/state.md), so it cannot change the ruleset (GitHub answers 403); the
+account behind it is the admin. With 0 approvals that key can still merge a green pull request alone, so "main only
+on his word" rests, for the merge itself, on our client-side guard, which forms it does not know get round. This is
+why every new CodeRabbit remark found another form to add.
 
 Cosmogram went the same way: hooks 1 (25.08) → 53 (30.09), then cut to 12 the same day ("раздутые правила, хуки и
 записи сами мешали работе", commit 569191c); CLAUDE.md 5.8 → 35 KB → 8 KB; some hooks never ran (the hook shell had
@@ -73,27 +78,33 @@ return; everything else undoable and visible.
 
 ## Proposal
 
-The principle (the sources above, and his rule of 11.10 already in docs/owner-decisions.md): a lock only where a
-mistake cannot be undone or costs his time; the lock where it cannot be bypassed; a new lock only after a real
-incident, and it replaces something; a lock that has not fired in a month is weighed for removal; gates at commit,
-push or stop.
+The principle (the sources above, and his rule of 11.10 in docs/owner-decisions.md): a lock only where a mistake
+cannot be undone or costs his time; the lock where it cannot be bypassed; a new lock only after a real incident;
+gates at commit, push or stop. Ours, not the sources': a new lock replaces something, and a lock that has not fired
+in a month is weighed for removal.
 
 The one choice that is his, main:
 - A. The agent gets its own GitHub identity (a second, machine account) with write access, not admin; main's ruleset
-  requires one approval; his "Approve" click on the pull request is his word, then it merges. The merge refusals in
-  tools/claude-guard.mjs and the OBJECT_LIVE step of the pre-push hook go; the classifier's refusals of approved
-  pushes go with them (nothing is pushed to main). Cost: his clicks once (the account, an invitation, a token for
-  the laptop) and one click per release. Holds against any command form and any future tool.
-- B. As now, but the variants that chase command forms go (those added 13.10 and the GIT_CONFIG_GLOBAL/SYSTEM ones);
-  `gh pr merge` and the pre-push step stay. Cost: none; the credential stays admin.
+  requires one approval and dismisses an approval when new commits come (or requires approval of the most recent
+  push); the laptop holds only the machine account's token, none of his. His "Approve" on the pull request is his
+  word; then it merges (he can press Merge himself: whether the classifier lets the agent merge is untested). The
+  merge refusals in tools/claude-guard.mjs and the OBJECT_LIVE step of the pre-push hook go. Cost: his clicks once
+  (the account, an invitation, a token; per a fact-check's reading of GitHub's docs a fine-grained token cannot
+  reach a repository its account only collaborates on, so a classic token or a GitHub App: to confirm at setup)
+  and one click per release. With those settings it holds against any command form and any future tool.
+- B. As now, but the forms that chase command variants go (those added 13.10); `gh pr merge` and the pre-push step
+  stay. Cost: none; the merge itself still rests on the client guard.
 - C. As now.
 Recommended: A (sources 4 and the measure); B if a second account is not wanted.
 
 What follows from his rule without a new choice (each removes or narrows; none adds):
-1. The library test leaves the commit check (it reads a folder no commit changes); it stays in `npm test`, on GitHub
-   and at session start. Ends 23 of the 29 "not saved" holds.
+1. The library test's folder part (papers in the folder without a record: a folder outside git, skipped on GitHub)
+   leaves the commit check for the session start's health lines and `npm test`; its index part (the records and the
+   built docs, which commits change) stays at commit. Helpers write drafts outside the repository. Fewer "not
+   saved" holds.
 2. The Stop hook brings room-polish up itself (`git merge --ff-only`, undoable) instead of asking for it.
-3. The review-record refusal blocks writes to the record's path only, not code that names it (6 firings, all false).
+3. The review-record refusal blocks writes to the record's path only, not code that names it (4 firings in all, all
+   false).
 4. The papers-library refusal matches the library's real path only (its one firing was a stray folder elsewhere).
 5. A CodeRabbit remark that finds another way round a client-side guard is answered with principle 4, not with a new
    form; a slip it finds is fixed.
@@ -104,5 +115,5 @@ What follows from his rule without a new choice (each removes or narrows; none a
 
 Protected as he asked: main (only on his word), the live database (his hand), his keys, the players' results, check
 quality (two fact-checks; the reviewer closes its own remarks). Removed as he asked: what obstructs and does not
-catch. His push-guard «Оставить как есть» (11.10) and the main lock «Звучит логично. Да.» (12.10) are kept or
-replaced only by his choice of A, B or C.
+catch. The narrow key he approved on 12.10 («Звучит логично. Да.») stays; A adds the approval step his words asked
+for («без права… самому одобрять выкладку», docs/board.md), which 0 required approvals does not hold today.
