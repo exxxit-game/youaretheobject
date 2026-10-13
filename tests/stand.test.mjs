@@ -13,7 +13,8 @@ assert.equal(proximityOf(''), null);
 
 // a run as the tools should see it: 90, then 72, then 90 frames a second; a box adds one call and 12 triangles;
 // ten stalled frames are late; the session visible and the override on throughout
-// the sample times of his Quest 3's first full trial (13.10): each read just after its mark, as the tool reads them
+// sample times as a real trial on his Quest 3 gave them (docs/research/long-measure.md, "The trial"): each read just
+// after its mark, as the tool reads them
 const marks = MARKS;
 const TIMES = [10.2, 20.6, 30.1, 40.4, 42.1, 59.5, 60.1, 70.4, 75.1, 85.1, 95.1, 105.1, 122.7, 125.1];
 const make = (stallLate = 10, boxTris = 12) => TIMES.map((s, i) => {
