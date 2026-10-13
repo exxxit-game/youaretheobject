@@ -3,7 +3,7 @@
 // The headset opens it from a bookmark: no laptop, no cable, after any restart. Only what
 // the page needs goes there (the PUBLIC list of tests/static-server.mjs): no notes, tests
 // or history. Games on the test copy never send results (src/app/session.js, PREVIEW).
-// The live site (main of exxxit-game/youaretheobject) is not touched: it changes on the owner's word.
+// The live site (main of exxxit-game/youaretheobject) is not touched: it changes only with a release (CLAUDE.md).
 // Usage: node tools/publish-preview.mjs [--anyway]
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';

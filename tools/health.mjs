@@ -12,6 +12,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { runSetup } from './health-setup.mjs';
+import * as yaml from '../vendor/js-yaml/js-yaml-5.4.2.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 // one folder for every file the project keeps outside the repository: papers\, datasets\, imports\,
@@ -216,18 +217,19 @@ export function agentLacks(text) {
 }
 // Claude Code reads an agent's header as YAML and drops an agent whose header does not parse,
 // without a word: an unquoted value holding ": " is a second key to YAML, and two agents went
-// missing from every session that way while a check of their text passed
+// missing from every session that way while a check of their text passed. So the header is read by
+// a YAML parser (js-yaml, MIT, kept in vendor/js-yaml): a hand-made check caught only the cases it
+// was written for and passed others YAML refuses (a value starting with @ or `, a key twice, an
+// unclosed [)
 export function agentHeaderProblems(text) {
   const front = text.match(/^---\r?\n([\s\S]*?)\r?\n---/)?.[1];
   if (front === undefined) return ['no header between --- lines'];
-  const fields = front.split(/\r?\n/).map((l) => l.match(/^([\w-]+):\s?(.*)$/)).filter(Boolean);
-  const problems = ['name', 'description'].filter((k) => !fields.some(([, key]) => key === k)).map((k) => `no ${k}`);
-  for (const [, key, value] of fields) {
-    if (!/^['"]/.test(value) && /:\s/.test(value)) problems.push(`the ${key} holds an unquoted ": " (put the value in single quotes)`);
-    // a quoted value must close on its line with the quote it opened with, or YAML reads past it
-    else if (/^['"]/.test(value) && (value.trim().length < 2 || !value.trim().endsWith(value[0]))) problems.push(`the ${key} opens a quote it does not close`);
+  let fields;
+  try { fields = yaml.load(front); } catch (e) {
+    return [`the header does not parse as YAML (${String(e.reason || e.message).split('\n')[0]}): put a value holding ": " or starting with @ or \` in single quotes`];
   }
-  return problems;
+  if (!fields || typeof fields !== 'object' || Array.isArray(fields)) return ['the header is not a list of keys'];
+  return ['name', 'description'].filter((k) => typeof fields[k] !== 'string' || !fields[k].trim()).map((k) => `no ${k}`);
 }
 export function checkAgentsLoad(root = ROOT) {
   const dir = path.join(root, '.claude', 'agents');

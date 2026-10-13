@@ -42,7 +42,7 @@ for (const f of code) {
     /^src\/(app|app\/lobby|rooms\/[\w-]+)\/texts\.ru\.js$/,          // every word the player reads or hears
     /^(privacy\.html|README\.md|tools\/xr-probe(-input)?\.html|tools\/xr-room\.html)$/,     // pages people read: data, the project, the headset probes
     /^(tests\/(structure|plaque|control-reveal)\.test\.mjs|tools\/(check-voice|make-voice|quest-check|board)\.mjs)$/,   // checks and tools of the Russian texts
-    /^(CLAUDE\.md|docs\/audit\/claude-md-proposed\.md|docs\/(state|mistakes|decisions|owner-decisions|owner-decisions-history(-2)?|board)\.md|docs\/rooms\/01-control\.md|docs\/research\/vr\/06-science\.md|docs\/art\/corridor-plan\.svg)$/, // the owner's words and the player's text, quoted
+    /^(CLAUDE\.md|docs\/audit\/claude-md-proposed\.md|docs\/(state|mistakes|decisions|owner-decisions|owner-decisions-history(-2)?|board)\.md|docs\/rooms\/01-control\.md|docs\/research\/vr\/06-science\.md|docs\/art\/corridor-plan\.svg)$/, // words quoted from the owner, and the player's text
     /^\.claude\/(agents\/(request-auditor|fact-checker)\.md|skills\/new-room\/SKILL\.md)$/,   // the plan doc's Russian headings and status words, quoted
     /^docs\/cards\/agafonov-2016\.md$/,                                      // a Russian paper, cited in its own language
     /^docs\/research\/studio-process\.md$/,                                  // the Russian edition of Gregory's Game Engine Architecture, quoted in its own language
@@ -181,8 +181,11 @@ for (const f of facing) {
 
 // 16. No history in code comments (CLAUDE.md: comments say why): no dates, and no note of who asked or chose
 // (a comment says why, never who or when). The pattern is built from parts so it does not match itself.
-const who = new RegExp(['owner', '\\s+(said|asked|heard|pointed|chose|wanted|liked)|chosen\\s+by\\s+the\\s+', 'owner'].join(''), 'i');
-const when = /\b20\d\d-\d\d-\d\d\b|\b[0-3]\d\.[01]\d\.(19|20)?\d\d\b/;
+// Possessive forms that name who decided, and a bare day and month, slipped past the first, narrower
+// pattern into the game's comments, so they are caught too.
+const who = new RegExp(['owner', "'?s?\\s+(said|asked|heard|pointed|chose|wanted|liked|word|decision|rule|saw|says|request)|chosen\\s+by\\s+the\\s+",
+  'owner|\\bh', 'is\\s+(word|rule|decision)'].join(''), 'i');
+const when = /\b20\d\d-\d\d-\d\d\b|\b[0-3]\d\.[01]\d\.(19|20)?\d\d\b|(?<![\d.])([1-9]|[12]\d|3[01])\.(0[1-9]|1[0-2])(?![\d.])/;
 const commented = [...code, ...fs.readdirSync(path.join(ROOT, 'tools')).filter(f => /\.(m?js|cjs)$/.test(f)).map(f => path.join(ROOT, 'tools', f)),
   ...fs.readdirSync(path.join(ROOT, 'tests')).filter(f => /\.m?js$/.test(f)).map(f => path.join(ROOT, 'tests', f))];
 for (const f of new Set(commented)) {

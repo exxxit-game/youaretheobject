@@ -22,7 +22,7 @@ const LASER = 'raycaster="objects: .clickable; far: 8; lineColor: #f0c96a; lineO
 // A-Frame's inspector, which every scene gets, loads from unpkg.com on Ctrl+Alt+I, on a link with
 // ?inspector=1 or on a message from another page, so another site's code could run inside the game;
 // its README sets "local, development, or custom builds" with inspector="url: ...": our copy of its
-// npm 1.8.0 build (the owner's word of 13.10: nothing from other sites; tests/vendor.test.mjs)
+// npm 1.8.0 build (the game takes nothing from other sites: docs/owner-decisions.md; tests/vendor.test.mjs)
 const INSPECTOR = 'vendor/aframe-inspector/aframe-inspector-1.8.0.min.js';
 
 // inside: the markup of the places, put in before the scene loads, so their static parts are merged

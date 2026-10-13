@@ -17,7 +17,7 @@ when it was written (their file:line may have moved since):
 
 | # | Cause | Fix | Guard | State |
 |---|---|---|---|---|
-| 1 | Checks done by hand; tools rot (a headset check on the set-aside room at 60 fps, ports 3000 and 3100, the headset link written three times) | `tools/headset.mjs` is the one link; quest-check plays the corridor at 72 fps | the health check at every session start reports the headset's link through adb; `tools/quest-check.mjs` plays the corridor and measures its frame rate when run by hand | done |
+| 1 | Checks done by hand; tools rot (a headset check on the set-aside room at 60 fps, ports 3000 and 3100, the headset link written three times) | `tools/headset.mjs` is the one link; quest-check plays the corridor on the flat page and tells its frame rate (the VR rate is judged by quest-look perf in VR) | the health check at every session start reports the headset's link through adb; `tools/quest-check.mjs` plays the corridor and measures its frame rate when run by hand | done |
 | 2 | Docs say what is no longer true | eleven docs corrected; a decision for signing by hand | `tests/structure.test.mjs` rule 23: a doc names no constant the code lacks; the architecture auditor before every "done" | done |
 | 3 | The same number or code in two places (letter floors in the tests, line wrapping, paper size and colour, the sign's place) | one source each | the tests import the constants | done |
 | 4 | Guards that read what the code declares, not what is drawn; a 10 s test that checks a constant; the walking test on the old corridor; the play/pause rule | measure what the player sees; run the rule with a fake clock | each guard fails when its mistake is put back | done (the sound levels stay a manual headset check) |

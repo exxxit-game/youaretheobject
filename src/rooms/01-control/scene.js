@@ -1,8 +1,8 @@
 // Scene of room 01: a small booth like the one in Alloy & Abramson (1979, p. 450):
 // a table with a black stand (23×23 cm) holding a yellow and a green light 5 cm
 // from its top, a black box (15.5×7.5×4 cm) with a spring button, and the window to the
-// observation room, where the paper has a one-way mirror, closed with blinds (the owner's
-// decision of 11.10: no mirrors; docs/rooms/01-control.md). The experimenter leaves
+// observation room, where the paper has a one-way mirror, closed with blinds (no mirrors:
+// docs/owner-decisions.md; docs/rooms/01-control.md). The experimenter leaves
 // through the door and comes back (p. 452). The wall screen carries the words of the
 // experimenter. Look: a university lab of 1979 (painted block walls, linoleum,
 // acoustic ceiling, bakelite and chrome). Sizes in metres, the room's own: the corridor stands it
@@ -18,8 +18,8 @@ const SPACE = `space: 0 0 ${BOOTH.maxX - BOOTH.minX} ${BOOTH.maxZ - BOOTH.minZ}`
 // the corridor beyond it
 export const DOORWAY = { x: 0.7, z: BOOTH.maxZ };
 
-// The window's venetian blinds, closed, from many pictures of the real thing first (the owner's rule,
-// docs/owner-decisions.md: a shop's product photos of 25 mm aluminium blinds, rozetka.com.ua item
+// The window's venetian blinds, closed, from many pictures of the real thing first (an object is built
+// from its photos first, docs/owner-decisions.md: a shop's product photos of 25 mm aluminium blinds, rozetka.com.ua item
 // 546663369), then how they are made: the US federal specification of the time (Interim Federal
 // Specification AA-V-00200B, "Venetian Blinds", GSA, 1973; everyspec.com), Type II: slats "one inch wide"
 // with a crown of at most 1/8 inch and corners rounded 1/8 to 3/16 inch (3.3.2.3), ladder rungs "spaced evenly 45 in 36 inches" (3.3.2.9),
@@ -29,7 +29,7 @@ export const DOORWAY = { x: 0.7, z: BOOTH.maxZ };
 // (3.3.2.7.1); the pull cords held together by an equalizer, a knob the cords' colour (3.3.1.4.4-5); "white
 // or eggshell" unless specified (3.5.1); set inside the window, the bottom rail at most 5/8 inch above the
 // sill (3.4.1). Closed with the room-side edges down, each slat over the next like the photos, which
-// the specification allows ("either of the extreme closed positions", 3.4.4; the owner's word). Not in
+// the specification allows ("either of the extreme closed positions", 3.4.4; docs/owner-decisions.md). Not in
 // it, ours: the rails' section (an inch, as in the photos) and the cords' length. Each slat is drawn with
 // its crown, an arc of a circle, so closed slats rest on each other with no gap, and lit as one flat face
 // with its edges turned a little (src/engine/shapes.js, slat): every overlap shows as a line, under the

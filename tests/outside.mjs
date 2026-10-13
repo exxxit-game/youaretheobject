@@ -1,5 +1,5 @@
 // What a page of the game asks of other sites, for the runs on GitHub (smoke.mjs, smoke-vr.mjs): the
-// owner's word of 13.10 is that the game takes nothing from other sites, so a request to any host but
+// game takes nothing from other sites (docs/owner-decisions.md), so a request to any host but
 // the game's own and our results server is a failure. A-Frame's own advice for working without its CDN
 // is to watch the requests the browser makes (A-Frame 1.8.0 docs, introduction/faq.md, "Can I use
 // A-Frame offline or self hosted?"); this is that watch, made on every push.

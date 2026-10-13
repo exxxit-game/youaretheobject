@@ -270,7 +270,7 @@ async function playRoom(url, playtest, { leave = false } = {}) {
     // The closed blinds make no stripe pattern even seen close (ITU-R BT.1702-3: more than five pairs
     // of light and dark stripes 20 cd/m2 apart, at its reference white of 200 cd/m2, are harmful; a
     // headset fills the view): drawn from the wall, level, the light and dark within each slat along
-    // three lines across them (src/engine/shapes.js slat, measured 11.10: 20-50 cd/m2 a slat before)
+    // three lines across them (src/engine/shapes.js slat, measured: 20-50 cd/m2 a slat before)
     const stripes = await page.evaluate(() => {
       const scene = document.querySelector('a-scene'), r = scene.renderer, gl = r.getContext(), place = document.querySelector('#roomPlace').object3D;
       const cam = new THREE.PerspectiveCamera(80, gl.drawingBufferWidth / gl.drawingBufferHeight, 0.05, 20);
@@ -289,7 +289,7 @@ async function playRoom(url, playtest, { leave = false } = {}) {
       });
       // and each overlap still shows, under that, or the blind reads as a plain panel: a line at least
       // 5% darker than its slat, about four 8-bit steps, clear of rounding (our number; whether the
-      // lines read is the owner's look in the headset); measured 11.10: 11-14 such lines down each line
+      // lines read is the owner's look in the headset); measured: 11-14 such lines down each line
       return { harsh: Math.max(...lines.map((s) => s.filter((v) => v.d >= 20).length)), faint: Math.min(...lines.map((s) => s.filter((v) => v.rel >= 0.05 && v.d < 20).length)) };
     });
     assert.ok(stripes.harsh <= 5, `the closed blinds seen close make ${stripes.harsh} light and dark stripes 20 cd/m2 apart (ITU-R BT.1702-3 allows five)`);

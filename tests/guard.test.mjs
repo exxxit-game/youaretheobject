@@ -225,7 +225,7 @@ assert.equal(ask('Bash', 'git commit -n -m x'), 2, 'the hook let a hook-skipping
 assert.equal(ask(PS, 'npm run test:smoke'), 2, 'the hook let the smoke test run in PowerShell');
 assert.equal(ask('Bash', 'grep -rn "git commit --no-verify" docs/'), 0, 'the hook refused a search');
 
-// Helpers' commands left running (tools/leftovers.mjs): the tree as measured on the laptop 11.10, a
+// Helpers' commands left running (tools/leftovers.mjs): the tree as measured on the laptop, a
 // command past its tool's time limit moved to the background under the session's bash, beside what
 // is no command: the session's console host, an MCP server it keeps, the desktop app's own servers,
 // and a process whose parent id was reused by the session after it began
@@ -289,7 +289,7 @@ assert.equal(ask('Bash', 'grep -rn "git commit --no-verify" docs/'), 0, 'the hoo
 }
 
 // Every message the owner types is logged word for word, and nothing else is: the app's notices
-// (helpers' reports, the pull request watcher) logged as his read as his words. A home of the
+// (helpers' reports, the pull request watcher) logged as his read as typed by him. A home of the
 // test's own, so his real log is not touched.
 {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'owner-log-'));
@@ -300,7 +300,7 @@ assert.equal(ask('Bash', 'grep -rn "git commit --no-verify" docs/'), 0, 'the hoo
   hook({ session_id: 'B', prompt: '<task-notification>a helper finished</task-notification>' });
   hook({ session_id: 'B', prompt: '<ci-monitor-event>53 new review comments</ci-monitor-event>' });
   hook({ session_id: 'B', prompt: '<system-reminder>\nYou are operating in a git worktree.\n</system-reminder>\n\n' });
-  // a new window's first message: the app's worktree note, then his words (11.10)
+  // a new window's first message: the app's worktree note, then what he typed
   hook({ session_id: 'B', prompt: '<system-reminder>\nYou are operating in a git worktree.\n</system-reminder>\n\ncarry on here' });
   assert.match(logged(), /his message/, 'his message was not logged');
   assert.match(logged(), /carry on here/, 'his first message in a new window was not logged');
@@ -315,9 +315,9 @@ assert.ok(onHead(dump('HEADSET_MOUNTED', 'DISABLED')), 'worn by the owner reads 
 assert.ok(!onHead(dump('HEADSET_MOUNTED', 'CLOSE')), 'our own "worn on" override is not a person');
 assert.ok(!onHead(dump('HEADSET_UNMOUNTED', 'DISABLED')) && !onHead(dump('STANDBY', 'DISABLED')), 'off the head is free to restart');
 
-// The owner's decisions reach every session at its start and after each compaction: CLAUDE.md imports
-// them (Claude Code loads it then, whole); the start hook shows the board. A session that does not see
-// them asks him again what he settled
+// docs/owner-decisions.md reaches every session at its start and after each compaction: CLAUDE.md imports
+// it (Claude Code loads CLAUDE.md then, whole); the start hook shows the board. A session that does not
+// see it asks him again what he settled
 const start = spawnSync(process.execPath, ['tools/claude-guard.mjs', 'start'], { cwd: ROOT, encoding: 'utf8', input: JSON.stringify({ source: 'startup', cwd: ROOT }) });
 const boardTop = fs.readFileSync(path.join(ROOT, BOARD), 'utf8').split(/\r?\n/)[0];
 const decisions = path.join(ROOT, 'docs/owner-decisions.md');

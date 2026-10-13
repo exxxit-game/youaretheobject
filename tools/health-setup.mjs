@@ -63,7 +63,7 @@ export function checkMemory(mainDir) {
 
 // --- the plugins the owner decided (docs/owner-decisions.md) ---------------------------------
 // on for every project: CodeRabbit (his 14-day trial; it replaced the PR review toolkit) and the
-// TypeScript language server (his word, 9.10); any other plugin switched on in the user settings is one
+// TypeScript language server; any other plugin switched on in the user settings is one
 // he did not decide
 export const PLUGINS_ON = ['coderabbit@claude-plugins-official', 'typescript-lsp@claude-plugins-official'];
 export function pluginProblems(enabled = {}) {

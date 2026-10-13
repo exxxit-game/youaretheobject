@@ -191,7 +191,7 @@ export const noteScript = (main, small = '') => `new Promise((resolve) => {
       // global UI that must remain discoverable", documentation/iwsdk/concepts/spatial-ui/hud), at 1 m or
       // nearer down to 0.5 m, the first place where no surface stands on the lines from the eye to the
       // panel's centre and four corners, nor 10 cm past them.
-      // A hint cut by a wall or a thing in front of it could not be read (the owner, 11.10). If nowhere is
+      // A hint cut by a wall or a thing in front of it could not be read in the headset. If nowhere is
       // clear, it stands 0.5 m ahead drawn over everything, so it is read all the same (Meta: captions "never
       // obstructed by spatial elements", design/accessibility), at the cost of a depth that contradicts the
       // wall's (design/display): the reply says so, and the next hint asks him to step back.

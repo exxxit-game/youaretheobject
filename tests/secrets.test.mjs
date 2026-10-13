@@ -58,8 +58,8 @@ const checked = publisher.indexOf("check('HEAD', dir)"), pushed = publisher.inde
 assert.ok(checked > 0 && pushed > checked, 'tools/publish-preview.mjs must run check() on its copy before the push');
 
 // the hooks: no commit past the quick check (a staged secret, a script that does not parse, a quick
-// test failing; the whole suite runs on GitHub); a push to main (the live site) stops without the
-// owner's word, a deletion too. Run where a shell is (GitHub's machines always; Git Bash here).
+// test failing; the whole suite runs on GitHub); a push to main (the live site) stops without
+// OBJECT_LIVE=owner-said-yes, a deletion too. Run where a shell is (GitHub's machines always; Git Bash here).
 const hook = (name) => fileURLToPath(new URL(`../tools/hooks/${name}`, import.meta.url));
 const commitHook = fs.readFileSync(hook('pre-commit'), 'utf8');
 assert.ok(/node tools\/secrets\.mjs --staged/.test(commitHook) && /node --check/.test(commitHook) && /package\.json/.test(commitHook),

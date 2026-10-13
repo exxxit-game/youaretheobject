@@ -42,7 +42,7 @@ export function summarize(data, now = Date.now()) {
   return nitpicks + outside ? { line: `${said.line}. Its reviews of the last day also hold ${nitpicks} nitpick and ${outside} outside-diff remarks with no thread: read each in the reviews (gh pr view ${pr.number} --comments) and fix it or answer it` } : said;
 }
 // CodeRabbit closes a remark only after its own check, and answers a reply only when it is named: our unnamed replies
-// of 11.10 stood two days unanswered, the named ones of 13.10 were checked and closed within five minutes
+// stood two days unanswered, the named ones were checked and closed within five minutes
 function base(pr, now) {
   // an outdated thread is one whose line changed since; it stays a remark until CodeRabbit closes it
   const open = pr.reviewThreads.nodes.filter((t) => !t.isResolved && /^coderabbitai/.test(t.comments.nodes[0]?.author?.login || ''));

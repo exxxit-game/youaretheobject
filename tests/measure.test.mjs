@@ -1,6 +1,6 @@
-// The reading of the headset's own outputs by tools/measure.mjs, on outputs saved from his Quest 3 on 13.10
+// The reading of the headset's own outputs by tools/measure.mjs, on outputs saved from his Quest 3
 // (tests/fixtures/quest3): a misread temperature or GPU share would put a crack under every later comparison
-// (his words of 13.10 on precision, docs/owner-decisions-history-2.md; two fact-checks found the first
+// (docs/owner-decisions-history-2.md, on precision; two fact-checks found the first
 // baseline's spans and conditions wrong).
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
@@ -23,7 +23,7 @@ const ids = gpuIds(read('gpu-metrics.txt'), ['GPU Frequency', 'GPU % Utilization
 assert.deepEqual(ids, { 'GPU Frequency': '2', 'GPU % Utilization': '4', '% Shaders Busy': '17', '% Time Shading Vertices': '25', '% Time Shading Fragments': '32' });
 assert.deepEqual(gpuIds(read('gpu-metrics.txt'), ['Avg Bytes / Vertex', 'ALU / Vertex']), { 'Avg Bytes / Vertex': '29', 'ALU / Vertex': '30' });
 
-// every sample of each metric, in order (the room's run of 13.10: 5 samples)
+// every sample of each metric, in order (the room's run: 5 samples)
 const g = gpuSamples(read('gpu-realtime.txt'));
 assert.equal(g['% Time Shading Fragments'].length, 5);
 assert.equal(g['% Time Shading Fragments'][0], 97.615);
@@ -34,7 +34,7 @@ assert.equal(mean(g['% Time Shading Vertices']), 2.4);
 const mem = memoryOf(read('meminfo-browser.txt'));
 assert.equal(mem.pssKb, 193403);
 assert.equal(mem.rssKb, 411284);
-// a trace's GPU frame time, as metavr perf analyze-trace prints it (the corridor of 13.10)
+// a trace's GPU frame time, as metavr perf analyze-trace prints it (a trace of the corridor)
 assert.deepEqual(traceGpuOf(read('perfetto-analysis.txt')), { frames: 40, avgMs: 6.19, maxMs: 8.72, p75Ms: 6.36 });
 assert.deepEqual(traceGpuOf('no GPU data'), { frames: 0, avgMs: null, maxMs: null, p75Ms: null });
 assert.deepEqual(windowStats([], 90), { frames: 0 }, 'a window with no frames says so');

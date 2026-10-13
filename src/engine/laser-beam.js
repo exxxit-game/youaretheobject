@@ -2,7 +2,7 @@
 // developers.meta.com/horizon/design/raycasting_specs/): "When the ray is not aimed at any interactable,
 // the beam fades to avoid drawing a floating laser into empty space", and "Teleport locomotion takes over
 // input": the ray is off while the teleport arc aims. A-Frame's laser-controls draws its line all the
-// time (docs/components/laser-controls.md), so beside the teleport arc the owner saw two rays (11.10).
+// time (docs/components/laser-controls.md), so beside the teleport arc two rays were seen in the headset.
 // The fade is Meta's default, 0.25 s, made through the raycaster's own lineOpacity, which it reads
 // whenever it redraws the line (docs/components/raycaster.md, "Customizing the Line"), and the animation
 // component (docs/components/animation.md); a line faded out is switched off, so it costs no draw call.

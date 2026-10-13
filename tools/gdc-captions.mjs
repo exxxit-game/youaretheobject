@@ -1,8 +1,8 @@
 // A GDC Vault talk's own captions as plain text with a mark every minute, so a developers' talk can be read
-// and quoted with its time (his word of 13.10: learn from developers' talks, only what we need). Only talks
+// and quoted with its time (to learn from developers' talks only what we need). Only talks
 // the Vault plays without an account (its free share); the text stays in objekt-files/notes (the talk is the
 // speaker's), the repository keeps summaries and short quotes.
-// How the Vault plays them, read from its player (gdcvault.blazestreaming.com, script_VOD…js, 13.10): the
+// How the Vault plays them, read from its player (gdcvault.blazestreaming.com, script_VOD…js): the
 // talk's page holds an iframe gdcvault.blazestreaming.com/?id=<id>; the stream is
 // https://cdn-a.blazestreaming.com/out/v1/<id>/38549d9a185b445888c6fbc2e2e792e9/50413c5b8a95441e919f0a1579606e47/index.m3u8,
 // an HLS playlist (RFC 8216) whose SUBTITLES media playlist lists WebVTT segments.

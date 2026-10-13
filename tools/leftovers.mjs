@@ -1,22 +1,22 @@
 // Helpers' commands left running. A shell command that outlives its tool's time limit is moved to the
-// background, not stopped (measured 11.10 on the laptop: a 4 s limit left `node -e setTimeout(...)`
+// background, not stopped (measured on the laptop: a 4 s limit left `node -e setTimeout(...)`
 // running under the session's bash); one a background helper started "keeps running after a final
 // response", and the desktop app "has no time limit on background commands" (code.claude.com/docs/en/
 // tools-reference): a reviewing agent's `find /` ran an hour and a half after the review ended
 // (docs/mistakes.md). The stop hook
 // (tools/claude-guard.mjs) lists what runs under a Claude Code session longer than LIMIT_MS, and the turn
-// does not end until each is stopped or waited for (the owner's yes, 11.10).
+// does not end until each is stopped or waited for.
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 
 export const LIMIT_MS = 10 * 60 * 1000;
-// Claude Code itself: the desktop app runs it from %APPDATA%\Claude\claude-code\<version> (measured
-// 11.10); npm's install runs node on @anthropic-ai/claude-code; the native one sits in ~/.local/bin
+// Claude Code itself: the desktop app runs it from %APPDATA%\Claude\claude-code\<version> (measured on
+// the laptop); npm's install runs node on @anthropic-ai/claude-code; the native one sits in ~/.local/bin
 const SESSION = /claude-code|[\\/]\.local[\\/]bin[\\/]claude/i;
 const isSession = (p) => /^(claude|node)(\.exe)?$/i.test(p.name) && SESSION.test(p.cmd || '');
 // what Claude Code keeps for the whole session and starts itself, beside the tool shells: MCP and
 // language servers. A tool shell's line holds the command it runs, so it is told apart by Claude
-// Code's own marks (measured 11.10: bash sources ~/.claude/shell-snapshots, PowerShell's cmd.exe reads
+// Code's own marks (measured: bash sources ~/.claude/shell-snapshots, PowerShell's cmd.exe reads
 // CLAUDE_CODE_SHELL_LAUNCHER_SCRIPT), or `grep mcp` would pass for a server. A console host lives as
 // long as the process it serves and runs nothing.
 const SERVER = /\bmcp\b|language-?server|\blsp\b/i;
@@ -68,7 +68,7 @@ export function leftoverLine(now = Date.now()) {
   try { found = leftovers(processes(), now); } catch (e) { return `the check for helpers' commands left running could not list the processes (${String(e.message).split('\n')[0]}): mend it (tools/leftovers.mjs)`; }
   if (!found.length) return null;
   // its id, program and age only: a command line can hold a key, and this goes into the session's
-  // record (CodeRabbit, 11.10); the line itself is read by its id when needed
+  // record (a CodeRabbit remark); the line itself is read by its id when needed
   const rows = found.map((p) => `  ${p.pid} ${p.name}, ${Math.round((now - p.start) / 60000)} min`);
   return `commands running longer than ${LIMIT_MS / 60000} minutes under Claude Code (a command past its time limit goes on in the background, and outlives the helper that started it): stop each one no longer needed (PowerShell: Stop-Process -Id <id>; what it runs: (Get-CimInstance Win32_Process -Filter "ProcessId=<id>").CommandLine), or wait for it:\n${rows.join('\n')}`;
 }

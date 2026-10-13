@@ -1,7 +1,7 @@
 // The owner's one-page board (docs/board.md) as the session start shows it. Only its top goes into
 // the start message: the work now, what waits for him, the newest showings. The whole board printed
 // there had to fit Claude Code's 10,000 characters of hook output, and keeping it inside that cap
-// was the commit check's most frequent stop (the process review of 11.10); the session reads the
+// was the commit check's most frequent stop (as the process review found); the session reads the
 // rest from the file when a step needs it.
 export const BOARD = 'docs/board.md';
 export const SHOWS = '## Показы';

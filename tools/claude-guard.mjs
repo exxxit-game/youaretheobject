@@ -5,7 +5,7 @@
 // designed" (shown as Stop hook feedback, not as an error); Claude Code ends the turn anyway after 8
 // continuations in a row with no tool call between them.
 // Bans only where a mistake cannot be undone or costs the owner time; judgments by word lists were
-// taken out by his yes to the process review of 11.10 (docs/owner-decisions.md): they held words, not
+// taken out with the process review (docs/owner-decisions.md): they held words, not
 // claims, and stopped correct work more often than wrong.
 //   pre:  a shell command that skips the git hooks or runs Playwright on the laptop is refused, and
 //         so are a query that writes to the live database and any write of mine to the practice review
@@ -440,9 +440,9 @@ if (mode === 'start') {
   if (gitHere('rev-parse', '--verify', '-q', 'room-polish') && gitHere('merge-base', '--is-ancestor', 'room-polish', 'HEAD') === null) {
     out.push(`WARNING: this checkout (${branch}) lacks the latest work on room-polish; it was probably made from the old live branch. If it has no commits of its own, reset it to room-polish; otherwise merge room-polish. Say so to the owner.`);
   }
-  // The owner's decisions are imported by CLAUDE.md, which Claude Code loads at every start and
+  // docs/owner-decisions.md is imported by CLAUDE.md, which Claude Code loads at every start and
   // re-reads after every compaction without the 10,000-character cap on hook output; printed here
-  // they had to be trimmed to fit. Only if the import is gone are they printed here as before.
+  // it had to be trimmed to fit. Only if the import is gone is it printed here as before.
   let claudeMd = '';
   try { claudeMd = fs.readFileSync(path.join(HERE, 'CLAUDE.md'), 'utf8'); } catch { /* checked below */ }
   if (!claudeMd.includes(`@${DECISIONS}`)) {
@@ -529,7 +529,7 @@ if (mode === 'prompt') {
     const log = path.join(os.homedir(), 'Documents', 'objekt-files', 'notes', 'owner-messages.md');
     fs.mkdirSync(path.dirname(log), { recursive: true });
     // turns the app delivers that he did not type (helpers' reports, background notices, reminders,
-    // the pull request watcher, the artifact view): logged as his, they read as his words
+    // the pull request watcher, the artifact view): logged as his, they read as typed by him
     const said = String(event.prompt || '');
     if (typedText(said)) fs.appendFileSync(log, `\n## ${new Date().toISOString()} ${event.session_id || ''}\n${said}\n`);
   } catch { /* a failed log must not stop his message */ }
@@ -558,15 +558,15 @@ if (mode === 'stop') {
   if (gitHere('rev-parse', '--verify', '-q', 'room-polish') && gitHere('merge-base', '--is-ancestor', 'HEAD', 'room-polish') === null) {
     const branch = gitHere('rev-parse', '--abbrev-ref', 'HEAD');
     // another window's commits on room-polish make the fast-forward fail; both windows write the
-    // board's showing and current lines, and a conflict resolved to one side loses the owner's words
+    // board's showing and current lines, and a conflict resolved to one side loses the owner's quoted words
     const theirs = gitHere('merge-base', '--is-ancestor', 'room-polish', 'HEAD') === null ? gitHere('rev-list', '--count', 'HEAD..room-polish') : null;
     const first = theirs ? `room-polish has ${theirs} commits of another window: first here run git merge room-polish, keeping both sides of every conflict in docs/board.md (the owner's words), then ` : '';
     // room-polish itself goes to GitHub at the end of a step, not every turn: CodeRabbit reads the pull
     // request from it, its plan reads 10 pushes an hour, and pushes every few minutes kept it from
-    // finishing any review from 15:28 to 20:53 UTC on 11.10
+    // finishing any review for 5 h 25 min
     problems.push(`the main folder (room-polish, where the next window starts) lacks ${gitHere('rev-list', '--count', 'room-polish..HEAD')} commits of this branch: ${first}in it run git merge --ff-only ${branch} (push room-polish to GitHub at the end of a step, not every turn)`);
   }
-  // a helper's command left running (the owner's yes, 11.10): seen at every turn's end, not by my memory
+  // a helper's command left running (tools/leftovers.mjs): seen at every turn's end, not by my memory
   const left = leftoverLine();
   if (left) (again && /could not list the processes/.test(left) ? unfixable : problems).push(left);
   // npm test is not run here: it runs before "done" and on GitHub, and the commit hook's quick check

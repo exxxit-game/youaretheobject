@@ -120,12 +120,20 @@ assert.deepEqual(agentHeaderProblems('---\nname: x\ndescription: one fact, fast\
 for (const f of fs.readdirSync('.claude/agents').filter((x) => x.endsWith('.md'))) {
   const turns = Number(fs.readFileSync(`.claude/agents/${f}`, 'utf8').match(/^maxTurns:\s*(\d+)\s*$/m)?.[1]);
   assert.ok(turns >= 40 && turns <= 300, `.claude/agents/${f} has no turn limit (maxTurns) or an odd one`);
-  // every helper on the session's own model, the strongest (docs/owner-decisions.md, the line on the model, 12.10)
+  // every helper on the session's own model, the strongest (docs/owner-decisions.md, the line on the model)
   assert.ok(!/^model:/m.test(fs.readFileSync(`.claude/agents/${f}`, 'utf8')), `.claude/agents/${f} sets its own model: every helper runs on the session's model (his choice of 12.10)`);
 }
 assert.deepEqual(agentHeaderProblems("---\nname: x\ndescription: 'checks each claim: done, checked'\n---\n"), [], 'a quoted value may hold ": "');
-assert.deepEqual(agentHeaderProblems('---\nname: x\ndescription: checks each claim: done, checked\n---\n'), ['the description holds an unquoted ": " (put the value in single quotes)']);
-assert.deepEqual(agentHeaderProblems("---\nname: x\ndescription: 'checks each claim: done\n---\n"), ['the description opens a quote it does not close'], 'an open quote with no close was taken as loading');
+// whatever YAML refuses is reported, not only the cases a hand-made check was written for
+for (const [header, why] of [
+  ['description: checks each claim: done, checked', 'an unquoted ": "'],
+  ["description: 'checks each claim: done", 'an open quote with no close'],
+  ['description: @fact checker', 'a value starting with @'],
+  ['description: `fact` checker', 'a value starting with a backtick'],
+  ['description: one\ndescription: two', 'a key twice'],
+  ['description: [one, two', 'an unclosed ['],
+  ['description: checks each claim:', 'a colon at the line end']
+]) assert.match(agentHeaderProblems(`---\nname: x\n${header}\n---\n`)[0] || '', /does not parse as YAML/, `${why} was taken as loading`);
 assert.deepEqual(agentHeaderProblems('---\nname: x\n---\n'), ['no description']);
 for (const f of fs.readdirSync('.claude/agents')) assert.deepEqual(agentHeaderProblems(fs.readFileSync(path.join('.claude/agents', f), 'utf8')), [], `.claude/agents/${f} loads`);
 

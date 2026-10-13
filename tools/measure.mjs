@@ -1,4 +1,4 @@
-// The baseline's measure in the owner's headset, as one walk (docs/baseline.md; his words of 13.10:
+// The baseline's measure in the owner's headset, as one walk (docs/baseline.md; docs/owner-decisions.md:
 // «надо все замерить… очень-очень хорошо детально», «мы любим точность»). Two fact-checks of the first
 // baseline found every number copied right and the times, spans and conditions around them wrong, written
 // from memory; so here the machine writes them: every step's time from the headset's own clock (the page's
@@ -7,7 +7,8 @@
 // tests/measure.test.mjs on outputs saved from his Quest 3 (tests/fixtures/quest3).
 // Usage: node tools/measure.mjs --check     (before he is called: the gates, the cable, the GPU metrics)
 //        node tools/measure.mjs [--clean]   (he wears the headset; run it more than once: whether two runs
-//        agree says whether the measure holds, his word of 13.10: «можно несколько раз замерить… и убедиться»)
+//        agree says whether the measure holds: «можно несколько раз замерить… и убедиться»,
+//        docs/owner-decisions-history-2.md)
 //   --clean  OVR Metrics' HUD asked off, no trace
 // The walk: the corridor's start as a player plays it (the sign, the clipboard, the consent) up to the doors;
 // windows by the doors; door 101; windows in the room's intro. Each step is shown 8 s and then hidden, so no

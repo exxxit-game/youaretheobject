@@ -54,7 +54,7 @@ assert.equal(words, WORDS[CONSENT_VERSION], `the consent's words changed (${word
 // and the server knows that version: a row naming an unknown one is refused (0010_consent_versions_compare_gate.sql)
 assert.ok(consentVersions().has(CONSENT_VERSION), `the server knows no consent version ${CONSENT_VERSION}: add its row to app.consent_versions in a migration`);
 
-// the doors (0011, the owner's word of 13.10): every table of app says its deny as a rejection policy, so
+// the doors (0011, docs/owner-decisions.md): every table of app says its deny as a rejection policy, so
 // a table added later without one fails here; and the fingerprint's key is replaced every day
 const migrations = fs.readdirSync(new URL('../supabase/migrations/', import.meta.url)).filter((f) => f.endsWith('.sql')).sort()
   .map((f) => read(`../supabase/migrations/${f}`)).join('\n');
