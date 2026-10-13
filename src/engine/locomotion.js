@@ -38,10 +38,6 @@ AFRAME.registerComponent('locomotion', {
     this.onStick = this.onStick.bind(this);
     this.onPress = this.onPress.bind(this);
     this.hands = [...this.el.querySelectorAll('[laser-controls]')];
-    for (const h of this.hands) {
-      h.addEventListener('thumbstickmoved', this.onStick);
-      h.addEventListener('thumbstickdown', this.onPress);
-    }
     const geo = new THREE.BufferGeometry();
     geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(3 * 64), 3));
     this.line = new THREE.Line(geo, new THREE.LineBasicMaterial({ color: this.data.color }));
@@ -62,11 +58,30 @@ AFRAME.registerComponent('locomotion', {
     this.e = new THREE.Euler();   // reused: the yaw is read every frame while sliding, and garbage costs frames on Quest 2
   },
 
-  remove() {
+  // The sticks are heard only while the component plays, as A-Frame's own components do (docs/core/component.md,
+  // .play and .pause: "Add event listeners", "Remove event listeners"): its pause takes off only its events map
+  // and tick, so listeners added once in init kept turning and stepping the player under the game's menu (lab.js).
+  // A-Frame pauses a component before removing it, so remove needs no copy of this.
+  play() {
+    for (const h of this.hands) {
+      h.addEventListener('thumbstickmoved', this.onStick);
+      h.addEventListener('thumbstickdown', this.onPress);
+    }
+  },
+
+  // a paused move ends where it is, and no aim, held stick or vignette waits under the pause to act after it
+  pause() {
     for (const h of this.hands) {
       h.removeEventListener('thumbstickmoved', this.onStick);
       h.removeEventListener('thumbstickdown', this.onPress);
     }
+    if (this.moving) this.settle();
+    this.onExit();
+    this.vignetteLevel = 0;
+    this.vignette.set(0);
+  },
+
+  remove() {
     this.el.sceneEl.removeEventListener('exit-vr', this.onExit);
     this.el.sceneEl.object3D.remove(this.line, this.ring);
     for (const o of [this.line, this.ring]) { o.geometry.dispose(); o.material.dispose(); }

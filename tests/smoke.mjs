@@ -328,6 +328,22 @@ async function playRoom(url, playtest, { leave = false } = {}) {
       assert.ok(await page.evaluate(() => document.querySelector('#corridor').object3D.visible), 'back from the room the corridor is not drawn');
       await pick(0);                       // start again
       await page.waitForFunction(() => !document.querySelector('.sheet[data-open]') && document.querySelector('#door1 .door-leaf.clickable'), null, { timeout: 30000 });
+      // under the menu in the corridor the thumbsticks do not move the player: a stick to the side, which in VR
+      // turns them by 45°, leaves the rig where it was (locomotion.js, pause)
+      await page.keyboard.press('Escape');
+      await page.waitForFunction(() => document.querySelectorAll('#menu .answer[data-ready]').length === 2, null, { timeout: 10000 });
+      const moved = await page.evaluate(() => {
+        const sc = document.querySelector('a-scene'), rig = document.querySelector('#rig').object3D;
+        const pose = () => [rig.position.x, rig.position.z, rig.rotation.y].map((v) => v.toFixed(4)).join(' ');
+        const before = pose();
+        sc.addState('vr-mode');
+        for (const hand of document.querySelectorAll('#rig [laser-controls]')) hand.emit('thumbstickmoved', { x: -0.9, y: 0 }, false);
+        sc.removeState('vr-mode');
+        return before === pose() ? '' : `${before} -> ${pose()}`;
+      });
+      assert.equal(moved, '', 'under the menu a thumbstick still moved the player');
+      await page.keyboard.press('Escape');
+      await page.waitForFunction(() => !document.documentElement.dataset.menu, null, { timeout: 10000 });
       await page.evaluate(() => document.querySelector('#door1 .door-leaf').emit('click'));
       await waitState('intro', 30000);
     }
