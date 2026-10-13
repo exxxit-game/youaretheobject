@@ -66,6 +66,8 @@ closed when what breaks it is in place; it stays here, marked, as the memory of 
 - Done: the nine tips for players took three rounds of two fact-checks for nine lines; the usage page three rounds,
   its numbers retold from helpers' reports instead of read from the tool's output; the game's menu four rounds of the
   practice and paper reviews (about three hours), each round finding holes in the last round's own fixes.
+- Across the day's four windows (their handoffs, docs/audit/handoff-2026-10-13*.md): 157 commits, 12 to the game; what he
+  was shown was measures, process pages and their corrections, «по большей степени я смотрел на ерунду» (his words).
 - His words: «повторять по 500 раз одно и то же… какая-то глупость»; «Ты потратил весь день сегодня на свои, по
   сути, галлюцинации»; «Зачем ты фантазировал… если у нас есть четкие документации?»
 - Breaks it: see 13; numbers on a page only from the tool's own output; the rule «two checks, and on each edit
