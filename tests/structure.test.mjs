@@ -46,6 +46,7 @@ for (const f of code) {
     /^\.claude\/(agents\/(request-auditor|fact-checker)\.md|skills\/new-room\/SKILL\.md)$/,   // the plan doc's Russian headings and status words, quoted
     /^docs\/cards\/agafonov-2016\.md$/,                                      // a Russian paper, cited in its own language
     /^docs\/research\/studio-process\.md$/,                                  // the Russian edition of Gregory's Game Engine Architecture, quoted in its own language
+    /^docs\/(circles|research\/restrictions(-sources|-inventory)?)\.md$/,     // words quoted from the owner, Cosmogram's commits and Russian forums, in their own language
     /^tools\/measure\.mjs$/                                                  // the owner's steps in his headset during a measure, in his language
   ];
   const skip = /^(\.git|node_modules|vendor)$|\.(mp3|wav|woff2|jpe?g|png|pdf|ico|webp)$/;
