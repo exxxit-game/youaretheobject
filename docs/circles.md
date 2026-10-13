@@ -81,6 +81,18 @@ closed when what breaks it is in place; it stays here, marked, as the memory of 
   transcripts after 30 days" (the general rule, read without its exception for the desktop app).
 - Breaks it: read the thing itself first (docs/tools.md), and read the whole rule, exceptions included.
 
+## 5b. The same circle, 14.10 (the night window)
+- Done: after his rule of 14.10 (two checks on a new page) I ran two checks on a drafted Reddit reply he then did not post,
+  two on the AI-and-VR search and started two on the store search; he stopped it: «это просто поиск… ничего важного не
+  будет… токены… в сторону». Counted from the transcripts (helper launches by Kyiv day): fact-checks 42 on 12.10, 48 on
+  13.10 (of 89 launches), 6 tonight; commits 157 on 13.10 (12 touching the game), 49 tonight (3); the weekly percent rose
+  21 points on 13.10 alone (tools/usage.mjs). What he saw work in the game in two days: the controllers (13.10) and the
+  menu with the way out of room 101 (14.10, «Работает»).
+- Why us: I apply a check rule wider than its words (a page, then a draft, then a search), and each of his side
+  remarks becomes a search, a page and checks.
+- Breaks it: his word of 14.10 (a plain search goes to him unchecked); a side remark gets one line on the board and,
+  if he asks for a search, its answer in the chat, not a page.
+
 ## 13. My own first idea before the documented pattern — open
 - Done: 13.10 the game's menu: built as a panel of my own design (index 7 from the input registry while our own probe
   of his Quest 3 had already found the Menu button at 12, docs/headset-capabilities.md; a depth test turned off; rays
