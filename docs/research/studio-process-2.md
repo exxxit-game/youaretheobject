@@ -198,6 +198,5 @@ cover.
 - Documentation: the agent, in the same commit as the change (Google's rule; today held only in part); the
   owner's own words kept as he
   said them (docs/owner-decisions.md).
-- What neither can cover: art made by hand by a skilled artist, voice actors, outside playtesters who are not
-  friends. These are bought in or designed around (Cubism's minimal look).
+- What neither can cover: art made by hand by a skilled artist, voice actors. These are bought in or designed around (Cubism's minimal look).
 
