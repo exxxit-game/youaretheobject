@@ -117,3 +117,96 @@
 - For us (inference): a public repository lets anyone see that the headset seals the report with our public key
   before sending. Its limit is the same as WhatsApp Web's: whoever controls the site could serve other code. A
   release that publishes the hash of the sealing file, plus GitHub's public build log, narrows that gap.
+
+## Part 7. People who have done it (read 2026-10-13)
+- LWN, Daroc Alden, "Divvi Up: privacy-respecting telemetry aggregation", 2 Aug 2024, https://lwn.net/Articles/983843/
+  (full text): "any project wishing to use Divvi Up's solution would host one aggregation server, and the Divvi Up
+  project would host another"; "the whole scheme is still vulnerable to Sybil attacks, where someone invents large
+  numbers of fictitious users". Comments: no commenter with stated hands-on experience of it; one reader is
+  "warry of this techno-solution of throwing cypto at a privacy problem".
+- A small user's devlog: Horizontal's Tella (an app to "document human rights violations"), Caro Hadad, 22 Aug 2024,
+  https://divviup.org/blog/horizontal-tella/ (full text): users "can choose to share anonymous usage data"; two
+  processors, one "hosted by ISRG and one hosted by us". Effort, cost and lessons: not on the page.
+- The TypeScript client, https://github.com/divviup/divviup-ts (README): npm `@divviup/dap`; "bundled and minified
+  builds suitable for use from a script tag" (fits our no-build rule); its main branch implements
+  "draft-ietf-ppm-dap-09" while the spec is at draft-19 (part 1): whether today's Divvi Up servers accept it is
+  unverified. Divvi Up's page https://docs.divviup.org/how-it-works : "Often, Divvi Up will act as the leader,
+  while another organization operates as a helper"; batch defaults and prices not stated.
+- Russian practitioner (Habr), Alexey Mikhailov (@lex_coder, "Principal AppSec Engineer / Security Architect"),
+  "How I built a zero-knowledge password manager: three architectures, a threat model and eight bugs",
+  https://habr.com/ru/articles/1082586/ (full text, read in Russian, given here in translation): the server should
+  receive neither the master password, the plaintext records nor the keys; client-side encryption protects a
+  stolen database and backups, but if the server can swap the JavaScript the browser receives, encrypting the
+  database no longer helps; the first public key must be checked through an independent channel; his own
+  conclusion: the phrase "protected from server compromise" was too broad for his product. Eight bugs, none in the
+  cipher itself (header injection, a missing rate limit, fast PIN hashing, account enumeration and others).
+- A Supabase maintainer's thread on client-side encryption: not found (one search); third-party blog posts and
+  small chat packages only -> not used.
+- Japanese (Zenn): a developer reports node-seal was easy to make work for a hackathon (search summary only,
+  https://zenn.dev/mameta29/articles/c3079aaab8cba8, not opened) -> unverified; nothing found on an encrypted
+  average in a browser in production.
+- Lesson across them (inference): the cryptography is the easy part; the failures people report are around it
+  (keys, swapped code, rate limits, fake users, analysis errors that cannot be redone).
+
+## Part 8. Options for the owner (from the best protection to today's)
+
+All four keep the rate limit (it reads the request's address, not the result) and the rule "a kept result
+cannot be taken back". "Sealed" = sealed on the headset with our public key in the age format with the
+post-quantum hybrid (ML-KEM-768 + X25519, part 3); only the private key opens it. Quest 2 costs are inference
+from desktop and phone numbers (parts 1-3); nothing was measured on the Quest 2 yet.
+
+### A. Sealed rows, and the average computed by two independent parties (Prio/DAP with Divvi Up)
+- Player sees: the same "you and others", refreshed per batch (DAP's minimum batch = his batches of 10).
+- Supabase sees: sealed rows plus room, version, consent version and date; nothing it can read.
+- A thief gets: of Supabase, sealed bytes; of one aggregator, random shares; he needs both aggregators.
+- Science gets: every row, after the owner decrypts; the live average as now.
+- We build: sealing on the headset (typage); a second sending path with `@divviup/dap`; our own helper server
+  (Janus in a container, a host besides Supabase); a collector job publishing the average; new tables.
+- Quest 2: one seal and one Prio encoding at the end of a room ("sub-millisecond" by Divvi Up; 0.112 s for 10
+  numbers on a 2012 phone by Prio's paper); some tens of KB more script (unverified).
+- Owner: makes the key by steps on a computer that is not the laptop and keeps two copies; signs and pays Divvi Up
+  (price only on request); decrypts the export when science is done.
+- Risks: a paid outside partner and a server of our own to keep alive; the client library at draft 09 vs the
+  spec at 19; drafts not yet RFCs; fake runs still possible (DAP 8.1); key loss = rows lost.
+
+### B. Sealed rows; the average published by the owner after he decrypts a batch
+- Player sees: the comparison, but updated only when the owner publishes (days, not minutes).
+- Supabase sees: sealed rows and the envelope only. A thief gets: sealed bytes only.
+- Science gets: every row after decryption.
+- We build: sealing on the headset; a sealed-rows table; a decrypt-and-average script he runs on the separate
+  computer; the averages as a file in the site.
+- Quest 2: one seal per room end (milliseconds, inference).
+- Owner: the key as in A; a recurring step (export, decrypt, run, send the averages file) each batch.
+- Risks: stale averages; his recurring work; key loss = rows lost; the plain table exists on that computer.
+
+### C. Sealed rows, plus one clear number for the live average, folded into sums (my most reasonable now)
+- Player sees: the same live "you and others" as today, batches of 10.
+- Supabase sees: sealed rows with the envelope; per condition only a count, a sum and a count of zeros, plus at
+  most 9 waiting answers (one number each, no other field) until the batch folds them in and deletes them.
+- A thief gets: sealed bytes; the sums (what every player already sees); at most 9 lone numbers 0..100.
+- Science gets: every row after decryption; exact averages live.
+- We build: sealing on the headset (typage); a migration: sealed table, waiting table, fold function,
+  `compare_room` reading the sums (dropping the histogram and presses already planned); the schema check kept on
+  the one clear number; his decrypt steps.
+- Quest 2: one seal per room end (milliseconds, inference); a report of about 1.5-2 KB, so the 2 KB cap rises.
+- Owner: the key as in A (two copies; never on the laptop in clear); runs the migration by copy, paste, run;
+  decrypts when science is done.
+- Risks: key loss = rows lost (averages survive); the full schema check moves to the game and to decryption; the
+  libraries are not independently audited (noble's own words); whoever serves the site could swap the sealing
+  code (Code Verify's problem; a published hash of the file narrows it); fake runs as today.
+
+### D. Today (0009, 0010)
+- Player sees: the live comparison, batches of 10. Supabase sees: every report in clear.
+- A thief, or anyone with full database rights (an AI with the service role included), gets every result,
+  anonymous but complete. Science gets: every row at once, no key to lose.
+- We build: nothing new; the planned hardening (explicit deny on the tables, a daily IP-hash key).
+- Quest 2: nothing. Owner: nothing. Risks: the theft he fears most ("all the data") yields everything.
+
+### Why not homomorphic encryption alone
+Whoever decrypts a shown average can decrypt any single row; shown decryptions leak keys (Li & Micciancio 2021,
+Checri 2024, Guo 2024); ciphertexts of about 110 KB; no range check (part 2). It solves none of A-C's problems.
+
+## Not done or unverified
+- Divvi Up's price and whether it takes a one-person lab: only by writing to their contact address (his choice).
+- A Quest 2 measure of sealing (typage + noble) before any choice: the quest-look tool, by me.
+- Whether a YubiKey can hold the post-quantum age key; Supabase's own encryption at rest; OpenFHE-WASM's state.
