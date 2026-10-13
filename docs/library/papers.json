@@ -8346,6 +8346,42 @@
    "text": "ok",
    "status": "no card",
    "source": "https://doi.org/10.1145/3649921.3649937"
+  },
+  {
+   "id": "stauffert-2020",
+   "authors": "Stauffert, J.-P., Niebling, F., Latoschik, M. E.",
+   "year": "2020",
+   "title": "Latency and cybersickness: impact, causes, and measures. A review",
+   "sections": [
+    "vr-norms-hardware"
+   ],
+   "tags": [
+    "latency",
+    "cybersickness",
+    "frame drops"
+   ],
+   "type": "review",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://doi.org/10.3389/frvir.2020.582204"
+  },
+  {
+   "id": "wang-2023-framerate",
+   "authors": "Wang, J., Shi, R., Zheng, W., Xie, W., Kao, D., Liang, H.-N.",
+   "year": "2023",
+   "title": "Effect of frame rate on user experience, performance, and simulator sickness in virtual reality",
+   "sections": [
+    "vr-norms-hardware"
+   ],
+   "tags": [
+    "frame rate",
+    "cybersickness",
+    "performance"
+   ],
+   "type": "article",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://doi.org/10.1109/tvcg.2023.3247057"
   }
  ]
 }

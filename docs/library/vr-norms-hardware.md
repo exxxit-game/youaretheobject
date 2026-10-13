@@ -1,7 +1,7 @@
 # VR norms and hardware
 
 Generated from `docs/library/papers.json` by `node tools/build-library.mjs`. Do not edit by hand.
-99 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
+101 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
 in the library folder's papers\ as `<id>.txt` (a data set: `<dir>/<id>.txt` from the library folder); "text: ocr" marks a scan's
 text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 
@@ -84,6 +84,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **slater-2023** Slater et al. 2023. The sentiment of a virtual rock concert · virtual concert, sentiment, presence · no card
 - **solbach-2026** Solbach et al. 2026. Passthrough Rigidity: The Behavioral and Visuomotor Costs of Mediated Perception · passthrough, visuomotor costs, mediated perception · no card
 - **stanney-2020** Stanney et al. 2020. Virtual Reality Is Sexist: But It Does Not Have to Be · gender differences, cybersickness, interpupillary distance fit · no card
+- **stauffert-2020** Stauffert et al. 2020. Latency and cybersickness: impact, causes, and measures. A review · latency, cybersickness, frame drops · no card
 - **steam-hwsurvey-2026** Valve 2026. Steam Hardware & Software Survey, September 2026 (VR headsets section) · Steam hardware survey, headset market share · no card
 - **steed-2016** Steed et al. 2016. An 'In the Wild' Experiment on Presence and Embodiment using Consumer Virtual Reality Equipment · in-the-wild VR experiment, presence, embodiment, consumer headsets · no card
 - **steed-2021** Steed et al. 2021. Some Lessons Learned Running Virtual Reality Experiments Out of the Laboratory · VR experiments out of the lab, remote studies · no card
@@ -96,6 +97,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **vrprotocols-checklist-v0.62** vrprotocols.org 2026. Project Checklist VR/XR Open Science Framework v0.62 · VR open science, checklist, reporting · no card · supplement of van-zelderen-2026
 - **vrprotocols-project-v0.62** vrprotocols.org 2026. VR/XR Open Science Framework v0.62 project export · VR open science, protocol export · no card · supplement of van-zelderen-2026
 - **wang-2023** Wang et al. 2023. Perceptual thresholds of visual size discrimination in augmented and virtual reality · size discrimination, augmented reality, video passthrough, perceptual thresholds · [card](../cards/wang-2023.md)
+- **wang-2023-framerate** Wang et al. 2023. Effect of frame rate on user experience, performance, and simulator sickness in virtual reality · frame rate, cybersickness, performance · no card
 - **wang-2026** Wang et al. 2026. Resolution deficits drive simulator sickness and compromise reading performance in virtual environments · display resolution, simulator sickness, reading performance, text clarity · no card
 - **wang-xm-2026** Wang et al. 2026. Divergent Perceptuomotor Recalibration in Virtual Reality and Video-Passthrough Mixed Reality on the Same Head-Mounted Display · perceptuomotor recalibration, video passthrough, mixed reality · no card
 - **warburton-2022** Warburton et al. 2022. Measuring motion-to-photon latency for sensorimotor experiments with virtual reality systems · motion-to-photon latency, measurement · no card
