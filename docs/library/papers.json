@@ -8474,6 +8474,25 @@
    "text": "ok",
    "status": "no card",
    "source": "https://ec.europa.eu/justice/article-29/documentation/opinion-recommendation/files/2012/wp194_en.pdf"
+  },
+  {
+   "id": "francis-2003-coglab",
+   "authors": "Francis, Neath (experiments); Mackewn, Goldthwaithe (manual)",
+   "year": "2003",
+   "title": "Student Manual for CogLab (Cognitive Psychology Online Laboratory)",
+   "sections": [
+    "games-platforms",
+    "memory-attention"
+   ],
+   "tags": [
+    "online lab",
+    "classic experiments re-created",
+    "the student as the subject"
+   ],
+   "type": "book",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://homepage.villanova.edu/diego.fernandezduque/Teaching/CognitivePsychology/Lectures_and_Labs/1_Intro/Lab/CogLabManualStudent.PDF"
   }
  ]
 }

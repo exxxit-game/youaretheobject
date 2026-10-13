@@ -229,3 +229,75 @@ Milgram, Asch, Stroop, change blindness.
 - Flat, small [seen: tag-psychology feed]: "Prisoner's dilemma" (dogmastudios, 19 Nov 2016, "based on the famous
   theory"), "A Mindless Day" (15 Apr 2023, "A Fun And Interactive Psychology Brain Game!"), "6 Weeks of Psychology
   Class" (2018), "Psych Patch" (2025), "WhoQuiz" (2026, self-development quiz).
+
+### 7a. Non-VR: phone apps and citizen-science games (from the project's library first)
+
+- The Great Brain Experiment, UCL (Brown, Zeidman, Smittenaar, Adams, McNab, Rutledge & Dolan), free app for
+  iPhone and Android, launched "in the middle of March 2013", built by "an external developer (White Bat Games)"
+  [read: full text in the library, C:\Users\admin\Documents\objekt-files\papers\brown-2014.txt; PLoS ONE
+  9(7):e100662, https://pmc.ncbi.nlm.nih.gov/articles/PMC4099129/]. "We presented four classic experimental
+  paradigms as short games" (attentional blink, selective stop-signal, working memory, decision-making); consent and
+  a demographic questionnaire in the app; "No personal identification of users was possible at any time";
+  "participants could compare their scores against those of other users. They could also read some information
+  about the background and significance of each psychological paradigm"; "In the first month after release, 44,373
+  users downloaded the app and 20,800 users ... played at least one game to completion". The closest precedent found
+  so far for the whole loop (classic published paradigms as games, the player as subject, you vs other players,
+  the paradigm's background explained, consented anonymous data used for science). Differs: smartphone, not VR;
+  performance tasks scored as games, no deception or "how you were caught"; one 2013 app.
+- From the review in the library, Salouhou, Dubourg, Scott-Slade, Spiers & Coutrot, "From Players to Participants:
+  Citizen Science and Video Games to Understand Cognition" (C:\Users\admin\Documents\objekt-files\papers\salouhou-2026.txt,
+  Table 1 "Taxonomy of cognitive citizen science video games") [read]: Moral Machine (2016, "Choose outcomes in
+  moral dilemmas", 2.3 M), Skill Lab (2018, Aarhus), Neureka (2020, "Mini games on working memory & planning",
+  9,918), CitieS-Health (2020, "Six mini-games + 14 validated tasks"), The Music Lab (2019), Which English? (2018),
+  Hexxed.io (2022), Sea Hero Quest (2016, 4.3 M). None is VR; none re-creates a social-psychology experiment with
+  deception and a reveal.
+- Skill Lab: Science Detective (Aarhus University, Pedersen et al. 2023, library pedersen-2023.txt) [read: parts]:
+  games validated against classic tasks, among them "Corsi Block (Kessels et al., 2000)", "Stroop (Zysset et al.,
+  2001)", "Mental Rotation (Ganis & Kievit, 2015)"; "large cross-sectional population sample (N = 6369)". Mobile and
+  browser; whether players get their profile: not read.
+
+### 7b. Non-VR: teaching labs where the student undergoes classic experiments
+
+- CogLab (Cognitive Psychology Online Laboratory), experiments by Greg Francis and Ian Neath (Purdue), Wadsworth /
+  Thomson Learning, later Cengage ("CogLab 5", ISBN 9781285461083) [read: Student Manual dated 7 Aug 2003,
+  copyright 2004, https://homepage.villanova.edu/diego.fernandezduque/Teaching/CognitivePsychology/Lectures_and_Labs/1_Intro/Lab/CogLabManualStudent.PDF,
+  text saved as C:\Users\admin\Documents\objekt-files\papers\francis-2003-coglab.txt; the Cengage page refused the
+  fetch (redirect loop)]. "a set of Web-based demonstrations of classic experiments and concepts from cognitive
+  psychology. CogLab allows students to experience a variety of important experimental studies"; after each run
+  "a summary of your data will appear". The 2003 list holds about 45 labs, among them Stroop Effect, Attentional
+  Blink, Muller-Lyer Illusion, False Memory, Forgot It All Along, Serial Position, Mental Rotation, Monty Hall,
+  Risky Decisions, each with references and questions. A web search summary (not opened) says the instructor can
+  pool class averages. The oldest and fullest precedent for "be the subject of a classic experiment, then see your
+  data and the study behind it": a paid course tool for students, flat, cognitive psychology only, no game frame.
+- ZAPS, W. W. Norton's online psychology labs [read: Norton knowledge base, last modified 30 Oct 2025,
+  https://knowledgebase.wwnorton.com/help/zaps]: students complete "a demo or experiment that highlights an
+  important psychological principle," then a short quiz. A search summary (Norton's pages not opened) says each lab
+  runs Introduction, Experience, Results (data graphed with classmates'), Discussion, Learning Check, and that labs
+  are "inspired by classic psychological studies": unverified. Paid course tool, flat.
+
+### 7c. Non-VR: App Store and Google Play
+
+Method (14.10.2026): web searches "app store app classic psychology experiments try yourself", "play.google.com
+psychology experiments app Stroop change blindness illusions", "apps.apple.com psychology experiments app
+interactive participate learn results"; candidates opened on apps.apple.com.
+
+- Psych Lab 101, Neurobehavioral Systems, Inc. (makers of the Presentation lab software), free, iOS; version 1.0
+  dated 07/09/2015, current 2.1.0 of 04/22/2025; 2 ratings, 2.5 [read].
+  https://apps.apple.com/us/app/psych-lab-101/id1014084546 . "35 well-known cognitive and clinical psychology
+  experiments" you can try yourself (Change Blindness, Sternberg Scanning among them) and 11 adjustable visual
+  illusions; users see how their results compare to classic results; each experiment has "background information
+  with references, history, and a description of methods"; privacy label "Data Not Collected". An Android build
+  (package com.neurobs.psychlab101) is listed on apkcombo [seen]. The closest phone app to the "undergo it, then
+  see the classic result" half of our loop; differs: flat, a course companion with no game, story or room, no
+  deception or reveal of how the user was caught, no data for science, almost no reach.
+- Psych Tests, arludo Pty Ltd, free, iOS, version 1.0 dated 11/21/2017, latest 09/16/2024; 2 ratings [read].
+  https://apps.apple.com/us/app/psych-tests/id1313638910 . "Run classic psychology experiments with Psych tests":
+  a Stroop word game, a visual-search game and an Implicit Association Test; students can build their own
+  experiments; whether results are explained: not stated on the page.
+- Happiness Quest, Robb Rutledge / Rutledge Lab, iOS, version 1.0 dated 03/07/2022, 1.3 dated 07/21/2025; 16
+  ratings, 4.3 [read]. https://apps.apple.com/app/id1602523342 . "a citizen science project started by
+  psychologists at Yale University and University College London"; short classic psychology experiments moved to
+  phones to study what drives mood. Successor of UCL's The Happiness Project (https://apps.apple.com/app/id1366965114)
+  [seen]. Whether players see a result: not stated on the page.
+- Inquisit Player (Millisecond Software, https://apps.apple.com/app/id1038263772) [seen]: runs real research
+  studies remotely on a phone for recruited participants; a lab tool, not a game.

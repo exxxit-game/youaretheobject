@@ -1,7 +1,7 @@
 # memory and attention
 
 Generated from `docs/library/papers.json` by `node tools/build-library.mjs`. Do not edit by hand.
-37 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
+38 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
 in the library folder's papers\ as `<id>.txt` (a data set: `<dir>/<id>.txt` from the library folder); "text: ocr" marks a scan's
 text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 
@@ -12,6 +12,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **corsi-1972** Corsi 1972. Human memory and the medial temporal region of the brain · Corsi block span, spatial memory, working memory · [card](../cards/corsi-1972.md) · text: ocr
 - **erb-2016** Erb et al. 2016. Reach tracking reveals dissociable processes underlying cognitive control · Stroop effect, flanker task, reach tracking, cognitive control · [card](../cards/erb-2016.md)
 - **fazio-2015** Fazio et al. 2015. Knowledge does not protect against illusory truth · illusory truth effect, repetition, knowledge · [card](../cards/fazio-2015.md)
+- **francis-2003-coglab** Francis et al. 2003. Student Manual for CogLab (Cognitive Psychology Online Laboratory) · online lab, classic experiments re-created, the student as the subject · no card
 - **ghibellini-meier-2025** Ghibellini & Meier 2025. Interruption, recall and resumption: a meta-analysis of the Zeigarnik and Ovsiankina effects · Zeigarnik effect, Ovsiankina effect, interrupted tasks, meta-analysis · [card](../cards/ghibellini-meier-2025.md)
 - **hagger-2016** Hagger et al. 2016. A Multilab Preregistered Replication of the Ego-Depletion Effect · ego depletion, multilab replication, registered replication · no card
 - **hirschhorn-2024** Hirschhorn et al. 2024. Using virtual reality to induce multi-trial inattentional blindness despite trial-by-trial measures of awareness · inattentional blindness, awareness, repeated trials · [card](../cards/hirschhorn-2024.md)

@@ -1,7 +1,7 @@
 # games and platforms
 
 Generated from `docs/library/papers.json` by `node tools/build-library.mjs`. Do not edit by hand.
-37 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
+38 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
 in the library folder's papers\ as `<id>.txt` (a data set: `<dir>/<id>.txt` from the library folder); "text: ocr" marks a scan's
 text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 
@@ -15,6 +15,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **cooper-2010** Cooper et al. 2010. The challenge of designing scientific discovery games · scientific discovery games, Foldit, citizen science · no card
 - **denisova-cairns-2015** Denisova & Cairns 2015. The placebo effect in digital games: phantom perception of adaptive artificial intelligence · placebo effect, adaptive AI, expectation, video games · [card](../cards/denisova-cairns-2015.md)
 - **fagerholt-2009** Fagerholt & Lorentzon 2009. Beyond the HUD: User Interfaces for Increased Player Immersion in FPS Games · HUD, immersion, FPS games, diegetic interface · no card
+- **francis-2003-coglab** Francis et al. 2003. Student Manual for CogLab (Cognitive Psychology Online Laboratory) · online lab, classic experiments re-created, the student as the subject · no card
 - **friehs-2020** Friehs et al. 2020. Effective Gamification of the Stop-Signal Task: Two Controlled Laboratory Experiments · gamification, stop-signal task, inhibition · no card
 - **galletta-2004** Galletta et al. 2004. Web site delays: how tolerant are users? · waiting, loading time, abandonment · no card
 - **goto-2019** Goto 2019. Development of an online environment for game experiments (in Japanese) · online economic games, crowdsourcing, experiment platform · no card
