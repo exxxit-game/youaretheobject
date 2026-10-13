@@ -107,7 +107,11 @@ minimum rule (Hundepool 2025), not a published method for a live average.
   false, or on a window message INJECT_AFRAME_INSPECTOR from any origin; the component has no remove handler, so
   removing the attribute leaves the listeners; its README sets the source with inspector="url: ...". A paired
   keyboard on the headset: not tried.
-- The project's secret API keys: visible only in the Supabase panel (Settings, API Keys); the owner's screenshot.
+- CHECKED 13.10, the project's API keys (the owner's screenshot of Settings, API Keys): one publishable key "default"
+  (the game's, src/engine/results.js) and one secret key "default"; the project has no Edge Function (read through the
+  connector) and nothing in the repository uses a secret key, so nothing uses it. Supabase: "A project doesn't need any
+  secret keys if nothing uses them" (guides_getting-started_api-keys.md:108, saved 12.10). Advice to him: delete it;
+  a new one is made in one click when a server of ours needs it (the paid rooms' purchase check).
 - OVR Metrics Tool, installed by the owner on 13.10 (Meta: "highly recommended that you keep this HUD up and running
   throughout development", webxr-perf-tools): installed or not, the HUD over adb (ENABLE_OVERLAY broadcast, Meta's
   ts-ovrmetricstool page), and whether its CSV records the Browser (one forum report says HUD only) - measure.
