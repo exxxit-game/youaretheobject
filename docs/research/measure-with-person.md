@@ -132,5 +132,8 @@ so his next start is as before.
 Before he is called: the whole walk run once on the stand by tools/stand-flow.mjs (the script practised), its
 time and every recorder's cost read from that run.
 
-Not read: Meta's Quest 3 health and safety warnings on cables
-(https://www.meta.com/legal/quest/health-and-safety-warnings/), to be read before he is called.
+Read 14.10: Meta's Quest 3 health and safety warnings (English PDF linked from
+https://www.meta.com/legal/quest/health-and-safety-warnings/, no date shown) have no line on playing with a cable
+attached; the nearest is the general one: "Serious injury and property damage may occur if you hit objects, walls
+(or other structural elements), people or pets or if you trip or fall." So "the cable behind him" is our care, from
+that line; the Link Cable's own guide on the same page was not read.
