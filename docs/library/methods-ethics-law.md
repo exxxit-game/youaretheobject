@@ -1,7 +1,7 @@
 # methods, ethics, law
 
 Generated from `docs/library/papers.json` by `node tools/build-library.mjs`. Do not edit by hand.
-93 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
+94 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
 in the library folder's papers\ as `<id>.txt` (a data set: `<dir>/<id>.txt` from the library folder); "text: ocr" marks a scan's
 text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 
@@ -61,6 +61,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **miller-2020** Miller et al. 2020. Personal identifiability of user tracking data during observation of 360-degree VR video · user identification, tracking data, privacy · no card
 - **mottelson-2017** Mottelson & Hornbæk 2017. Virtual reality studies outside the laboratory · VR studies outside the lab, crowdsourcing · no card
 - **mottelson-2021** Mottelson et al. 2021. Conducting Unsupervised Virtual Reality User Studies Online · unsupervised VR studies, remote, online · no card
+- **nist-2024-fips203** National Institute of Standards and Technology 2024. FIPS 203: Module-Lattice-Based Key-Encapsulation Mechanism Standard · post-quantum, ML-KEM, encryption, standard · no card
 - **oculus-2016-rift-health-safety** Oculus 2016. Oculus Rift Health and Safety Warnings · health and safety warnings, age limit, seizures · no card
 - **oliva-2022** Oliva et al. 2022. QuickVR: A standard library for virtual embodiment in unity · QuickVR, embodiment library, Unity · no card
 - **ombudsman-2014** Ukrainian Parliament Commissioner for Human Rights 2014. Clarification of the procedure for notifying the Commissioner of personal data processing that poses a special risk (in Ukrainian) · Ukraine data protection, special-risk processing, biometric data · no card

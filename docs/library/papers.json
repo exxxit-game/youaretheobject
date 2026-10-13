@@ -8129,6 +8129,25 @@
    "text": "ok",
    "status": "no card",
    "source": "https://petsymposium.org/popets/2016/popets-2016-0019.pdf"
+  },
+  {
+   "id": "nist-2024-fips203",
+   "authors": "National Institute of Standards and Technology",
+   "year": "2024",
+   "title": "FIPS 203: Module-Lattice-Based Key-Encapsulation Mechanism Standard",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "post-quantum",
+    "ML-KEM",
+    "encryption",
+    "standard"
+   ],
+   "type": "standard",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.203.pdf"
   }
  ]
 }

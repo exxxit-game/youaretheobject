@@ -166,6 +166,9 @@
 - FIPS 203, https://csrc.nist.gov/pubs/fips/203/final : "Module-Lattice-Based Key-Encapsulation Mechanism Standard",
   published August 13, 2024; "At present, ML-KEM is believed to be secure, even against adversaries who possess a
   quantum computer"; sets "ML-KEM-512, ML-KEM-768, and ML-KEM-1024".
+  Full text saved objekt-files/papers/nist-2024-fips203.pdf/.txt; Table 3 "Sizes (in bytes)": ML-KEM-768 encapsulation
+  key 1184, ciphertext 1088, shared secret 32. So one sealed report grows by about 1.1 KB plus the X25519 part,
+  near or over our server's 2048-byte cap a report (0009), more if sent as base64 text (inference; the cap must rise).
 - X-Wing, https://datatracker.ietf.org/doc/draft-connolly-cfrg-xwing-kem/ : draft-11, 2026-09-23, "Active
   Internet-Draft (individual)", Independent Submission, no RFC; "a general-purpose post-quantum/traditional hybrid
   key encapsulation mechanism (PQ/T KEM) built on X25519 and ML-KEM-768."
