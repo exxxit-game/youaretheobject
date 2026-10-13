@@ -130,3 +130,43 @@ making a WebXR game (A-Frame 1.8.0, no build step) for Meta Quest.
   scope of the game written, and the basic technology (loading, saving results, frame budget) done. Production
   (more rooms) waits until it passes; if it cannot pass, the plan changes rather than production starting.
 
+- **A studio's own exit criteria for alpha, beta and gold** [read] — Jennifer Javornik (Filament Games, a
+  learning-games studio), "Alpha, Beta, Gold: A Commitment to High-quality Game Development", 10 May 2017,
+  https://www.filamentgames.com/blog/alpha-beta-gold-commitment-high-quality-game-development. Each milestone
+  is a list of conditions a build must meet. Alpha: "roughly feature-complete"; "A new player in the target
+  audience with minimal external guidance can play the game"; "Game performance is minimally viable on the
+  primary target platform"; "A player in the target audience indicates a desire to continue playing on their
+  own"; "Key sound effects are implemented". Beta: "feature-complete with polish"; "The target playtime is fully
+  realized"; "There are no placeholder art assets"; "All art assets match the style guide"; "A majority of new
+  players can play without external guidance"; "The game runs at the target framerate in a majority of tested
+  scenarios. The game remains playable in all tested scenarios". Gold: "feature complete with high polish"; "All
+  new players can play without external guidance"; "No A, B, C and very few D and E defects"; "The game runs at
+  the target framerate in all tested scenarios". (The page lists no prototype or vertical-slice gate; the
+  meaning of its A–E defect classes is not given there: unverified.)
+- For us: a gate is a short list of things anyone can check on the build, with players and frame rate in it,
+  not a feeling of "almost done". The corridor and each room can carry the same three lists: alpha (plays end
+  to end, a new tester gets through without help, frame rate viable on Quest 2), beta (no placeholders, style
+  guide met, most testers get through alone, target frame rate in most measured places), gold (all testers alone,
+  target frame rate in every measured place, no serious defect open).
+
+- **An engine vendor's stage model for small teams** [read] — Unity Learn, "Game development in a nutshell",
+  tutorial "Production and Post-release",
+  https://learn.unity.com/course/game-development-in-a-nutshell/tutorial/production-and-post-release (undated;
+  the course's stages: ideation and pre-production, production, post-release). End of pre-production: "In
+  commercial games, this assessment is often done via a specific milestone known as a 'vertical slice'", where
+  "some subset of the final game now exists, which is fully reflective of the final product"; but "In smaller
+  projects... a true vertical slice tends to be something of an unattainable luxury", and the page's lighter
+  gate is that "the game itself exists in a form that can be tested with players". Production: "While
+  pre-production is about discovery and experiments, production is about hitting a target"; "Divide the work
+  into chunks." "Estimate the time for each chunk." "Complete the game, one chunk at a time." Milestones "make
+  great days for playtesting". Release: "There's no magic formula for knowing when to stop"; "An outsider is often
+  the best resource for helping to decide when the game is done enough to be released". After release: "A bug or
+  flaw might be discovered well after the game's release", so keep "an organized archive from which you can
+  update the game"; live services "may or may not be relevant for your project".
+- For us: the stages studios use, and what each must hand on, as the sources above give them:
+  concept (what the game is, one page) → pre-production (prototypes; tools, budgets and risks settled; ends with
+  Cerny's first playable or Unity's "can be tested with players") → production (one chunk at a time, each to the
+  bar) → alpha / beta / gold (Filament's checkable lists) → certification (VRCs, two weeks of review) → launch
+  → post-release (patches from an archive that can rebuild any version). Where we stand on this ladder is the
+  owner's call; the sources suggest the corridor is pre-production's first playable.
+
