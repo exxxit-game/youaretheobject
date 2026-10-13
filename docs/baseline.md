@@ -96,7 +96,8 @@ Two fact-checks of the first account corrected the light, the memory, the fan an
   battery service's temperature up to 42 °C (its HAL sensor has no thresholds). The GPU at 456, 492 and 545 MHz.
 - GPU resources the same at the start and the end (257 geometries, 40 textures, 53 programs). The browser's foreground
   sandboxed process (pid 7498, the game's) 169 360 kB to 208 385 kB, at most 222 325 kB (kB as dumpsys prints them,
-  1024 bytes): growing about 39 MB over 45 minutes while the GPU counts stayed flat, to be found; another sandboxed
-  process stayed at 198 068 to 198 968 kB.
+  1024 bytes); from minute 1.3 to the end 197 503 to 208 385 kB (+10.6 MiB), +8.8 MiB between two samples looking the
+  same way 38 minutes apart, swinging about 10 MiB with each look round: a slow rise to be checked in the next run.
+  Another sandboxed process ranged 198 068 to 202 912 kB.
 - Battery 95 % to 69 % on the cable: the charger read weak (900 mA at 5 V) and the battery discharging most of the run.
 - Not in it: room 101, the corridor's flow (the sign, the clipboard, the doors), a person's moves, a Quest 2.
