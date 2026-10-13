@@ -84,11 +84,12 @@ const settled = async () => {
 // Right after a build the Pages servers can still hand out some old files beside the new ones
 // (files are kept up to 10 minutes): a game whose modules come from two versions fails to start
 // ("Failed to fetch dynamically imported module"). So "live" only once every script, page and
-// style is served exactly as published.
+// style is served exactly as published; and every model the controllers take from the game itself
+// (vendor/aframe-assets: a model still missing there leaves a player's hands empty), compared byte for byte.
 const BASE = 'https://exxxit-game.github.io/object-preview/';
 const pageFiles = PUBLIC.flatMap((p) => p.endsWith('/')
   ? fs.readdirSync(path.join(ROOT, p), { recursive: true }).map((f) => (p + f).replace(/\\/g, '/'))
-  : [p]).filter((f) => /\.(js|html|css)$/.test(f) && f !== 'index.html');   // index.html gets the noindex line
+  : [p]).filter((f) => /\.(js|html|css|glb)$/.test(f) && f !== 'index.html');   // index.html gets the noindex line
 const served = async () => {
   let old = [];
   for (let i = 0; i < 12; i++) {
@@ -96,6 +97,11 @@ const served = async () => {
     for (let k = 0; k < pageFiles.length; k += 8) {
       await Promise.all(pageFiles.slice(k, k + 8).map(async (f) => {
         // a file that cannot be fetched (offline, DNS, TLS) counts as not yet served, never as a gh failure
+        if (f.endsWith('.glb')) {
+          const got = await fetch(BASE + f).then((r) => (r.ok ? r.arrayBuffer() : null)).catch(() => null);
+          if (!got || !Buffer.from(got).equals(fs.readFileSync(path.join(ROOT, f)))) old.push(f);
+          return;
+        }
         const text = await fetch(BASE + f).then((r) => r.text()).catch(() => '');
         const mine = fs.readFileSync(path.join(ROOT, f), 'utf8').replace(/\r\n/g, '\n');
         if (text.replace(/\r\n/g, '\n') !== mine) old.push(f);

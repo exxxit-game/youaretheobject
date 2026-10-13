@@ -23,10 +23,20 @@ assert.ok(/multiviewStereo: \$\{MULTIVIEW\}/.test(stage), 'multiview is not turn
 const root = html.indexOf("<script>window.AFRAME_CDN_ROOT = './vendor/aframe-assets/';</script>");
 assert.ok(root > 0 && root < html.indexOf('<script src="vendor/aframe-1.8.0.min.js">'), 'the page does not set AFRAME_CDN_ROOT to vendor/aframe-assets/ before A-Frame loads');
 assert.ok(build.includes('window.AFRAME_CDN_ROOT||"https://cdn.aframe.io/"'), 'this A-Frame no longer reads AFRAME_CDN_ROOT');
+// and so does every other page that loads A-Frame (the headset probes in tools/), from its own folder
+for (const f of fs.readdirSync(new URL('../tools/', import.meta.url)).filter((n) => n.endsWith('.html'))) {
+  const page = fs.readFileSync(new URL(`../tools/${f}`, import.meta.url), 'utf8'), loads = page.indexOf('<script src="../vendor/aframe-1.8.0.min.js">');
+  if (loads < 0) continue;
+  const set = page.indexOf("<script>window.AFRAME_CDN_ROOT = '../vendor/aframe-assets/';</script>");
+  assert.ok(set > 0 && set < loads, `tools/${f} loads A-Frame without AFRAME_CDN_ROOT set to vendor/aframe-assets/ first`);
+}
 // Every model A-Frame 1.8.0 names for these controllers and hands, byte for byte its licensed origin (SHA-256):
 // WebXR Input Profiles' assets, MIT (controllers/LICENSE.md), and A-Frame's hands, MIT (controllers/hands/LICENSE).
 // The models of the HTC Vive, Vive Focus, Windows Mixed Reality, Magic Leap One, Oculus Go and the first Touch
-// controllers carry no licence and are not shipped: on those headsets only the ray shows.
+// controllers carry no licence and are not shipped: on those headsets the hands stay empty, no model and no ray
+// (laser-controls aims its ray only on controllermodelready; the practice review of 13.10), until every headset
+// takes its model through three.js's loader (the owner's choice A of 13.10, docs/board.md): not to be published
+// before it.
 const MODELS = {
   'meta/quest-touch-plus-left.glb': '41a35b80221398d37029cbfaa9e39084ccd43e0206be72a5e8460f52e7882cb4',
   'meta/quest-touch-plus-right.glb': '5126d638fb1d03e05d16d8eec3b31b9588df88eaa8b42cc21b857fac3bd44916',
