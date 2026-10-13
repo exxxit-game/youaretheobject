@@ -37,6 +37,33 @@ making a WebXR game (A-Frame 1.8.0, no build step) for Meta Quest.
 - [docs/research/studio-process-3.md](studio-process-3.md): Parts 3 (performance), 4 (QA, playtests,
   certification), 5 (documentation), 6 (tools and pipeline).
 
+## Short answers (13.10.2026; each backed by a finding below or in the parts files)
+
+1. Stages: concept → pre-production (ends with a playable piece at final quality: Cerny's "publishable first
+   playable", or for small teams Unity's "can be tested with players") → production in chunks → alpha / beta /
+   gold, each a checkable list (Filament) → certification (Meta's VRCs; submit at least two weeks ahead) →
+   launch → post-release from an archive that can rebuild any version.
+2. Roles: engineers, artists, designers, producers, support (Gregory). Two-member cover: studio-process-2.md, end.
+3. Performance: budget first, measured on the device, CPU/GPU split, iterate (Meta's workflow); warm-up cut off,
+   several fresh runs, intervals not single numbers (Georges 2007; Unity's defaults); a separate long session for
+   heat (Meta: start-only profiling is "the most common shipping mistake"); A/B runs with a fixed view (Owlchemy).
+4. QA: automated tests written with each feature (Rare); playtests test the design on target players, watched
+   (Valve, Microsoft); VRC checklist, then ALPHA/BETA/RC channels (Meta). Bug severity: no primary source found.
+5. Docs: short, alive, changed in the same commit as the code (Google); decisions recorded with reasons and
+   marked superseded, never deleted (Nygard); the GDD is the doc most often left stale (Politowski).
+6. Pipeline: version control even for one person (Gregory); assets' metadata as text in it; small batches merged
+   daily (DORA); release ladder on the store's channels.
+7. Postmortems: problems are about people and planning more than technology; top causes: too few people,
+   environment, marketing, underestimation, unclear vision, lack of fun (Politowski); obstacles and optimistic
+   schedules (Washburn). Fixes: more pre-production, prototypes, playtests, feature lock dates, tools chosen early.
+8. Human + agent: the agent's failure is "looks done" without a check; the cure is checks it runs itself,
+   evidence shown, a fresh-context reviewer, one feature at a time, a machine-held list of what passes (Anthropic,
+   four pages); people keep taste and design (Anthropic's survey); felt speed misleads (METR).
+
+Not done or unverified: Chandler's handbook (only the alpha quote); the Sea of Thieves and Owlchemy talks
+themselves (videos not watched); DORA's seven AI capabilities and its 2024 AI numbers; an authoritative bug
+severity scale; Gregory's 4th edition has no team-structure section (the 3rd edition's Russian translation used).
+
 ## Findings (written as they come)
 
 ### Part 2. Roles (from the project's own library first)

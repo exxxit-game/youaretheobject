@@ -142,6 +142,14 @@ Third file of docs/research/studio-process.md (the question, the marks and the i
   (3) Certification against the VRCs, done as our own checklist long before submission, then an ALPHA channel
   for the testers, then RC, then the store, with two weeks kept for review.
 
+- **Bug severity and triage: no authoritative game standard found** [not found] — one search (13.10) gave
+  only tool vendors' and QA-outsourcers' blogs (blocker / critical / major / minor / cosmetic, or P0–P3, and the
+  split between severity, how bad, and priority, how urgent); a forum post says the A/B/C classes are shared by
+  teams and console makers but have no official definition. None opened; all unverified. Filament's gold gate
+  above uses A–E classes without defining them.
+- For us: until a primary source is found, a plain rule from what the sources share: a bug that stops play,
+  loses data or breaks comfort blocks a release; the rest is ordered by how many players meet it.
+
 ### Part 5. Documentation
 
 - **The design doc is the document most often left stale** [read] — Politowski et al. 2021 (above, §4.5): the
