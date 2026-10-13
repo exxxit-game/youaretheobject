@@ -1,5 +1,5 @@
-// The measure with the headset on a stand, unworn: first a two-minute trial that proves the tools, then 45 minutes
-// without the owner (his words: docs/owner-decisions-history-2.md, "On measuring first"; the plan:
+// The measure with the headset on a stand, unworn: first a two-minute trial that proves the tools, then the
+// 45-minute run (docs/owner-decisions.md, "Quality measures before polishing old numbers"; the plan:
 // docs/research/long-measure.md).
 // No reading is trusted before its tool has shown a change made on purpose whose size is known beforehand
 // (long-measure.md, "Known-change proofs"): the trial makes each such change once and writes whether each tool saw
