@@ -90,3 +90,16 @@ closed when what breaks it is in place; it stays here, marked, as the memory of 
 ## 11. One endless window — closed in part
 - Done: Cosmogram's main session ran 21 days at about 570,000 tokens a request. Here: windows end with a written
   handoff, and the whole dialogue is kept (docs/owner-decisions.md).
+
+## 12. Errors built on errors — open
+- Done: 13.10, the guard's forms were added on CodeRabbit's remarks, then counted in the restrictions analysis as
+  evidence, then options were built on that analysis; two fact-checks found every count leaning toward the
+  analysis's own conclusion, and an option resting on a misread key ("admin").
+- His words (13.10): «ты ошибку на ошибку лепишь, и потом… свои же знания подкрепляешь теми же ошибками и от них же
+  отталкиваешься и считаешь, будто то были правильные решения»; «я в языках программирования нифига не понимаю…
+  если ты мне не будешь помогать, а будешь мешать, то мы будем это изучать гораздо дольше».
+- Why us: my own earlier docs and decisions read like sources to me in the next step; he cannot see the code to
+  catch it, and learns all of this as he goes.
+- Breaks it: my own docs, the board and an earlier window are leads, never sources (docs/tools.md): before building
+  on one, the thing itself is read (the code, the setting, the source); checks go to primary sources, not to my
+  texts; each step is shown to him as one plain picture of what and why, so he can brake what he understands.
