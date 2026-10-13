@@ -16,86 +16,8 @@ import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { thermalOf, gpuIds, gpuSamples, mean } from './measure.mjs';
+import { sandboxedPids, pssOf, proximityOf, verdicts, longSummary, heatStop, MARKS } from './stand-judge.mjs';
 
-// dumpsys meminfo lists every process, each in several blocks (by process, by importance): the browser's sandboxed
-// ones by pid, once each (one of them runs the page), so a page allocation is looked for in each
-export function sandboxedPids(wholeDump) {
-  return [...new Set([...String(wholeDump).matchAll(/sandboxed_process\d*[^\n]*?\(pid (\d+)/g)].map((m) => Number(m[1])))];
-}
-export const pssOf = (pidDump) => Number((String(pidDump).match(/TOTAL PSS:\s*(\d+)/) || [])[1]);
-// dumpsys vrpowermanager: the override that keeps an unworn headset drawing (ours reads CLOSE)
-export const proximityOf = (dump) => (String(dump).match(/Virtual proximity state: (\w+)/) || [])[1] || null;
-
-// What each known change must show, judged from the samples alone. A sample: { s (seconds since VR), page: { frames,
-// late, renderFrame, calls, triangles, visibility, rate }, prox }. Rates: the session asks 90, then 72 (W3C WebXR
-// updateTargetFrameRate), then 90; a frame-count per second within 6 % of the asked rate counts as following it.
-export function verdicts(samples, marks) {
-  // a sample counts the time from the one before it to itself (s - dt, s]; it is read just after its mark, so a
-  // window takes the samples whose time lies within it, give or take the reading's own second and a half
-  const at = (from, to) => samples.filter((x) => x.page && x.s - x.dt >= from - 0.5 && x.s <= to + 1.5);
-  const fps = (xs) => { const f = xs.reduce((a, x) => a + x.page.frames, 0), t = xs.reduce((a, x) => a + x.dt, 0); return t ? f / t : null; };
-  const near = (v, want) => v !== null && Math.abs(v - want) / want <= 0.06;
-  const v = {};
-  const before = fps(at(marks.vr + 2, marks.to72)), slow = fps(at(marks.to72 + 2, marks.to90)), after = fps(at(marks.to90 + 2, marks.boxOn));
-  v.frameRate = { pass: near(before, 90) && near(slow, 72) && near(after, 90), before, slow, after };
-  // three.js counts every render in renderer.info.render.frame, the page counts every XR frame: one per frame each,
-  // once the start is over; at the start the reflections' cube pictures are renders too (reflect-env.js: four, six
-  // faces each, every 2.5 s for 15 s), so the renders over the frames there are kept apart, as what the start draws
-  const counted = samples.filter((x) => x.page && x.renderFrames !== undefined);
-  const settled = counted.filter((x) => x.s - x.dt >= marks.vr + 20), early = counted.filter((x) => x.s - x.dt < marks.vr + 20);
-  const gaps = settled.map((x) => x.renderFrames - x.page.frames);
-  v.twoCounters = { pass: gaps.length > 0 && gaps.every((g) => Math.abs(g) <= 3), gaps, extraRendersAtStart: early.map((x) => x.renderFrames - x.page.frames) };
-  const plain = at(marks.boxOn - 10, marks.boxOn), withBox = at(marks.boxOn, marks.boxOff), last = (xs) => xs[xs.length - 1]?.page;
-  const dCalls = (last(withBox)?.calls ?? NaN) - (last(plain)?.calls ?? NaN), dTris = (last(withBox)?.triangles ?? NaN) - (last(plain)?.triangles ?? NaN);
-  // one box: one draw call and 12 triangles, or twice that if each eye is drawn on its own (no multiview)
-  v.box = { pass: [1, 2].includes(dCalls) && dTris === 12 * dCalls, dCalls, dTris };
-  const stall = at(marks.stall, marks.stall + 10), calm = at(marks.stall - 10, marks.stall);
-  const lateIn = (xs) => xs.reduce((a, x) => a + x.page.late, 0);
-  v.lateFrames = { pass: lateIn(stall) >= 8 && lateIn(calm) <= 2, stalled: lateIn(stall), calm: lateIn(calm) };
-  v.stayedVisible = { pass: samples.every((x) => !x.page || x.page.visibility === 'visible'), seen: [...new Set(samples.map((x) => x.page?.visibility))] };
-  v.stayedAwake = { pass: samples.every((x) => x.prox === 'CLOSE'), seen: [...new Set(samples.map((x) => x.prox))] };
-  return v;
-}
-
-// The long run read minute by minute from its samples: the rate in each minute (VRC.Quest.Performance.1: never below
-// 60 fps for long), late frames, whether the session stayed visible and the override on, the heat's course (the
-// first throttling threshold of his Quest 3 is the virtual surface sensor's 48 °C: long-measure.md), the GPU's clocks
-// and the memory of each of the browser's sandboxed processes by its pid.
-export function longSummary(rows) {
-  const minutes = new Map();
-  for (const x of rows) { const m = Math.floor((x.s - x.dt / 2) / 60); const a = minutes.get(m) || { frames: 0, t: 0, late: 0 }; a.frames += x.page.frames; a.t += x.dt; a.late += x.page.late; minutes.set(m, a); }
-  const perMinute = [...minutes.entries()].map(([m, a]) => ({ m, fps: Number((a.frames / a.t).toFixed(1)), late: a.late }));
-  const heat = rows.filter((x) => x.thermal).map((x) => ({ s: x.s, status: x.thermal.status, surface: x.thermal.current['surf-virt-usr'] ?? null, soc: x.thermal.current['soc-usr'] ?? null, battery: x.thermal.battery, level: x.thermal.level }));
-  // each of the browser's sandboxed processes by its pid, first and last: the largest is not always the same one
-  // (the first long run: the largest changed five times), and which is the page is proven only by an allocation
-  const byPid = {};
-  for (const x of rows.filter((r) => r.pss)) for (const [pid, kb] of Object.entries(x.pss)) (byPid[pid] ||= []).push([x.s, kb]);
-  const pages = Object.entries(byPid).map(([pid, v]) => ({ pid, firstKb: v[0][1], lastKb: v.at(-1)[1], maxKb: Math.max(...v.map((p) => p[1])), samples: v.length }));
-  return {
-    perMinute, minFps: perMinute.length ? Math.min(...perMinute.map((p) => p.fps)) : null,
-    minutesUnder60: perMinute.filter((p) => p.fps < 60).length, lateFrames: rows.reduce((a, x) => a + x.page.late, 0),
-    worstStepMs: rows.length ? Math.max(...rows.map((x) => x.page.maxStep)) : null,
-    stayedVisible: rows.every((x) => x.page.visibility === 'visible'), notVisibleAt: rows.filter((x) => x.page.visibility !== 'visible').map((x) => x.s),
-    stayedAwake: rows.every((x) => x.prox === 'CLOSE'), heat, maxStatus: heat.length ? Math.max(...heat.map((h) => h.status)) : null,
-    gpuClocks: [...new Set(rows.filter((x) => x.gpu).flatMap((x) => x.gpu['GPU Frequency'] || []))], memory: pages,
-    gpuResources: rows.length ? { first: [rows[0].page.geometries, rows[0].page.textures, rows[0].page.programs], last: [rows.at(-1).page.geometries, rows.at(-1).page.textures, rows.at(-1).page.programs] } : null
-  };
-}
-
-// The headset spared, not stressed: a run stops 3 °C under the virtual surface sensor's first threshold (48.0 °C in
-// his Quest 3's table, tests/fixtures/quest3) or at any throttling status (AOSP thermal mitigation: 1 LIGHT and up);
-// a heat that cannot be read is not watched, so it stops the run too (a model naming its sensors otherwise is fixed first).
-export const SURFACE_STOP_C = 45;
-export function heatStop(t) {
-  const surface = t?.current?.['surf-virt-usr'];
-  if (!t || !Number.isFinite(t.status) || !Number.isFinite(surface)) return 'the heat could not be read';
-  if (t.status >= 1) return `thermal status ${t.status}`;
-  if (surface >= SURFACE_STOP_C) return `surface ${surface} °C`;
-  return null;
-}
-
-// the trial's timeline, seconds after VR: each known change at its mark
-export const MARKS = { vr: 0, to72: 30, to90: 60, boxOn: 75, boxOff: 85, stall: 95, memOn: 105, end: 125 };
 
 if (import.meta.url === pathToFileURL(process.argv[1] || '').href) await main();
 
@@ -203,8 +125,13 @@ async function main() {
       const minutes = Number((process.argv.find((a) => a.startsWith('--minutes=')) || '').split('=')[1]) || 45;
       // a headset just woken drew nothing for 38 s in VR while "visible" (the long run's first try): its place being found,
       // so the run begins at the first frames; none in 3 minutes is no link to the VR system: restarted, as a held entry
-      const asked = now(); let got = 0;
-      while (!got && now() - asked < 180000) { await pause(2000); got = (await readPage()).frames; }
+      // the heat is watched in the wait too (every 30 s), so a hot headset stops the run before it begins
+      const asked = now(); let got = 0, waitHeatAt = asked;
+      while (!got && !stoppedFor && now() - asked < 180000) {
+        await pause(2000); got = (await readPage()).frames;
+        if (now() - waitHeatAt >= 30000) { waitHeatAt = now(); thermal(`wait${Math.round((waitHeatAt - asked) / 1000)}`); }
+      }
+      if (stoppedFor) throw new Error(`stopped: ${stoppedFor}`);
       if (!got) { held = true; throw new Error('no VR frame in 180 s'); }
       log('frames began', { afterS: Number(((now() - asked) / 1000).toFixed(1)) });
       await readPage();

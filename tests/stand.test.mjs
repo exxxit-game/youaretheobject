@@ -1,9 +1,10 @@
 // tools/stand-measure.mjs reads the headset as printed (outputs saved from his Quest 3, tests/fixtures/quest3) and
 // judges each known change from its samples alone: a tool that misreads, or a verdict that passes a change the
-// tools missed, would let the 45-minute run be trusted before its tools were (docs/research/long-measure.md).
+// tools missed, would let the 45-minute run be trusted before its tools were (docs/research/long-measure.md). The readers and
+// judges live apart from the headset in tools/stand-judge.mjs.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { sandboxedPids, pssOf, proximityOf, verdicts, MARKS, longSummary, heatStop, SURFACE_STOP_C } from '../tools/stand-measure.mjs';
+import { sandboxedPids, pssOf, proximityOf, verdicts, MARKS, longSummary, heatStop, SURFACE_STOP_C } from '../tools/stand-judge.mjs';
 import { thermalOf } from '../tools/measure.mjs';
 
 const read = (f) => fs.readFileSync(new URL(`fixtures/quest3/${f}`, import.meta.url), 'utf8');
