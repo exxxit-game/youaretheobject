@@ -1,0 +1,50 @@
+Applications Memory Usage (in Kilobytes):
+Uptime: 24650493 Realtime: 24650493
+
+** MEMINFO in pid 11822 [com.oculus.browser:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:3] **
+                   Pss  Private  Private     Swap      Rss     Heap     Heap     Heap
+                 Total    Dirty    Clean    Dirty    Total     Size    Alloc     Free
+                ------   ------   ------   ------   ------   ------   ------   ------
+  Native Heap     1601     1416        0        0     5340     5604     4936      667
+  Dalvik Heap      542      388        0        0     8596     4445     2223     2222
+ Dalvik Other      682      632        0        0     1696                           
+        Stack      644      640        0        0      656                           
+       Ashmem    12056      560        0        0    24104                           
+    Other dev        4        0        4        0      200                           
+     .so mmap      386       88        0        0    20156                           
+    .jar mmap      352        0        0        0    18588                           
+    .apk mmap    52894      308    19268        0   117036                           
+    .ttf mmap     3262        0       16        0    10028                           
+    .dex mmap        9        0        0        0      856                           
+    .oat mmap      150        0        0        0     8716                           
+    .art mmap      719      196        0        0    27788                           
+   Other mmap     1096        4        0        0     3856                           
+      Unknown   210807   210712       16        0   211980                           
+        TOTAL   285204   214944    19304        0   459596    10049     7159     2889
+ 
+ App Summary for pid : 11822, and process : com.oculus.browser:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:3
+                       Pss(KB)                        Rss(KB)
+                        ------                         ------
+           Java Heap:      584                          36384
+         Native Heap:     1416                           5340
+                Code:    19696                         175412
+               Stack:      640                            656
+            Graphics:        0                              0
+       Private Other:   211912
+              System:    50956
+             Unknown:                                  241804
+ 
+           TOTAL PSS:   285204            TOTAL RSS:   459596      TOTAL SWAP (KB):        0
+ 
+ Objects
+               Views:        0         ViewRootImpl:        0
+         AppContexts:        4           Activities:        0
+              Assets:        5        AssetManagers:        0
+       Local Binders:        2        Proxy Binders:        7
+       Parcel memory:        3         Parcel count:       11
+    Death Recipients:        0             WebViews:        0
+ 
+ SQL
+         MEMORY_USED:        0
+  PAGECACHE_OVERFLOW:        0          MALLOC_SIZE:        0
+ 
