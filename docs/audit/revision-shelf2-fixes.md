@@ -21,6 +21,9 @@ checks of shelf 2 (revision-shelf2-server.md, -client-law.md, -schema-tests.md) 
   that no such study exists yet [Russian, at the cited line]. Rewrite to science now in our lab after the preregistration; the separate
   consent mark for science goes into consent version 2 (a migration).
 
+- What Meta's headset browser collects, from its own Browser Privacy Notice (data-encryption-2.md, Part 9): the domain
+  of each site and time on it, technical data, crash reports; page content not named. Say it on privacy.html.
+
 ## Tests and code
 - The tests miss 9 of 16 mutations made one at a time in a copy of the code: teach them to read the fields
   and limits from the schema and the migrations.
