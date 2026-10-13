@@ -15,6 +15,9 @@ Source keys used below:
 - [H3] = https://www.meta.com/legal/quest/health-and-safety-warnings/quest-3/ (undated; its sections are collapsed: the browser pane shows only their titles, so their text was read through WebFetch; the uncollapsed parts were read in the browser pane). Quest 3. Current page, fits 2026.
 - [G3] = Meta Quest 3 Safety and Warranty Guide, PDF (English US/CA/EU/UK), linked from https://www.meta.com/legal/quest/health-and-safety-warnings/ ; file timestamp 2023-09-22; text extracted with pdftotext. Quest 3. Launch-era (2023); a line marked [G3+H3] was also seen on the current page.
 
+- [H3S] = https://www.meta.com/legal/quest/health-and-safety-warnings/quest-3s/ (undated; read through WebFetch, its later sections cut off by the tool; no PDF link visible). Quest 3S. Current page.
+- [G2] = Meta Quest 2 Safety and Warranty Guide, PDF (English EU/UK), linked from https://www.meta.com/legal/quest/health-and-safety-warnings/ ; PDF creation date 2023-08-23; pdftotext. Quest 2. A 2023 text for a 2020 headset: its general lines match [G3] word for word, so they still fit; Quest 2's lens system differs.
+
 ## Parts of the question
 
 1. Light: how much light tracking needs; too dark; direct sunlight on the lenses; light changing mid-session.
@@ -38,6 +41,10 @@ Source keys used below:
 - Too dark: the headset may lose position (6DoF) tracking | "If the lighting in your room is too dark, your headset may lose the ability to use 6DoF tracking." | https://www.meta.com/help/quest/598701621088668/ (collapsed, WebFetch) | about 2026-10-06 | 2026-10-13 | all Quest
 - Light changing mid-session (a power cut): when tracking is lost, check whether the room's light changed, turn on more light or move to a brighter room | "check to make sure that the lighting in the room hasn't changed" | https://www.meta.com/help/quest/598701621088668/ (collapsed, WebFetch) | about 2026-10-06 | 2026-10-13 | all Quest
 - Lux number: not found in any Meta page read
+- Quest 3S: a well-lit play space | "The headset operates best with a well-lit activity space." | [H3S] | undated | 2026-10-13 | Quest 3S
+- Quest 2: the same tracking-light line as Quest 3 | "Lighting conditions that are too bright or dim may prevent your Meta Quest's sensors and navigation safety features from working optimally, and may lead to tracking loss." | [G2] | 2023-08-23 | 2026-10-13 | Quest 2
+- Sunlight when the headset is off your head: lenses left in the sun may be damaged | "Taking off your Meta Quest and allowing the lenses to be exposed to direct sunlight may damage them." | [H3S] | undated | 2026-10-13 | Quest 3S
+- Quest 2: never store or carry it with the lenses in the sun | "Do not store or carry the headset so the lenses are exposed to direct sunlight." | [G2] | 2023-08-23 | 2026-10-13 | Quest 2
 
 ## 2. Space
 - Set the play area by the headset's on-screen steps | "Follow on-screen instructions to define your activity space." | [H3] | undated | 2026-10-13 | Quest 3
@@ -56,6 +63,9 @@ Source keys used below:
 - Roomscale boundary: for moving round; at least 2 x 2 m clear | "a safe and unobstructed space measuring at least 6.5 feet by 6.5 feet (2 meters by 2 meters)" | https://www.meta.com/help/quest/463504908043519/ (collapsed, WebFetch) | about 2026-08-25 | 2026-10-13 | all Quest. NOTE: our base 1.8 x 1.8 m is under this number
 - The headset makes a stationary boundary by itself on entering VR; the first immersive app asks for one | "The first time you enter an immersive app you will be prompted to create a boundary (Stationary or Roomscale)." | https://www.meta.com/help/quest/463504908043519/ (collapsed, WebFetch) | about 2026-08-25 | 2026-10-13 | all Quest
 - The boundary shows as virtual walls near the edge of the play area | "virtual walls that appear when you get too close to the edge of your play area" | https://www.meta.com/help/quest/463504908043519/ (browser pane) | about 2026-08-25 | 2026-10-13 | all Quest
+- Developer side: ask the user to clear the area of obstacles | "encourage the user to clear the area of potential obstacles" | https://developers.meta.com/horizon/resources/mr-health-general | 2026-09-04 | 2026-10-13 | all Quest
+- Developer side: keep the boundary on in fully immersive (VR) experiences | "A boundary is recommended at all times for fully immersive experiences" | https://developers.meta.com/horizon/resources/mr-health-general | 2026-09-04 | 2026-10-13 | all Quest
+- Quest 2: same no-ceiling boundary line | "The virtual boundary system does not have an overhead boundary, so choose activity spaces without overhead hazards." | [G2] | 2023-08-23 | 2026-10-13 | Quest 2
 
 ## 3. Breaks and comfort
 - Start with at most 30 minutes, then a 15-minute break; lengthen slowly (Meta's example for a new headset or new content, not a fixed rule) | "For example, when you begin using your Meta Quest start with a maximum use period of 30 minutes plus a break of 15 minutes." | [G3+H3] | 2023-09-22 | 2026-10-13 | Quest 3
@@ -73,6 +83,13 @@ Source keys used below:
 - Seizure risk from flashes, about 1 in 4,000 people | "Some people (about 1 in 4,000) may experience severe dizziness, seizures, eye or muscle twitching, or blackouts triggered by light flashes or patterns." | [H3] (browser pane) | undated | 2026-10-13 | Quest 3
 - Seated play: the only seated line read is for small children | "For smaller-sized children, choose seated or standing content that requires few rapid head/neck/body movements." | [G3+H3] | 2023-09-22 | 2026-10-13 | Quest 3
 - Sore body, tingling or numbness: stop and rest | "If any part of your body becomes tired or sore while using your Meta Quest, or if you feel symptoms such as tingling, numbness, burning or stiffness, stop and rest" | [G3] | 2023-09-22 | 2026-10-13 | Quest 3
+- Quest 3S and Quest 2 carry the same 30 + 15 minute example | "For example, when you begin using your Meta Quest start with a maximum use period of 30 minutes plus a break of 15 minutes." | [G2]; same example summarised on [H3S] | 2023-08-23 | 2026-10-13 | Quest 2, Quest 3S
+- Quest 2: age 10+ for accounts, children supervised | "a minimum age of 10 (requirements may vary by country)" | [G2] | 2023-08-23 | 2026-10-13 | Quest 2
+- Developer side: Meta tells developers to let users take breaks and resume easily | "design content in a manner that makes it possible for users to take breaks and easily resume the app experience" | https://developers.meta.com/horizon/design/bp-overview/ (WebFetch) | no date shown | 2026-10-13 | all Quest
+- Developer side: long use without breaks is not recommended | "Excessive use without breaks is not recommended." | https://developers.meta.com/horizon/design/bp-overview/ | no date shown | 2026-10-13 | all Quest
+- Developer side: seated and stationary experiences are easier on users | "Seated and stationary immersive experiences present less of a user challenge" | https://developers.meta.com/horizon/resources/mr-health-general (WebFetch) | "Last updated: 2026-09-04" | 2026-10-13 | all Quest
+- Developer side: give time to reorient after a transition before asking for a task | "provide time for users to reorient and adapt before introducing task demands" | https://developers.meta.com/horizon/resources/mr-health-general | 2026-09-04 | 2026-10-13 | all Quest
+- Developer side: long head and neck movement adds discomfort | "Constant head and neck movement can increase visual and physical discomfort especially over longer durations of use." | https://developers.meta.com/horizon/design/comfort/ (WebFetch) | "Last updated: 2025-12-17" | 2026-10-13 | all Quest
 
 ## 4. Tracking loss
 - Tracking error alert: take the headset off, move to a safe spot, follow the headset's steps | "Remove the headset and move to a safe space. Then follow the instructions provided in your headset to address this issue." | [G3] (System Alerts) | 2023-09-22 | 2026-10-13 | Quest 3
@@ -85,6 +102,7 @@ Source keys used below:
 - Test: if you can step closer to an object, position tracking (6DoF) is on; if you can only look round, it is 3DoF | "If you can move closer to or further from an object, that means you're using 6DoF tracking." | https://www.meta.com/help/quest/598701621088668/ (browser pane) | about 2026-10-06 | 2026-10-13 | all Quest
 - Clearing the boundary history often fixes tracking (all profiles lose their boundaries, redraw after) | "clearing your boundary history can often fix the issue" | https://www.meta.com/help/quest/598701621088668/ (collapsed, WebFetch) | about 2026-10-06 | 2026-10-13 | all Quest
 - Turn position tracking back on: Settings, Movement tracking, Headset tracking toggle | "Select the toggle next to Headset tracking to turn this feature on or off." | https://www.meta.com/help/quest/598701621088668/ (collapsed, WebFetch) | about 2026-10-06 | 2026-10-13 | all Quest
+- Quest 2: the same tracking error alert as Quest 3 | "A visual alert may indicate that your headset's tracking system or virtual boundaries are not operating properly or may be disabled." | [G2] | 2023-08-23 | 2026-10-13 | Quest 2
 
 ## 5. Outages
 - Overheating alert: take the headset off at once and let it cool | "Immediately remove your headset and let it cool down before continuing use." | [G3] (System Alerts) | 2023-09-22 | 2026-10-13 | Quest 3
@@ -99,6 +117,10 @@ Source keys used below:
 - Charger power: Quest 3 / 3S 18 W, Quest 2 10 W | "Meta Quest 3 and Meta Quest 3S 18W" | https://www.meta.com/help/quest/3482884435359892/ (browser pane) | about 2026-04-14 | 2026-10-13 | Quest 3 / 3S / 2
 - Playing plugged in: the battery may not fill if it gets too warm; it resumes when cool | "may not fully charge if it is plugged in while in use and exceeds the optimal charging temperature" | https://www.meta.com/help/quest/3482884435359892/ (collapsed section, read through WebFetch) | about 2026-04-14 | 2026-10-13 | all Quest
 - Quest 3 battery: about 2.2 hours on average, less for demanding apps; Battery Saver mode in power settings | "Meta Quest 3 is capable of providing 2.2 hours of use on average across a variety of activities" | https://www.meta.com/help/quest/3482884435359892/ (collapsed section, WebFetch) | about 2026-04-14 | 2026-10-13 | Quest 3
+- Charge only indoors | "Only charge your Meta Quest indoors." | [H3S] | undated | 2026-10-13 | Quest 3S
+- Wi-Fi: Meta's Wi-Fi page is for first setup only; it suggests a phone's mobile hotspot as another network (fits a router cut by a power outage, but Meta does not say so) | "a personal network powered by a mobile connection" | https://www.meta.com/help/quest/324548839092626/ (browser pane) | "Updated: 36 weeks ago" (about 2026-01-27) | 2026-10-13 | all Quest
+- Wi-Fi dropping while a page is open in the Quest Browser: not found in Meta's help pages read
+- Power cut, the room going dark mid-session: no Meta page names it; the nearest is the tracking-loss advice in topic 4 (check the light, more light, or another room). not found as such
 
 ## 6. Fit and view
 - Turn the wheel at the bottom to the clearest image | "Adjust distance between lenses by turning the wheel at the bottom of the headset, moving the lenses to the position that provides the clearest image." | [G3+H3] | 2023-09-22 | 2026-10-13 | Quest 3 only (3S and 2 differ)
@@ -115,6 +137,10 @@ Source keys used below:
 - Lenses: dry microfibre cloth after each use; no alcohol, no chemical cleaners, no water | "Use a dry microfiber cloth after each use." | https://www.meta.com/help/quest/467048561217367/ | "Updated: 2 weeks ago" (about 2026-09-29) | 2026-10-13 | all Quest
 - Wipe the lens from the centre outwards in circles | "start from the center of the lens and gently wipe the lens in a circular motion moving outwards" | https://www.meta.com/help/quest/467048561217367/ | about 2026-09-29 | 2026-10-13 | all Quest
 - Never water or liquids on the device | "Do not use water or other liquids while cleaning." | https://www.meta.com/help/quest/467048561217367/ | about 2026-09-29 | 2026-10-13 | all Quest
+- Quest 3S: take the headset off and slide the eyecups to one of three preset positions | "Adjust distance between lenses by removing the headset and sliding the eyecups to one of the three preset lens positions." | [H3S] (WebFetch) | undated | 2026-10-13 | Quest 3S
+- Quest 2: move the eye cups to the clearest position for each user | "Adjust the distance between the lenses for each user by moving the eye cups directly to a position that provides the clearest image." | [G2] | 2023-08-23 | 2026-10-13 | Quest 2
+- Developer side: lens spacing matched to the eyes reduces visual strain | "When IPD matches, virtual content appears more natural and comfortable, minimizing visual strain" | https://developers.meta.com/horizon/design/comfort/ | 2025-12-17 | 2026-10-13 | all Quest
+- Blurry text: Meta's fit lines say the right fit gives one clear image (topic 6, [H3]); a tip specific to blurry text in the browser: not found
 
 ## 7. Anything else before a session
 - Everyone who plays reads the warnings first | "please ensure that each user of your Meta Quest 3 carefully reads all warnings and instructions before use" | [H3] (browser pane) | undated | 2026-10-13 | Quest 3
