@@ -8148,6 +8148,42 @@
    "text": "ok",
    "status": "no card",
    "source": "https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.203.pdf"
+  },
+  {
+   "id": "politowski-2021",
+   "authors": "Politowski, C., Petrillo, F., Ullmann, G. C., Guéhéneuc, Y.-G.",
+   "year": "2021",
+   "title": "Game industry problems: An extensive analysis of the gray literature",
+   "sections": [
+    "games-platforms"
+   ],
+   "tags": [
+    "game development",
+    "postmortems",
+    "process"
+   ],
+   "type": "article",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://doi.org/10.1016/j.infsof.2021.106538"
+  },
+  {
+   "id": "washburn-2016",
+   "authors": "Washburn, M. Jr., Sathiyanarayanan, P., Nagappan, M., Zimmermann, T., Bird, C.",
+   "year": "2016",
+   "title": "What went right and what went wrong: an analysis of 155 postmortems from game development",
+   "sections": [
+    "games-platforms"
+   ],
+   "tags": [
+    "game development",
+    "postmortems",
+    "process"
+   ],
+   "type": "conference paper",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://doi.org/10.1145/2889160.2889253"
   }
  ]
 }
