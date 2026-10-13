@@ -12,12 +12,15 @@
 //   the stream goes, so the largest is kept.
 // - A helper's (subagent's) lines are mostly written before the final count arrives (stop_reason stays
 //   null): its output is then the stream's first count, a lower bound ("open" below). The main
-//   conversation's are final. Claude Code's own session totals (its cost-state lines) equal these sums on
-//   input and cache and are higher on output by that share.
-// - Claude Code's side calls (the web page reader, compaction) and Claude chat on the web, desktop or
-//   phone write no transcript here, yet the plan counts them ("all activity in both tools counts against
-//   the same limits", support.claude.com/en/articles/11145838).
+//   conversation's are final. Where Claude Code's own session totals (its cost-state lines) cover the same
+//   calls, they equal these sums on input and cache, and on output too in sessions with no open response;
+//   with open ones theirs is higher, by about a thousand tokens per open response.
+// - Some of Claude Code's side calls (the small model that reads web pages) and Claude chat on the web,
+//   desktop or phone write no transcript here, yet the plan counts them ("all activity in both tools
+//   counts against the same limits", support.claude.com/en/articles/11145838).
 // - A session deleted in Claude Desktop takes its transcript with it.
+// - The plan's tier is read from Claude Code's account file (~/.claude.json) into each reading: a larger
+//   tier gives more tokens per percent, so readings compare only within one tier.
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -30,6 +33,8 @@ const PROJECTS = path.join(HOME, '.claude', 'projects');
 const HISTORY = path.join(process.env.APPDATA || path.join(HOME, 'AppData', 'Roaming'), 'Claude', 'plan-usage-history.json');
 // outside the repository, which is public: the readings are private records
 const SNAPS = path.join(HOME, 'Documents', 'objekt-files', 'notes', 'usage', 'snapshots.jsonl');
+// only the tier's name is read from the account file, nothing else in it
+const tier = () => { try { return JSON.parse(fs.readFileSync(path.join(HOME, '.claude.json'), 'utf8')).oauthAccount?.organizationRateLimitTier ?? null; } catch { return null; } };
 
 // The weekly limit "resets at a fixed time each week that is assigned to your account"
 // (support.claude.com/en/articles/11049741). This account's: Tuesday 06:00 UTC, the card's reset time;
@@ -168,28 +173,33 @@ function printPercent(rs) {
   const ss = samples();
   if (!ss.length) { console.log('\nNo record of the plan\'s percentages on this laptop.'); return; }
   console.log(`\n=== The plan's weekly percent (${ss.length} readings: Claude Desktop's own record, ${iso(ss[0].t)} on, and the snapshots)`);
+  // a lone reading is no rise: one taken the second the week turns can still show the old week's percent
   const peaks = new Map();
-  for (const s of ss) { const w = weekStart(s.t), p = peaks.get(w); if (!p || s.sd >= p.sd) peaks.set(w, s); }
+  for (const s of runs(ss).filter((r) => r.length > 1).flat()) { const w = weekStart(s.t), p = peaks.get(w); if (!p || s.sd > p.sd) peaks.set(w, s); }
   console.log('highest reading each week:', [...peaks].map(([w, s]) => `${iso(w).slice(5, 10)}: ${s.sd} % (${iso(s.t).slice(5)})`).join(' · '));
-  const first = rs[0]?.at ?? Infinity;
-  console.log('rises in the weekly percent and the tokens spent over them (transcripts from', iso(first), 'UTC):');
-  let before = 0;
+  console.log('rises in the weekly percent and the tokens these transcripts spent over them:');
+  let bare = 0;
   for (const run of runs(ss)) {
-    const a = run[0], b = run.at(-1), d = b.sd - a.sd;
-    if (run.length < 2 || d < 3) continue;   // a point or two is the rounding of a whole percent
-    if (b.t < first) { before++; continue; }
-    const s = sum(between(rs, a.t, b.t));
-    const cover = a.t < first ? '  (begins before the transcripts: part not here)' : '';
-    console.log(`  ${iso(a.t)} ${String(a.sd).padStart(3)} % -> ${iso(b.t)} ${String(b.sd).padStart(3)} %: +${d} points; ${fmt(tokens(s))} tokens (${fmt(s.input + s.write + s.output)} without cache reads), $ list ${s.usd.toFixed(2)}; per point: $ ${(s.usd / d).toFixed(2)}, ${fmt(tokens(s) / d)} tokens${cover}`);
+    // the run ends where it first reaches its top: at a full limit the plan refuses, nothing more is spent
+    const top = Math.max(...run.map((s) => s.sd)), end = run.find((s) => s.sd === top);
+    const spent = between(rs, run[0].t, end.t);
+    if (end.sd - run[0].sd < 3) continue;   // a point or two is the rounding of a whole percent
+    if (!spent.length) { bare++; continue; }
+    // points gained before the run's first transcript were spent where no transcript is: left out of the rate
+    let k = 0; while (run[k + 1].t <= spent[0].at) k++;
+    const a = run[k], d = end.sd - a.sd, s = sum(spent), lost = a.sd - run[0].sd;
+    console.log(`  ${iso(a.t)} ${String(a.sd).padStart(3)} % -> ${iso(end.t)} ${String(end.sd).padStart(3)} %: +${d} points; ${fmt(tokens(s))} tokens`
+      + ` (${fmt(s.input + s.write + s.output)} without cache reads), $ list ${s.usd.toFixed(2)}, ${s.open} open; per point: $ ${(s.usd / d).toFixed(2)},`
+      + ` ${fmt(tokens(s) / d)} tokens${lost ? ` (and +${lost} points before it with no transcript here)` : ''}`);
   }
-  if (before) console.log(`  ${before} earlier rises fall before the first transcript (those sessions' files are gone)`);
+  if (bare) console.log(`  ${bare} rises with no transcript at all here (sessions deleted in Claude Desktop, chat, or another device)`);
 }
 
 export function report(acc = readAll()) {
   const rs = acc.list;
   if (!rs.length) { console.log('No Claude Code transcripts under', PROJECTS); return; }
   console.log(`Claude Code on this laptop: ${acc.files} transcript files, ${rs.length} API responses, each counted once by its message id;`);
-  console.log(`${iso(rs[0].at)} to ${iso(rs.at(-1).at)} UTC. Weeks run from the plan's reset, Tuesday 06:00 UTC.`);
+  console.log(`${iso(rs[0].at)} to ${iso(rs.at(-1).at)} UTC. Weeks run from the plan's reset, Tuesday 06:00 UTC. Tier now: ${tier() || 'unknown'}.`);
   console.log('Kinds as written; "$ list" weighs them by the API list price (the plan\'s own weighting is not published).');
   console.log('"open": responses whose output count is only the stream\'s first (mostly helpers): output is a lower bound.');
   for (const [w, wRs] of bucket(rs, (r) => weekStart(r.at))) printWeek(acc, wRs, w);
@@ -200,7 +210,7 @@ export function report(acc = readAll()) {
 // one reading of the card, with the tokens spent so far in its week, so later weeks compare as tokens per percent
 export function snap(weeklyPct, fiveHourPct, at = Date.now(), acc = readAll(), file = SNAPS) {
   const w0 = weekStart(at), s = sum(between(acc.list, w0, at));
-  const entry = { at: new Date(at).toISOString(), weeklyPct, fiveHourPct, weekStart: new Date(w0).toISOString(),
+  const entry = { at: new Date(at).toISOString(), weeklyPct, fiveHourPct, tier: tier(), weekStart: new Date(w0).toISOString(),
     tokens: { responses: s.n, input: s.input, cacheWrite: s.write, cacheRead: s.read, output: s.output, open: s.open, usdList: Number(s.usd.toFixed(2)) } };
   fs.mkdirSync(path.dirname(file), { recursive: true });
   fs.appendFileSync(file, `${JSON.stringify(entry)}\n`);
