@@ -36,7 +36,8 @@ recenter's spot after every move) showed it sends him back only to his last move
 ### Matches its source and stays
 - The A-Frame build is the official npm aframe@1.8.0 file with one call put back (`runDeferredUploads()`, 24 bytes) and
   its source-map line dropped, nothing else (D). The call is still missing upstream: super-three 0.184.0 and 0.185.0,
-  A-Frame master (D).
+  A-Frame master (D). Reported to its developers by the owner on 13.10: https://github.com/supermedium/three.js/issues/27
+  (its "Live example" cut short by the form link, completed in a comment).
 - The session: local-floor, multiview, foveation 0, framebuffer scale 1.0; A-Frame asks for 90 Hz where the headset offers it and its
   highRefreshRate is on, else 72 (the bundle), and his Quest 3 ran at 90 (docs/headset-capabilities.md); the comments quoting Meta on
   multiview, foveation and the ray's fade quote it word for word (C).
