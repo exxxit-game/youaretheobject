@@ -198,3 +198,34 @@ ownership, cognitive, neuroscien- or self-knowledge were read [seen: API summari
 - Clinical or training tools [seen]: VREW Psychology - Phobias, PsyTech VR (for clinicians), Enhance VR (106482 dl,
   brain training "designed by neuroscientists"), Upgrade VR, cognitive-rehabilitation games; dyslexia-empathy
   pieces ("The Magic Potion. In the shoes of dyslexic students", 2024).
+
+### 5. itch.io
+
+Method (14.10.2026): itch.io's RSS feeds of tag pages (the store redirects tag-vr to tag-virtual-reality):
+`https://itch.io/games/tag-<tag>/tag-virtual-reality.xml` for psychology (1 item), experimental (36, first page),
+science (11), educational (36, first page), social-experiment (0), experiment (1), psychological (0), perception
+(0), illusion (1), research (4); flat tag-psychology (one page of 36 read; two other pages came back empty, likely
+a rate limit). itch.io's own search page fetched as the front page, so a web search `site:itch.io` was used for
+Milgram, Asch, Stroop, change blindness.
+
+- VR on itch.io: nothing that re-creates a psychology experiment. Nearest [seen: feed text]: "Hypostatize" (14 Mar
+  2022, "Short VR puzzle game that plays with illusion tricks"), research demos for theses ("The Life of a Viking",
+  "Project Wyvern"), "Phobia Treatment VR", "Imercyve: Living with Intellectual Disability" (empathy).
+- Flat Milgram re-creations with the player in the teacher's chair (all small, free downloads):
+  - "You Must Continue", wrida, Windows, Unity [read]. https://wrida.itch.io/youmustcontinue . "a short
+    psychological horror based on a famous experiment"; it opens "Thank you for taking part in this research study.
+    You have been randomly selected to play the role of the TEACHER." The page shows no debrief, no explanation of
+    the real study, no ratings; release date not shown. A Linux build by jku (https://jku.itch.io/you-must-continue)
+    [seen].
+  - "The Milgram Simulation", vibingonthemoon, downloadable 3D, 244 MB [read].
+    https://vibingonthemoon.itch.io/the-milgram-simulation . "Follow all instructions given, and you will be
+    compensated for your work." No debrief described; no date or ratings shown.
+  - "Milgram Revisited", dorktoast, fragment 002 of "The 52 Fragments", devlog 9 Nov 2023, Windows [read].
+    https://itch.io/devlog/633216/002-milgram-revisited.amp . The player presses a button that inflicts "pain" on a
+    scripted character; the page says the only reward is self-knowledge; no debrief described.
+  - Fiction using the name [seen]: "The Milgram Show" (Breakfuss, interactive fiction), "MILGRAM" (LastMinuteGames,
+    game-jam horror with an AI "IQ test"), "The Crowd" (licorneinabox, jam game "inspired by the Milgram Experiment").
+  These put the player into one classic experiment, as horror or art, without the reveal of the real result.
+- Flat, small [seen: tag-psychology feed]: "Prisoner's dilemma" (dogmastudios, 19 Nov 2016, "based on the famous
+  theory"), "A Mindless Day" (15 Apr 2023, "A Fun And Interactive Psychology Brain Game!"), "6 Weeks of Psychology
+  Class" (2018), "Psych Patch" (2025), "WhoQuiz" (2026, self-development quiz).
