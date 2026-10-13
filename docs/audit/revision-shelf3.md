@@ -37,7 +37,8 @@ recenter's spot after every move) showed it sends him back only to his last move
 - The A-Frame build is the official npm aframe@1.8.0 file with one call put back (`runDeferredUploads()`, 24 bytes) and
   its source-map line dropped, nothing else (D). The call is still missing upstream: super-three 0.184.0 and 0.185.0,
   A-Frame master (D).
-- The session: local-floor, multiview, foveation 0, framebuffer scale 1.0, 72 Hz; the comments quoting Meta on
+- The session: local-floor, multiview, foveation 0, framebuffer scale 1.0; A-Frame asks for 90 Hz where the headset offers it and its
+  highRefreshRate is on, else 72 (the bundle), and his Quest 3 ran at 90 (docs/headset-capabilities.md); the comments quoting Meta on
   multiview, foveation and the ray's fade quote it word for word (C).
 - The movement numbers: the 0.8 stick threshold, the 80 cm back step, 1.4 m/s, 180°/s, the vignette's easing (C).
 - The controller drawn as one mesh: its skinning is the mechanism of Meta's IWSDK, and it is disposed right (B).
@@ -117,8 +118,10 @@ What we do now (F2, read in the code at 18ecf91 and measured on our two sites 13
 - At the door only visibility and lights change; nothing loads there. The corridor takes at least about 53 s in VR
   before the door can be pressed (its voice lines' lengths, read with ffprobe).
 - During play the game waits on the network once, for the comparison with others, with a 4 s limit (results.js:25-27).
-- GitHub Pages sends gzip only and keeps files 10 minutes (max-age=600); the game has no service worker, so a second
-  visit downloads everything again.
+- GitHub Pages sends gzip only and keeps files 10 minutes (max-age=600). After that a second visit asks again for every
+  file and gets "not modified" (304) without the bytes (curl with If-None-Match, 13.10), but in the same seven waits one
+  after another; the game has no service worker. Corrected on the run-2 fact-check: the map's first draft and my words
+  to him said everything downloads again.
 
 The targets (F1, each with its page in the report):
 - Never below 60 fps in play, aiming at our 72 Hz, 13.88 ms a frame, no stale frames (Meta VRC.Quest.Performance.1,
