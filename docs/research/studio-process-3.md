@@ -7,17 +7,19 @@ Third file of docs/research/studio-process.md (the question, the marks and the i
 
 - **Meta's workflow for WebXR performance** [read 13.10.2026] — Meta, "WebXR performance optimization
   workflow", last updated 2026-07-21, https://developers.meta.com/horizon/documentation/web/webxr-perf-workflow/.
-  Steps in order: (1) set a frame budget from the target rate (table: "60 FPS 16.6 ms", "72 FPS 13.7 ms",
-  "90 FPS 11.1 ms"); (2) measure frame time on device with the OVR Metrics Tool's Performance HUD (or MQDH logs
+  Steps in order: (1) set a frame budget from the target rate (listed: "60 FPS = 16.6 milliseconds per frame",
+  "72 FPS = 13.7 milliseconds per frame", "90 FPS = 11.1 milliseconds per frame"; 1000/72 is 13.9, so the 72 line
+  is Meta's rounding slip, as docs/research/vr/01-meta.md already notes); (2) measure frame time on device with the OVR Metrics Tool's Performance HUD (or MQDH logs
   and metrics); (3) CPU- or GPU-bound: temporarily disable all rendering: "If the app's framerate is not affected
   or affected very little when not rendering anything, the app is likely CPU bound"; (4) if GPU-bound, set the
   render scale very low (e.g. 0.01): no change means vertex-bound, a gain means fragment-bound; (5) fix the
-  bottleneck: CPU: Chrome Tracing, "optimizing any app logic that takes longer than 2 ms", fewer draw calls
+  bottleneck: CPU: Chrome Tracing ("Any app logic that takes longer than two milliseconds should be considered
+  for optimization."), fewer draw calls
   (merge meshes, multiview, instancing); vertex: simpler meshes, LOD, batching; fragment: RenderDoc for Oculus
   (Performance Counter Viewer by GPU duration), cheaper materials, fewer lights, compressed textures (ETC/ASTC),
   FFR, framebuffer scale as a last resort; (6) "Iterate", since fixing one bottleneck can expose another. The
   page says nothing on repeated runs, warm-up or heat.
-- **Per-device budgets and the store floor** [already verified in docs/research/vr/01-meta.md, lines 140–173]:
+- **Per-device budgets and the store floor** [already verified in docs/research/vr/01-meta.md, sections 8, 10 and 13]:
   VRC.Quest.Performance.1 (required) "Apps must maintain a rendering rate of at least 60 fps"
   (https://developers.meta.com/horizon/resources/vrc-quest-performance-1/); Meta's device comparison (2026-05-11,
   https://developers.meta.com/horizon/resources/device-optimization-comparison/): Quest 3 under 200 draw calls
@@ -31,7 +33,9 @@ Third file of docs/research/studio-process.md (the question, the marks and the i
   ceiling."; "Test on the device, not the simulator."; "Thermal behavior is hardware-dependent — only on-device
   profiling reveals the real envelope." Stages: CPU/GPU levels hold a steady envelope; "When sensors approach a
   threshold, the system reduces clock speeds"; past a hard limit, a cool-down state with a notice to the user.
-  The page gives no test length, no run count, no ambient temperature.
+  The page gives no test length, no run count, no ambient temperature. The length is in Meta's frame-rate check
+  itself: VRC.Quest.Performance.1 (last updated 2025-10-22), test step 1: "Use the app for the length of the
+  content or 45 minutes, whichever is shorter." [read 13.10.2026]
 - **How an engine vendor automates repeated measures** [read] — Unity, Performance Testing package 3.2,
   https://docs.unity3d.com/Packages/com.unity.test-framework.performance@3.2/manual/index.html and
   .../measure-frames.html: the package "extends Unity Test Framework with performance testing capabilities" and
@@ -46,12 +50,13 @@ Third file of docs/research/studio-process.md (the question, the marks and the i
   way to get stable performance" (needs a rooted device); otherwise the library detects throttling and "pauses
   execution to let the device cool down and then retries the current benchmark."
 - For us: a studio's performance practice has three parts we can copy exactly: a budget per device written
-  before building (Quest 2: 100 draw calls, 750K triangles, 13.7 ms at 72 fps), measured on the device and never
+  before building (Quest 2: 100 draw calls, 750K triangles, 13.9 ms at 72 fps), measured on the device and never
   only on the laptop; a warm-up excluded from every measure and several samples with an outlier rule (Unity's
   defaults are a published starting point: 80 ms or 3 frames of warm-up, 2% margin at 99%); and a separate
-  long-session run, because Meta names start-only profiling the most common shipping mistake. Since clocks
-  cannot be locked on a retail Quest, the state of the device (cold or warm, CPU/GPU level shown by the OVR
-  Metrics Tool) must be recorded beside each number.
+  long-session run (45 minutes or the content's length, as Meta's own check), because Meta names start-only
+  profiling the most common shipping mistake. Since an app only hints its CPU and GPU levels and the system sets
+  them (Meta, "CPU and GPU levels", essentials/cpu-gpu-levels; Android's clock locking needs a rooted device), the
+  state of the device (cold or warm, the levels shown by the OVR Metrics Tool) must be recorded beside each number.
 
 - **How many runs, and what to report: the benchmarking method** [read] — A. Georges, D. Buytaert, L. Eeckhout,
   "Statistically rigorous Java performance evaluation", OOPSLA '07, pp. 57–76; copy
@@ -68,21 +73,28 @@ Third file of docs/research/studio-process.md (the question, the marks and the i
   off, reported as a mean with a confidence interval (or median and range), with the cold start measured as its
   own thing; a change counts as better only when the intervals do not overlap.
 
-- **A VR studio's own measuring method on Quest 2** [read] — Ben Hopkins (Principal Graphics Engineer,
-  Owlchemy Labs), "Building Big Games on Little Headsets", Game Developer, 11 Apr 2023,
-  https://www.gamedeveloper.com/production/building-big-games-on-little-headsets (written from their GDC 2023
-  talk, https://gdcvault.com/play/1029093/Future-Realities-Summit-Building-Big, members-only, not watched).
-  RenderDoc's timings are "relative to one another and not necessarily reflective of real-world cost", so they
-  built an A/B Test Framework: at runtime head tracking is disabled and foveation fixed, all test objects are
-  turned off, then each test is turned on in turn for several seconds while AppGPUTime is recorded every update;
-  min, max and average go to a JSON file on the device; tests must be identical except for the one thing compared
-  (per the article; run counts not given). Motto: "If it doesn't exist, build it!"; advice: "prove that any
-  optimization has a positive impact."
-- For us: this is the practice a studio uses to settle "is A cheaper than B" on the headset: the same fixed
-  view, the same seconds, one change at a time, numbers saved on the device, every claimed optimisation proven by
-  such a run. Our tools/quest-look.mjs perf and the new tools/measure.mjs (in the working tree, uncommitted on
-  13.10) are the start of it; whether they fix the view and compare one change at a time: unverified (not read in
-  full for this report).
+- **A VR studio's own measuring method on Quest 2** [read: the talk from its own captions, and the article] —
+  Ben Hopkins (principal graphics engineer, Owlchemy Labs), "Building Big Games on Little Headsets", GDC 2023,
+  Future Realities Summit, https://gdcvault.com/play/1029093/Future-Realities-Summit-Building-Big (tagged "free
+  content"; its captions saved by tools/gdc-captions.mjs: objekt-files/notes/gdc-talks/2023-owlchemy-building-big-
+  games.txt). The Vault's overview names only SplatTech, but the talk's first half, 01:00–03:00, is the A/B test
+  framework: RenderDoc's timings "are all relative", so they "use Meta's metric API to get the GPU time" and run
+  tests "deterministically on device. For this, we disable head tracking and Fixed Foveated Rendering, and we make
+  sure that every test is duplicated, other than the things that we're actually trying to get timing for"; "Every
+  frame, we record the GPU time, we calculate the average, store the results in a JSON file". Takeaways (30:00):
+  "use methodical deterministic testing to keep yourself honest"; "if the tools you need don't exist, write
+  them." The same framework in his Featured Blog on Game Developer, 11 Apr 2023,
+  https://www.gamedeveloper.com/production/building-big-games-on-little-headsets (it does not mention the talk):
+  "Disable all head tracking and fix foveated rendering" (the talk says FFR disabled, the article fixed: they
+  differ); each test "Several seconds later" switched off; "Calculate the min, max, and average AppGPUTime"; "Write
+  test results to a JSON file on the device"; "the goal is for all tests to be deterministic and identical except
+  for the element you want to profile and compare". Run counts: not given in either.
+- For us: this is the practice a studio uses to settle "is A cheaper than B" on the headset: the same view (head
+  tracking off), foveation held, one change at a time, numbers saved on the device, every claimed optimisation
+  proven by such a run. What we have is different: tools/measure.mjs (committed in c61ab96, mended in 180b5a5, 0b26ea7, e66dbcf) walks
+  the game as a player does and records the head's pose rather than fixing it, so it is a baseline, not an A/B
+  test; the A/B run is still missing. Whether a WebXR page can hold the view still while the headset tracks: not
+  checked.
 
 - **Budgets enforced by the build, for a web app** [read] — Milica Mihajlija, "Performance budgets 101",
   web.dev, last updated 2018-11-05, https://web.dev/articles/performance-budgets-101: a budget is "a set of limits
@@ -137,7 +149,8 @@ Third file of docs/research/studio-process.md (the question, the marks and the i
   with no users, "not even yourself"; "all uploaded apps, even alpha builds, must meet the release packaging
   requirements"; a build proven on a test channel is copied to Production and submitted for review.
 - For us: QA in a studio is three separate things, and we need all three. (1) Automated tests that run on every
-  change, written with the feature (Rare's rule), which the agent owns entirely. (2) Playtests, which test the
+  change, there from the start (as Sea of Thieves was built) and catching a bug as it is written (Mojang's aim),
+  which the agent owns entirely. (2) Playtests, which test the
   design and fun on people who are not us (the 5–10 testers), with behaviour watched rather than opinions asked.
   (3) Certification against the VRCs, done as our own checklist long before submission, then an ALPHA channel
   for the testers, then RC, then the store, with two weeks kept for review.
@@ -146,24 +159,44 @@ Third file of docs/research/studio-process.md (the question, the marks and the i
   only tool vendors' and QA-outsourcers' blogs (blocker / critical / major / minor / cosmetic, or P0–P3, and the
   split between severity, how bad, and priority, how urgent); a forum post says the A/B/C classes are shared by
   teams and console makers but have no official definition. None opened; all unverified. Filament's gold gate
-  above uses A–E classes without defining them.
+  above uses A–E classes without defining them. The one definition found in a book is of class A only, in
+  contract wording [book] — Dan Irish, *The Game Producer's Handbook* (Thomson Course Technology, 2005, first
+  edition), p. 265 (objekt-files/books/irish-2005-producers-handbook.txt, lines 10968–10974): "An A bug means (1) a
+  repeatable phenomenon of unintended events or any action occurring during the running of the product that
+  results in the product being rendered partially or completely nonfunctional; (2) a failure of the product to
+  conform to the specifications in the Design and Technical Design Documentation; (3) a detriment to the visual
+  representation, sound, or function of the version; or (4) the destruction, disruption, or corruption of a data
+  system, storage device, or mechanism." Classes B and C: not in the book.
+- **The producer's QA practice, 2005** [book] — Irish, pp. 263–268: "'Fix bugs as we go' should be the mantra"
+  (line 10893); "Track bugs early." and "Ensure that an autobuild system is in place." (10918, 10922); "Develop a
+  prioritized bug list" (11122); "Development testing should be considered separate from play testing." (11021);
+  playtests with "trusted individuals not involved in the game's development and representative of the principal
+  demographic" (11038–11040); platform makers "will often reject a product several times before it passes their
+  final QA process" (11112–11115). Holds in 2026 (the autobuild is our GitHub run, the platform check Meta's VRC
+  review); the console names and the disc are aged.
 - For us: until a primary source is found, a plain rule from what the sources share: a bug that stops play,
   loses data or breaks comfort blocks a release; the rest is ordered by how many players meet it.
 
 ### Part 5. Documentation
 
-- **The design doc is the document most often left stale** [read] — Politowski et al. 2021 (above, §4.5): the
+- **The design doc is rarely updated** [read] — Politowski et al. 2021 (above, §4.5): the
   GDD "is also rarely updated during the projects' life and the game design visions change regardless of the
   definitions contained within it." Washburn et al. 2016 (above): Splinter Cell's pre-production TDDs held "all
   the knowledge we gleaned from our prototype"; Operation Flashpoint, with no record, lost "hours ... trying to
   investigate how something had originally been meant to work"; and the opposite failure: Big Motha Truckers'
   documentation, written also as in-house marketing, dwelt on "the 'whos' and the 'wheres'" instead of "the
   'hows' and 'whys'".
-- **One-page designs instead of a design bible** [read; a news article about the talk, the talk itself
-  members-only] — Danielle Riendeau, "'The goal of design is to efficiently communicate ideas'", Game Developer,
+- **One-page designs instead of a design bible** [read; a commentary piece about the talk; the talk is free on
+  the Vault ("free content") but not watched] — Danielle Riendeau, "'The goal of design is to efficiently communicate ideas'", Game Developer,
   16 Jul 2026, https://www.gamedeveloper.com/design/-the-goal-of-design-is-to-efficiently-communicate-ideas- :
   Stone Librande's single-page format answers thick "design bibles" and the "disconnected nature of design
-  wikis". (Talk: "One-Page Designs", GDC 2010, https://gdcvault.com/play/1012356, not watched.)
+  wikis". (Talk: Stone Librande, "One-Page Designs", GDC 2010, https://gdcvault.com/play/1012356, not watched.)
+- **Keep the design and the technical notes to the build** [book] — Irish 2005: "A design document should be
+  updated to reflect the actual state of the game at the present time." (p. 157, line 7099–7100); "Don't mark a
+  task as complete on the schedule until the technical design documentation has been updated to reflect how the
+  game feature was implemented." (p. 159, lines 7196–7198); and, quoting Cerny, "the single worse thing that you
+  can do to kick off your Pre-production (phase) is to sit down and write a 100-page design document." (p. 156,
+  lines 7052–7053). Holds; the wiki he names as the tool is aged (ours is the repository).
 - **Decision records** [read] — Michael Nygard, "Documenting Architecture Decisions", 15 Nov 2011,
   https://www.cognitect.com/blog/2011/11/15/documenting-architecture-decisions: "One of the hardest things to
   track during the life of a project is the motivation behind certain decisions." Each record: Title, Context,
@@ -176,9 +209,11 @@ Third file of docs/research/studio-process.md (the question, the marks and the i
   in the same CL as the code change"; "Dead docs are bad."; "Default to delete or leave behind if migrating."
 - For us: studios keep three kinds of document, each short: a one-page design per room or system (what the
   player does, in a picture), a technical note per system written from the prototype, and a decision record
-  with its reason and a "superseded" mark instead of deletion (our docs/decisions.md and
-  docs/owner-decisions.md play this part). The rule that keeps them true is mechanical: the doc changes in the
-  same commit as the code it describes, and a dead doc is deleted, not kept.
+  with its reason and a "superseded" mark instead of deletion. Ours only half do it: docs/decisions.md keeps
+  "Three lines each: what, why, consequence" but has no status and no "superseded" mark; docs/owner-decisions.md
+  holds only the decision in force, one line each ("a change comes only from the owner"), and his earlier words
+  stay in its history files, not marked in the line itself. The rule that keeps docs true is mechanical: the doc changes in the same commit as the code
+  it describes (Google; Irish: a task is not complete until its technical note is), and a dead doc is deleted.
 
 ### Part 6. Tools and pipeline
 

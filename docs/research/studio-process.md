@@ -65,11 +65,13 @@ making a WebXR game (A-Frame 1.8.0, no build step) for Meta Quest.
    schedules (Washburn). Fixes: more pre-production, prototypes, playtests, feature lock dates, tools chosen early.
 8. Human + agent: the agent's failure is "looks done" without a check; the cure is checks it runs itself,
    evidence shown, a fresh-context reviewer, one feature at a time, a machine-held list of what passes (Anthropic,
-   four pages); people keep taste and design (Anthropic's survey); felt speed misleads (METR).
+   four pages); people keep taste and design (Anthropic's survey); felt speed misleads (METR); AI amplifies the
+   process it runs in, for better and worse, and seven capabilities decide which (DORA 2025).
 
-Not done or unverified: Chandler's handbook (only the alpha quote); the Sea of Thieves and Owlchemy talks
-themselves (videos not watched); DORA's seven AI capabilities and its 2024 AI numbers; an authoritative bug
-severity scale; Gregory's 4th edition has no team-structure section (the 3rd edition's Russian translation used).
+Not done or unverified (13.10.2026): Chandler's handbook (only the alpha quote); the Sea of Thieves talks and
+Librande's (free on the Vault, not watched); an authoritative bug severity scale (Irish defines class A only);
+Gregory's 4th edition has no team-structure section (the 3rd edition's Russian translation used). Read since the
+first draft: Owlchemy's talk from its captions, DORA 2025 itself, Irish's handbook (2005).
 
 ## Findings (written as they come)
 
@@ -92,6 +94,21 @@ severity scale; Gregory's 4th edition has no team-structure section (the 3rd edi
   right); the agent holds engineer, tools programmer, technical artist and lighting; the publisher's part
   (store, marketing) is Meta's store plus the owner. Naughty Dog shows a studio can run without a producer when
   seniors share the duty, but the duty (schedule, order, what is cut) still has to sit with someone: the board.
+- **The producer's job in one line, 2005** [book] — Dan Irish (formerly Executive Producer at Relic
+  Entertainment), *The Game Producer's Handbook* (Thomson Course Technology, 2005, first edition; objekt-files/
+  books/irish-2005-producers-handbook.txt): "the principal responsibility of the producer is to manage risk"
+  (p. 204, line 8914); a risk list is brainstormed, scored by probability and impact, sorted, and "Then assign
+  the risks to individual owners" (lines 8927–8934); a decision is made by "securing all relevant information,
+  asking for recommendations and advice from other stakeholders, setting a deadline before which the decision
+  must be made, and then making the decision and announcing it and the reasoning behind it to all who are
+  involved" (p. 3, lines 903–906); "If you change one factor, the others must change as well" (resources, quality, time; p. 80, lines 3930–3931); feature creep is held by a feature request list, each change accepted or rejected, the decision told to
+  everyone and "documented properly" (p. 238, lines 9959–9967); "Cut features early and often." (p. 221, line
+  9472). The foreword: "Once any team grows beyond 10 people, our industry accepts that managing this team
+  successfully requires the guidance of a producer" (p. iv, lines 79–80); nothing on teams under 10. Holds: the
+  risk, decision and change rules; aged: the publisher contracts, the crunch it takes for granted (p. 26).
+- For us: the producer's chair is the owner's (order, cuts, every decision with its reason told); what the agent
+  adds is the producer's paperwork kept true: the risk list with an owner per risk, every request on the board and
+  answered, every decision with its reason written where it can be found.
 
 - **A solo VR developer's lessons (Quest's top-rated app in Nov 2020)** [read] — Thomas Van Bouwel, guest piece
   on Cubism, Road to VR, 18 Nov 2020, https://roadtovr.com/cubism-solo-indie-developer-lessons-thomas-van-bouwel/:
@@ -153,6 +170,10 @@ severity scale; Gregory's 4th edition has no team-structure section (the 3rd edi
 - For us: small teams name obstacles about twice as often as large ones (50% against 26%), so a written risk list with a plan for each matters more for
   us than for a big studio; prototype each room's core before building it fully; keep a record of what was
   built and why (our docs/decisions.md and docs/state.md are that record, if kept true).
+- **A short postmortem at every milestone** [book] — Irish 2005, p. 219–220 (lines 9392–9409): "At the end of every
+  milestone, have the team create a short, one-paragraph description or summary of how the milestone went", under
+  "What went right? / What went wrong? / Suggested improvements". Holds; for us, each corridor item and each shelf
+  of the revision is such a milestone (our inference).
 
 ### Part 1. Stages and their gates
 
@@ -172,6 +193,18 @@ severity scale; Gregory's 4th edition has no team-structure section (the 3rd edi
   https://www.goodreads.com/work/quotes/22237702: "Alpha: At this milestone, key gameplay functionality is
   implemented, assets are 40–50% final (the rest are placeholders)"; "Alpha occurs 8 to 10 months before code
   release." Beta, code release and the rest of her milestone list: unverified (book not available here).
+- **Milestones checked against a written list** [book] — Irish 2005: "The developer must deliver the first playable
+  milestone as soon as possible. This cannot be emphasized enough. This first playable, or prototype, milestone
+  should request that the developer deliver final quality assets and technology." (p. 96, lines 4570–4572); each
+  milestone has its "Milestone Acceptance Test Criteria", "used as a checklist or test plan to confirm that the game
+  features, art assets, and specific details of the deliverables are delivered as agreed", and "you should never
+  submit a milestone that you think is going to fail" (pp. 220–221, lines 9438–9458); "Risk assessment comes before
+  the milestone is submitted, but after the milestone is 'complete.'" (p. 216, line 9271; the book's inner quote
+  marks shown as single). Alpha "is feature- and
+  asset-complete, but that there are still some bugs present" (p. 264, line 10941); in beta "All assets are frozen
+  and will not be changed." (p. 306, line 12194). Holds: the first playable at final quality and the acceptance
+  list; aged: the month-apart publisher milestones, payment on acceptance, the gold disc. "Vertical slice": not in
+  the book.
 - For us: the corridor is our "first playable": two levels of publishable quality in Cerny's sense means the
   corridor plus one room, finished to the bar, with the player's behaviour defined, the art direction set, the
   scope of the game written, and the basic technology (loading, saving results, frame budget) done. Production

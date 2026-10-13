@@ -63,7 +63,7 @@ Second file of docs/research/studio-process.md (the question, the marks and the 
   science rests on, anything the player sees) is worked on with the owner watching the result, in small
   increments. When a fix goes round twice, restart from a clean commit instead of patching.
 
-- **The one randomized trial of agent-era coding tools in real work** [read] — J. Becker, N. Rush, B. Barnes,
+- **A randomized trial of agent-era coding tools in real work** [read] — J. Becker, N. Rush, B. Barnes,
   D. Rein (METR), "Measuring the impact of early-2025 AI on experienced open-source developer productivity",
   arXiv:2507.09089v2 (2025), https://arxiv.org/abs/2507.09089 (saved: objekt-files/papers/becker-2025.txt).
   16 developers, 246 tasks in their own mature repositories; "developers forecast that allowing AI will reduce
@@ -129,16 +129,48 @@ Second file of docs/research/studio-process.md (the question, the marks and the 
   What the automation cannot see on our platform (the headset's own view, comfort, how text reads at 2 m) has to
   be listed as such, so it goes to the owner rather than being silently passed.
 
-- **AI as an amplifier of the team's own practice** [read; the report itself not opened] — DORA (Google Cloud),
-  "State of AI-assisted Software Development 2025", https://dora.dev/research/2025/dora-report/: "AI's primary
-  role is as an amplifier, magnifying an organization's existing strengths and weaknesses"; the largest returns
-  come from the system around the tools (per the page). Its companion "DORA AI Capabilities Model" (last updated
-  25 Nov 2025, https://dora.dev/ai/capabilities-model/report/) names "seven capabilities that amplify the
-  benefits of AI"; their names are only in the full report: unverified. The 2024 DORA figures on AI and delivery
-  stability (7.2%, 1.5%) were found only in secondary write-ups: unverified, not used.
+- **AI as an amplifier of the team's own practice** [read] — DORA (Google Cloud), "State of AI-assisted Software
+  Development 2025", v. 2025.2 (no date printed; the PDF's creation date 15 Oct 2025), CC BY-NC-SA 4.0; saved:
+  objekt-files/papers/dora-2025.txt (lines given). Method and limits: a survey of "4,867 respondents" run
+  "between June 13 and July 21, 2025" (lines 73, 4379–4382), 78 interviews (76 in the U.S.); "we interpret our
+  results as principled comparisons, acknowledging the limitations of observational data" (5443–5446); firms of
+  1–10 people are 5.3% of the sample, the self-employed 1.6% (4696–4698); nothing on solo developers or two-person
+  teams. Findings: "AI's primary role in software development is that of an amplifier. It magnifies the strengths
+  of high-performing organizations and the dysfunctions of struggling ones." (62–66); "AI adoption now improves
+  software delivery throughput... However, it still increases delivery instability." (77–81); 90% use AI at work
+  (1061–1064), but 61% "'never'" use it in an agentic mode (1350–1354); the 2024 figures, now read in this report:
+  "an estimated 1.5% reduction in software delivery throughput and an estimated 7.2% increase in software delivery
+  instability for every 25% increase in AI adoption" (1605–1609). On checking: "This 'trust but verify' approach
+  is a sign of mature adoption." (141–143); "whether code is created by hand or by AI, the same automated testing
+  and deployment processes are applied" (3224–3229); "As developers delegate more work to AI tools, tasks like
+  verification, orchestration, and workflow design become more central." (3764–3767).
+  The DORA AI Capabilities Model: seven capabilities, chosen from "15 candidate capabilities", that "amplified" the
+  difference AI made (2342–2351); the report gives bands (small, medium, large), no effect sizes:
+  1. Clear and communicated AI stance: how well people know "an organization's official position on how its
+     developers are expected and permitted to use AI-assisted development tools" (2353–2368).
+  2. Healthy data ecosystems: "the overall quality of an organization's internal data systems" (2482–2497).
+  3. AI-accessible internal data: how far "AI tools are connected to internal organizational data sources and
+     systems"; amplifies individual effectiveness and "code quality" (2522–2541).
+  4. Strong version control practices: "in the presence of frequent commits, AI's positive influence on individual
+     effectiveness is amplified"; "in the presence of more frequent rollbacks, AI's positive influence on team
+     performance is amplified" (2583–2592); "The ability to undo changes swiftly and without fuss is not just a
+     convenience; it's a critical enabler of speed and resilience" (2602–2606).
+  5. Working in small batches: "product performance is amplified", friction falls, but "benefits for individual
+     effectiveness are slightly reduced" (2650–2668); "it is harder to review larger batches of code" (2623–2624).
+  6. User-centric focus: "in the absence of a user-centric focus, AI adoption has a negative impact on team
+     performance" (2723–2747).
+  7. Quality internal platforms: "organizational performance is amplified", but AI's neutral effect on friction
+     "is made harmful" (2788–2808).
+  The same seven are public in dora.dev/ai's capabilities model (its script model.js, read 13.10.2026; the page
+  shows no date), named slightly differently ("Clear + communicated AI stance", "Quality internal platform").
 - For us: an agent writing all the code multiplies whatever process it runs inside: with checks that run by
   themselves, small steps and one source of truth it multiplies good work; without them it multiplies the
-  "looks done" mistakes. This is the reason the studio's process comes before more rooms.
+  "looks done" mistakes. This is the reason the studio's process comes before more rooms. Of the seven, five map
+  onto a two-member studio directly (our inference; DORA measured organisations, not teams of two): a written stance
+  on what the agent may do (CLAUDE.md, the owner's decisions), the project's own knowledge where the agent reads it
+  (the repository, the papers' folder), frequent commits and easy rollback (git, a push every turn), small batches
+  (one corridor item at a time), and the player in view (the owner's look in the headset, the testers). The data
+  ecosystem and the internal platform are an organisation's; ours are the repository and its checks.
 
 ### Who covers which studio role in a two-member studio (derived from the sources above; not itself a source)
 
@@ -146,13 +178,13 @@ Each line: the studio role (Gregory §1.1; Part 2 in studio-process.md), who hol
 - Game director / lead designer (vision, scope, what is cut): the owner. Cover: the agent brings the options with
   their sources and costs (Anthropic: people keep "taste" and "high-level thinking and design").
 - Producer (order of work, gates, risks): the owner decides the order; the agent keeps the board, the gate lists
-  and the risk list true, and says when a gate is not met (Washburn: small teams meet twice the obstacles).
+  and the risk list true, and says when a gate is not met (Washburn: small teams name obstacles about twice as often).
 - Engineers, tools programmer, technical artist, lighting, audio implementation: the agent. Cover: automatic
   checks it runs itself, and a second agent in a fresh context reviewing what the owner will rely on (Claude Code
   best practices: "the agent doing the work isn't the one grading it").
 - Performance engineer: the agent, on the headset, by the repeated-run method (studio-process-3.md, Part 3).
   Cover: numbers written by the tool, not by memory.
-- QA (automated): the agent, tests written with each feature (Rare). QA (the build as a player meets it in the
+- QA (automated): the agent, tests there from the start (as Rare built Sea of Thieves). QA (the build as a player meets it in the
   headset), playtest lead, the final word on comfort and feel: the owner, with the 5–10 testers; the agent prepares
   each session so the owner does one thing at a time.
 - Certification: the agent keeps the VRC checklist and checks it; the owner does every account action (developer
