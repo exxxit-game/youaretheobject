@@ -7,7 +7,7 @@ import crypto from 'node:crypto';
 import { analyse } from '../src/rooms/01-control/report.js';
 import { T } from '../src/rooms/01-control/texts.ru.js';
 import { APP_T } from '../src/app/texts.ru.js';
-import { definition, params, roomSchema, check, consentVersions } from './sql.mjs';
+import { definition, params, roomSchema, check, consentVersions, code } from './sql.mjs';
 
 const read = (p) => fs.readFileSync(new URL(p, import.meta.url), 'utf8');
 const ROOM_VERSION = Number(read('../src/rooms/01-control/room.js').match(/const ROOM_VERSION = (\d+);/)[1]);
@@ -62,9 +62,12 @@ for (const [, t] of migrations.matchAll(/create table app\.(\w+)/g)) {
   assert.match(migrations, new RegExp(`create policy \\w+ on app\\.${t} for select using \\(false\\);`), `app.${t} has no rejection policy: add one in the migration that creates it`);
 }
 // the question for the average has its own cap before it reads a row, so it cannot be asked without end
-const compare = definition('compare_room').text;
-assert.match(compare, /\bvolatile\b/, 'compare_room is not volatile: its cap cannot write app.recent');
-assert.ok(compare.indexOf("perform app.allow('compare'") > 0 && compare.indexOf("perform app.allow('compare'") < compare.indexOf('from app.runs'), 'compare_room reads app.runs before its cap, or has none');
+// (read in its SQL, not its comments or strings: CodeRabbit on pull request 10)
+const compare = definition('compare_room').text, compareSql = code(compare);
+assert.match(compareSql, /\bvolatile\b/i, 'compare_room is not volatile: its cap cannot write app.recent');
+const cap = /\bperform\s+app\.allow\(\s*'/i.exec(compareSql), runsRead = /\bfrom\s+app\.runs\b/i.exec(compareSql);
+assert.ok(cap && compare.startsWith("'compare'", cap.index + cap[0].length - 1), 'compare_room has no cap of its own (app.allow with kind compare)');
+assert.ok(runsRead && cap.index < runsRead.index, 'compare_room reads app.runs before its cap');
 assert.match(migrations, /cron\.schedule\('new-limit-key', '0 0 \* \* \*',\s*\$job\$update app\.limit_key set key = extensions\.gen_random_bytes\(32\)\$job\$\)/, 'the daily job that replaces the fingerprint key is gone');
 
 console.log('results tests: ok');

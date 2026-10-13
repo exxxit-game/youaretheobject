@@ -17,6 +17,15 @@ export function definition(name) {
   throw new Error(`no migration defines public.${name}`);
 }
 
+// The SQL a definition runs, the same length as its text: comments and the inside of quoted strings
+// (single quotes, and dollar quotes with a tag; the body's own $$ stays) turned to blanks, so a test
+// that finds a statement and its place cannot be satisfied by a comment or a string that only names it.
+export function code(text) {
+  return text
+    .replace(/\$(\w+)\$[\s\S]*?\$\1\$/g, (m) => ' '.repeat(m.length))
+    .replace(/'(?:[^']|'')*'|--[^\n]*|\/\*[\s\S]*?\*\//g, (m) => (m.startsWith("'") ? `'${' '.repeat(m.length - 2)}'` : ' '.repeat(m.length)));
+}
+
 // its parameters' names, in order
 export const params = (def) => [...def.text.match(/\(([^)]*)\)/)[1].matchAll(/\b(p_\w+)/g)].map((m) => m[1]);
 
