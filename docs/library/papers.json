@@ -8292,6 +8292,60 @@
    "text": "ok",
    "status": "no card",
    "source": "https://doi.org/10.1136/bmj.320.7237.768"
+  },
+  {
+   "id": "galletta-2004",
+   "authors": "Galletta, D. F., Henry, R., McCoy, S., Polak, P.",
+   "year": "2004",
+   "title": "Web site delays: how tolerant are users?",
+   "sections": [
+    "games-platforms"
+   ],
+   "tags": [
+    "waiting",
+    "loading time",
+    "abandonment"
+   ],
+   "type": "article",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://doi.org/10.17705/1jais.00044"
+  },
+  {
+   "id": "krishnan-2012",
+   "authors": "Krishnan, S. S., Sitaraman, R. K.",
+   "year": "2012",
+   "title": "Video stream quality impacts viewer behavior: inferring causality using quasi-experimental designs",
+   "sections": [
+    "games-platforms"
+   ],
+   "tags": [
+    "waiting",
+    "startup delay",
+    "abandonment"
+   ],
+   "type": "conference paper",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://doi.org/10.1145/2398776.2398799"
+  },
+  {
+   "id": "liu-2024",
+   "authors": "Liu, S., Eroglu, E., Kuwahara, A., Scovell, J., Gregg, M., Galbiati, F., Claypool, M.",
+   "year": "2024",
+   "title": "Waiting to play: measuring game load times and their effects on player quality of experience",
+   "sections": [
+    "games-platforms"
+   ],
+   "tags": [
+    "loading time",
+    "games",
+    "quality of experience"
+   ],
+   "type": "conference paper",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://doi.org/10.1145/3649921.3649937"
   }
  ]
 }

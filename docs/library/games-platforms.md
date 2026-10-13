@@ -1,7 +1,7 @@
 # games and platforms
 
 Generated from `docs/library/papers.json` by `node tools/build-library.mjs`. Do not edit by hand.
-32 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
+35 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
 in the library folder's papers\ as `<id>.txt` (a data set: `<dir>/<id>.txt` from the library folder); "text: ocr" marks a scan's
 text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 
@@ -16,10 +16,13 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **denisova-cairns-2015** Denisova & Cairns 2015. The placebo effect in digital games: phantom perception of adaptive artificial intelligence · placebo effect, adaptive AI, expectation, video games · [card](../cards/denisova-cairns-2015.md)
 - **fagerholt-2009** Fagerholt & Lorentzon 2009. Beyond the HUD: User Interfaces for Increased Player Immersion in FPS Games · HUD, immersion, FPS games, diegetic interface · no card
 - **friehs-2020** Friehs et al. 2020. Effective Gamification of the Stop-Signal Task: Two Controlled Laboratory Experiments · gamification, stop-signal task, inhibition · no card
+- **galletta-2004** Galletta et al. 2004. Web site delays: how tolerant are users? · waiting, loading time, abandonment · no card
 - **goto-2019** Goto 2019. Development of an online environment for game experiments (in Japanese) · online economic games, crowdsourcing, experiment platform · no card
 - **hawkins-2013** Hawkins et al. 2013. Gamelike features might not improve data · gamelike features, data quality, motivation · no card
 - **jorgensen-2004** Jorgensen 2004. Marrying HCI/Usability and Computer Games: A Preliminary Look · usability, HCI and games · no card
 - **kobes-2010** Kobes et al. 2010. Exit choice, (pre-)movement time and (pre-)evacuation behaviour in hotel fire evacuation - Behavioural analysis and validation of the use... · evacuation, hotel fire, exit choice, serious game validation · no card
+- **krishnan-2012** Krishnan et al. 2012. Video stream quality impacts viewer behavior: inferring causality using quasi-experimental designs · waiting, startup delay, abandonment · no card
+- **liu-2024** Liu et al. 2024. Waiting to play: measuring game load times and their effects on player quality of experience · loading time, games, quality of experience · no card
 - **lumsden-2016** Lumsden et al. 2016. The effects of gamelike features and test location on cognitive test performance and participant enjoyment · gamelike features, test location, enjoyment, cognitive tests · no card
 - **mateer-2017** Mateer 2017. Directing for Cinematic Virtual Reality: how the traditional film director's craft applies to immersive environments and notions of presence · cinematic VR, film directing, presence · no card
 - **neves-filho-2020** Neves Filho et al. 2020. Re-Search: recriando experimentos da psicologia · Re-Search, Portal 2, recreating experiments, teaching · no card
