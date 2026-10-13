@@ -216,7 +216,7 @@ PRs touching 3 files or fewer; 1–2 full 20x Max plans a day on reviews. Consid
 drafts, no re-review after a clean pass; Sonnet finds and Opus verifies; one session per PR with a one-page
 checklist instead of the rules doc; tests, generated and visual files left to CI.
 Mark (b): one team's report, numbers their own, no link. For us: their re-review share (37%) and fix checks (463 for
-130 PRs) are the loop our circle 5a records, broken here on 14.10 by his rule (two checks on new work, fixes checked
+130 PRs) are the loop our circle 5a records, broken here on 14.10 by his rule (two fact-checks once on a new page, fixes checked
 by the author against the findings); their tiering by what a change touches is worth setting beside ours (a person
 meets it: the practice review; a room: the paper review; a page for him: two fact-checks) on shelf 7, with our own
 count of what the reviewers cost (tools/usage.mjs does not yet split by helper).
