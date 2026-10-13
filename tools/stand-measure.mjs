@@ -5,6 +5,7 @@
 // (long-measure.md, "Known-change proofs"): the trial makes each such change once and writes whether each tool saw
 // it. Every time is the headset's own clock; every tool's raw output is kept beside the log (as tools/measure.mjs).
 // Usage: node tools/stand-measure.mjs trial      (about three minutes; the owner does not wear it)
+//        node tools/stand-measure.mjs long       (45 minutes in the corridor, the view turned a little each minute)
 //        node tools/stand-measure.mjs restore    (the headset given back as it was, after a run cut short)
 //        node tools/stand-measure.mjs judge <run folder>   (a run's verdicts again from its log)
 // The boundary is not paused (a safety setting of his headset): the stand stands inside his play area, lit, so it
@@ -56,6 +57,27 @@ export function verdicts(samples, marks) {
   return v;
 }
 
+// The long run read minute by minute from its samples: the rate in each minute (VRC.Quest.Performance.1: never below
+// 60 fps for long), late frames, whether the session stayed visible and the override on, the heat's course (the
+// first throttling threshold of his Quest 3 is the virtual surface sensor's 48 °C: long-measure.md), the GPU's clocks
+// and the page's memory (the browser's largest sandboxed process: the page's, by the trial's 64 MiB proof).
+export function longSummary(rows) {
+  const minutes = new Map();
+  for (const x of rows) { const m = Math.floor((x.s - x.dt / 2) / 60); const a = minutes.get(m) || { frames: 0, t: 0, late: 0 }; a.frames += x.page.frames; a.t += x.dt; a.late += x.page.late; minutes.set(m, a); }
+  const perMinute = [...minutes.entries()].map(([m, a]) => ({ m, fps: Number((a.frames / a.t).toFixed(1)), late: a.late }));
+  const heat = rows.filter((x) => x.thermal).map((x) => ({ s: x.s, status: x.thermal.status, surface: x.thermal.current['surf-virt-usr'] ?? null, soc: x.thermal.current['soc-usr'] ?? null, battery: x.thermal.battery, level: x.thermal.level }));
+  const pages = rows.filter((x) => x.pss).map((x) => ({ s: x.s, pageKb: Math.max(...Object.values(x.pss)) }));
+  return {
+    perMinute, minFps: perMinute.length ? Math.min(...perMinute.map((p) => p.fps)) : null,
+    minutesUnder60: perMinute.filter((p) => p.fps < 60).length, lateFrames: rows.reduce((a, x) => a + x.page.late, 0),
+    worstStepMs: rows.length ? Math.max(...rows.map((x) => x.page.maxStep)) : null,
+    stayedVisible: rows.every((x) => x.page.visibility === 'visible'), notVisibleAt: rows.filter((x) => x.page.visibility !== 'visible').map((x) => x.s),
+    stayedAwake: rows.every((x) => x.prox === 'CLOSE'), heat, maxStatus: heat.length ? Math.max(...heat.map((h) => h.status)) : null,
+    gpuClocks: [...new Set(rows.filter((x) => x.gpu).flatMap((x) => x.gpu['GPU Frequency'] || []))], memory: pages,
+    gpuResources: rows.length ? { first: [rows[0].page.geometries, rows[0].page.textures, rows[0].page.programs], last: [rows.at(-1).page.geometries, rows.at(-1).page.textures, rows.at(-1).page.programs] } : null
+  };
+}
+
 // the trial's timeline, seconds after VR: each known change at its mark
 export const MARKS = { vr: 0, to72: 30, to90: 60, boxOn: 75, boxOff: 85, stall: 95, memOn: 105, end: 125 };
 
@@ -63,7 +85,7 @@ if (import.meta.url === pathToFileURL(process.argv[1] || '').href) await main();
 
 async function main() {
   const mode = process.argv[2];
-  if (!['trial', 'restore', 'judge'].includes(mode)) { console.log('usage: node tools/stand-measure.mjs trial | restore | judge <run folder>'); process.exit(1); }
+  if (!['trial', 'long', 'restore', 'judge'].includes(mode)) { console.log('usage: node tools/stand-measure.mjs trial | long [--minutes=N] | restore | judge <run folder>'); process.exit(1); }
   // a run's verdicts again from its own log, with no headset (the samples are all in it)
   if (mode === 'judge') {
     const lines = fs.readFileSync(path.join(process.argv[3], 'log.jsonl'), 'utf8').trim().split(/\r?\n/).map((l) => JSON.parse(l));
@@ -152,6 +174,32 @@ async function main() {
         visibility: s && s.visibilityState, rate: s && s.frameRate, heap: performance.memory ? performance.memory.usedJSHeapSize : null };
       w.frames = 0; w.late = 0; w.maxStep = 0; w.noTime = 0; return out; })()`);
     await readPage();
+
+    if (mode === 'long') {
+      // Meta's test of VRC.Quest.Performance.1: "the length of the content or 45 minutes", in the corridor every room
+      // stands on; the view turned 45° a minute, so a standing player's look round repeats every 8 minutes. Frames every
+      // 10 s, heat every 30 s, the page's memory every minute, the GPU every 5 minutes; whether the session stays
+      // visible is read with every sample (Meta's safety page: standby after about 15 minutes with no interaction)
+      const minutes = Number((process.argv.find((a) => a.startsWith('--minutes=')) || '').split('=')[1]) || 45;
+      const t0 = now(), rows = [];
+      let lastAt = t0, lastFrame = null, heatAt = 0, memAt = 0, gpuAt = 0, turnAt = t0;
+      while (now() - t0 < minutes * 60000) {
+        await pause(10000);
+        const p = await readPage(), at = now();
+        const x = { s: Number(((at - t0) / 1000).toFixed(1)), dt: (at - lastAt) / 1000, page: p, prox: proximityOf(sh('dumpsys vrpowermanager')),
+          renderFrames: lastFrame === null ? undefined : p.renderFrame - lastFrame };
+        if (at - heatAt >= 30000) { heatAt = at; x.thermal = thermal(`s${Math.round(x.s)}`); }
+        if (at - memAt >= 60000) { memAt = at; x.pss = sandboxPss(`s${Math.round(x.s)}`); }
+        if (ids['GPU Frequency'] && at - gpuAt >= 300000) { gpuAt = at; x.gpu = gpuSamples(sh(`timeout 5 ovrgpuprofiler --realtime="${Object.values(ids).join(',')}"`)); }
+        if (at - turnAt >= 60000) { turnAt = at; x.yaw = await run('(() => { const r = document.querySelector("#rig").object3D; r.rotation.y += Math.PI / 4; return +r.rotation.y.toFixed(2); })()'); }
+        lastAt = at; lastFrame = p.renderFrame; rows.push(x); log('sample', x);
+      }
+      const end = log('end', { thermal: thermal('end') });
+      const summary = { dir: DIR, minutes: Number(((end.at - t0) / 60000).toFixed(2)), ...longSummary(rows) };
+      fs.writeFileSync(path.join(DIR, 'summary.json'), JSON.stringify(summary, null, 1));
+      console.log(JSON.stringify(summary, null, 1));
+      return;
+    }
 
     // the timeline, seconds after VR: each known change at its mark, a sample every 10 s
     const marks = MARKS;

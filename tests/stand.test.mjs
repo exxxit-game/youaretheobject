@@ -3,7 +3,7 @@
 // tools missed, would let the 45-minute run be trusted before its tools were (docs/research/long-measure.md).
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { sandboxedPids, pssOf, proximityOf, verdicts, MARKS } from '../tools/stand-measure.mjs';
+import { sandboxedPids, pssOf, proximityOf, verdicts, MARKS, longSummary } from '../tools/stand-measure.mjs';
 
 const read = (f) => fs.readFileSync(new URL(`fixtures/quest3/${f}`, import.meta.url), 'utf8');
 assert.deepEqual(sandboxedPids(read('meminfo-whole.txt')), [11822, 11665], 'the browser\'s sandboxed processes, once each');
@@ -37,5 +37,21 @@ assert.equal(verdicts(asleep, marks).stayedAwake.pass, false, 'the override lost
 assert.equal(verdicts(asleep, marks).stayedVisible.pass, false, 'a hidden session still passed');
 const split = make().map((x) => ({ ...x, renderFrames: x.renderFrames + 50 }));
 assert.equal(verdicts(split, marks).twoCounters.pass, false, 'two frame counters 50 apart still passed');
+
+// the long run's minutes: one minute at 54 fps is a minute under Meta's 60; a hidden sample and a lost override are
+// named; the heat's course and the page's memory are read from the samples that carry them
+const row = (s, frames, extra = {}) => ({ s, dt: 10, prox: 'CLOSE', page: { frames, late: 0, maxStep: 11.1, visibility: 'visible', geometries: 257, textures: 40, programs: 53 }, ...extra });
+const heat = { status: 0, current: { 'surf-virt-usr': 34, 'soc-usr': 50 }, battery: 33, level: 90 };
+const rows = [];
+for (let s = 10; s <= 180; s += 10) rows.push(row(s, s > 60 && s <= 120 ? 540 : 900, s % 30 === 0 ? { thermal: heat } : s % 60 === 0 ? {} : {}));
+rows[3] = { ...rows[3], pss: { 11822: 285000, 11665: 200000 } };
+const long = longSummary(rows);
+assert.deepEqual(long.perMinute.map((p) => p.fps), [90, 54, 90], 'the rate of each minute from its samples');
+assert.equal(long.minutesUnder60, 1);
+assert.equal(long.stayedVisible, true);
+assert.deepEqual(long.memory, [{ s: 40, pageKb: 285000 }], 'the page\'s memory is the largest sandboxed process');
+assert.equal(long.heat.length, 6);
+const lost = longSummary(rows.map((x, i) => (i === 7 ? { ...x, prox: 'DISABLED', page: { ...x.page, visibility: 'hidden' } } : x)));
+assert.equal(lost.stayedVisible, false); assert.deepEqual(lost.notVisibleAt, [80]); assert.equal(lost.stayedAwake, false);
 
 console.log('stand tests: ok (the headset\'s processes, memory and proximity read as printed; each known change must be seen)');
