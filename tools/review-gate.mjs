@@ -57,6 +57,15 @@ export function roomScan(root) {
   return Object.fromEntries(rooms.map((r) => [r, prints(root, fs.readdirSync(path.join(dir, r), { recursive: true })
     .map((f) => `${ROOMS}/${r}/${String(f).split(path.sep).join('/')}`).filter((rel) => fs.statSync(path.join(root, rel)).isFile()))]));
 }
+// a report reached its last block when the last line that begins with the marker is followed only
+// by that block's own list lines ("- <its link> — what to find there", .claude/agents/
+// practice-reviewer.md) or blank lines: a marker further up followed by more prose is a run cut
+// short. A plain prefix test, so no marker text is read as a regular expression.
+export const endsWithBlock = (text, end) => {
+  const lines = String(text).split('\n').map((l) => l.trim());
+  const at = lines.map((l) => l.startsWith(end)).lastIndexOf(true);
+  return at >= 0 && lines.slice(at + 1).every((l) => !l || l.startsWith('- '));
+};
 // the rooms a report's last line lists ("ROOMS CHECKED: 01-control"), and only its last line: a
 // run that named a room further up and was then cut short has not finished its check
 export const checkedRooms = (report) => {

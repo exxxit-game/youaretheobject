@@ -26,7 +26,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { withoutGitVars } from './secrets.mjs';
 import { typedText } from './owner-links.mjs';
-import { scan, named, entries, write, lastReport, REVIEWER, REPORT_END, PAPER_REVIEWER, PAPER_END, roomScan, checkedRooms } from './review-gate.mjs';
+import { scan, named, entries, write, lastReport, REVIEWER, REPORT_END, PAPER_REVIEWER, PAPER_END, roomScan, checkedRooms, endsWithBlock } from './review-gate.mjs';
 import { BOARD, top, split } from './board.mjs';
 import { leftoverLine } from './leftovers.mjs';
 
@@ -475,10 +475,9 @@ if (mode === 'subagent-start' || mode === 'subagent-stop') {
   // a subagent here hands its report back through a tool call, not as its last text, so the
   // report is read from the transcript's last assistant entry: its text or its tool call's input.
   // Only the reviewer's own words count, never the caller's prompt, which names the block too.
-  const ends = (text, end) => new RegExp(`(^|\\n)${end}`).test(text);
   const reportOf = (end) => {
     const said = String(event.last_assistant_message || '');
-    try { if (!ends(said, end) && event.agent_transcript_path) return lastReport(event.agent_transcript_path); } catch { /* no transcript to read */ }
+    try { if (!endsWithBlock(said, end) && event.agent_transcript_path) return lastReport(event.agent_transcript_path); } catch { /* no transcript to read */ }
     return said;
   };
   // the paper check, room by room: a room counts when it did not change while it was read and the
@@ -491,7 +490,7 @@ if (mode === 'subagent-start' || mode === 'subagent-stop') {
     }
     const start = entries().filter((e) => e.kind === 'paper-start' && e.agent === event.agent_id).pop();
     const report = reportOf(PAPER_END);
-    const listed = ends(report, PAPER_END) ? checkedRooms(report).filter((r) => rooms[r]) : [];
+    const listed = endsWithBlock(report, PAPER_END) ? checkedRooms(report).filter((r) => rooms[r]) : [];
     if (!listed.length) write({ kind: 'void', agent: event.agent_id, why: 'its report did not reach its last line listing the rooms' });
     for (const room of listed) {
       const why = !start ? 'no start seen for this run' : start.rooms?.[room] !== rooms[room].print ? 'the room changed while it read it' : '';
@@ -508,7 +507,7 @@ if (mode === 'subagent-start' || mode === 'subagent-stop') {
   const report = reportOf(REPORT_END);
   const why = !start ? 'no start seen for this run'
     : start.print !== print ? 'the files changed while it read them'
-      : !ends(report, REPORT_END) ? 'its report did not reach its last block' : '';
+      : !endsWithBlock(report, REPORT_END) ? 'its report did not reach its last block' : '';
   write(why ? { kind: 'void', agent: event.agent_id, why } : { kind: 'review', agent: event.agent_id, print, files, named: named(report), root: HERE, transcript: event.agent_transcript_path || '' });
   process.exit(0);
 }

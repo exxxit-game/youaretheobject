@@ -10,7 +10,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { fingerprint, reviewOf, lookOf, REPORT_END, PAPER_END, paperOf, checkedRooms, write } from '../tools/review-gate.mjs';
+import { fingerprint, reviewOf, lookOf, REPORT_END, PAPER_END, paperOf, checkedRooms, endsWithBlock, write } from '../tools/review-gate.mjs';
 import { withoutGitVars } from '../tools/secrets.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -47,6 +47,11 @@ review('other-1', { type: 'paper-reviewer' });
 assert.equal(reviewOf(place, record), null, 'another agent\'s run is no practice review');
 review('cut-1', { report: 'Findings, then the run was cut short' });
 assert.equal(reviewOf(place, record), null, 'a report that never reached its last block does not count');
+review('cut-3', { report: `Findings.\n${REPORT_END} none\n\nMore findings, then the run was cut short` });
+assert.equal(reviewOf(place, record), null, 'the block further up, then more prose: the run was cut short');
+assert.ok(endsWithBlock(`x\n${REPORT_END}\n- https://a.b — the page\n`, REPORT_END), 'the block with its link lines is the last block');
+assert.ok(!endsWithBlock(`x\n${REPORT_END} none\nthen more`, REPORT_END), 'more prose after the block: not the last block');
+assert.ok(endsWithBlock('a (b\nROOMS CHECKED: 01-x', PAPER_END) && !endsWithBlock('x', '('), 'the marker is matched as text, never as a pattern');
 review('moved-1', { between: () => put('src/a.js', 'export const a = 3;\n') });
 assert.equal(reviewOf(place, record), null, 'files changed while it read them: no review');
 // the report comes back through a tool call, so it is read from the transcript's last assistant
