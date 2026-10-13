@@ -67,7 +67,7 @@ One line each in `docs/owner-decisions.md` (loaded at every start); all his word
 - The owner's automatic stop: VR in the headset and the test copy wait for a practice review of the files a
   person meets (tools/review-gate.mjs); the first real review was recorded by the hook on 9.10. The rebuilt
   controllers-and-hands probe (tools/xr-probe-input.html) follows docs/audit/probe-review.md.
-- Prompt and agent hooks need Claude Code 2.1.294 or later, onFailure: block on the guards 2.1.295; the terminal and the app may run different versions (14.10: the app, Claude Desktop 2.37337.1 from the Microsoft Store, installed itself 13.10 21:16 and runs 2.1.295; the terminal's `claude` is 2.1.268, below the hooks' need).
+- Prompt and agent hooks need Claude Code 2.1.294 or later, onFailure: block on the guards 2.1.295; the terminal and the app may run different versions (14.10: the app, Claude Desktop 2.37337.1 from the Microsoft Store, installed 13.10 21:16, runs 2.1.295; the terminal's `claude` is 2.1.268, below the hooks' need).
 - Meta's tools: the Meta VR CLI is installed (npm install -g metavr, Meta's own package) and runs from the shell
   (metavr device, perf, vrc-local); the meta-vr plugin's MCP server gave 0 tools (started through npx it answered
   Claude Code's protocol probe late and then refused the tool list), so the CLI is the way in. Supabase: the plugin's server is not signed
