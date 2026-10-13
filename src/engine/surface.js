@@ -169,7 +169,10 @@ AFRAME.registerComponent('surface', {
   },
   init() { this.apply = this.apply.bind(this); this.el.addEventListener('object3dset', this.apply); },
   update() { this.apply(); },
-  remove() { this.el.removeEventListener('object3dset', this.apply); },
+  remove() {
+    this.el.removeEventListener('object3dset', this.apply);
+    if (this.own) { this.own.dispose(); this.own = null; }
+  },
   apply() {
     const mesh = this.el.getObject3D('mesh');
     if (!mesh) return;
@@ -178,7 +181,14 @@ AFRAME.registerComponent('surface', {
     const sceneEl = this.el.sceneEl;
     // world positions are final only once the scene has loaded (merge-static runs after this)
     if (grid && !sceneEl.hasLoaded) { sceneEl.addEventListener('loaded', () => this.apply(), { once: true }); return; }
-    if (grid) worldUV(mesh, grid, this.data.space, this.el.closest('[data-frame]')?.object3D);
+    if (grid) {
+      // each laying makes this surface its own copy of the geometry; the copy made last time is freed
+      // once replaced, as A-Frame's shared one never is (three.js r184 manual, how-to-dispose-of-objects)
+      const last = this.own;
+      worldUV(mesh, grid, this.data.space, this.el.closest('[data-frame]')?.object3D);
+      if (last && last !== mesh.geometry) last.dispose();
+      this.own = mesh.geometry;
+    }
     // A gridded kind takes its place from world UVs, so every surface of the kind shares one
     // texture, and merge-static can merge the pieces of a wall into one mesh (one draw call;
     // Meta: batch objects that share a material). A kind without a grid is repeated: one copy

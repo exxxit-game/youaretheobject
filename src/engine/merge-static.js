@@ -43,6 +43,7 @@ function prepared(geometry, matrix, color) {
 
 AFRAME.registerComponent('merge-static', {
   init() {
+    this.merged = [];
     const later = () => setTimeout(() => this.merge(), 0);
     // a scene's parts merge once it has loaded; an entity added to a running scene (the
     // clipboard), once its own parts have
@@ -72,8 +73,21 @@ AFRAME.registerComponent('merge-static', {
       const shared = material.clone();
       shared.color.setRGB(1, 1, 1);
       shared.vertexColors = true;
-      root.add(new THREE.Mesh(merged, shared));
+      const mesh = new THREE.Mesh(merged, shared);
+      root.add(mesh);
+      this.merged.push({ mesh, parts });
       parts.forEach((o) => { o.visible = false; });
     }
+  },
+  // a merged group taken away (a room, the clipboard) frees what the merge made and shows its parts
+  // again (three.js r184 manual, how-to-dispose-of-objects)
+  remove() {
+    for (const { mesh, parts } of this.merged) {
+      mesh.removeFromParent();
+      mesh.geometry.dispose();
+      mesh.material.dispose();
+      parts.forEach((o) => { o.visible = true; });
+    }
+    this.merged = [];
   }
 });

@@ -28,5 +28,14 @@ AFRAME.registerComponent('blob-shadow', {
     );
     mesh.rotation.x = -Math.PI / 2;
     this.el.setObject3D('mesh', mesh);
+  },
+  // its plane and material are its own, the gradient is every shadow's (three.js r184 manual,
+  // how-to-dispose-of-objects: "geometries and materials can be shared")
+  remove() {
+    const mesh = this.el.getObject3D('mesh');
+    if (!mesh) return;
+    this.el.removeObject3D('mesh');
+    mesh.geometry.dispose();
+    mesh.material.dispose();
   }
 });
