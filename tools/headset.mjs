@@ -102,10 +102,11 @@ export async function openGame(url) {
   let list;
   try { list = await fetch(`${DEVTOOLS}/list`); } catch (e) {
     let running = '';
-    // pidof exits 1 when none runs; adb also fails when the headset itself is gone, and that is no
-    // "not running" to open the game on
+    // pidof answers "none runs" with exit 1 and no output (seen on the Quest 3 for a package that does not run);
+    // any other failure (the headset gone, adb's own error) is no "not running" to open the game on
     try { running = adb('shell', 'pidof', 'com.oculus.browser'); } catch (err) {
-      if (!connected()) throw new Error('the headset is not on the cable: its browser cannot be asked');
+      const none = err.status === 1 && !String(err.stdout || '').trim() && !String(err.stderr || '').trim();
+      if (!none) throw new Error(`the headset's browser could not be asked whether it runs: ${String(err.stderr || err.message).trim().slice(0, 120)}`);
     }
     if (!running) { openUrl(url); return 0; }
     list = await listAfterFront();
