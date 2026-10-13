@@ -8438,6 +8438,42 @@
    "priority": "low",
    "reason": "Taylor & Francis paywall; only the abstract read, from the publisher's citation file the owner saved 13.10 (tolerable waiting about 2 s; feedback prolongs it)",
    "source": "https://doi.org/10.1080/01449290410001669914"
+  },
+  {
+   "id": "edpb-2024-art53",
+   "authors": "European Data Protection Board",
+   "year": "2024",
+   "title": "Guidelines 2/2023 on technical scope of Art. 5(3) of ePrivacy Directive, version 2.0",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "ePrivacy",
+    "storage on the device",
+    "consent"
+   ],
+   "type": "guideline",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://www.edpb.europa.eu/our-work-tools/our-documents/guidelines/guidelines-22023-technical-scope-art-53-eprivacy-directive_en"
+  },
+  {
+   "id": "wp29-2012-cookie-exemption",
+   "authors": "Article 29 Data Protection Working Party",
+   "year": "2012",
+   "title": "Opinion 04/2012 on cookie consent exemption (WP 194)",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "ePrivacy",
+    "strictly necessary",
+    "consent"
+   ],
+   "type": "guideline",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://ec.europa.eu/justice/article-29/documentation/opinion-recommendation/files/2012/wp194_en.pdf"
   }
  ]
 }

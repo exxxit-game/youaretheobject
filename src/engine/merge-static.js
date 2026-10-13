@@ -44,7 +44,9 @@ function prepared(geometry, matrix, color) {
 AFRAME.registerComponent('merge-static', {
   init() {
     this.merged = [];
-    const later = () => setTimeout(() => this.merge(), 0);
+    // removed before its scene or parts have loaded, it merges nothing: what merge() made after remove()
+    // would never be freed
+    const later = () => setTimeout(() => { if (!this.removed) this.merge(); }, 0);
     // a scene's parts merge once it has loaded; an entity added to a running scene (the
     // clipboard), once its own parts have
     const ready = this.el.sceneEl.hasLoaded ? this.el : this.el.sceneEl;
@@ -82,6 +84,7 @@ AFRAME.registerComponent('merge-static', {
   // a merged group taken away (a room, the clipboard) frees what the merge made and shows its parts
   // again (three.js r184 manual, how-to-dispose-of-objects)
   remove() {
+    this.removed = true;
     for (const { mesh, parts } of this.merged) {
       mesh.removeFromParent();
       mesh.geometry.dispose();

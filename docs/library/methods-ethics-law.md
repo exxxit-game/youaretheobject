@@ -1,7 +1,7 @@
 # methods, ethics, law
 
 Generated from `docs/library/papers.json` by `node tools/build-library.mjs`. Do not edit by hand.
-100 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
+102 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
 in the library folder's papers\ as `<id>.txt` (a data set: `<dir>/<id>.txt` from the library folder); "text: ocr" marks a scan's
 text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 
@@ -33,6 +33,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **dora-2025** Google Cloud DORA 2025. State of AI-assisted Software Development 2025 · AI coding agents, software delivery, DORA AI Capabilities Model · no card
 - **edpb-2019** European Data Protection Board 2019. Guidelines 3/2018 on the territorial scope of the GDPR (Article 3), version 2.1 · GDPR, territorial scope, EU representative · no card
 - **edpb-2023-breach** European Data Protection Board 2023. Guidelines 9/2022 on personal data breach notification under GDPR, version 2.0 · GDPR, data breach, notification · no card
+- **edpb-2024-art53** European Data Protection Board 2024. Guidelines 2/2023 on technical scope of Art. 5(3) of ePrivacy Directive, version 2.0 · ePrivacy, storage on the device, consent · no card
 - **edpb-2025-pseudonymisation** European Data Protection Board 2025. Guidelines 01/2025 on Pseudonymisation · pseudonymisation, GDPR, hashing · no card
 - **eurec-2021** European Network of Research Ethics Committees (EUREC) 2021. Position of EUREC on Ethics Reviews of Research Projects involving Persons outside Biomedical Research · ethics review, non-medical research, Europe · no card
 - **exppsy-2022-2** Experimental Psychology (Russia), ed. Barabanschikov 2022. Experimental Psychology (Russia), vol. 15, no. 2 (whole issue, in Russian with English abstracts) · VR studies in Russia, journal issue, side effects · no card
@@ -102,6 +103,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **westwood-2025** Westwood 2025. The potential existential threat of large language models to online survey research · LLM agents, online surveys, bots, attention checks · no card
 - **wiesing-2020** Wiesing et al. 2020. Accuracy and precision of stimulus timing and reaction times with Unreal Engine and SteamVR · stimulus timing, reaction times, Unreal Engine, SteamVR · no card
 - **wilson-2015** Wilson & Soranzo 2015. The Use of Virtual Reality in Psychology: A Case Study in Visual Perception · VR in psychology, visual perception · no card
+- **wp29-2012-cookie-exemption** Article 29 Data Protection Working Party 2012. Opinion 04/2012 on cookie consent exemption (WP 194) · ePrivacy, strictly necessary, consent · no card
 - **wp29-2018-transparency** Article 29 Data Protection Working Party 2018. Guidelines on transparency under Regulation 2016/679 (WP260 rev.01) · GDPR, transparency, privacy notice, plain language · no card
 
 ## Not in the library
