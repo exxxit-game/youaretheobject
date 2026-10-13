@@ -186,9 +186,8 @@ Each line: the studio role (Gregory §1.1; Part 2 in studio-process.md), who hol
 - Performance engineer: the agent, on the headset, by the repeated-run method (studio-process-3.md, Part 3).
   Cover: numbers written by the tool, not by memory.
 - QA (automated): the agent, tests there from the start (as Rare built Sea of Thieves). QA (the build as a player
-  meets it in the
-  headset), playtest lead, the final word on comfort and feel: the owner, with the 5–10 testers; the agent prepares
-  each session so the owner does one thing at a time.
+  meets it in the headset), playtest lead, the final word on comfort and feel: the owner, with the 5–10 testers;
+  the agent prepares each session so the owner does one thing at a time.
 - Certification: the agent keeps the VRC checklist and checks it; the owner does every account action (developer
   dashboard, agreements, pricing, submission, payouts), since these are his accounts and legal acts.
 - Publisher, marketing, community: the owner (store page text, Telegram community); the agent drafts.
