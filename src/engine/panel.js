@@ -137,5 +137,17 @@ AFRAME.registerComponent('panel', {
     ctx.letterSpacing = '0px';
     this.tex.needsUpdate = true;
     return (y / H) * this.data.h;
+  },
+
+  // Answer buttons, scale bars and the done button are made and thrown away during a room, and a
+  // removed mesh keeps its GPU memory: "you have to explicitly dispose the geometry and material
+  // via dispose()" (three.js r184 manual, how-to-dispose-of-objects); A-Frame's removeObject3D only
+  // takes the mesh out of the scene (vendor/aframe-1.8.0.min.js). Nothing here is shared.
+  remove() {
+    const mesh = this.el.getObject3D('mesh');
+    if (!mesh) return;
+    this.el.removeObject3D('mesh');
+    mesh.traverse((o) => { if (o.isMesh) { o.geometry.dispose(); o.material.dispose(); } });
+    this.tex.dispose();
   }
 });

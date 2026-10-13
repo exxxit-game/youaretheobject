@@ -132,8 +132,16 @@ AFRAME.registerComponent('ink', {
     return this.strokes.some((s) => s.reduce((len, p, i) => (i ? len + Math.hypot((p[0] - s[i - 1][0]) * w, (p[1] - s[i - 1][1]) * h) : 0), 0) >= 0.01);
   },
 
+  // a form's fields go when its page does; their GPU memory goes with them only when disposed
+  // (three.js r184 manual, how-to-dispose-of-objects; as panel.js)
   remove() {
     this.up();
     this.el.sceneEl.removeEventListener('exit-vr', this.up);
+    const mesh = this.el.getObject3D('mesh');
+    if (!mesh) return;
+    this.el.removeObject3D('mesh');
+    mesh.geometry.dispose();
+    mesh.material.dispose();
+    this.tex.dispose();
   }
 });
