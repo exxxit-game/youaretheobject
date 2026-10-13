@@ -23,10 +23,10 @@ checks), as studios assign roles; the content is ours.
 | Supabase, ElevenLabs, Meta's tools | the database; voices and sounds; the headset's measures | nothing | docs/state.md, tools/ |
 
 ## Where we are, and the route (docs/board.md, "Путь")
-0. The studio set up (now). Ready when four things are done (proposed 13.10, waiting for his word): his choice for
-   main (https://claude.ai/artifact/5ZomTsq4Ezbz6omV1D478k); the extra restrictions taken off; the long measure
-   without him and the short one with him; the studio's seven gaps in his order (done 13.10: the readiness list and
-   the long measure now, the A/B measure and the list of what passes next, the rest along the way).
+0. The studio set up (now), shelf by shelf in the revision's order (his «Да» 13.10; docs/board.md): 1 the rules and
+   2 the server are closed; 3 the engine is next; what began off its shelf waits on its shelf (the long measure on 4,
+   main's guard on 6, the restrictions on 7, the corridor's readiness list on 9). Main: no second account, the simple
+   guard (his no of 13.10).
 1. The corridor ready: his yes to each item of its list (2 of 7 done: the paintings, the extinguisher), and the
    corridor's readiness list checked.
 2. The first room: 2–3 trial rooms of 5 minutes, he picks one, plays it through, says yes; it starts from its card.

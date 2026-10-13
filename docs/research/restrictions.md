@@ -95,7 +95,8 @@ The one choice that is his, main:
 - B. As now, but the forms that chase command variants go (those added 13.10); `gh pr merge` and the pre-push step
   stay. Cost: none; the merge itself still rests on the client guard.
 - C. As now.
-Recommended: A (sources 4 and the measure); B if a second account is not wanted.
+His answer (13.10): no second account; B is kept (docs/owner-decisions.md). A stays here as the option the
+sources point to, should his answer ever change.
 
 What follows from his rule without a new choice (each removes or narrows; none adds):
 1. The library test's folder part (papers in the folder without a record: a folder outside git, skipped on GitHub)

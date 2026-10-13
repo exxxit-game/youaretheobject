@@ -25,7 +25,8 @@ closed when what breaks it is in place; it stays here, marked, as the memory of 
   fired (docs/research/restrictions-inventory.md).
 - Why us: I fix the finding in front of me (Reason 2000: active failures "can be swatted one by one, but they still
   keep coming"); a client-side guard can always be got round by another form, so there is always another remark.
-- Breaks it: a lock where it cannot be bypassed (the server, the agent's own identity); a new lock only after a real
+- Breaks it: a client guard only against slips, not chasing every bypass (a lock out of reach would need the agent's
+  own identity, which he refused 13.10); a new lock only after a real
   incident whose mistake cannot be undone, and it replaces something; a remark about another way round a client
   guard is answered with that principle (docs/research/restrictions.md).
 
