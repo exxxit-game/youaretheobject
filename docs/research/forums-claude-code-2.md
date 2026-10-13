@@ -201,3 +201,22 @@ For us: the correction-into-CLAUDE.md habit matches his decisions' history (each
 plan mode and verification match the practice and fact-check reviewers; a Stop hook for long tasks matches
 tools/claude-guard.mjs; the "Learning" output style is a ready tool for his wish to understand our code
 (docs/owner-decisions.md, lessons only when he wants).
+
+### S18. A Reddit post the owner pasted 14.10 (link not given): "Burning a full 20x max plan a day on code reviews - Need optimization help"
+Someone else's experience, not ours (the owner's words 14.10: it is another's experience). A team running 6–10
+Claude Code chats in parallel; every change a branch and a PR; CI (typecheck, tests, build, dependency audit,
+secret scan) and an AI "independent review" check gate a merge queue; reviews run on two other PCs on other Max
+accounts, so the chat that wrote the code never reviews it; review weight by files touched (auth, payments,
+personal data, dependencies, security headers, prod config go heavy: Opus high effort and Codex, then Opus verifies
+each finding; medium: one Opus finder and one Opus verifier; light: docs, no AI review); a verified critical blocks,
+a verified high blocks if security, money or data loss; a fix gets a smaller "fix check"; every reviewer reads their
+big CLAUDE.md first. Their numbers, 8 days: 130 PRs, 452 review passes, 463 fix checks, about 153 hours of review;
+heavy reviews 61% of passes and 69% of the time; 37% of passes re-reviews of an already reviewed PR; 142 passes on
+PRs touching 3 files or fewer; 1–2 full 20x Max plans a day on reviews. Considered: one review per PR at the end, no
+drafts, no re-review after a clean pass; Sonnet finds and Opus verifies; one session per PR with a one-page
+checklist instead of the rules doc; tests, generated and visual files left to CI.
+Mark (b): one team's report, numbers their own, no link. For us: their re-review share (37%) and fix checks (463 for
+130 PRs) are the loop our circle 5a records, broken here on 14.10 by his rule (two checks on new work, fixes checked
+by the author against the findings); their tiering by what a change touches is worth setting beside ours (a person
+meets it: the practice review; a room: the paper review; a page for him: two fact-checks) on shelf 7, with our own
+count of what the reviewers cost (tools/usage.mjs does not yet split by helper).
