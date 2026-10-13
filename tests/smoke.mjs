@@ -311,6 +311,23 @@ async function playRoom(url, playtest, { leave = false } = {}) {
       return p.z;
     }, ROOM_WALLS.maxZ);
     assert.ok(backZ < ROOM_WALLS.maxZ, `on a computer's full screen the camera stayed at z ${backZ.toFixed(2)}, past the room's back wall`);
+    if (!playtest) {
+      // The game's menu (src/app/menu.js): Escape opens it on a computer and nothing else answers the rays
+      // while it is open; leaving the room brings the player back to the corridor, the clipboard offers
+      // what a player who left early may learn, and door 1 takes them in again, the room from its start
+      await page.keyboard.press('Escape');
+      await page.waitForFunction(() => document.querySelectorAll('#menu .answer[data-ready]').length === 2, null, { timeout: 10000 });
+      assert.equal(await page.evaluate(() => [...document.querySelectorAll('.clickable')].filter((el) => !el.closest('#menu')).length), 0,
+        'with the menu open something else answers the rays');
+      await page.evaluate(() => document.querySelector('#menu .answer[data-index="1"]').emit('click'));
+      await waitState('idle', 10000);
+      await page.waitForFunction(() => document.querySelector('.sheet[data-open]') && document.querySelectorAll('.sheet .answer').length === 2, null, { timeout: 30000 });
+      assert.ok(await page.evaluate(() => document.querySelector('#corridor').object3D.visible), 'back from the room the corridor is not drawn');
+      await pick(0);                       // start again
+      await page.waitForFunction(() => !document.querySelector('.sheet[data-open]') && document.querySelector('#door1 .door-leaf.clickable'), null, { timeout: 30000 });
+      await page.evaluate(() => document.querySelector('#door1 .door-leaf').emit('click'));
+      await waitState('intro', 30000);
+    }
     // "understood" twice: after the instructions and after the control concept
     for (let i = 0; i < 2; i++) {
       await page.waitForFunction(() => document.documentElement.dataset.roomState === 'intro' &&

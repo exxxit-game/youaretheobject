@@ -8,7 +8,7 @@ the whole visit (`src/app/lab.js`, `src/app/stage.js`); the room is only what is
 
 Required files (checked by `tests/structure.test.mjs`):
 ```
-room.js         sceneHTML, DOORWAY, ENTRY, mount(root), enter(withRecording)
+room.js         sceneHTML, DOORWAY, ENTRY, mount(root), enter(withRecording), hold(on), leave()
 scene.js        export const sceneHTML, DOORWAY   A-Frame markup of the inside, in the room's own metres
 report.js       export function analyse(log) → report   pure: no DOM, no texts
 texts.ru.js     every word the player sees
@@ -48,6 +48,14 @@ What room.js exports:
    left-early choice, consent, the door; the thumbsticks move the player in the corridor only).
    Show the room's computer hint with `showHint({ title, body })` (src/app/hint.js) and use the
    shared session (`src/app/session.js`) for first/repeat runs, test speed and sending.
+
+5. `hold(on)`: the game's menu (`src/app/menu.js`, the left controller's Menu button, Escape on a
+   computer) is open or shut again. The room pauses what runs against the clock (a trial cut by it is
+   not counted), lets nothing be pressed, and pauses its sound.
+6. `leave()`: the player left the room through the menu, under the fade to black. The run ends there:
+   nothing of it is sent, every step still waiting goes nowhere, the widgets are hidden and the state is
+   `idle`, so `enter()` can start the room again from its beginning. The corridor then offers what a
+   player who left early may learn (`src/app/left-early.js` texts) and door 1 takes them in again.
 
 Shared parts a room must not re-implement: arrival (corridor), consent, session, the clipboard
 (`src/engine/ui/sheet.js`), answer buttons (`src/engine/ui/choice.js`), rating scales
