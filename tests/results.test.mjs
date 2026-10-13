@@ -61,6 +61,10 @@ const migrations = fs.readdirSync(new URL('../supabase/migrations/', import.meta
 for (const [, t] of migrations.matchAll(/create table app\.(\w+)/g)) {
   assert.match(migrations, new RegExp(`create policy \\w+ on app\\.${t} for select using \\(false\\);`), `app.${t} has no rejection policy: add one in the migration that creates it`);
 }
+// the question for the average has its own cap before it reads a row, so it cannot be asked without end
+const compare = definition('compare_room').text;
+assert.match(compare, /\bvolatile\b/, 'compare_room is not volatile: its cap cannot write app.recent');
+assert.ok(compare.indexOf("perform app.allow('compare'") > 0 && compare.indexOf("perform app.allow('compare'") < compare.indexOf('from app.runs'), 'compare_room reads app.runs before its cap, or has none');
 assert.match(migrations, /cron\.schedule\('new-limit-key', '0 0 \* \* \*',\s*\$job\$update app\.limit_key set key = extensions\.gen_random_bytes\(32\)\$job\$\)/, 'the daily job that replaces the fingerprint key is gone');
 
 console.log('results tests: ok');
