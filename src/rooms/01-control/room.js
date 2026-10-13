@@ -73,7 +73,7 @@ const inWorld = ({ x, y, z }) => { const v = root.object3D.localToWorld(new THRE
 let seated = false;
 let xrVisible = true;
 // the room holds under the "you left" box (left-early.js) or the game's menu (hold), kept apart: one closing frees not the other
-let heldByExit = false, heldByMenu = false;
+let heldByExit = false, heldByMenu = false, debriefed = false;
 const paused = () => document.hidden || !xrVisible || heldByExit || heldByMenu;
 // Real play only: test runs (?speed=N) leave no "left early" mark.
 const REAL = SPEED === 1;
@@ -113,8 +113,8 @@ async function say(text, top = false) {
 }
 
 // Buttons under a text that fills the screen (pages, checks). top: from writeTop.
-function pick(labels, top) {
-  return flow.within(new Promise((resolve) => lowChoice.show(labels, resolve, top)));
+function pick(labels, top) {   // shown once the room no longer holds: no button comes up under a menu
+  return flow.within(delay(0).then(() => new Promise((resolve) => lowChoice.show(labels, resolve, top))));
 }
 
 // Shows a question at the top of the screen and returns where the answers may
@@ -191,17 +191,16 @@ async function questions() {
 async function reveal(condition) {
   setState('done');
   phase('reveal');
-  if (REAL) markReached(ROOM_ID);
   eventLog.end();
   const r = analyse(eventLog.entries);
-  session.finish({ condition, ...r, seated, speed: SPEED });
   await say(T.thanks);
   // test runs never ask the live server
   const others = SPEED === 1 ? await flow.within(compareRoom(ROOM_ID, ROOM_VERSION)) : null;
   const pages = revealPages(r, condition, others);
-  const page = { pad: 2048 * 0.07 };
   for (let i = 0; i < pages.length; i++) {
-    const top = writeTop(pages[i], page);
+    // debriefed, and the result sent, as the truth is shown (p. 452); leaving before it: the short debrief, nothing sent
+    if (i === Math.min(1, pages.length - 1)) { debriefed = true; if (REAL) markReached(ROOM_ID); session.finish({ condition, ...r, seated, speed: SPEED }); }
+    const top = writeTop(pages[i], { pad: 2048 * 0.07 });
     const last = i === pages.length - 1 && !PLAYTEST;
     await pick([last ? APP_T.again : APP_T.next], top);
   }
@@ -219,7 +218,7 @@ async function playtest(r) {
 }
 
 async function play(withRecording) {
-  session.begin(withRecording);
+  debriefed = false; session.begin(withRecording);
   if (REAL) markStarted(ROOM_ID);
   for (const k of Object.keys(phaseStart)) { delete phaseStart[k]; delete phaseSecs[k]; }
   await intro();
@@ -262,7 +261,7 @@ export function mount(r) {
   });
   scene.addEventListener('exit-vr', () => { xrVisible = true; seated = false; placeChair(false); });
   if (REAL) {
-    watchExit(scene, { room: ROOM_ID, debrief: T.earlyDebrief, hold: (on) => { heldByExit = on; }, midRoom: running });
+    watchExit(scene, { room: ROOM_ID, debrief: T.earlyDebrief, hold: (on) => { heldByExit = on; syncSound(); }, midRoom: running });
   }
   $('#rig').addEventListener('recentered', (e) => { seated = !!(e.detail && e.detail.seated); placeChair(seated); });
   setState('idle');
@@ -281,16 +280,17 @@ export function enter(withRecording) {
 export function hold(on) {
   heldByMenu = on;
   pressable($('#buttonCap'), !on && state === 'run');
-  const ctx = getContext(); if (ctx && (on || !heldByExit)) (on ? ctx.suspend() : ctx.resume()).catch(() => {});   // the voice and sounds pause too
+  syncSound();
 }
-// Whether the player is inside a run, before its debrief (the results go at the debrief: room.js reveal).
-export const running = () => ['intro', 'run', 'questions'].includes(state);
+function syncSound() { const ctx = getContext(); if (ctx) (heldByMenu || heldByExit ? ctx.suspend() : ctx.resume()).catch(() => {}); }   // both off: sound
+// Whether the player is inside a run, before the truth of its debrief is shown (reveal)
+export const running = () => ['intro', 'run', 'questions'].includes(state) || (state === 'done' && !debriefed);
 
 // The player leaves through the menu, under the fade to black: nothing of this run is sent (results go only at
 // the debrief) and the room stands as before its first entry; the corridor offers what it was (lobby.js).
 export function leave() {
   flow.end();
-  heldByExit = heldByMenu = false; getContext()?.resume().catch(() => {});   // the menu held the sound: the corridor's plays again
+  heldByExit = heldByMenu = false; syncSound(); document.querySelector('#left-early')?.remove();   // sound back; the left-VR box ends with the run
   trials?.stop(); trials = null; meter?.stop(); meter = null; hush(); ambient?.stop(); ambient = null;
   for (const w of [choice, lowChoice, scale, shownScale]) w.hide();
   screen().write([]);

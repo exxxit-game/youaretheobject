@@ -26,7 +26,6 @@ import { stageHTML } from './stage.js';
 import { corridorHTML, runLobby } from './lobby/lobby.js';
 import { leave as leaveGame } from './lobby/exit.js';
 import { LOBBY_T } from './lobby/texts.ru.js';
-import { getContext } from '../engine/audio.js';
 import { createMenu } from './menu.js';
 import { APP_T } from './texts.ru.js';
 import { ROOM1_DOOR, roomPlace, toCorridor, areaToCorridor } from './lobby/plan.js';
@@ -50,17 +49,17 @@ export function start(room) {
     // and door 1 takes them in again (lobby.js, back)
     const menu = createMenu(scene);
     const M = APP_T.menu, E = LOBBY_T.exit;
-    // in the corridor the voice and sounds wait under the menu (the room holds its own: room.js hold)
-    const sound = (on) => { const ctx = getContext(); if (ctx) (on ? ctx.suspend() : ctx.resume()).catch(() => {}); };
-    const corridor = { hold: sound, items: [{ label: M.leaveGame, confirm: { ask: E.ask, yes: E.leave }, run: () => { sound(false); return leaveGame(scene); } }] };
+    // the corridor's opening runs on its own timers and is not held: its sound goes on under the menu (the room
+    // holds its own: room.js hold); stopping asks as the poster does, its words and order the same (exit.js)
+    const corridor = { items: [{ label: M.leaveGame, confirm: { ask: E.ask, yes: E.leave, no: E.stay }, run: () => leaveGame(scene) }] };
     menu.set(corridor);
     const { seat, area, ...entry } = room.ENTRY;
     const { withRecording, back } = await runLobby({ ...entry, seat: { ...seat, ...toCorridor(place, seat) }, area: areaToCorridor(place, area) });
     // inside a run, leaving asks first (the run is lost); after its debrief the run is kept, and the way out
     // is only back to the corridor
     const inRoom = { hold: (on) => room.hold(on), items: () => (room.running()
-      ? [{ label: M.leaveRoom, confirm: { ask: M.leaveRoomAsk, yes: M.leaveRoomYes }, run: () => leaveRoom(true) }]
-      : [{ label: M.toCorridor, run: () => leaveRoom(false) }]) };
+      ? [{ label: M.leaveRoom, confirm: { ask: M.leaveRoomAsk, yes: M.leaveRoomYes, no: APP_T.leftEarly.back }, run: () => leaveRoom(true) }]
+      : [{ label: M.toCorridor, confirm: { ask: M.toCorridorAsk, yes: M.leaveRoomYes, no: APP_T.leftEarly.back }, run: () => leaveRoom(false) }]) };
     async function leaveRoom(early) {
       menu.set(null);
       room.leave();   // first, under the menu: nothing of the run answers during the fade

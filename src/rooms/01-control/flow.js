@@ -19,7 +19,7 @@ export function createRun(paused) {
           const now = performance.now();
           if (!paused()) left -= now - last;
           last = now;
-          if (left <= 0) { clearInterval(tick); resolve(); }
+          if (left <= 0 && !paused()) { clearInterval(tick); resolve(); }   // delay(0): until the room no longer holds
         }, 20);
       });
     }

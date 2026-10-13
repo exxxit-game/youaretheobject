@@ -24,7 +24,9 @@ AFRAME.registerComponent('menu-button', {
     for (const source of session.inputSources) {
       const pad = source.gamepad;
       if (!pad) continue;
-      if (source.handedness === 'left') this.edge('left:menu', pad.buttons[pad.buttons.length - 1], 'menu-button', source.handedness);
+      // a controller's layout only (8 buttons and more): a hand gives one button, its pinch (the registry's
+      // generic-hand), which must not open the menu
+      if (source.handedness === 'left' && pad.buttons.length >= 8) this.edge('left:menu', pad.buttons[pad.buttons.length - 1], 'menu-button', source.handedness);
       this.edge(`${source.handedness}:back`, pad.buttons[BACK], 'menu-back', source.handedness);
     }
   },

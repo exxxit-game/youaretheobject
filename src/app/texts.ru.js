@@ -60,6 +60,7 @@ export const APP_T = {
     leaveRoomYes: 'Выйти',
     // after the debrief the run is kept: the way out is only back to the corridor
     toCorridor: 'Выйти в коридор',
+    toCorridorAsk: 'Выйти в коридор? Опыт уже окончен; что осталось от разбора, не покажется.',
     leaveGame: 'Прекратить участие'
   },
   understood: 'Понятно',
