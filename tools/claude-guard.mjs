@@ -224,7 +224,12 @@ function restarts(w) {
 // the value follows the name's "=", or is the next word (PowerShell's "= value", set-item and setx),
 // or the word after PowerShell's named -Value (-V)
 function setsHooks(w, k) {
-  const m = /^(\$?env:)?GIT_CONFIG_(KEY_\d+|PARAMETERS)(=|$)(.*)$/i.exec(w[k] ?? '');
+  // GIT_CONFIG_GLOBAL and GIT_CONFIG_SYSTEM point git at another config file, which may hold core.hooksPath
+  // (git-config(1), ENVIRONMENT); none of our tools sets them. A name may end in the comma of a .NET call's
+  // arguments: [Environment]::SetEnvironmentVariable('GIT_CONFIG_KEY_0', 'core.hooksPath') reads as the
+  // words GIT_CONFIG_KEY_0, and core.hooksPath
+  if (/^(\$?env:)?GIT_CONFIG_(GLOBAL|SYSTEM)(=|,?$)/i.test(w[k] ?? '')) return true;
+  const m = /^(\$?env:)?GIT_CONFIG_(KEY_\d+|PARAMETERS)(?:(=)(.*)|,?)$/i.exec(w[k] ?? '');
   if (!m) return false;
   const next = w[k + 1] ?? '';
   const value = m[3] ? m[4] : next === '=' || /^-(value|v)$/i.test(next) ? w[k + 2] : next.replace(/^=/, '');
@@ -268,11 +273,15 @@ function judge(words, stdin, ps, here = false) {
     // an option's separate value would read as a command word, so "pr merge" is looked for anywhere
     for (let k = 0; k < a.length; k++) { if (/^(-R|--repo|--hostname)$/.test(a[k])) k++; else if (!a[k].startsWith('-')) g.push(a[k]); }
     const pr = g.indexOf('pr');
-    // through the REST paths or the GraphQL mutations (a query given as -f query=...)
-    if ((pr >= 0 && g[pr + 1] === 'merge') || (g[0] === 'api' && g.some((x) => /(^|\/)(merges|pulls\/\d+\/merge)$/.test(x) || /\b(mergePullRequest|enablePullRequestAutoMerge)\b/.test(x)))) return WHY.merge;
+    // through the REST paths (a query string after them too) or the GraphQL mutations, whose name is looked
+    // for in every word: a query joined to its option (-fquery=..., --raw-field=...) is not a command word
+    if ((pr >= 0 && g[pr + 1] === 'merge') || (g[0] === 'api' && (g.some((x) => /(^|\/)(merges|pulls\/\d+\/merge)(\?|$)/.test(x)) || a.some((x) => /\b(mergePullRequest|enablePullRequestAutoMerge)\b/.test(x))))) return WHY.merge;
+    // an alias is a merge under another name: gh alias set m "pr merge", then gh m 9
+    if (g[0] === 'alias' && /\bmerge\b|\bmergePullRequest\b/i.test(g.slice(2).join(' '))) return WHY.merge;
     // a GraphQL body the guard cannot read: a field read from a file or stdin (-F query=@file, gh's
-    // "@" form) or the whole request from --input; our own calls give the query inline
-    if (g[0] === 'api' && g.includes('graphql') && (a.some((x) => /^[\w-]+=@/.test(x)) || a.includes('--input'))) return WHY.graphqlFile;
+    // "@" form, also joined: --field=query=@file) or the whole request from --input (or --input=file);
+    // our own calls give the query inline
+    if (g[0] === 'api' && g.includes('graphql') && a.some((x) => /=@/.test(x) || /^--input(=|$)/.test(x))) return WHY.graphqlFile;
     // the session under review does not close the remarks on its own work: it answers, and the
     // reviewer closes what it sees fixed in its next review
     if (g[0] === 'api' && a.some((x) => /\b(resolveReviewThread|minimizeComment)\b/.test(x))) return WHY.resolve;

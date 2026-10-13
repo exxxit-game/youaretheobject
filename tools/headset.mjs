@@ -79,11 +79,16 @@ const devtools = async (what) => {
   return r;
 };
 // The browser keeps its debug link open only while it is in front: behind the headset's menu (its
-// power button opens the quick menu) or another app it runs with none (seen 13.10: no
+// power button opens the quick menu) or another app it runs with none (seen on the Quest 3: no
 // chrome_devtools_remote socket until it came to the front, then one at once). So a running browser
-// that does not answer is brought to the front on the address and asked again.
-const listAfterFront = async (url, ms = 15000) => {
-  openUrl(url);
+// that does not answer is brought to the front and asked again; it is brought by its launcher entry
+// (MAIN/LAUNCHER, which the Quest 3 resolves to com.oculus.browser/.OculusLauncherActivity), never by
+// the game's address, which could open a second game tab that, if the list still does not answer, no
+// one closes
+const BROWSER_LAUNCHER = 'com.oculus.browser/.OculusLauncherActivity';
+const listAfterFront = async (ms = 15000) => {
+  adb('shell', 'input', 'keyevent', 'KEYCODE_WAKEUP');
+  adb('shell', 'am', 'start', '-a', 'android.intent.action.MAIN', '-c', 'android.intent.category.LAUNCHER', '-n', BROWSER_LAUNCHER);
   for (const end = Date.now() + ms; Date.now() < end; await new Promise((r) => setTimeout(r, 500))) {
     try { forwardDevtools(); return await fetch(`${DEVTOOLS}/list`); } catch (e) { /* not yet */ }
   }
@@ -99,7 +104,7 @@ export async function openGame(url) {
     let running = '';
     try { running = adb('shell', 'pidof', 'com.oculus.browser'); } catch (err) { /* pidof exits 1 when none runs */ }
     if (!running) { openUrl(url); return 0; }
-    list = await listAfterFront(url);
+    list = await listAfterFront();
     if (!list) throw new Error('the headset browser runs but its tab list did not answer even in front: its game tabs cannot be closed first');
   }
   if (!list.ok) throw new Error(`the headset browser refused list: ${list.status}`);
