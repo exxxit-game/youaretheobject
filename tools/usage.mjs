@@ -189,9 +189,67 @@ function printPercent(rs) {
     const a = run[k], d = end.sd - a.sd, s = sum(spent), lost = a.sd - run[0].sd;
     console.log(`  ${iso(a.t)} ${String(a.sd).padStart(3)} % -> ${iso(end.t)} ${String(end.sd).padStart(3)} %: +${d} points; ${fmt(tokens(s))} tokens`
       + ` (${fmt(s.input + s.write + s.output)} without cache reads), $ list ${s.usd.toFixed(2)}, ${s.open} open; per point: $ ${(s.usd / d).toFixed(2)},`
-      + ` ${fmt(tokens(s) / d)} tokens${lost ? ` (and +${lost} points before it with no transcript here)` : ''}`);
+      + ` ${fmt(tokens(s) / d)} tokens${lost ? ` (and +${lost} points before it with no transcript here)` : ''} [${tierAt(a.t)}]`);
   }
   if (bare) console.log(`  ${bare} rises with no transcript at all here (sessions deleted in Claude Desktop, chat, or another device)`);
+}
+
+// The plan's tiers on this account, so a point compares only within one: Max 5x until the move to Max 20x,
+// which the files place where the weekly percent fell from 64 to 18 between two readings (the spending
+// since about 12:24 UTC that day matches the 18 points at the later rate); any moment between those two
+// readings groups the windows the same
+const TIERS = [[-Infinity, 'max 5x'], [Date.parse('2026-10-08T12:24:00Z'), 'max 20x']];
+export const tierAt = (t) => TIERS.filter(([from]) => t >= from).at(-1)[1];
+
+// The five-hour limit, measured the same way: its windows rebuilt from the transcripts. A window starts at
+// the hour of the first response after the previous one ended; the hour rule fits both resets the plan
+// named here (the card's, and a session-limit notice's). A notice's window is taken as it names it; a
+// rebuilt one that overlaps it, or whose readings fall inside it, was moved by use these transcripts miss.
+const H = 36e5;
+export function noticeWindow(n) {
+  const m = n.said.match(/session limit · resets (\d{1,2})(?::(\d\d))?\s*(am|pm) \(([^)]+)\)/i);
+  if (!m) return null;
+  const t = Date.parse(n.at);
+  const o = Intl.DateTimeFormat('en-US', { timeZone: m[4], timeZoneName: 'longOffset' }).formatToParts(t).find((p) => p.type === 'timeZoneName').value.match(/([+-])(\d\d):?(\d\d)?/);
+  const off = o ? (o[1] === '-' ? -1 : 1) * (Number(o[2]) * 60 + Number(o[3] || 0)) * 6e4 : 0;
+  const at = ((Number(m[1]) % 12) + (m[3].toLowerCase() === 'pm' ? 12 : 0)) * H + Number(m[2] || 0) * 6e4;
+  let e = Math.floor((t + off) / 864e5) * 864e5 + at - off;   // that local time on the notice's local day
+  if (e <= t) e += 864e5;
+  return { s: e - 5 * H, e, named: true };
+}
+export function windows(rs, named = []) {
+  const out = []; let end = -Infinity;
+  for (const r of rs) {
+    if (r.at < end) continue;
+    let w = named.find((n) => r.at >= n.s && r.at < n.e);
+    if (!w) { w = { s: Math.floor(r.at / H) * H }; w.e = w.s + 5 * H; const n = named.find((x) => w.e > x.s && w.s < x.e); if (n) { w.unsure = true; w.e = n.s; } }
+    out.push(w); end = w.e;
+  }
+  return out;
+}
+const median = (xs) => { const a = [...xs].sort((x, y) => x - y), m = a.length >> 1; return a.length % 2 ? a[m] : (a[m - 1] + a[m]) / 2; };
+
+function printFiveHour(rs, notices) {
+  const ss = samples().filter((s) => Number.isFinite(s.fh));
+  const wins = windows(rs, notices.map(noticeWindow).filter(Boolean));
+  console.log('\n=== The five-hour percent, the same way (windows rebuilt from the transcripts; a notice\'s window as named):');
+  const per = new Map(); let unsure = 0;
+  for (const w of wins) {
+    const inW = ss.filter((s) => s.t >= w.s && s.t < w.e);
+    if (!inW.length) continue;
+    if (w.unsure || inW.some((s, i) => i && s.fh < inW[i - 1].fh)) { unsure++; continue; }
+    const top = inW.find((s) => s.fh === Math.max(...inW.map((x) => x.fh)));
+    if (top.fh < 3) continue;   // a point or two is the rounding of a whole percent
+    const s = sum(between(rs, w.s, top.t)), tier = tierAt(w.s), full = top.sd >= 100;
+    console.log(`  ${iso(w.s)}-${iso(w.e).slice(11)}${w.named ? ' (named)' : ''} ${String(top.fh).padStart(3)} % at ${iso(top.t).slice(11)}: ${s.n} responses, ${fmt(tokens(s))} tokens, $ list ${s.usd.toFixed(2)}, ${s.open} open;`
+      + ` per point $ ${(s.usd / top.fh).toFixed(2)}, ${fmt(tokens(s) / top.fh)} tokens [${tier}]${full ? ' (weekly limit full: left out of the medians)' : ''}`);
+    if (!full) { if (!per.has(tier)) per.set(tier, []); per.get(tier).push({ usd: s.usd / top.fh, tok: tokens(s) / top.fh }); }
+  }
+  if (unsure) console.log(`  windows left out: ${unsure} (a reading falls inside, or it overlaps a named window)`);
+  const rows = [...per].map(([tier, xs]) => ({ tier, n: xs.length, usd: median(xs.map((x) => x.usd)), tok: median(xs.map((x) => x.tok)), lo: Math.min(...xs.map((x) => x.usd)), hi: Math.max(...xs.map((x) => x.usd)) }));
+  if (!rows.length) return;
+  console.log('per point, median (lowest-highest $, windows):', rows.map((r) => `${r.tier} $ ${r.usd.toFixed(2)} (${r.lo.toFixed(2)}-${r.hi.toFixed(2)}, ${r.n}), ${fmt(r.tok)} tokens`).join(' · ')
+    + (rows.length > 1 ? `; ${rows.at(-1).tier} / ${rows[0].tier}: ${(rows.at(-1).usd / rows[0].usd).toFixed(2)}x in $, ${(rows.at(-1).tok / rows[0].tok).toFixed(2)}x in tokens` : ''));
 }
 
 export function report(acc = readAll()) {
@@ -204,6 +262,7 @@ export function report(acc = readAll()) {
   for (const [w, wRs] of bucket(rs, (r) => weekStart(r.at))) printWeek(acc, wRs, w);
   if (acc.notices.length) console.log('\nlimit notices in the transcripts:', acc.notices.sort((a, b) => (a.at < b.at ? -1 : 1)).map((n) => `${n.at.slice(0, 16)} UTC "${n.said}"`).join('; '));
   printPercent(rs);
+  printFiveHour(rs, acc.notices);
 }
 
 // one reading of the card, with the tokens spent so far in its week, so later weeks compare as tokens per percent
