@@ -14,6 +14,14 @@ assert.ok(/three\.js r184|"184"/.test(build), 'the build is not A-Frame 1.8.0 wi
 assert.ok(build.includes('Tt.enabled&&Tt.isMultiview)ot.setDeferTextureUploads(!0)'), 'the multiview frame no longer defers texture uploads as expected');
 assert.equal(build.split('t.onAfterRender(M,t,e),ot.runDeferredUploads(),_t.resetDefaultState()').length - 1, 1,
   'the deferred texture uploads are not run after the scene is drawn: multiview leaves new textures black');
+// and nothing else differs: the put-back call taken out again and the source-map line given back, the
+// build is byte for byte the official file (SHA-256 and size from jsDelivr's index of npm aframe@1.8.0,
+// data.jsdelivr.com/v1/packages/npm/aframe@1.8.0, /dist/aframe-v1.8.0.min.js)
+const PUT_BACK = 'ot.runDeferredUploads(),', at = build.indexOf('t.onAfterRender(M,t,e),' + PUT_BACK) + 't.onAfterRender(M,t,e),'.length;
+const official = build.slice(0, at) + build.slice(at + PUT_BACK.length) + '\n//# sourceMappingURL=aframe-v1.8.0.min.js.map';
+assert.equal(Buffer.byteLength(official), 1323403, 'the A-Frame build differs from the official one in more than the put-back call');
+assert.equal(crypto.createHash('sha256').update(official).digest('hex'), '40d5a4d63c67d8c50842bf3c36a06995cad712d0675c8e5d2eb4dbae38b7481f',
+  'the A-Frame build differs from npm aframe@1.8.0\'s dist/aframe-v1.8.0.min.js in more than the put-back call');
 const stage = fs.readFileSync(new URL('../src/app/stage.js', import.meta.url), 'utf8');
 assert.ok(/multiviewStereo: \$\{MULTIVIEW\}/.test(stage), 'multiview is not turned on');
 
@@ -72,10 +80,17 @@ for (const [file, sum] of Object.entries(MODELS)) {
   assert.ok([...(gltf.images || []), ...(gltf.buffers || [])].every((x) => !x.uri), `${file} loads a file of its own`);
 }
 for (const licence of ['LICENSE.md', 'hands/LICENSE']) assert.match(fs.readFileSync(new URL(licence, ASSETS), 'utf8'), /MIT License/, `${licence} is missing`);
+// MIT asks that the notices go with every copy: the A-Frame build's, its own and every bundled package's
+// (gathered from npm by its package-lock.json), and the inspector's, which its first line points to
+const licences = fs.readFileSync(new URL('../vendor/aframe-1.8.0.LICENSES.txt', import.meta.url), 'utf8');
+for (const pkg of ['aframe@1.8.0', 'super-three@0.184.0', 'super-animejs@3.1.0', 'stats-gl@3.6.0', 'debug@4.4.0', 'buffer@6.0.3', 'load-bmfont@1.4.2', 'deep-assign@2.0.0', 'three-bmfont-text'])
+  assert.ok(licences.includes(`==== ${pkg}`), `vendor/aframe-1.8.0.LICENSES.txt lacks ${pkg}`);
 // the inspector every scene gets loads from our copy of npm aframe-inspector@1.8.0's build (its README's
 // inspector="url: ..."), never from unpkg.com
 const inspector = stage.match(/const INSPECTOR = '([^']+)';/)?.[1];
 assert.ok(inspector && stage.includes('<a-scene inspector="url: ${INSPECTOR}"'), 'the scene does not point the inspector at our copy');
 assert.equal(crypto.createHash('sha256').update(fs.readFileSync(new URL(`../${inspector}`, import.meta.url))).digest('hex'),
   '5fd4a5f1ceec8bd3aa139be272ffa5e6ccc9e83cf3dfa27df11e9ca76cb3b3b1', 'the inspector is not npm aframe-inspector@1.8.0\'s dist/aframe-inspector.min.js');
+const notices = fs.readFileSync(new URL('../vendor/aframe-inspector/aframe-inspector.min.js.LICENSE.txt', import.meta.url), 'utf8');
+assert.ok(/Font Awesome Free 6\.7\.2/.test(notices) && /@license React/.test(notices), 'the inspector\'s licence notices (aframe-inspector.min.js.LICENSE.txt, from the same npm package) are missing');
 console.log(`vendor tests: ok (${shipped.length} models and the inspector from the game itself)`);
