@@ -1,17 +1,19 @@
 # methods, ethics, law
 
 Generated from `docs/library/papers.json` by `node tools/build-library.mjs`. Do not edit by hand.
-94 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
+97 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
 in the library folder's papers\ as `<id>.txt` (a data set: `<dir>/<id>.txt` from the library folder); "text: ocr" marks a scan's
 text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 
 - **abdlkarim-2024** Abdlkarim et al. 2024. A methodological framework to assess the accuracy of virtual reality hand-tracking systems: A case study with the Meta Quest 2 · hand tracking accuracy, Meta Quest 2, measurement method · no card
 - **aepd-2026-videogames** AEPD 2026. Recommendations and best practices for data protection in video games · data protection, video games, telemetry, GDPR · no card
 - **ambinder-2009** Ambinder 2009. Valve's Approach to Playtesting: The Application of Empiricism (GDC 2009 slides, text transcribed) · playtesting, Valve, empiricism, biometrics · no card
+- **anthropic-2025-teams** Anthropic 2025. How Anthropic teams use Claude Code · AI coding agents, Claude Code, process · no card
 - **anwyl-irvine-2021** Anwyl-Irvine et al. 2021. Realistic precision and accuracy of online experiment platforms, web browsers, and devices · online experiments, timing precision, browsers, devices · no card
 - **apa-ethics-code-2017** American Psychological Association 2017. Ethical Principles of Psychologists and Code of Conduct (2002, amended 2010 and 2016) · research ethics, deception, debriefing, informed consent · no card
 - **aust-2013** Aust et al. 2013. Seriousness checks are useful to improve data validity in online research · seriousness check, data quality, online research · no card
 - **bargh-2000** Bargh & Chartrand 2000. Studying the mind in the middle: A practical guide to priming and automaticity research · priming, automaticity, awareness checks, funnel debriefing · no card · text: placeholder · excerpt only: manuscript pages 7, 8 and 37 transcribed by eye from an image-only scan
+- **becker-2025** Becker et al. 2025. Measuring the impact of early-2025 AI on experienced open-source developer productivity · AI coding agents, productivity, randomized trial · no card
 - **blackhart-2012** Blackhart et al. 2012. Assessing the adequacy of postexperimental inquiries in deception research and the factors that promote participant honesty · deception, postexperimental inquiry, suspicion probe, debriefing · no card
 - **bogdanov-2016** Bogdanov et al. 2016. Students and Taxes: a Privacy-Preserving Study Using Secure Computation · secure multi-party computation, official statistics, data protection, cryptography · no card
 - **bps-2021-code** British Psychological Society 2021. BPS Code of Human Research Ethics · research ethics, code of conduct, consent · no card
@@ -36,6 +38,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **fitts-1954** Fitts 1954. The information capacity of the human motor system in controlling the amplitude of movement · Fitts law, movement time, motor control · no card · text: ocr · no room: a measuring tool with no reveal (search coverage, motor control)
 - **friehs-2020** Friehs et al. 2020. Effective Gamification of the Stop-Signal Task: Two Controlled Laboratory Experiments · gamification, stop-signal task, inhibition · no card
 - **gavrilov-2021** Gavrilov 2021. The Toloka platform as a source of respondents for an online survey: assessing data quality (in Russian) · Toloka, crowdsourcing, online survey, data quality, attention checks · no card
+- **georges-2007** Georges et al. 2007. Statistically rigorous Java performance evaluation · performance measurement, statistics, benchmarking · no card
 - **germine-2012** Germine et al. 2012. Is the Web as good as the lab? Comparable performance from Web and lab in cognitive/perceptual experiments · web vs lab, online experiments, data quality, TestMyBrain · no card
 - **goto-2019** Goto 2019. Development of an online environment for game experiments (in Japanese) · online economic games, crowdsourcing, experiment platform · no card
 - **gottsacker-2026** Gottsacker et al. 2026. Beyond the Lab: Large-Scale Remote Cybersickness Research in Virtual Reality Using the VERA Platform · remote VR research, cybersickness, VERA platform · no card

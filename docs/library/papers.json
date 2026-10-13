@@ -8184,6 +8184,60 @@
    "text": "ok",
    "status": "no card",
    "source": "https://doi.org/10.1145/2889160.2889253"
+  },
+  {
+   "id": "anthropic-2025-teams",
+   "authors": "Anthropic",
+   "year": "2025",
+   "title": "How Anthropic teams use Claude Code",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "AI coding agents",
+    "Claude Code",
+    "process"
+   ],
+   "type": "report",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://www.anthropic.com/news/how-anthropic-teams-use-claude-code"
+  },
+  {
+   "id": "becker-2025",
+   "authors": "Becker, J., Rush, N., Barnes, E., Rein, D.",
+   "year": "2025",
+   "title": "Measuring the impact of early-2025 AI on experienced open-source developer productivity",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "AI coding agents",
+    "productivity",
+    "randomized trial"
+   ],
+   "type": "preprint",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://arxiv.org/abs/2507.09089"
+  },
+  {
+   "id": "georges-2007",
+   "authors": "Georges, A., Buytaert, D., Eeckhout, L.",
+   "year": "2007",
+   "title": "Statistically rigorous Java performance evaluation",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "performance measurement",
+    "statistics",
+    "benchmarking"
+   ],
+   "type": "conference paper",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://doi.org/10.1145/1297105.1297033"
   }
  ]
 }

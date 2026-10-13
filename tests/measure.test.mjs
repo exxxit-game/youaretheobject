@@ -4,7 +4,7 @@
 // baseline's spans and conditions wrong).
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import { thermalOf, gpuIds, gpuSamples, windowStats, SLOW_MS, mean } from '../tools/measure.mjs';
+import { thermalOf, gpuIds, gpuSamples, windowStats, SLOW_MS, lateMs, mean } from '../tools/measure.mjs';
 
 const read = (f) => fs.readFileSync(new URL(`fixtures/quest3/${f}`, import.meta.url), 'utf8');
 
@@ -30,13 +30,22 @@ assert.equal(g['% Time Shading Fragments'][0], 97.615);
 assert.equal(mean(g['% Time Shading Fragments']), 97.6);
 assert.equal(mean(g['% Time Shading Vertices']), 2.4);
 
-// a window: the rate over the frames' own span, slow over 1000/72 + 2 ms (tools/quest-look.mjs perf)
+// a window: the rate over the frames' own span; late past 1.5 refreshes of the session's rate (a frame that
+// missed a refresh comes after two); the 72 Hz bar of tools/quest-look.mjs perf (1000/72 + 2 ms) beside it
 assert.equal(Number(SLOW_MS.toFixed(2)), 15.89);
-const w = windowStats([11, 11, 11, 20, 11, 15.8, 16]);
+assert.equal(Number(lateMs(90).toFixed(2)), 16.67);
+const w = windowStats([11, 11, 11, 20, 11, 15.8, 16], 90);
 assert.equal(w.frames, 7);
-assert.equal(w.slow, 2, '20 and 16 ms are slow, 15.8 is not');
+assert.equal(w.late, 1, 'at 90 Hz only the 20 ms frame missed a refresh');
+assert.equal(w.slowUnder72, 2, '20 and 16 ms are over the 72 Hz bar, 15.8 is not');
 assert.equal(w.worst, 20);
 assert.equal(w.fps, Number((7 / (95.8 / 1000)).toFixed(1)));
 assert.equal(w.p50, 11);
+// at 120 Hz a frame that lost one refresh (16.7 ms) is late by both bars; at 90 Hz the 72 Hz bar also counts a
+// 16 ms frame that lost none (above: late 1, slowUnder72 2)
+const fast = windowStats([8.3, 8.3, 16.7, 8.3], 120);
+assert.equal(fast.late, 1);
+assert.equal(fast.slowUnder72, 1);
+assert.equal(mean([]), null, 'no samples give no mean, not NaN');
 
 console.log('measure tests: ok (the headset\'s temperatures, GPU metrics and frame windows read as printed)');
