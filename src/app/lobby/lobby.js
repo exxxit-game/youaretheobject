@@ -250,6 +250,7 @@ async function throughDoor({ sheet, leaf, light, room, exitOff }) {
   sheet.el.removeEventListener('asking', onAsk);
   pressable(leaf, false);
   delete document.documentElement.dataset.lobby;
+  $('a-scene').emit('passage');   // the menu waits until the player is in (lab.js), the world changing under it
   exitOff();   // rooms are left another way: the game's menu (src/app/menu.js)
 
   door.setAttribute('animation', { property: 'rotation', to: '0 95 0', dur: DOOR_MS, easing: 'easeInOutQuad' }); // into the room

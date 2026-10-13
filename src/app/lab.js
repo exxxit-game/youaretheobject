@@ -45,14 +45,17 @@ export function start(room) {
   return loaded.then(async () => {
     room.mount(document.querySelector('#roomPlace'));
     // the game's menu (menu.js): in the corridor it offers to stop taking part, as the poster does; in
-    // the room, to leave it: under the fade the room ends its run, the player is back in the corridor,
-    // and door 1 takes them in again (lobby.js, back)
+    // the room, to leave it: the room ends its run, under the fade the player is back in the corridor,
+    // and door 1 takes them in again (lobby.js, back). Through a door's passage it offers nothing.
     const menu = createMenu(scene);
     const M = APP_T.menu, E = LOBBY_T.exit;
     // the corridor's opening runs on its own timers and is not held: its sound goes on under the menu (the room
     // holds its own: room.js hold); stopping asks as the poster does, its words and order the same (exit.js)
-    const corridor = { items: [{ label: M.leaveGame, confirm: { ask: E.ask, yes: E.leave, no: E.stay }, run: () => leaveGame(scene) }] };
+    // the thumbsticks do not move the player in the dark (locomotion's own pause and play)
+    const walk = (on) => { const l = scene.querySelector('#rig').components.locomotion; if (l) (on ? l.play() : l.pause()); };
+    const corridor = { hold: (on) => walk(!on), items: [{ label: M.leaveGame, confirm: { ask: E.ask, yes: E.leave, no: E.stay }, run: () => leaveGame(scene) }] };
     menu.set(corridor);
+    scene.addEventListener('passage', () => menu.set(null));
     const { seat, area, ...entry } = room.ENTRY;
     const { withRecording, back } = await runLobby({ ...entry, seat: { ...seat, ...toCorridor(place, seat) }, area: areaToCorridor(place, area) });
     // inside a run, leaving asks first (the run is lost); after its debrief the run is kept, and the way out

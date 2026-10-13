@@ -12,14 +12,16 @@ import { APP_T } from './texts.ru.js';
 // list, so nothing is rebuilt for them. "Continue" stands first and is what the Menu button again or
 // B / Y does ("Back out, cancel", Meta's default mapping).
 // While it is open the world goes dark around it, as Meta's theater mode darkens the surroundings of a
-// panel (developers.meta.com/horizon/design/panels/): the corridor, the room's inside and the clipboard are
+// panel (developers.meta.com/horizon/design/panels/): the corridor, the room (its widgets too) and the clipboard are
 // not drawn (their lights stay, since a hidden light rebuilds every lit material), so no wall, stand or
 // page can stand between it and the eyes, and it stands where Meta puts menus, 1 m away ("1 meter is a
 // comfortable distance for menus", developers.meta.com/horizon/design/display/). The laser and the
-// controllers stay drawn in front of it. The panel takes the rays itself, so nothing behind it answers.
+// controllers stay drawn in front of it. While it is open the rays answer the menu alone (their target list is
+// the menu's own, whatever the place turns on meanwhile), and the panel takes them, so nothing behind it answers.
 // An item that cannot be undone asks once more, as the corridor's poster does (exit.js: the act first,
 // staying second), its answers saying what happens (nngroup.com/articles/confirmation-dialog/); its
-// buttons come a second later, so a hurried second press meets nothing (our choice of the delay).
+// buttons come a second later, so a hurried second press meets nothing (the delay browsers give a security
+// prompt's buttons: Firefox, security.dialog_enable_delay, 1000 ms, bugzilla.mozilla.org/show_bug.cgi?id=916726).
 const DIST = 1.0;            // metres in front of the eyes
 const DROP = 0.1;            // its centre this far under the eyes, where a reading panel sits (our choice)
 const W = 0.8, H = 0.7;      // the panel, metres
@@ -28,7 +30,9 @@ const DENSITY = pxPerM(DIST);
 // lab's wall screen reads larger than its minimum (our choice)
 const LETTER = letterFrom(0.024, DIST);
 const CONFIRM_MS = 1000;
-const DARK = '#corridor, .room-interior, .sheet';   // what is not drawn while the menu is open
+// what is not drawn while the menu is open: the corridor, its doors, the clipboard, everything of the room but its lights
+const DARK = '#corridor, #doorway, .sheet, #roomPlace > :not([light])';
+const RAYS = '.clickable', MENU_RAYS = '#menu .clickable';
 
 export function createMenu(scene) {
   const root = document.createElement('a-entity');
@@ -42,7 +46,6 @@ export function createMenu(scene) {
   // { items: [{ label, confirm: { ask, yes, no }, run }] or a function giving them now, hold(on) }: where the player is
   let place = null;
   let open = false;
-  let waiting = [];   // what the rays could reach before the menu opened, given back when it closes
   let darkened = [];  // what was drawn before the menu opened, drawn again when it closes
   let pending = 0;    // a confirmation's buttons on their way: a newer page or closing cancels them
 
@@ -71,8 +74,7 @@ export function createMenu(scene) {
     root.object3D.rotation.set(0, yaw, 0);
     darkened = [...document.querySelectorAll(DARK)].filter((el) => el.object3D.visible);
     for (const el of darkened) el.object3D.visible = false;
-    waiting = [...scene.querySelectorAll('.clickable')].filter((el) => !root.contains(el));
-    for (const el of waiting) pressable(el, false);
+    rays(MENU_RAYS);
     pressable(panelEl, true);
     root.setAttribute('visible', true);
     place.hold?.(true);
@@ -91,17 +93,21 @@ export function createMenu(scene) {
     if (!open) return;
     shut();
     for (const el of darkened) el.object3D.visible = true;
-    for (const el of waiting) if (el.isConnected) pressable(el, true);
-    darkened = []; waiting = [];
+    darkened = [];
     place?.hold?.(false);
   }
 
-  // an item runs: it takes the world as the menu left it, dark and answering nothing, and the place it goes to
-  // shows and makes pressable what it needs (a room left: the corridor's way back, lobby.js; the game ended)
+  // an item runs: it takes the world as the menu left it, dark, and the place it goes to shows what it needs
+  // (a room left: the corridor's way back, lobby.js; the game ended)
   async function run(item) {
     shut();
-    darkened = []; waiting = [];
+    darkened = [];
     await item.run();
+  }
+
+  // every ray of the scene (the controllers' lasers, the mouse's cursor) aims at these targets
+  function rays(objects) {
+    for (const el of [scene, ...scene.querySelectorAll('[raycaster]')]) if (el.components.raycaster) el.setAttribute('raycaster', 'objects', objects);
   }
 
   function shut() {
@@ -109,6 +115,7 @@ export function createMenu(scene) {
     pending++;
     choice.hide();
     pressable(panelEl, false);
+    rays(RAYS);
     root.setAttribute('visible', false);
     delete document.documentElement.dataset.menu;
   }
