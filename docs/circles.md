@@ -69,7 +69,8 @@ closed when what breaks it is in place; it stays here, marked, as the memory of 
 - His words: «повторять по 500 раз одно и то же… какая-то глупость»; «Ты потратил весь день сегодня на свои, по
   сути, галлюцинации»; «Зачем ты фантазировал… если у нас есть четкие документации?»
 - Breaks it: see 13; numbers on a page only from the tool's own output; the rule «two checks, and on each edit
-  too» (his, 12.10) is what makes a small page circle: a change of it is his to make (asked 14.10).
+  too» (his, 12.10) made a small page circle: changed by his «Да» 14.10 (two checks on a new page; edits from
+  their findings checked by me against them).
 
 ## 6. Claims from memory — open
 - Done: 13.10 the baseline's times and conditions (two fact-checks found them wrong); 13.10 "Claude Code deletes
