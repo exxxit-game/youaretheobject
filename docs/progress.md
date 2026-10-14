@@ -14,8 +14,14 @@ cards and research stay, the code names them as sources); 5) a task starts in pl
 what to read first by the task's kind: Gregory's book (4th ed., objekt-files/books), A-Frame 1.8.0, three.js r184,
 Meta's docs (3f211e7, his point of 14.10: the light starts from the engine book).
 Not done: unused helpers (request-auditor, architecture-auditor) left in place: removing them costs him windows.
-Next, in order: 6) CodeRabbit's resolve does not take effect on GitHub (17 verified remarks still open): find why,
-then short pull requests in place of the `reviewed` robot; 7) the live site serves only the game: a small pull
+Next, in order: 6) why CodeRabbit's resolve did not take effect, found in its docs
+(docs.coderabbit.ai/guides/commands): "`@coderabbitai resolve` is not supported in inline or review-thread
+replies"; only a top-level PR comment resolves, and it resolves all its comments at once. The `reviewed` robot
+waits for 0 open remarks, so it could never move. Still open for real on PR #10: the loading screen
+(src/app/stage.js, game work), the Stop hook's output (tools/claude-guard.mjs, its answer awaited), the counts as
+integers (supabase/schemas, a migration on his word), the tandem (fixed in aa9e38b, its check awaited). Then: short
+pull requests into room-polish, each reviewed by CodeRabbit (its base branches set to room-polish), PR #10 and the
+robot retired; 7) the live site serves only the game: a small pull
 request to main with only that change, merged by him; 8) screenshots compared against his approved ones; then his
 request of 14.10: everything in one place for me and a fast search, from what the market has (connectors beyond
 Anthropic's store), judged by our own experience.
