@@ -5,8 +5,7 @@ once); what it names is read or run only for its task. One line per situation; t
 
 - Spending (his words, 14.10, history file): ~10 weekly points a day, `node tools/usage.mjs` at each step's start and end, past 3 points stop and tell him; answers in the chat, a page only when he decides from it; his passing remark: one board line.
 - A decision whose line is not enough (all his words, how it came, the texts he accepted): docs/owner-decisions-history.md.
-- Before adding or changing a guard, hook, rule, check, tool or step of the process: docs/circles.md (the circles
-  we keep coming back to, and what breaks each).
+- Before adding or changing a guard, hook, rule, check, tool or step of the process: docs/circles.md (the circles we keep coming back to, and what breaks each).
 - Who does what, where we are on the route, the loop of every step: docs/studio-map.md.
 - A room, new or changed: the new-room skill (its room recipe), then the paper-reviewer agent.
 - A paper: docs/library.md, then its card in docs/cards, then its text in C:\Users\admin\Documents\objekt-files\papers\. A note on one paper: research-desk research-litnote;
@@ -22,7 +21,7 @@ once); what it names is read or run only for its task. One line per situation; t
 - A claim about our own setup (a plan, a version, a number): read it from the thing itself first (the service
   through its connector, the vendored code, a fresh measure); about Quest or WebXR: Meta's docs first
   (metavr docs search, the meta-vr skill hz-quest-verify-first). A doc, the board or another window is a lead.
-- A page he decides from (its "done", numbers, quotes): the fact-checker agent, two runs; edits from their findings I check against them myself, no new pair; nothing else is fact-checked: not small things, not searches, not checks (his decisions of 14.10).
+- A page he decides from (its "done", numbers, quotes): the fact-checker agent, two runs; edits from their findings I check against them myself, no new pair; nothing else is fact-checked: not minor items, not searches, not checks (his decisions of 14.10).
 - The owner's requests since the last check, once at the end of a step: the request-auditor agent.
 - Code and docs against the finished picture, after a large change: the architecture-auditor agent.
 - The headset: the practice review runs before he is called to it, never while he waits in it;
