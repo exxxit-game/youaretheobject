@@ -66,6 +66,7 @@
 ## Показы
 | Когда | Что | Твой ответ |
 |---|---|---|
+| 14.10 (окно разбора) | разбор кругов — https://claude.ai/artifact/GNUkHZf5MjEj2Ym5SeMuzA; процесс заменён стандартом Anthropic (CLAUDE.md, docs/features.json, docs/progress.md) | «6 ответов да»; итог — 21.10 |
 | 14.10 (новое окно) | круги — https://claude.ai/artifact/E6z3H8jPqU1qV57DdNW9wu | ждёт |
 | 14.10 (то же окно) | первые ли мы: ИИ, VR и опыты — https://claude.ai/artifact/1N6FEMdDATDSPigpepNsSn | ждёт |
 | 14.10 | меню на ≡ и выход из комнаты 101 — в очках; замер без тебя днём — страница | меню: «Работает… Для начала нормально»; замер — ждёт |

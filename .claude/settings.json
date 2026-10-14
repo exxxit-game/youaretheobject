@@ -18,6 +18,15 @@
     { "serverName": "plugin:meta-vr:metavr" }
   ],
   "permissions": {
+    "ask": [
+      "Edit(/CLAUDE.md)",
+      "Edit(/.claude/**)",
+      "Edit(/docs/owner-decisions.md)",
+      "Edit(/docs/ten-circles.md)",
+      "Edit(/tools/claude-guard.mjs)",
+      "Edit(/tools/board.mjs)",
+      "Edit(/tools/hooks/**)"
+    ],
     "allow": [
       "Bash(node tools/quest-look.mjs *)",
       "PowerShell(node tools/quest-look.mjs *)",

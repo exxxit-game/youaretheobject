@@ -4,6 +4,9 @@
 # of npm test pass. The slow ones (SLOW: each takes over about 2 s) and the smoke test run in the
 # whole npm test before "done" and on GitHub. Set once per clone: git config core.hooksPath tools/hooks
 SLOW='structure review-gate'
+# not a check of what is committed: the library test reads the owner's papers folder, and papers a search
+# saved there stopped commits of the game; it runs in npm test
+NOT_COMMIT='library'
 stop() { echo "STOP  the commit check fails: $1; nothing was committed"; exit 1; }
 # read before git's own variables go: for "commit -a" GIT_INDEX_FILE names what is being committed
 staged=$(git diff --cached --name-only --diff-filter=ACMR -- '*.js' '*.mjs')
@@ -18,7 +21,7 @@ EOF
 # the quick tests, all at once: the test files npm test names, less the slow ones
 pids=''
 for t in $(grep -o 'node tests/[a-z0-9.-]*\.test\.mjs' package.json | cut -c6-); do
-  case " $SLOW " in *" $(basename "$t" .test.mjs) "*) continue ;; esac
+  case " $SLOW $NOT_COMMIT " in *" $(basename "$t" .test.mjs) "*) continue ;; esac
   node "$t" > /dev/null 2>&1 &
   pids="$pids $!=$t"
 done

@@ -27,12 +27,13 @@ import { fileURLToPath } from 'node:url';
 import { withoutGitVars } from './secrets.mjs';
 import { typedText } from './owner-links.mjs';
 import { scan, named, entries, write, lastReport, REVIEWER, REPORT_END, PAPER_REVIEWER, PAPER_END, roomScan, checkedRooms, endsWithBlock } from './review-gate.mjs';
-import { BOARD, top, split } from './board.mjs';
+import { split } from './board.mjs';
 import { leftoverLine } from './leftovers.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DECISIONS = 'docs/owner-decisions.md';
 const CIRCLES = 'docs/ten-circles.md';
+const FEATURES = 'docs/features.json';
 const mode = process.argv[2];
 const input = mode ? await new Promise((done) => {
   let s = '';
@@ -402,7 +403,7 @@ const clip = (line) => (line.length > EXTRA_LINE ? `${line.slice(0, EXTRA_LINE -
 // started or waits for an approval; a success, a skip or a cancel is quiet
 const NEEDS_LOOK = new Set(['failure', 'timed_out', 'startup_failure', 'action_required']);
 export const ciLine = (run) => (NEEDS_LOOK.has(run?.conclusion)
-  ? `GitHub's tests are RED on room-polish (${run.conclusion}: ${run.displayTitle}): ${run.url}: read why before other work (gh run view ${run.databaseId} --log-failed)` : null);
+  ? `GitHub's tests are RED on room-polish (${run.conclusion}: ${run.displayTitle}): ${run.url} (gh run view ${run.databaseId} --log-failed)` : null);
 
 if (mode === 'pre') {
   const tool = String(event.tool_name || '');
@@ -420,7 +421,7 @@ const gitHere = (...a) => { try { return execFileSync('git', a, { cwd: HERE, env
 // context, so the state and the queue come back without anyone remembering to read them, and a
 // checkout made from the old live branch is named before work starts on it.
 if (mode === 'start') {
-  const out = [`Session ${event.source || 'start'}: the top of the board (${BOARD}) is below; the board is the work; the owner's decisions come with CLAUDE.md. First thing: if its showings table has no row for today, add what he will see today and tell him in your first line. docs/state.md says where things are.`];
+  const out = [`Session ${event.source || 'start'}. The process: CLAUDE.md, "Every session" (docs/progress.md, the git log, ${FEATURES}). The task is his message; nothing printed here is a task by itself.`];
   // the ten circles and our words, approved by him word for word, first in every window and after every
   // compaction; CLAUDE.md imports the same file, so the two places hold one text
   try { out.push(fs.readFileSync(path.join(HERE, CIRCLES), 'utf8').trim()); } catch { out.push(`WARNING: ${CIRCLES} is missing here: the ten circles he approved are not in front of this session.`); }
@@ -430,11 +431,11 @@ if (mode === 'start') {
   const log = gitHere('log', '--all', '--no-merges', `--since=${day(yesterday)}`, `--until=${day(today)}`, '--name-only', '--pretty=format:@@%h');
   if (log !== null) {
     const { game, process: proc } = split(log);
-    out.push(`Yesterday's commits: ${game} touched the game, ${proc} the process.${proc > game ? ' The process took more than the game: say so to the owner first.' : ''}`);
+    out.push(`Yesterday's commits: ${game} touched the game, ${proc} the process.${proc > game ? ' The process took more than the game: tell the owner.' : ''}`);
   }
   const branch = gitHere('rev-parse', '--abbrev-ref', 'HEAD');
   if (gitHere('rev-parse', '--verify', '-q', 'room-polish') && gitHere('merge-base', '--is-ancestor', 'room-polish', 'HEAD') === null) {
-    out.push(`WARNING: this checkout (${branch}) lacks the latest work on room-polish; it was probably made from the old live branch. If it has no commits of its own, reset it to room-polish; otherwise merge room-polish. Say so to the owner.`);
+    out.push(`WARNING: this checkout (${branch}) lacks the latest work on room-polish; it was probably made from the old live branch. If it has no commits of its own, reset it to room-polish; otherwise merge room-polish.`);
   }
   // docs/owner-decisions.md is imported by CLAUDE.md, which Claude Code loads at every start and
   // re-reads after every compaction without the 10,000-character cap on hook output; printed here
@@ -444,25 +445,14 @@ if (mode === 'start') {
   if (!claudeMd.includes(`@${DECISIONS}`)) {
     try { out.push(fs.readFileSync(path.join(HERE, DECISIONS), 'utf8').trim()); } catch { out.push(`WARNING: ${DECISIONS} is missing here: the owner's decisions are not in front of this session.`); }
   }
-  // the top of the board (board.mjs): Claude Code keeps a hook's output whole only up to 10,000
-  // characters (hooks docs), which tests/guard.test.mjs holds it to
+  // the one feature to work on: the first whose "passes" is false (Anthropic's harness for long-running
+  // agents: "choose the highest-priority feature that's not yet done"). The board's errors, the health
+  // check's chores and the reviewer's remarks are not printed: printed here, each became the window's
+  // first task before his message, and the window went to the process instead of the thing
   try {
-    out.push(top(fs.readFileSync(path.join(HERE, BOARD), 'utf8')));
-  } catch { out.push(`WARNING: ${BOARD} is missing here: this checkout is not the project's current work.`); }
-  // the health check, so a program, the library backup or a guard copy that broke silently is named at
-  // the start (it takes about 2 s; a hung check must not hold the session up)
-  try {
-    const health = execFileSync(process.execPath, [path.join(HERE, 'tools', 'health.mjs')], { cwd: HERE, encoding: 'utf8', timeout: 15000 }).trim();
-    // at most five problem lines: a machine missing many programs (GitHub's runner) printed so many
-    // that the start passed Claude Code's 10,000 characters and the board was no longer whole
-    const [head, ...rest] = health.split('\n'), more = rest.length - HEALTH_SHOWN;
-    out.push(/broken|warning/.test(health) ? `Health check (tools/health.mjs), tell the owner what is broken:\n${[head, ...rest.slice(0, HEALTH_SHOWN)].map(clip).join('\n')}${more > 0 ? `\n…and ${more} more: node tools/health.mjs` : ''}` : clip(head));
-  } catch { out.push('WARNING: the health check (tools/health.mjs) did not finish: run it by hand.'); }
-  // the outside reviewer's open remarks on the pull request into `reviewed`, read before other work
-  try {
-    const remarks = execFileSync(process.execPath, [path.join(HERE, 'tools', 'coderabbit.mjs')], { cwd: HERE, encoding: 'utf8', timeout: 10000 }).trim();
-    if (remarks) out.push(clip(remarks));
-  } catch { /* GitHub out of reach: nothing to say */ }
+    const next = JSON.parse(fs.readFileSync(path.join(HERE, FEATURES), 'utf8')).features.find((f) => !f.passes);
+    out.push(next ? `Current feature (${FEATURES}): ${next.id}: ${next.what}` : `Every feature in ${FEATURES} passes.`);
+  } catch { out.push(`WARNING: ${FEATURES} is missing or unreadable: the session has no list of features.`); }
   try {
     const runs = JSON.parse(execFileSync('gh', ['run', 'list', '--branch', 'room-polish', '--workflow', 'test.yml', '--limit', '1', '--json', 'conclusion,displayTitle,url,databaseId'], { cwd: HERE, encoding: 'utf8', timeout: 10000, windowsHide: true }));
     const red = ciLine(runs[0]);
@@ -533,21 +523,14 @@ if (mode === 'prompt') {
 }
 
 if (mode === 'stop') {
-  // problems a command of mine can fix hold the turn every time; those no command can fix (GitHub out
-  // of reach when the power cut took the router, the process list unreadable) hold it once and then let
-  // it end with a warning: the hooks reference asks a Stop hook to check stop_hook_active "to avoid
-  // blocking on a condition that will never resolve"
-  const again = event.stop_hook_active === true;
+  // it reminds once and never holds the same turn again (the hooks reference: check stop_hook_active "to
+  // avoid blocking on a condition that will never resolve"): held again and again it looped, up to 25
+  // tries, and forced empty replies while the owner had asked to stop. The pushed copy is made at the end
+  // of a feature (CLAUDE.md, "Every session" 6), not every turn
+  if (event.stop_hook_active === true) process.exit(0);
   const problems = [], unfixable = [];
-  const reachable = () => {
-    if (process.env.OBJECT_GITHUB_REACHABLE) return process.env.OBJECT_GITHUB_REACHABLE !== '0';
-    try { execFileSync('git', ['ls-remote', '--exit-code', 'origin', 'HEAD'], { cwd: HERE, env: withoutGitVars(), stdio: 'ignore', timeout: 15000 }); return true; } catch { return false; }
-  };
   const dirty = gitHere('status', '--porcelain');
   if (dirty) problems.push(`work not saved (power is cut daily):\n${dirty}`);
-  const ahead = gitHere('rev-list', '--count', '@{u}..HEAD');
-  const unpushed = ahead === null ? 'this branch has no copy on GitHub: push it' : Number(ahead) ? `${ahead} commits not on GitHub: push the working branch` : null;
-  if (unpushed) (again && !reachable() ? unfixable : problems).push(again ? `${unpushed} (GitHub is out of reach: push when it is back)` : unpushed);
   // the next window's checkout is made from the main folder's HEAD, room-polish (.claude/settings.json
   // worktree.baseRef head): work pushed on this branch alone is missing from the next session, and a
   // written rule to bring it over at the end of a step does not hold when a session ends mid-step
@@ -564,7 +547,7 @@ if (mode === 'stop') {
   }
   // a helper's command left running (tools/leftovers.mjs): seen at every turn's end, not by my memory
   const left = leftoverLine();
-  if (left) (again && /could not list the processes/.test(left) ? unfixable : problems).push(left);
+  if (left) (/could not list the processes/.test(left) ? unfixable : problems).push(left);
   // npm test is not run here: it runs before "done" and on GitHub, and the commit hook's quick check
   // before every commit; running the whole suite again cost 12-56 s a turn
   if (problems.length) {

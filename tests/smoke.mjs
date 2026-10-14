@@ -324,9 +324,11 @@ async function playRoom(url, playtest, { leave = false } = {}) {
       await page.waitForFunction(() => document.querySelectorAll('#menu .answer[data-ready]').length === 2, null, { timeout: 10000 });
       await page.evaluate(() => document.querySelector('#menu .answer[data-index="0"]').emit('click'));
       await waitState('idle', 10000);
+      // the room goes idle before the fade to black, the corridor comes back after it (lab.js leaveRoom,
+      // lobby.js back): door 1 offered again is the end of the way back, where both are looked at
+      await page.waitForFunction(() => !document.querySelector('.sheet[data-open]') && document.querySelector('#door1 .door-leaf.clickable'), null, { timeout: 30000 });
       assert.ok(await page.evaluate(() => document.querySelector('#corridor').object3D.visible), 'back from the room the corridor is not drawn');
       assert.equal(await page.evaluate(() => document.querySelectorAll('.sheet .answer').length), 0, 'one who left early is offered something of the room');
-      await page.waitForFunction(() => !document.querySelector('.sheet[data-open]') && document.querySelector('#door1 .door-leaf.clickable'), null, { timeout: 30000 });
       // under the menu in the corridor the thumbsticks do not move the player: a stick to the side, which in VR
       // turns them by 45°, leaves the rig where it was (locomotion.js, pause)
       await page.keyboard.press('Escape');

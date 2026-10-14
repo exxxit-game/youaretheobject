@@ -252,9 +252,9 @@ assert.equal(ask('Bash', 'grep -rn "git commit --no-verify" docs/'), 0, 'the hoo
   fs.rmSync(dir, { recursive: true, force: true });
 }
 
-// The stop hook holds a turn on what a command can fix, every time; on what no command can fix (GitHub
-// out of reach), it holds once and then, with stop_hook_active, lets the turn end with a warning. A
-// repository of the test's own, one commit ahead of its own origin.
+// The stop hook reminds once: unsaved work holds the turn the first time, and with stop_hook_active the
+// turn ends, so it never loops; commits not yet on GitHub hold nothing (the copy is pushed at the end of
+// a feature). A repository of the test's own, one commit ahead of its own origin.
 {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'stop-'));
   const repo = path.join(dir, 'work'), origin = path.join(dir, 'origin.git');
@@ -269,13 +269,11 @@ assert.equal(ask('Bash', 'grep -rn "git commit --no-verify" docs/'), 0, 'the hoo
   const ask = (again, reachable, more = {}) => spawnSync(process.execPath, [path.join(ROOT, 'tools/claude-guard.mjs'), 'stop'], { cwd: repo, encoding: 'utf8',
     env: { ...process.env, OBJECT_PROCESS_LIST: path.join(dir, 'none.json'), OBJECT_GITHUB_REACHABLE: reachable ? '1' : '0', ...more }, input: JSON.stringify({ cwd: repo, stop_hook_active: again }) });
   const said = (r) => { try { return JSON.parse(r.stdout); } catch { return {}; } };
-  const first = said(ask(false, false));
-  assert.match(first.hookSpecificOutput?.additionalContext || '', /1 commits not on GitHub/, 'the first stop let an unpushed turn end');
-  const second = ask(true, false);
-  assert.ok(second.status === 0 && !said(second).hookSpecificOutput && /out of reach/.test(said(second).systemMessage || ''), `with GitHub out of reach the second stop still held the turn:\n${second.stdout}`);
-  assert.match(said(ask(true, true)).hookSpecificOutput?.additionalContext || '', /not on GitHub/, 'with GitHub in reach the second stop let an unpushed turn end');
+  assert.ok(!said(ask(false, true)).hookSpecificOutput, 'a commit not yet on GitHub held the turn: the copy is pushed at the end of a feature');
   fs.writeFileSync(path.join(repo, 'a.txt'), 'c\n');
-  assert.match(said(ask(true, false)).hookSpecificOutput?.additionalContext || '', /work not saved/, 'unsaved work was let go: a commit is always possible');
+  assert.match(said(ask(false, true)).hookSpecificOutput?.additionalContext || '', /work not saved/, 'unsaved work was let go at the first stop: a commit is always possible');
+  const second = ask(true, true);
+  assert.ok(second.status === 0 && second.stdout.trim() === '', `the second stop held the turn again, which loops:\n${second.stdout}`);
   fs.rmSync(dir, { recursive: true, force: true });
 }
 
@@ -320,7 +318,12 @@ const themes = ['game', 'measures', 'data', 'setup'].map((t) => path.join(ROOT, 
 assert.ok(fs.existsSync(decisions) && /^- The rules read at start shortened/m.test(fs.readFileSync(decisions, 'utf8'))
   && themes.every((f) => fs.existsSync(f) && /^---\r?\npaths:\r?\n {2}- "/.test(fs.readFileSync(f, 'utf8'))),
   "the session does not show the owner's decisions: docs/owner-decisions.md lost its first decision, or a theme's file in .claude/rules is gone or lost its paths");
-assert.ok(start.stdout.includes(boardTop), `the start hook does not show the board:\n${start.stdout.slice(0, 400)}`);
+// the start names the one feature to work on (Anthropic's harness: "choose the highest-priority feature
+// that's not yet done") and nothing to do first: each "first" or "before other work" printed there became
+// the window's task before his message
+const firstOpen = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/features.json'), 'utf8')).features.find((f) => !f.passes);
+assert.ok(!firstOpen || start.stdout.includes(`Current feature (docs/features.json): ${firstOpen.id}`), `the start does not name the current feature:\n${start.stdout.slice(-600)}`);
+assert.ok(!/first thing|before other work|say so to the owner first|tell the owner what is broken/i.test(start.stdout), 'the start tells the session what to do first again');
 
 // The top of the board at start: the head and the work now, what waits for him, the newest rows of
 // the showings (new rows go on top); the rest of the board is read from the file
@@ -339,12 +342,9 @@ assert.ok(/Yesterday's commits: \d+ touched the game, \d+ the process/.test(star
 const circles = fs.readFileSync(path.join(ROOT, 'docs/ten-circles.md'), 'utf8').trim();
 assert.ok(start.stdout.includes(circles) && start.stdout.indexOf(circles) < start.stdout.indexOf('Yesterday'), 'the start lost the ten circles he approved, or shows them after other lines');
 assert.ok(start.stdout.length < 10000, `the start hook prints ${start.stdout.length} characters: over 10,000 Claude Code keeps only a preview`);
-// and on the worst day, not only on this machine: the top of the board and the session lines, then five
-// health problems and the CodeRabbit and red-CI lines, each at its longest (GitHub's runner lacks the
-// laptop's programs; a start that fit here went over there twice)
-const end = start.stdout.indexOf(`(the rest of the board: ${BOARD})`);
-const shownBoard = end + `(the rest of the board: ${BOARD})`.length;
-const worstStart = shownBoard + 2 + (1 + HEALTH_SHOWN + 1) * (EXTRA_LINE + 1) + 2 * (EXTRA_LINE + 2);
-assert.ok(end > 0 && worstStart < 10000, `on the worst day the start would print ${worstStart} characters (the board's top ${shownBoard}): shorten the board's top`);
+// and on the worst day, not only on this machine: the red-CI line and the branch warning at their longest
+// (GitHub's runner sees no CI line; a start that fit here went over there twice)
+const worstStart = start.stdout.length + 2 * (EXTRA_LINE + 2);
+assert.ok(worstStart < 10000, `on the worst day the start would print ${worstStart} characters: over 10,000 Claude Code keeps only a preview`);
 
-console.log(`guard: ok (${refused.length} refused, ${allowed.length} allowed, the hook wired, the headset's wearer seen, his messages logged and only his, his decisions imported by CLAUDE.md, the board's top and his brake shown at start, commands left running named)`);
+console.log(`guard: ok (${refused.length} refused, ${allowed.length} allowed, the hook wired, the headset's wearer seen, his messages logged and only his, his decisions imported by CLAUDE.md, the current feature and his brake shown at start, nothing to do first, commands left running named)`);

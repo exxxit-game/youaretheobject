@@ -287,7 +287,7 @@ function syncSound() { const ctx = getContext(); if (ctx) (heldByMenu || heldByE
 export const running = () => ['intro', 'run', 'questions'].includes(state) || (state === 'done' && !debriefed);
 
 // The player leaves through the menu, before the fade to black: before the truth of the debrief nothing of the run
-// is sent (reveal), and the room stands as before its first entry; leaving before it, the corridor offers what it was.
+// is sent (reveal), and the room stands as before its first entry; leaving before it, nothing of the room is told (left-early.js).
 export function leave() {
   flow.end();
   heldByExit = heldByMenu = false; syncSound(); document.querySelector('#left-early')?.remove();   // sound back; the left-VR box ends with the run

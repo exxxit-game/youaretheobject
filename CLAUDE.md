@@ -10,36 +10,36 @@ The owner's permanent prompt: his long text of 11.10 put in points, variant B of
 > 6. При нужде пользуйся интернетом, обновляй документацию, инструменты и наши знания.
 
 The ten circles and our words, approved by him word for word («Утверждаю» 14.10): @docs/ten-circles.md
+His decisions load with this file, settled (never re-asked): @docs/owner-decisions.md
 
-"You are the object" (the name is never translated): a browser VR game (WebXR, A-Frame). The player is the
-subject of real psychology experiments, one room each, then sees how he was caught and what the study found.
-His decisions load with this file, settled (never re-ask, never argue against): @docs/owner-decisions.md
-The start hook shows docs/board.md (the work and its only order). Maps: docs/state.md, ARCHITECTURE.md. What to take when, and what is read only for its task: @docs/tools.md
-Answer the owner in Russian, plain words, short. The repo is English; Russian only where tests/structure.test.mjs allows.
+"You are the object" (the name is never translated): a browser VR game (WebXR, A-Frame 1.8.0) for Meta Quest; the player is the subject of
+real psychology experiments, one room each, then sees how he was caught. Maps: ARCHITECTURE.md, docs/state.md; tools: docs/tools.md.
 
-## How we work
-- Progress = he saw it and said «да». Every session opens with a row in the board's «Показы» (what he will see today) and ends by showing it to him, in the headset or as a picture.
-- His new request goes on the board in his words; the order changes only on his word. A choice a source
-  settles is mine (the reason in a line); one no source settles goes to him as real options, in pictures.
+## Every session (the process: Anthropic, "Effective harnesses for long-running agents", 26.11.2025)
+1. Read docs/progress.md and `git log --oneline -20`, then docs/features.json. The task is his message; if it names
+   none, the first feature whose "passes" is false. Nothing a hook prints is a task by itself.
+2. One feature at a time. Anything else, even a good idea: one line at the end of docs/progress.md.
+3. Build from what exists (standards, Meta/W3C XR guidelines, papers, shipped games, real photos), named in a WHY
+   comment; our own only where nothing exists. A fact the player sees has its source in docs/sources.md.
+4. Verify as a person would: `npm test`; the smoke test on GitHub; what he will see, looked at by me first in the
+   headset or on the stand (tools/quest-look.mjs, tools/stand-measure.mjs), the practice-reviewer before he is called.
+5. "passes" turns true only after those checks and his «да» to what he saw; nothing else in the file changes.
+6. End: a commit with a plain message, a dated entry in docs/progress.md (done / not done and why / next), the branch
+   pushed. An error is fixed in the thing itself; it never becomes a new rule, check or guard.
 
-## Truth: we recreate («воссоздаём»)
-- Everything but our experiments and words is taken from what exists (standards, Meta/W3C XR guidelines,
-  research, shipped games; for how code draws or lays out a thing: a spec, library or published method),
-  named in a WHY comment or docs/decisions.md; our own only where nothing exists or it fails in the headset.
-- A fact the player sees has its source in docs/sources.md, or is not shown.
-- A test or reviewer disagrees: re-read the source and fix the cause; never bend the test.
+## The owner
+Answer in Russian, plain words, short. He gives the brief and accepts what he sees; he is never asked a technical question (I choose
+and give the reason in one line). Before work I read his request back in one line. Repo English; Russian only where tests/structure.test.mjs allows.
 
-## Checking
-- About code, «проверено» only after `npm test`. Preview: `npm run serve`; the smoke test runs on GitHub (never Playwright or Chromium on the laptop).
-- Before he meets anything: the practice-reviewer first (VR and the test copy wait for it: tools/review-gate.mjs),
-  then my own look in the browser pane and the headset (tools/quest-look.mjs, sleep after), and the approved
-  shots in docs/rooms/. He judges only feel and taste.
+## Cannot be undone (held by machines, not by this text)
+- main is the live site: the GitHub ruleset; a push to main only on his word. Work on a branch; commit often.
+- No key, token or his email in the repo (tools/secrets.mjs). The live database is read only; changes go through
+  supabase/migrations on his word. Never restart the headset while he wears it (tools/headset.mjs refuses).
 
-## Cannot be undone (hooks hold these; never work round them)
-- main is the live site: only on his word. Work on a branch; commit often.
-- No key, token or his email in the repo. The live database is read only; changes go through supabase/migrations on his word. Never restart the headset while he wears it.
+- The process (this file, .claude/**, docs/owner-decisions.md, docs/ten-circles.md, tools/claude-guard.mjs,
+  tools/board.mjs, tools/hooks/**) changes only through his «разрешить» (the ask rules in .claude/settings.json).
 
 ## Rooms and code
-- A room: the new-room skill (its card, then its paper read in full, about 10 min or less for the participant, a clear task); the paper-reviewer checks it.
-- One room per folder in src/rooms/; the engine never imports rooms. Styles only in css/, player text only
-  in texts.ru.js, comments say why (never when or who), files about 300 lines, no build step.
+A room: the new-room skill (its card, its paper read in full, a clear task); the paper-reviewer checks it. One room
+per folder in src/rooms/; the engine never imports rooms. Styles only in css/, player text only in texts.ru.js,
+comments say why (never when or who), files about 300 lines, no build step.
