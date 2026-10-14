@@ -125,7 +125,7 @@ for (const [header, why] of [
 assert.deepEqual(agentHeaderProblems('---\nname: x\n---\n'), ['no description']);
 for (const f of fs.readdirSync('.claude/agents')) assert.deepEqual(agentHeaderProblems(fs.readFileSync(path.join('.claude/agents', f), 'utf8')), [], `.claude/agents/${f} loads`);
 
-// the setup around the code (tools/health-setup.mjs): read from the laptop at each session start
+// the setup around the code (tools/health-setup.mjs): read from the laptop when the check runs
 assert.deepEqual(hooksProblems('tools/hooks', 'C:/x', (f) => /pre-(commit|push)$/.test(f)), [], 'the hooks folder git runs has both hooks');
 assert.equal(hooksProblems('C:/main/tools/hooks', 'C:/x', (f) => f.endsWith('pre-commit')).length, 1, 'a hooks folder without pre-push is caught, an absolute setting read as is');
 assert.equal(hooksProblems('', 'C:/x').length, 1, 'no hook setting at all is caught');

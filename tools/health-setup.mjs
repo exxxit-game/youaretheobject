@@ -2,7 +2,7 @@
 // is: git signs privately and runs its guard hooks, main is protected on GitHub, every memory file
 // is in the memory index, the plugins are the ones the owner decided, and the app's Claude Code is
 // new enough for the hooks. Each of these was wrong once while every test passed: a setting shows
-// only in use, so the health check reads them at every session start.
+// only in use, so the health check reads them when run.
 import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
