@@ -326,9 +326,14 @@ assert.ok(shown.includes('- now') && shown.includes('1. a link') && shown.includ
 assert.ok(!shown.includes('far') && !shown.includes('| 6.10 |') && !shown.includes('waits'), 'the top shows the whole board again');
 // an older row reading like a newer one stays out: rows count by place
 assert.equal((top(board(['11.10', '10.10', '9.10', '8.10', '7.10', '11.10'])).match(/\| 11\.10 \|/g) || []).length, 1, 'a repeated older row came back into the top');
+// a note after the date still makes it a row of the showings: such rows once all passed the count
+assert.ok(!top(board(['11.10 (new window)', '10.10', '9.10 (same window)', '8.10', '7.10', '6.10 (same window)'])).includes('| 6.10 '), 'a row with a note after its date got past the count');
 // his brake: yesterday's commits split by what they touched, a commit touching both counted in both
 assert.deepEqual(split('@@a\nsrc/x.js\n\n@@b\ntools/y.mjs\ndocs/z.md\n\n@@c\nsrc/a.js\ntests/b.mjs\n\n@@d\nREADME.md'), { game: 2, process: 2 }, 'commits to the game and to the process counted wrong');
 assert.ok(/Yesterday's commits: \d+ touched the game, \d+ the process/.test(start.stdout), 'the start lost his brake line');
+// the ten circles he approved word for word come first, the whole text, not a shortened copy
+const circles = fs.readFileSync(path.join(ROOT, 'docs/ten-circles.md'), 'utf8').trim();
+assert.ok(start.stdout.includes(circles) && start.stdout.indexOf(circles) < start.stdout.indexOf('Yesterday'), 'the start lost the ten circles he approved, or shows them after other lines');
 assert.ok(start.stdout.length < 10000, `the start hook prints ${start.stdout.length} characters: over 10,000 Claude Code keeps only a preview`);
 // and on the worst day, not only on this machine: the top of the board and the session lines, then five
 // health problems and the CodeRabbit and red-CI lines, each at its longest (GitHub's runner lacks the

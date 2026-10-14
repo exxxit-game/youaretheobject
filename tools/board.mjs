@@ -22,9 +22,10 @@ const section = (text, h) => {
 export function top(text) {
   const t = String(text).replace(/\r\n/g, '\n').trim();
   const head = t.indexOf(UNTIL) < 0 ? t : t.slice(0, t.indexOf(UNTIL)).trim();
-  // rows counted by place, not by text: two rows may read the same
+  // rows counted by place, not by text: two rows may read the same; a row is a showing whatever note
+  // follows its date (such as "(new window)"), or every such row slips past the count
   let seen = 0;
-  const table = section(t, SHOWS).split('\n').filter((l) => !/^\|\s*\d{1,2}\.\d{1,2}\s*\|/.test(l) || seen++ < SHOWN_ROWS);
+  const table = section(t, SHOWS).split('\n').filter((l) => !/^\|\s*\d{1,2}\.\d{1,2}\b/.test(l) || seen++ < SHOWN_ROWS);
   return [head, section(t, WAITS), table.join('\n'), `(the rest of the board: ${BOARD})`].filter(Boolean).join('\n\n');
 }
 
