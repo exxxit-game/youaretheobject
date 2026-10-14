@@ -110,3 +110,36 @@ Searched (YouTube's results page, read from its data): "Claude Code VR game Ques
   GET Lab, "VR Conformity" (10 years ago, 321 views) https://www.youtube.com/watch?v=LFBt-0NtvHg [all seen: titles in
   the results only]; the Theseus "Milgram Experiment" (flat, already in ai-and-vr.md). Not new to us.
 
+## 2. Bilibili (Chinese)
+
+How read: Bilibili's own video search (its web API, default ranking), 17 queries, 8-12 results each; written here in
+English, run in Chinese where marked: Claude Code VR game (zh); AI programming VR game (zh); WebXR AI; Cursor VR
+development Quest (zh); making a VR game with AI (zh); Vibe Coding VR; PICO TRAE spatial apps (zh); one sentence
+generates a VR app (zh); Claude Code Quest development (zh); AI indie development, VR, released (zh); Codex VR game
+(zh); for psychology: psychology experiment VR game (zh); VR psychology experiment experience (zh); Milgram
+experiment VR (zh); rubber hand illusion VR (zh); classic psychology experiments, virtual reality, game (zh). Video
+pages are blocked to plain downloads (HTTP 412); one was read in the browser pane.
+
+- Yidun_Eden (the uploader's name, romanized from Chinese; 6,206 followers; profile line, translated: "using AI to turn ideas into reality"),
+  "UE+AI made a VR game [released] but the reality......" (translated from Chinese), 31 Aug 2026, 1,281 views, marked
+  by Bilibili "contains AI-generated content"; tags (translated): "I make games with AI", AI, game development, VR;
+  video [read: the page in the browser pane; no description text; the speech not heard].
+  https://www.bilibili.com/video/BV1x2tp67EF4/ . Closeness: a Chinese solo developer who released a VR game made
+  with Unreal and AI and reports a disappointing outcome; which game, which AI and what went wrong are in the speech
+  only (unverified). The page's side list shows many Chinese "made a game with AI, no code, on Steam" videos (e.g.
+  "I made a game with AI and put it on Steam: how much did I spend?"), none of them VR.
+- Deck_HQ, "Astro Bot: Rescue Mission VR performance test / a new standalone Meta Quest 3 mod" (translated), 5 Oct
+  2026, 745 views [seen: search result]; its link is github.com/bigmak94/AstroQuest, by the same author as GalaxyQuest,
+  which the first search read as "100% made by AI (Claude Opus 5.5 in Claude Code)". https://www.bilibili.com/video/BV1ZBHx6ZEq5/ .
+  Closeness: Chinese VR channels now show AI-written Quest ports as ordinary mods (the same channel lists several
+  new Quest mods in early October 2026); ports, no science.
+- KodeDino, "What it is like to have your own AI game studio [Claude Code Game Studios]" (translated), 9 Apr 2026,
+  4,066 views [seen: search result]. https://www.bilibili.com/video/BV1rAD6BgEUa/ . The 48-agent template the first
+  search already found (Donchitos), tried by a Chinese creator; not VR.
+- Voidmatrix, "[AI big comparison] 11 AIs make 33 games: who is the king of game development?" (translated), 2 Oct
+  2026, 221,436 views [seen]. https://www.bilibili.com/video/BV1Riak68ECd/ . Flat games, not VR.
+- Psychology: no Chinese video of a VR game built on classic experiments. Results are explanations of Milgram, the
+  marshmallow test or the rubber hand illusion (flat videos), VR school labs for chemistry and physics (e.g. HiXR's
+  "Smart Palace" middle-school VR lab, 29 Mar 2022), and a VR relaxation therapy demo (1 Dec 2024) [all seen].
+- PICO's own AI path (TRAE IDE, PICO CLI) has no Bilibili video in these results.
+

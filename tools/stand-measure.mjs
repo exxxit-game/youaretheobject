@@ -89,6 +89,10 @@ async function main() {
     // OVR Metrics' overlay costs GPU time of its own (docs/baseline.md): off for the measure
     sh('am broadcast -n com.oculus.ovrmonitormetricsservice/.SettingsBroadcastReceiver -a com.oculus.ovrmonitormetricsservice.DISABLE_OVERLAY');
 
+    // the game comes from the laptop's own server (the preview "objekt"): a run without it showed the headset an
+    // error page and stopped on a missing scene (14.10), so it is asked for first and named when absent
+    const served = await fetch(`http://localhost:${localPort()}/`).then((r) => r.ok, () => false);
+    if (!served) throw new Error(`the game server is not running on port ${localPort()}: start it (npm run serve, the preview "objekt")`);
     await openGame(serveToHeadset(localPort()));
     for (let i = 0; i < 60 && !game; i++) { game = await page(/localhost:3000/); if (!game) await pause(500); }
     if (!game) throw new Error('the game tab did not appear');
