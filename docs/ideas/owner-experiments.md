@@ -1,7 +1,7 @@
 # The owner's own experiment ideas
 
 His words in English (the Russian is on the board, docs/board.md, and in his message log). He wants our own
-new experiments run live with players, besides the re-created ones (docs/owner-decisions.md). Each is built on
+new experiments run live with players, besides the re-created ones (.claude/rules/game.md). Each is built on
 the closest published studies, read in full; the research is done (docs/research/own-experiments-now.md: ten
 candidates, this one among them) and the candidates wait for his pick.
 

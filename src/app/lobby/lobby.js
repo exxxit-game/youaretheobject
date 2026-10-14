@@ -45,7 +45,7 @@ const WALL_PRINT_LIGHT = 0.45;
 // (tests/smoke.mjs measures it). The engine's lights pass through walls, so the room's own
 // lights (class room-light) stay off while its door is shut and come up as it opens, and the
 // corridor's (class corridor-light) go out once the player is in: the room is lit by its own
-// lamps alone, no light from nowhere (docs/owner-decisions.md).
+// lamps alone, no light from nowhere (.claude/rules/game.md).
 const DOOR_MS = 700;
 // How much of the room's light shows while its door opens (our choice, to be checked in the
 // headset): enough to see a lit room through the opening, little enough that the corridor
@@ -141,7 +141,7 @@ function lightCorridor(sheet) {
 
 // The end walls' picture (scene.js): which end shows it upside down changes with each visit, a detail
 // that rewards playing again, as the game is made to be replayed to be understood
-// (docs/owner-decisions.md); seen at a slant it stays as sharp as the game's other
+// (.claude/rules/game.md); seen at a slant it stays as sharp as the game's other
 // textures (panel.js: anisotropy 8).
 function hangPrints(visits) {
   document.querySelectorAll('.end-print').forEach((el, i) => {

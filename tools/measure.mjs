@@ -1,4 +1,4 @@
-// The baseline's measure in the owner's headset, as one walk (docs/baseline.md; docs/owner-decisions.md:
+// The baseline's measure in the owner's headset, as one walk (docs/baseline.md; .claude/rules/measures.md:
 // «надо все замерить… очень-очень хорошо детально», «мы любим точность»). Two fact-checks of the first
 // baseline found every number copied right and the times, spans and conditions around them wrong, written
 // from memory; so here the machine writes them: every step's time from the headset's own clock (the page's

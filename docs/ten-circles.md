@@ -1,8 +1,8 @@
 # The ten circles and our words
 
 Approved by the owner word for word («Утверждаю» 14.10; how it came: docs/owner-decisions-history-2.md). Shown
-first at every session start (tools/claude-guard.mjs start); CLAUDE.md imports it once the 200-line limit has
-room (his «в двух местах» 14.10). Changed only by his «утверждаю».
+first at every session start (tools/claude-guard.mjs start) and imported by CLAUDE.md (his «в двух местах» 14.10).
+Changed only by his «утверждаю».
 
 Наши круги. Ничего нового: одни и те же десять.
 

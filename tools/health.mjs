@@ -55,7 +55,7 @@ export const PROGRAMS = [
   { name: 'adb', args: ['version'], expect: /^Android Debug Bridge version \S+/m, fix: 'unpack Android platform-tools (developer.android.com/tools/releases/platform-tools) into C:\\adb\\platform-tools' },
   { name: 'scrcpy', args: ['--version'], expect: /^scrcpy \d\S*/m, fix: 'scoop install scrcpy' },
   { name: 'ffmpeg', args: ['-version'], expect: /^ffmpeg version \S+/m, fix: 'scoop install ffmpeg' },
-  // the light baked into textures and the period props made as models (docs/owner-decisions.md, the tool revision)
+  // the light baked into textures and the period props made as models (.claude/rules/setup.md, the tool revision)
   { name: 'blender', args: ['--version'], expect: /^Blender \d\S*/m, fix: 'scoop install extras/blender' },
   // Meta's own CLI: performance traces and store checks of the headset build (its MCP server gave no tools)
   { name: 'metavr', args: ['--version'], expect: /^metavr \d\S*/m, fix: 'npm install -g metavr (Meta\'s package, github.com/meta-quest/agentic-tools)' }
@@ -199,7 +199,7 @@ export function checkPapers(lib = PAPERS, backup = BACKUP, exists = fs.existsSyn
 
 // --- The research agents ---------------------------------------------------------------------
 export const RESEARCH_AGENTS = ['deep-research', 'quick-research'];
-// the hosted copy of the reference lookup is the one kept (docs/owner-decisions.md); the local copy
+// the hosted copy of the reference lookup is the one kept (.claude/rules/setup.md); the local copy
 // is denied in .claude/settings.json, so an agent naming it has no lookup at all
 const NEEDS = [
   ['the papers search (4ff8cb31 search)', (t) => /4ff8cb31[\w-]*__search\b/.test(t)],

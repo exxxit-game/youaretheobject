@@ -2,7 +2,7 @@
 // the smoke test puts on Meta's emulated headset (IWER, tests/smoke-vr.mjs) with both eyes drawn, each
 // on its own: the emulator has no OCULUS_multiview, which the headset's browser has and the game turns
 // on (src/app/stage.js), so in the headset each call is made once a frame. Quest 2, the
-// weakest headset whose budget the game keeps (docs/owner-decisions.md), wants fewer than 100 a frame
+// weakest headset whose budget the game keeps (.claude/rules/game.md), wants fewer than 100 a frame
 // (Meta, device optimization comparison: docs/research/vr/01-meta.md).
 // The corridor is under it since parts that differ only in colour are merged (merge-static.js) and each
 // controller is drawn as one mesh (controller-batch.js); room 101 since the corridor behind its shut door

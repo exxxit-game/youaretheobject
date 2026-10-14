@@ -1,7 +1,7 @@
 import { APP_T } from './texts.ru.js';
 
 // A player who leaves before the end learns nothing of the room: to learn what it was, he plays it to its end
-// (docs/owner-decisions.md, the ethics line: one who did not finish has nothing to learn, and a shared headset must
+// (.claude/rules/data.md, the ethics line: one who did not finish has nothing to learn, and a shared headset must
 // not hand the next player the answer).
 const key = (room) => `object.left.${room}`;
 // No mark is kept for the next visit; both calls only clear the mark an older version left.

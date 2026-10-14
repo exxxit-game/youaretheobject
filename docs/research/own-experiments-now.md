@@ -14,7 +14,7 @@ until its answer is read and sourced:
 - "At home you play for fun, you don't try like in a lab": study-methods-1 part 1 (commitment, playable practice,
   end-of-run seriousness and no-blame questions, self-knowledge as the reward).
 - "Start with a minute of fun, then: let's take this seriously": study-methods-1 1g (practice trial, then commitment).
-- "Without humour you are a lab rat; a host leads you through the story": owner's decision (docs/owner-decisions.md);
+- "Without humour you are a lab rat; a host leads you through the story": owner's decision (.claude/rules/game.md);
   fun around the measured moment, plain inside it (Lumsden 2016); science-reach.md part 3 (Sea Hero Quest, Portal).
 - "How did those projects get millions of users?": science-reach.md parts 1-2.
 - "Take all they solved, check how far it solves the problem; how precise can our data be, how do they measure

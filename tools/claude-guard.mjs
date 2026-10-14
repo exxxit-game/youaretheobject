@@ -422,7 +422,7 @@ const gitHere = (...a) => { try { return execFileSync('git', a, { cwd: HERE, env
 if (mode === 'start') {
   const out = [`Session ${event.source || 'start'}: the top of the board (${BOARD}) is below; the board is the work; the owner's decisions come with CLAUDE.md. First thing: if its showings table has no row for today, add what he will see today and tell him in your first line. docs/state.md says where things are.`];
   // the ten circles and our words, approved by him word for word, first in every window and after every
-  // compaction; CLAUDE.md imports the same file once its 200-line limit has room, so there is one text
+  // compaction; CLAUDE.md imports the same file, so the two places hold one text
   try { out.push(fs.readFileSync(path.join(HERE, CIRCLES), 'utf8').trim()); } catch { out.push(`WARNING: ${CIRCLES} is missing here: the ten circles he approved are not in front of this session.`); }
   // his brake: yesterday's commits to the game and to the process, counted by git, not by me
   const day = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}T00:00`;

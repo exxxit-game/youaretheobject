@@ -28,7 +28,7 @@ export function paintExtinguisherLabel(el) {
   x.font = `700 46px ${FONT}`; x.fillText(t.agent, W / 2, 94);
   x.font = `600 24px ${FONT}`; x.fillText(t.name, W / 2, 168);
   // how to operate, white on the blue band: 14% of the label's height on the 1970 one (photo 4), 18% here,
-  // as tight as its four lines allow at the size they are read at (readability first: docs/owner-decisions.md)
+  // as tight as its four lines allow at the size they are read at (readability first: .claude/rules/game.md)
   x.fillStyle = BLUE; x.fillRect(12, 196, W - 24, 124);
   x.fillStyle = '#ffffff';
   x.font = `700 20px ${FONT}`; x.fillText(t.operate, W / 2, 214);

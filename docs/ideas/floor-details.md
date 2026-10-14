@@ -2,7 +2,7 @@
 
 His words in English (the Russian is in his message log; the board, docs/board.md, points here). It sits
 beside his model of the game, Guy Ritchie's "Revolver": a game played again and again to be understood,
-built detail by detail (docs/owner-decisions.md). Not for now: the floors after the corridor.
+built detail by detail (.claude/rules/game.md). Not for now: the floors after the corridor.
 
 ## Quality is many small things
 "Even a small thing you go and change is already a big change, if small thing after small thing after small

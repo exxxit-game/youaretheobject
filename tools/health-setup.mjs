@@ -61,7 +61,7 @@ export function checkMemory(mainDir) {
   return problems.length ? [broken(`memory: ${problems.join('; ')}: fix MEMORY.md`)] : [ok(`the memory index names all ${files.length} memory files`)];
 }
 
-// --- the plugins the owner decided (docs/owner-decisions.md) ---------------------------------
+// --- the plugins the owner decided (.claude/rules/setup.md) ---------------------------------
 // on for every project: CodeRabbit (his 14-day trial; it replaced the PR review toolkit) and the
 // TypeScript language server; any other plugin switched on in the user settings is one
 // he did not decide

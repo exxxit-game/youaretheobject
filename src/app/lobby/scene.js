@@ -124,7 +124,7 @@ function lip() {
 // The end walls: Arcimboldo's Vegetable Gardener (about 1590; Wikimedia Commons, public domain,
 // docs/art/credits.md) on each, the right way up (a face) at one end and upside down (a bowl of
 // vegetables) at the other, with no caption: whoever walks to both ends may notice it is one picture
-// (a find for a game played again to be understood: docs/owner-decisions.md; the candidates in
+// (a find for a game played again to be understood: .claude/rules/game.md; the candidates in
 // docs/research/vr/09-end-wall-pictures.md). It hangs as in its museum (Museo Civico Ala Ponzone,
 // Cremona; Monica Rondoni's photo, Wikimedia Commons, CC BY-SA 4.0): 24 cm wide (Web Gallery of Art, which gives 36 x 24 cm; the museum 35.8 x 24.2), its height
 // from the scan, 1.33 of its width as in every reproduction (the difference is not explained),
@@ -168,7 +168,7 @@ const OUTER = { w: r(PICTURE.w - 2 * LAP + 2 * M), h: r(PICTURE.h - 2 * LAP + 2 
 const PRINT_Y = r(1.2 + OUTER.h / 2);
 const END_PRINTS = [{ x: PLAN.from, facing: 1, turn: 0 }, { x: PLAN.to, facing: -1, turn: 180 }];
 // The two swap ends from one visit to the next: a detail that rewards playing again, as the game is
-// made to be replayed to be understood (docs/owner-decisions.md). The picture's turn on end i
+// made to be replayed to be understood (.claude/rules/game.md). The picture's turn on end i
 // (0 west, 1 east), visits counted from 0 (opening.js, visitsSoFar)
 export const printTurn = (i, visits) => (END_PRINTS[i].turn + 180 * (Math.abs(visits | 0) % 2)) % 360;
 // the gilded frame and the picture in it (turned 180 degrees on one end)

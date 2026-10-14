@@ -45,7 +45,7 @@
 - docs/tools.md, loaded with CLAUDE.md in every session. Other installed skills idle.
 
 ## Decisions with the owner
-One line each in `docs/owner-decisions.md` (loaded at every start); all his words in `docs/owner-decisions-history.md` (read for a task).
+One line each: for every window in `docs/owner-decisions.md` (loaded at every start), for one theme in `.claude/rules/` (game, measures, data, setup; loaded when a file of that theme is read or edited); all his words in `docs/owner-decisions-history.md` (read for a task).
 
 ## How errors are caught (the owner cannot read code)
 - `new-room` skill; `paper-reviewer` agent; `docs/mistakes.md` (a mistake that broke the game, with the test that now catches it); facts in one place

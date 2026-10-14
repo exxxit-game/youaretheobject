@@ -314,8 +314,12 @@ const boardTop = fs.readFileSync(path.join(ROOT, BOARD), 'utf8').split(/\r?\n/)[
 const decisions = path.join(ROOT, 'docs/owner-decisions.md');
 assert.ok(/^His decisions load with this file[^\n]*@docs\/owner-decisions\.md/m.test(fs.readFileSync(path.join(ROOT, 'CLAUDE.md'), 'utf8')),
   'CLAUDE.md no longer imports docs/owner-decisions.md: his decisions are not in front of the session');
-assert.ok(fs.existsSync(decisions) && /^- The corridor is the reference/m.test(fs.readFileSync(decisions, 'utf8')),
-  "the session does not show the owner's decisions: docs/owner-decisions.md is missing or lost its first decision");
+// the decisions of one theme live in .claude/rules/, each loaded by its paths (code.claude.com/docs/en/memory,
+// "Path-specific rules"): a file gone, or its paths header broken, and those decisions stop arriving
+const themes = ['game', 'measures', 'data', 'setup'].map((t) => path.join(ROOT, '.claude', 'rules', `${t}.md`));
+assert.ok(fs.existsSync(decisions) && /^- The rules read at start shortened/m.test(fs.readFileSync(decisions, 'utf8'))
+  && themes.every((f) => fs.existsSync(f) && /^---\r?\npaths:\r?\n {2}- "/.test(fs.readFileSync(f, 'utf8'))),
+  "the session does not show the owner's decisions: docs/owner-decisions.md lost its first decision, or a theme's file in .claude/rules is gone or lost its paths");
 assert.ok(start.stdout.includes(boardTop), `the start hook does not show the board:\n${start.stdout.slice(0, 400)}`);
 
 // The top of the board at start: the head and the work now, what waits for him, the newest rows of

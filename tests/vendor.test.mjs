@@ -25,7 +25,7 @@ assert.equal(crypto.createHash('sha256').update(official).digest('hex'), '40d5a4
 const stage = fs.readFileSync(new URL('../src/app/stage.js', import.meta.url), 'utf8');
 assert.ok(/multiviewStereo: \$\{MULTIVIEW\}/.test(stage), 'multiview is not turned on');
 
-// Nothing from other sites (docs/owner-decisions.md). A-Frame asks its CDN root for the controllers'
+// Nothing from other sites (.claude/rules/game.md). A-Frame asks its CDN root for the controllers'
 // models; the page sets that root to our copy before A-Frame loads (A-Frame 1.8.0 docs, faq.md, "Can I use
 // A-Frame offline or self hosted?").
 const root = html.indexOf("<script>window.AFRAME_CDN_ROOT = './vendor/aframe-assets/';</script>");
@@ -45,7 +45,7 @@ for (const f of fs.readdirSync(new URL('../tools/', import.meta.url)).filter((n)
 // controllers carry no licence and are not shipped: on those headsets no controller is drawn, only the ray
 // (A-Frame 1.8.0's laser-controls makes it on controllerconnected, model or not; src/components/laser-controls.js),
 // aimed without the model's correction, until every headset takes its model through three.js's loader
-// (docs/owner-decisions.md, docs/board.md): not to be published before it.
+// (.claude/rules/game.md, docs/board.md): not to be published before it.
 const MODELS = {
   'meta/quest-touch-plus-left.glb': '41a35b80221398d37029cbfaa9e39084ccd43e0206be72a5e8460f52e7882cb4',
   'meta/quest-touch-plus-right.glb': '5126d638fb1d03e05d16d8eec3b31b9588df88eaa8b42cc21b857fac3bd44916',

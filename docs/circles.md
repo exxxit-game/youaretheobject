@@ -132,7 +132,7 @@ closed when what breaks it is in place; it stays here, marked, as the memory of 
 
 ## 11. One endless window — closed in part
 - Done: Cosmogram's main session ran 21 days at about 570,000 tokens a request. Here: windows end with a written
-  handoff, and the whole dialogue is kept (docs/owner-decisions.md).
+  handoff, and the whole dialogue is kept (.claude/rules/setup.md).
 
 ## 12. Errors built on errors — open
 - Done: 13.10, the guard's forms were added on CodeRabbit's remarks, then counted in the restrictions analysis as

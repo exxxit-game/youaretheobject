@@ -187,7 +187,7 @@ if (cmd === 'reload') {
   // frames slower than 72 Hz, and what one frame costs. Meta: 72 Hz at least (90 recommended); fewer
   // than 100 draw calls and 750,000 triangles a frame on Quest 2, 200 and 1.5 million on Quest 3
   // (device optimization comparison, docs/research/vr/01-meta.md). The bar is Quest 2's, the weakest
-  // headset, since beauty stays within its budget (docs/owner-decisions.md); over it, exit 1. Whether
+  // headset, since beauty stays within its budget (.claude/rules/game.md); over it, exit 1. Whether
   // both eyes were drawn in one pass (multiview: the browser's OCULUS_multiview) is said too.
   const v = await run(`new Promise((resolve) => {
     const s = document.querySelector('a-scene'), vr = s.is('vr-mode') && s.xrSession;

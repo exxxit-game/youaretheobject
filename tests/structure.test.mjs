@@ -43,7 +43,7 @@ for (const f of code) {
     /^(privacy\.html|README\.md|tools\/xr-probe(-input)?\.html|tools\/xr-room\.html)$/,     // pages people read: data, the project, the headset probes
     /^(tests\/(structure|plaque|control-reveal)\.test\.mjs|tools\/(check-voice|make-voice|quest-check|board)\.mjs)$/,   // checks and tools of the Russian texts
     /^(CLAUDE\.md|docs\/audit\/claude-md-proposed\.md|docs\/(state|mistakes|decisions|owner-decisions|owner-decisions-history(-2)?|board)\.md|docs\/rooms\/01-control\.md|docs\/research\/vr\/06-science\.md|docs\/art\/corridor-plan\.svg)$/, // words quoted from the owner, and the player's text
-    /^\.claude\/(agents\/(request-auditor|fact-checker)\.md|skills\/new-room\/SKILL\.md)$/,   // the plan doc's Russian headings and status words, quoted
+    /^\.claude\/(agents\/(request-auditor|fact-checker)\.md|skills\/new-room\/SKILL\.md|rules\/(game|measures|data|setup)\.md)$/,   // the plan doc's Russian headings and status words, quoted
     /^docs\/cards\/agafonov-2016\.md$/,                                      // a Russian paper, cited in its own language
     /^docs\/research\/studio-process\.md$/,                                  // the Russian edition of Gregory's Game Engine Architecture, quoted in its own language
     /^docs\/(circles|ten-circles|studio-map|research\/restrictions(-sources|-inventory)?)\.md$/,     // words quoted from the owner, Cosmogram's commits and Russian forums, in their own language
