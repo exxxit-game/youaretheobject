@@ -75,3 +75,60 @@ given; [seen] = only a search result, a secondary report or a library note; "unv
 - "closing its doors on June 1, 2026"; "we never quite figured out how to make Rec Room a sustainably profitable
   business"; "grew to 150 million users over the last decade". UploadVR, 2026-03-31,
   https://uploadvr.com/rec-room-to-shut-down-in-june [read 2026-10-14]. Not an option.
+
+### 1c. Meta Horizon Worlds: VR kept only for existing worlds (2026-03-19)
+- Bosworth: Meta will "keep Horizon Worlds working in VR for existing games"; "We're not bringing new games"; the
+  VR app stays on Quest's store "for the foreseeable future", worlds not recommended by the OS or storefront; the
+  new Horizon Engine (Horizon Studio) is for flatscreen, web and phones. UploadVR, 2026-03-19,
+  https://www.uploadvr.com/meta-will-keep-horizon-worlds-vr-support-for-existing-games/ [read 2026-10-14].
+- Build tool: the Desktop Editor (Windows, legacy Unity runtime, TypeScript scripting) [seen: Road to VR and Meta's
+  GDC 2025 blog in search results; not opened]. Outside server, outside link, promotion rules: not read (dropped
+  as an option once VR became existing-worlds-only). Users on Quest in 2026: not found.
+- Verdict: a new VR trial world here has no future on the headset; skip.
+
+### 1d. Resonite: PC VR only
+- Steam page: "VR Support: SteamVR, Oculus SDK", "OS: Windows 10", "Free To Play"; no standalone Quest client
+  (https://store.steampowered.com/app/2519830/Resonite/) [read 2026-10-14]; Quest owners reach it only through
+  a PC (Link / Steam Link) [seen: wiki.resonite.com via search; the wiki page did not render].
+- Users: about 150-250 concurrent on Steam in 2026, June 2026 average 170-206 [seen: tracker.gg, steambase.io,
+  live-player-count.com in search; steambase returned HTTP 500]. ProtoFlux has HTTP GET and WebSocket nodes, so a
+  world could talk to our server [seen: wiki.resonite.com ProtoFlux:GETString, WebSocket pages via search].
+- Verdict: tiny audience, not on standalone Quest; skip.
+
+### 1e-i. Roblox on Quest: links off the platform forbidden
+- Community Standards (https://about.roblox.com/community-standards, read 2026-10-14 [read]): URLs may be shown
+  only "through the Social Links feature" on game, group or user pages, for users who pass the age check and are at
+  least 16; "Any other efforts to direct users off of Roblox to an external website or service are prohibited."
+  Content with "calls to action for off-platform products or services" counts as Advertising and must follow the
+  Advertising Standards; from 2026-05-04 ad integrations must be registered in advance.
+- Users on Quest: Roblox's help page "Meta Quest FAQ" (over 50,000 VR experiences per a search summary) returned
+  HTTP 403; no 2025-26 Quest number found [seen]. Build tool: Roblox Studio, Luau (common knowledge, not read here).
+- Verdict: the trial room could not point to our game except through the game page's Social Links; the age mix of its
+  Quest players was not read (our recording is 18+; unverified). Skip.
+
+### 1e-ii. VIVERSE (HTC): our A-Frame build as it is, on the web, Quest browser included
+- Engines: VIVERSE "supports most ThreeJS projects, as well as the many tools and frameworks that have been built on
+  top of the library, such as React-Three-Fibre (R3F)nd AFRAME" [sic]; publishing by ZIP upload in VIVERSE Studio
+  or the VIVERSE CLI (docs.viverse.com, text copy https://docs.viverse.com/llms-full.txt, read 2026-10-14 [read]).
+  News post 2025-06-12 lists A-Frame among supported engines
+  (https://news.viverse.com/post/viverse-webxr-creator-studio-engine-support) [read].
+- Outside server: "developers may also provision and connect with their own servers/analytics on VIVERSE. This
+  process does require manual approval by the VIVERSE team, but we are able to quickly approve these requests" [read,
+  llms-full.txt section "Bringing Your Own Game Servers & Analytics"]. So our Supabase calls would need that approval.
+- Review: "Moderation usually takes less than 48 hours"; content is "iframed by default", WebXR needs the
+  `xr-spatial-tracking` permission requested at "Submit for Review" [read]. Uploads stay at preview URLs until
+  reviewed.
+- What we learn: Studio shows "the total number of views" and "views over 30 seconds" per world [read]. Money:
+  "Viewership Compensation ... Up to $0.011 USD monthly per player" for Partner Program members [read].
+- Users: no VIVERSE audience figure in its docs; it says only "Millions of users play video games in the browser
+  each month" (general web, not VIVERSE) [read]. Not found: a dated VIVERSE MAU.
+- Rules on pointing to our own site from a VIVERSE world: not found in the docs (unverified; the terms of use at
+  https://www.viverse.com/terms-of-use were not opened).
+- Cost: the same build, a second copy hosted by HTC (a fork of our deploy, its own review). Risk: small or unknown
+  audience; our data then runs through HTC's iframe and needs their approval.
+
+### 1e-iii. Others (seen only, not opened)
+- cluster (Japan): a Quest app since 2021 (App Lab); Cluster Script has `callExternal`, a beta call to an outside
+  server, at first limited to 1 kB and 5 calls a minute per item [seen: zenn.dev and moguravr.com via a Japanese
+  search; 2020-2023 articles; 2026 state unverified]. Unity-based; audience mostly Japanese (unverified).
+- Hubs (Mozilla's, now community-run), Spatial, Gorilla Tag custom maps: not researched within the limit.
