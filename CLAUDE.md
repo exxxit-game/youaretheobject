@@ -29,16 +29,19 @@ real psychology experiments, one room each, then sees how he was caught. Maps: A
 6. End: a commit, a dated entry in docs/progress.md (done / not done and why / next), room-polish fast-forwarded and pushed.
 
 ## The owner and me
+He has zero technical knowledge («ноль знаний в языках программирования, в супабейсе, в гитхабах, в доменах… весь наш
+процесс» 14.10): every technical choice is mine, with its source, never written as his; he is asked about what he
+sees, values and money; a hard question with consequences reaches him as plain options (best, worst, current).
 Who errs where and who catches it: @docs/tandem.md. Repo English; Russian only where tests/structure.test.mjs allows.
 
 ## Cannot be undone (held by machines, not by this text)
 - main is the live site: the GitHub ruleset; a push to main only on his word. Work on a branch; commit often.
 - No key, token or his email in the repo (tools/secrets.mjs). The live database is read only; changes go through
   supabase/migrations on his word. Never restart the headset while he wears it (tools/headset.mjs refuses).
-- The process (this file, .claude/**, docs/owner-decisions.md, docs/ten-circles.md, tools/claude-guard.mjs,
-  tools/board.mjs, tools/hooks/**) changes only through his «разрешить» (the ask rules in .claude/settings.json).
+- The process changes only through his «разрешить» (the ask rules in .claude/settings.json) and only shrinks in size
+  (.claude/process-size.json).
 
 ## Rooms and code
 A room: the new-room skill (its card, its paper read in full, a clear task); the paper-reviewer checks it. One room
 per folder in src/rooms/; the engine never imports rooms. Styles only in css/, player text only in texts.ru.js,
-comments say why (never when or who), files about 300 lines, no build step.
+no build step; the rest of the code's shape is held by tests/structure.test.mjs.
