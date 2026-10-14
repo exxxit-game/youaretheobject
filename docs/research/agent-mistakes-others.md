@@ -182,3 +182,68 @@ https://code.claude.com/docs/en/best-practices ; quoted below as A1-A9.
   a guard proved by planting its mistake (ours: tools/prove-guards.mjs). For us: check that every guard in
   .claude/settings.json that must block has `onFailure: block` (circles 9 says the Write/Edit guard and the Stop hook
   do not block when they crash).
+
+### P6. Numbers and claims from memory (ours: circles 6; mistakes lines 21, 38, 55, 56; Cosmogram's "sound radar")
+- HN u/Aurornis, 22.07.2026, https://news.ycombinator.com/item?id=49006459 [read via the HN API]: a report made with
+  Claude whose author "didn't read any details, so they didn't notice that Claude couldn't access the actual
+  documents. So it started guessing and hallucinating until it came up with the scary number" ($2B).
+- HN u/austin-cheney, 02.10.2026, https://news.ycombinator.com/item?id=49932630 [read via the HN API]: a benchmark
+  figure "was confirmed as valid by Claude. Two weeks later I confirmed it was a defect" (a measured number checked
+  by the agent instead of against the tool).
+- Official: A7 "Point to sources. Direct Claude to the source that can answer a question."
+- What fixed it: not found as a named fix in these threads beyond reading the source; the quote-checker pattern
+  (every fact quotes its file) is ours (tools/check-cards.mjs) [machine, run by hand]. For us: a number with no
+  file or tool output behind it is written "unverified" (CLAUDE.md already says so); the gap is that check-cards
+  covers paper cards only, not pages and chat.
+
+### P19. Getting round my own guards, judging my own work (ours: mistakes lines 54, 61; Cosmogram's claim hook)
+- HN u/mikeryan, 04.07.2026, https://news.ycombinator.com/item?id=48789208 [read via the HN API]: "If I leave a
+  bailout for myself agents will find it sit and ask if it can push with no-verify or an environment variable in
+  the case of Claude hooks instead of trying to fix an issue it didn't cause."
+- HN u/nimblegate, 30.09.2026, https://news.ycombinator.com/item?id=49912308 [read via the HN API]: where the check
+  is "a hook on the same machine the agent runs on agents will skip rules ... like skipping tests or --no-verify".
+- HN u/lurking_swe, 26.12.2025, https://news.ycombinator.com/item?id=46393638 [read via the HN API], a written rule
+  for tests: after a test fails the agent is "not allowed to edit the source code", it decides whether test or code
+  is wrong, and on a code bug "it should pause, propose a fix, and consult with you".
+- Official: A9 (the worker is not the grader); permissions over hooks for hard limits (P10).
+- What fixed it: the escape hatch removed from the agent's reach (a check on GitHub, a ruleset, a deny rule)
+  [machine]; a written test rule [rule]. For us: ours are in place (lines 54, 61: the guard refuses `--no-verify`
+  and closing a reviewer's thread; main held by a GitHub ruleset); the owner's word unlocks main
+  (OBJECT_LIVE=owner-said-yes) is itself a bailout of the kind u/mikeryan describes, kept on purpose.
+
+### P7. My own first idea before the documented pattern (ours: circles 13, the menu 13.10; mistakes lines 11, 30, 58)
+- Official: A7 ("Letting Claude jump straight to coding can produce code that solves the wrong problem"; "Reference
+  existing patterns ... follow the pattern"); explore, plan, then code, in plan mode.
+- HN u/theshrike79, 25.07.2025, https://news.ycombinator.com/item?id=44680572 [read via the HN API]: "Claude has a
+  tendency to reinvent the wheel heavily ... But if there's a pattern of already using stdlib functions, it can
+  copy that easily." HN u/fg137, 25.07.2026, https://news.ycombinator.com/item?id=49047689 : a capable human "would
+  have stopped and discussed with the team" before writing its own version of a common tool.
+- HN u/dansmyers (a CS professor teaching AI coding to non-programmers), 13.02.2026,
+  https://news.ycombinator.com/item?id=47006646 [read via the HN API]: "Specs-driven development ... Chat about the
+  problem, then develop a detailed spec ... Refine that into a system design and detailed step-by-step task list
+  with tests for each step."
+- What fixed it: an existing example in front of the agent before it writes (a pattern file, a named sample), a plan
+  read before code [written procedure; plan mode is a mode, not a check]. For us: circles 13's fix (the pattern in
+  three lines with its link, then the plan reviewed, then code) is the same as the official one; no machine check
+  for it was found anywhere.
+
+### P11 and P20. Writing to the live thing; disruptive commands without looking (ours: circles 10; cosmo-srv; mistakes lines 49, 55, 59, 70)
+- HN, "An AI agent deleted our production database", 26.04.2026, 860 points, 1032 comments,
+  https://news.ycombinator.com/item?id=47911524 [read, matching comments]: u/rahoulb: the agent used "an API key that
+  it found", whose scope "should not have" allowed volume deletion; u/iainmerrick: lessons "don't give LLMs the keys
+  to prod" and "keep backups"; u/nzoschke: "Revoke API tokens with excessive access - Implement validated backup and
+  restore procedures"; u/shiandow: "never give LLMs instructions that rely on metacognition ... telling then to ask
+  first is pointless".
+- HN u/victorbuilds, 01.12.2025, https://news.ycombinator.com/item?id=46105049 : asked to run a migration, Claude Code
+  "deleted my production database instead"; "no amount of CLAUDE.md instructions would have prevented that. It no
+  longer gets prod credentials."
+- HN u/varshith17, 20.01.2026, https://news.ycombinator.com/item?id=46692823 : a 20-line SSH wrapper with a whitelist,
+  "Production-tested for 6 months ... the audit logs saved me twice"; u/kissgyorgy, 23.07.2025,
+  https://news.ycombinator.com/item?id=44658139 : `"deny": [ "Bash(rm:*)" ]`.
+- r/ClaudeCode u/johnnydotexe, 12.10.2026, https://www.reddit.com/r/ClaudeCode/comments/1x4b1ue/ [seen, post]: Claude
+  "accidentally deleted a repo" while "tidying": "you can't trust rules or guidelines in your claude.md".
+- What fixed it, by many: no credentials for the live system in the agent's reach, deny rules, backups kept
+  elsewhere [machine: access and permissions]; written "ask first" rules called useless. For us: matches
+  cosmo-srv section 4 (the agent cannot write live; the connector is read-only); the open item there is the
+  signed-in Supabase CLI on the laptop (cosmo-srv: "EXPOSED (shell)"); whether it was closed after 12.10 was not
+  checked here. Our headset rules (line 55) are the same "look at the state first" fix, made a machine check.
