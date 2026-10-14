@@ -2,7 +2,7 @@
 # Before any push: the live site (main) changes only on the owner's word, and nothing private
 # leaves this laptop (tools/secrets.mjs). Set once per clone: git config core.hooksPath tools/hooks
 # A push to main (new commit, force push, deletion) needs OBJECT_LIVE=owner-said-yes before the
-# command, typed only after the owner said so in the chat.
+# command, typed only after his word in the chat.
 while read local_ref local_sha remote_ref remote_sha; do
   if [ "$remote_ref" = "refs/heads/main" ] && [ "$OBJECT_LIVE" != "owner-said-yes" ]; then
     echo "STOP  main is the live site: it changes only on the owner's word (OBJECT_LIVE=owner-said-yes git push ...)"
@@ -10,13 +10,13 @@ while read local_ref local_sha remote_ref remote_sha; do
   fi
   case "$local_sha" in 0000000000000000000000000000000000000000) continue ;; esac
   node tools/secrets.mjs "$local_sha --not --remotes=origin" || exit 1
-  pushed=$local_sha
+  git cat-file -e "$local_sha:tests/structure.test.mjs" 2>/dev/null && slow=1
 done
-# slow tests pre-commit leaves out, on the working tree (GitHub tests the pushed commit);
-# skipped if the pushed commit has none (made from main)
+# slow tests pre-commit leaves out, on the working tree (GitHub tests what is pushed);
+# skipped if no pushed commit has them (made from main)
+[ -n "$slow" ] || exit 0
 unset GIT_DIR GIT_INDEX_FILE GIT_WORK_TREE GIT_PREFIX GIT_EDITOR
 for t in structure review-gate; do
-  git cat-file -e "$pushed:tests/$t.test.mjs" 2>/dev/null || continue
   node "tests/$t.test.mjs" > /dev/null 2>&1 || { echo "STOP  tests/$t.test.mjs fails: fix it before pushing (node tests/$t.test.mjs)"; exit 1; }
 done
 exit 0
