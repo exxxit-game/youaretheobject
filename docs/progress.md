@@ -8,7 +8,7 @@ to the end of docs/board.md, one line each.
 Done (each with npm test green, on GitHub): 1) his decisions split (469b825): 24 lines of my advice and my additions
 to 11 of his moved to docs/decisions.md, "Moved from his decisions"; 2) no copying between disks (bc19c5e);
 3) 26 branches deleted on GitHub (left: main, room-polish, reviewed, claude/end-pictures-look), 4 abandoned
-worktrees and 28 local branches removed (his word «Да, разрешаю»); 4) the history of the process moved to
+worktrees and 28 local branches removed (his permission in the chat); 4) the history of the process moved to
 objekt-files/notes/archive (15254cb; 51 files, checked byte for byte; the board down to 6,500 characters; the
 cards and research stay, the code names them as sources); 5) a task starts in plan mode, docs/tools.md names
 what to read first by the task's kind: Gregory's book (4th ed., objekt-files/books), A-Frame 1.8.0, three.js r184,
