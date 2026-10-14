@@ -4,6 +4,30 @@ Read at the start of every session, with `git log --oneline -20` and docs/featur
 session"). Newest entry on top. Each entry: done, not done and why, next. Anything outside the feature at hand goes
 to the end of docs/board.md, one line each.
 
+## 2026-10-15, night — what helped others like us; everything we use and do not use, with its reason
+A session started by the setup window, his question on the board (what others use, 15.10).
+Done:
+- One inventory of everything available (app settings, connectors, plugins, skills, "/" commands, helpers, the game's
+  tools), each unused item with its recorded reason or "no reason recorded"; three searches of 2025-2026 reports: solo
+  and non-programmer builders with Claude Code, WebXR/A-Frame developers, small teams on the Horizon Store. Evidence:
+  objekt-files/notes/others-2026-10-15/ (inventory, three research notes, the page's checks).
+- A page for him: https://claude.ai/artifact/CPbGVn2ZpPLVo7y6C7zTQx (useful now, useful later on the road to the
+  Store, not useful with reasons, not checked, the inventory, the errors it found, question 1). Two fact-checks found
+  22 and 16 problems, many the same, all fixed before publishing.
+- Three stale records corrected: docs/tools.md is named in CLAUDE.md, not loaded with it (state.md); Dropbox is not
+  connected (decisions.md); Python 3.14.8 is on the laptop now (C-safety-settings.md). The library record of Di Febo
+  2026 brought over from PR #16 (the library test was red without it).
+- His words on effort levels and on the models on the board, my answers given in the chat from Claude Code's
+  model-config page; the code gaps the WebXR search found on the board.
+Errors of mine: the page's first draft took several facts from the night's notes without re-reading the board and
+PR #16 (the 13 skills he had removed, the Haiku record), stretched his words (a check of checks), promised a consent
+prompt the desktop app is not shown to give and called both models "twice the cost"; I acted on a message of his
+meant for another window (taken back). Plan mode, required by CLAUDE.md since 14.10 20:33, has been used by no
+working window, this one included.
+Not done and why: question 1 (the process audit by the ten circles: Opus 5.5 at max effort, Fable 5.1, both, or
+later) waits for his answer; the useful-later items wait for their step on the road.
+Next: his answer to question 1; then the audit in its own window as he chooses.
+
 ## 2026-10-14, evening, next window — item 6 done but his merge; our documents compared with experienced practice
 Done:
 - 6b) PR #10 closed with a comment placing each of its 19 unresolved remarks (17 CodeRabbit had verified fixed, the
