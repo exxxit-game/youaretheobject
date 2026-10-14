@@ -234,6 +234,9 @@ async function main() {
     console.log(`failed: ${e.message || e} (log: ${LOG})`);
     process.exitCode = 1;
   } finally {
+    // the overlay switched on for the run stays on the headset after it unless switched off here: it was found
+    // still drawn after the headset was put away
+    if (connected()) hud(false);
     if (game) game.close();
   }
 }
