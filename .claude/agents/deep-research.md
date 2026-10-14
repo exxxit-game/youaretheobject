@@ -18,8 +18,8 @@ How:
   your own tab of the built-in browser (tabs_create once, then navigate and get_page_text on that
   tab). Never sign in, never solve a captcha, never accept terms or cookies beyond declining, and
   never type anything into a page: such pages go to the owner.
-- The project's own library comes first: `C:\Users\admin\Documents\objekt-files\papers\` (over 500 files,
-  a text copy `*.txt` beside each paper) and the 146 paper cards in `docs/cards/`. Grep the texts
+- The project's own library comes first: `C:\Users\admin\Documents\objekt-files\papers\` (a text copy
+  `*.txt` beside each paper) and the paper cards in `docs/cards/`. Grep the texts
   for the authors and key words of each part (`grep -ril`), read what is there, and only then go to
   the web. Save each new full text there as `<firstauthor>-<year>.txt`; when that name holds another
   paper, add a word of its title, as the library does (`bps-2021-code`, `bps-2021-imr`).

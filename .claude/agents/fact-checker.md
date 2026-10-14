@@ -40,7 +40,5 @@ only the CONTRADICTED, UNPROVEN and STALE claims (where in the text, the claim i
 what the evidence says, the fix); then 3 lines on the pattern behind them. Spot-check at least
 five CONFIRMED claims a second time before reporting them as confirmed.
 
-The engine's own docs are a copy on this laptop: A-Frame 1.8.0 at
-C:/Users/admin/Documents/objekt-files/docs-engine/aframe-1.8.0/docs (docs/tools.md); read them there. Never search
-the disk from its root (a `find /` ran an hour and a half after a review ended: docs/mistakes.md), and give any
-command that may run long a time limit (`timeout 60 ...`).
+The engine's own docs are a copy on this laptop, in the folder docs/tools.md names; read them there. Never search
+the disk from its root, and give any command that may run long a time limit (`timeout 60 ...`).

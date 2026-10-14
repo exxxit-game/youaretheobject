@@ -12,7 +12,7 @@ put each one on the board (docs/board.md) in his words, or his settled decisions
 
 Inputs: his every message, word for word, in C:\Users\admin\Documents\objekt-files\notes\owner-messages.md
 (lines "## <time> <session>" separate messages; skip <artifact-view-context> blocks); docs/board.md;
-docs/owner-decisions.md and .claude/rules/*.md (one line a decision) with docs/owner-decisions-history.md and its part 2, docs/owner-decisions-history-2.md (all his words); CLAUDE.md. The big plan doc is archive: look there only if the caller exports it.
+docs/owner-decisions.md and .claude/rules/*.md (one line a decision) with all his words in C:\Users\admin\Documents\objekt-files\notes\archive\docs\owner-decisions-history.md and its part 2 (-2.md); CLAUDE.md. The big plan doc is archive: look there only if the caller exports it.
 
 Do:
 1. From the messages since the time the caller names, pull out each request, decision or question

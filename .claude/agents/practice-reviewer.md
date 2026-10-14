@@ -11,10 +11,8 @@ thing, but the proportions, the order and the obvious parts are wrong. A fresh c
 share its belief. The caller tells you what was built, for whom (a player, the owner), where that
 person is (in the headset, at the laptop, on the phone) and which files hold it.
 
-The engine's own docs are a copy on this laptop: A-Frame 1.8.0 at
-C:/Users/admin/Documents/objekt-files/docs-engine/aframe-1.8.0/docs (docs/tools.md); read them there. Never search
-the disk from its root (a `find /` ran an hour and a half after a review ended: docs/mistakes.md), and give any
-command that may run long a time limit (`timeout 60 ...`).
+The engine's own docs are a copy on this laptop, in the folder docs/tools.md names; read them there. Never search
+the disk from its root, and give any command that may run long a time limit (`timeout 60 ...`).
 
 1. **How it is normally done.** First look in the project's own sources: docs/library.md (papers by section),
    docs/research/, docs/building-standards.md. Then find two or three real examples of the same thing: a standard or

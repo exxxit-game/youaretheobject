@@ -12,7 +12,7 @@ The owner's permanent prompt: his long text of 11.10 put in points, variant B of
 The ten circles and our words, approved by him word for word («Утверждаю» 14.10): @docs/ten-circles.md
 His decisions load with this file, settled (never re-asked): @docs/owner-decisions.md
 
-"You are the object" (the name is never translated): a browser VR game (WebXR, A-Frame 1.8.0) for Meta Quest; the player is the subject of
+"You are the object" (the name is never translated): a browser VR game (WebXR, A-Frame as vendored in vendor/) for Meta Quest; the player is the subject of
 real psychology experiments, one room each, then sees how he was caught. Maps: ARCHITECTURE.md, docs/state.md; tools: docs/tools.md.
 
 ## Every session (the process: Anthropic, "Effective harnesses for long-running agents", 26.11.2025)

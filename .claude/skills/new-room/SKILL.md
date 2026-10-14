@@ -49,8 +49,8 @@ check. Do not tell the owner "done" before step 10.
    Then a browser pass at `?speed=20` with screenshots of every new screen
    and a comparison with the room's approved shots (`docs/rooms/NN-shots/`); in the
    headset `node tools/quest-look.mjs` (enter VR, frames, timing of each step, frame rate,
-   `levels` for its sounds) and `node tools/quest-check.mjs` (all PASS); CodeRabbit on the pull
-   request once room-polish goes to GitHub (its remarks come at the next start); fix.
+   `levels` for its sounds) and `node tools/quest-check.mjs` (all PASS); CodeRabbit reviews the pull
+   request into room-polish, its findings fixed or shown wrong before the merge.
 10. **Lessons.** A mistake that broke the room gets a test that catches it
     and a row in `docs/mistakes.md`; nothing else is added. Only now report, with a frame
     from the headset, saying what ran and what was seen.
