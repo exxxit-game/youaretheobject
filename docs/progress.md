@@ -4,6 +4,27 @@ Read at the start of every session, with `git log --oneline -20` and docs/featur
 session"). Newest entry on top. Each entry: done, not done and why, next. Anything outside the feature at hand goes
 to the end of docs/board.md, one line each.
 
+## 14.10, evening — the whole wall approved
+Done:
+- A window that opens on an old copy brings it up to room-polish itself (092caed); the rules it already read stay old.
+- The rules and guards are held by one limit in characters that only comes down (.claude/process-size.json, e3c4b15).
+- His zero technical knowledge stands at the top of CLAUDE.md's "The owner and me", in his words (aa9e38b).
+- CodeRabbit: five new remarks answered on PR #10; two fixed (c4eac99). 17 remarks it verified still show open:
+  its resolve does not take effect on GitHub, so the `reviewed` robot is stuck.
+- The wall: every part of the setup, what holds it, where everything lies, verified world knowledge, one plan:
+  https://claude.ai/artifact/Ld81yG7m4n57KNn5SBwsVs (two blind checks found 20 and 22 problems, all fixed). His
+  «Утверждаю» to the wall as a whole.
+Not done: the plan below.
+Next, in this order, one pass: 1) his decisions split (the list shown to him first: his choices of meaning, ethics,
+money stay his; my technical advice to my log; widened lines keep only his words); 2) no more copying between disks;
+3) merged branches and abandoned worktrees removed; 4) the repository keeps the game and the minimum the process needs,
+the knowledge (cards, research, audits, the history of his words) moves to objekt-files on Google Drive, the board
+to an archive; 5) rules and agents cut, docs/tools.md rewritten from 14.10's facts (which tool when), the limit
+lowered; 6) CodeRabbit's closing fixed and short pull requests in place of the `reviewed` robot; 7) the live site
+serves only the game; 8) screenshots compared against his approved ones. His hands, step by step when he says:
+two-factor sign-in on Supabase, GitHub, Google, Claude; a lock on room-polish on GitHub; Supabase's spare key and
+sign-up.
+
 ## 14.10 — the process replaced by a published standard
 Done:
 - The revision of 8–14.10 (23 windows, 467 errors, 20 reports, two independent checks; all in
