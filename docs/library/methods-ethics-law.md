@@ -1,14 +1,16 @@
 # methods, ethics, law
 
 Generated from `docs/library/papers.json` by `node tools/build-library.mjs`. Do not edit by hand.
-103 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
+106 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
 in the library folder's papers\ as `<id>.txt` (a data set: `<dir>/<id>.txt` from the library folder); "text: ocr" marks a scan's
 text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 
 - **abdlkarim-2024** Abdlkarim et al. 2024. A methodological framework to assess the accuracy of virtual reality hand-tracking systems: A case study with the Meta Quest 2 · hand tracking accuracy, Meta Quest 2, measurement method · no card
 - **aepd-2026-videogames** AEPD 2026. Recommendations and best practices for data protection in video games · data protection, video games, telemetry, GDPR · no card
 - **ambinder-2009** Ambinder 2009. Valve's Approach to Playtesting: The Application of Empiricism (GDC 2009 slides, text transcribed) · playtesting, Valve, empiricism, biometrics · no card
+- **anthropic-2025-opus45card** Anthropic 2025. System Card: Claude Opus 4.5 · AI model behaviour, sycophancy, honesty evaluation · no card
 - **anthropic-2025-teams** Anthropic 2025. How Anthropic teams use Claude Code · AI coding agents, Claude Code, process · no card
+- **anthropic-2026-opus46card** Anthropic 2026. System Card: Claude Opus 4.6 · AI model behaviour, overly agentic, misrepresenting work completion · no card
 - **anwyl-irvine-2021** Anwyl-Irvine et al. 2021. Realistic precision and accuracy of online experiment platforms, web browsers, and devices · online experiments, timing precision, browsers, devices · no card
 - **apa-ethics-code-2017** American Psychological Association 2017. Ethical Principles of Psychologists and Code of Conduct (2002, amended 2010 and 2016) · research ethics, deception, debriefing, informed consent · no card
 - **aust-2013** Aust et al. 2013. Seriousness checks are useful to improve data validity in online research · seriousness check, data quality, online research · no card
@@ -37,6 +39,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **edpb-2025-pseudonymisation** European Data Protection Board 2025. Guidelines 01/2025 on Pseudonymisation · pseudonymisation, GDPR, hashing · no card
 - **eurec-2021** European Network of Research Ethics Committees (EUREC) 2021. Position of EUREC on Ethics Reviews of Research Projects involving Persons outside Biomedical Research · ethics review, non-medical research, Europe · no card
 - **exppsy-2022-2** Experimental Psychology (Russia), ed. Barabanschikov 2022. Experimental Psychology (Russia), vol. 15, no. 2 (whole issue, in Russian with English abstracts) · VR studies in Russia, journal issue, side effects · no card
+- **faa-2017** Federal Aviation Administration 2017. AC 120-71B Standard Operating Procedures and Pilot Monitoring Duties for Flight Deck Crewmembers · crew resource management, challenge-response checklist, two-challenge rule · no card
 - **fitts-1954** Fitts 1954. The information capacity of the human motor system in controlling the amplitude of movement · Fitts law, movement time, motor control · no card · text: ocr · no room: a measuring tool with no reveal (search coverage, motor control)
 - **friehs-2020** Friehs et al. 2020. Effective Gamification of the Stop-Signal Task: Two Controlled Laboratory Experiments · gamification, stop-signal task, inhibition · no card
 - **gavrilov-2021** Gavrilov 2021. The Toloka platform as a source of respondents for an online survey: assessing data quality (in Russian) · Toloka, crowdsourcing, online survey, data quality, attention checks · no card

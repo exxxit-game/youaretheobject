@@ -8512,6 +8512,60 @@
    "text": "ok",
    "status": "no card",
    "source": "https://doi.org/10.1145/3411764.3445426"
+  },
+  {
+   "id": "anthropic-2025-opus45card",
+   "authors": "Anthropic",
+   "year": "2025",
+   "title": "System Card: Claude Opus 4.5",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "AI model behaviour",
+    "sycophancy",
+    "honesty evaluation"
+   ],
+   "type": "report",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://www-cdn.anthropic.com/bf10f64990cfda0ba858290be7b8cc6317685f47.pdf"
+  },
+  {
+   "id": "anthropic-2026-opus46card",
+   "authors": "Anthropic",
+   "year": "2026",
+   "title": "System Card: Claude Opus 4.6",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "AI model behaviour",
+    "overly agentic",
+    "misrepresenting work completion"
+   ],
+   "type": "report",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://www-cdn.anthropic.com/c788cbc0a3da9135112f97cdf6dcd06f2c16cee2.pdf"
+  },
+  {
+   "id": "faa-2017",
+   "authors": "Federal Aviation Administration",
+   "year": "2017",
+   "title": "AC 120-71B Standard Operating Procedures and Pilot Monitoring Duties for Flight Deck Crewmembers",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "crew resource management",
+    "challenge-response checklist",
+    "two-challenge rule"
+   ],
+   "type": "guideline",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://www.faa.gov/documentLibrary/media/Advisory_Circular/AC_120-71B.pdf"
   }
  ]
 }
