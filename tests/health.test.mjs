@@ -147,7 +147,7 @@ assert.ok(projectSettings.deniedMcpServers.some((s) => s.serverName === 'plugin:
 const pre = (m) => projectSettings.hooks.PreToolUse.find((h) => h.matcher === m).hooks[0];
 assert.equal(pre('Bash|PowerShell').onFailure, 'block', 'the command guard blocks when it fails');
 assert.equal(pre('mcp__.*').onFailure, 'block', 'the MCP guard blocks when it fails');
-assert.notEqual(pre('Write|Edit|MultiEdit|NotebookEdit').onFailure, 'block', 'the edit guard lets a broken guard be mended');
+assert.notEqual(pre('Write|Edit|NotebookEdit').onFailure, 'block', 'the edit guard lets a broken guard be mended');
 // the start waits up to 15 + 10 + 10 s inside (health, CodeRabbit, GitHub's runs); a hook past its timeout is
 // cancelled and its output thrown away, the board's top with it
 assert.ok(projectSettings.hooks.SessionStart[0].hooks[0].timeout >= 45, 'the start hook has time for its own waits');

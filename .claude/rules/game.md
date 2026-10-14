@@ -7,7 +7,6 @@ paths:
   - "docs/rooms/**"
   - "docs/art/**"
   - "docs/cards/**"
-  - "docs/ideas/**"
   - "docs/building-standards.md"
   - "docs/vr-checklist.md"
   - ".claude/skills/new-room/**"

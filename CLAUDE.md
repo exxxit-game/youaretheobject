@@ -35,7 +35,7 @@ real psychology experiments, one room each, then sees how he was caught. Maps: A
 He has zero technical knowledge («ноль знаний в языках программирования, в супабейсе, в гитхабах, в доменах… весь наш
 процесс» 14.10): every technical choice is mine, with its source, never written as his; he is asked about what he
 sees, values and money; a hard question with consequences reaches him as plain options (best, worst, current).
-Who errs where and who catches it: @docs/tandem.md. Repo English; Russian only where tests/structure.test.mjs allows.
+Repo English; Russian only where tests/structure.test.mjs allows. Who errs where and who catches it: @docs/tandem.md
 
 ## Cannot be undone (held by machines, not by this text)
 - main is the live site: the GitHub ruleset; a push to main only on his word. Work on a branch; commit often.

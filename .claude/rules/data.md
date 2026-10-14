@@ -2,7 +2,6 @@
 paths:
   - "supabase/**"
   - "src/app/consent*.js"
-  - "src/app/results*.js"
   - "privacy.html"
   - "docs/methodology.md"
   - "docs/sources.md"

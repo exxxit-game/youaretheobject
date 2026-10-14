@@ -323,7 +323,9 @@ assert.ok(!author || author.endsWith('@users.noreply.github.com'), `git commits 
   const size = JSON.parse(fs.readFileSync(path.join(ROOT, '.claude/process-size.json'), 'utf8'));
   const chars = (f) => fs.readFileSync(f, 'utf8').replace(/\r\n/g, '\n').length;
   const steering = size.count.flatMap((c) => {
-    if (c === '@CLAUDE.md') return [...fs.readFileSync(path.join(ROOT, 'CLAUDE.md'), 'utf8').matchAll(/@([\w./-]+\.md)/g)].map((m) => path.join(ROOT, m[1]));
+    // the path as Claude Code reads it, punctuation and all: "@docs/tandem.md." loaded nothing while a
+    // pattern that stopped at ".md" counted it as imported
+    if (c === '@CLAUDE.md') return [...fs.readFileSync(path.join(ROOT, 'CLAUDE.md'), 'utf8').matchAll(/@([\w./-]+)/g)].map((m) => path.join(ROOT, m[1]));
     const p = path.join(ROOT, c);
     return !fs.existsSync(p) ? [] : c.endsWith('/') ? walk(p) : [p];
   });
