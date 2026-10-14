@@ -34,9 +34,16 @@ the page's first draft quoted my English retelling as his words, called work in 
 lines as mentions.
 Not done and why: PR #14 and the `reviewed` branch's removal wait for him; ten documents (state, engine, rooms, roadmap, tools, testing, baseline, building standards, VR checklist,
 methodology) are not compared yet; items 7 to 10 of the wall's plan not started.
-Next, in order: #15 merged once CodeRabbit's review is answered, then the main folder pulled; his merge of #14, then
-the `reviewed` branch removed on his yes; the first run of the monthly update check read with him; then the page's
-list: the A-Frame version in one place,
+Done after: his merge of #14 (the robot gone from main); the branches `reviewed` and my two merged ones deleted on GitHub
+on his yes.
+Next, in order: 1) his task for the next window, in his words: commands and skills, «Я в этом ничего не понимаю. Мне
+нужна помощь в этом очень сильная… И со скиллами тоже. Это у нас там большие проблемы». About 88 skills load into every
+window (36 Meta's, about half for Unity, Android, React Native and Portal, not our WebXR game; 23 Anthropic's, many for
+office work; 7 research; 3 CodeRabbit; about 17 built in; 1 ours). One plain page for him: what a command and a skill
+are, which few he would use himself, which I use and when, which are noise; then his choice group by group (plugins are
+his setup decisions), with Claude Code's docs (`/skill-doctor`, skill overrides) as the source. 2) The first page of
+the monthly update check (scheduled task monthly-updates-check) read with him. 3) The page's list: the A-Frame version
+in one place,
 full dates in new records, a status and date on each decision record; with his permission, a guard on "passes" and
 omitClaudeMd for the fact-checker and the practice-reviewer; options on the old versions of his words in the public
 history.
