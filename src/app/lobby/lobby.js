@@ -1,5 +1,5 @@
 import { askConsent } from '../consent.js';
-import { askAfterLeaving, leftBefore, markReached } from '../left-early.js';
+import { markReached } from '../left-early.js';
 import { writePlaque } from '../brand.js';
 import { APP_T } from '../texts.ru.js';
 import { loadVoice, speak } from '../../engine/voice.js';
@@ -196,11 +196,6 @@ export async function runLobby(room) {
     ...LOBBY_T.welcome.map((t, i) => ({ t, role: 'body', gap: i ? 0.012 : 0.025 }))
   ], [APP_T.next]);
 
-  // 2. a player who left the room early last time chooses: start again or learn what it was
-  if (room.real && leftBefore(room.id)) {
-    await askAfterLeaving(sheet, { room: room.id, debrief: room.debrief });
-  }
-
   // 3. consent, once, before the door
   const withRecording = await askConsent(sheet, { extra: room.extra });
 
@@ -210,8 +205,7 @@ export async function runLobby(room) {
   speak(LOBBY_T.chooseDoor);
   await throughDoor({ sheet, leaf, light, room, exitOff });
   // the player can leave the room through the game's menu (src/app/lab.js): back in the corridor at
-  // its start; if they left before the room's debrief, its early-leaving choice on the clipboard
-  // (left-early.js); then door 1 again
+  // its start, and door 1 again; one who left before the room's debrief learns nothing of it (left-early.js)
   const back = async (early) => {
     light.back();
     door1Shut();
@@ -221,12 +215,7 @@ export async function runLobby(room) {
     await delay(250);
     await $('#cam').components.fader.to(0);
     exitOff.on();
-    if (early) {
-      const pick = await sheet.interrupt([{ t: APP_T.leftEarly.now, role: 'body' }], [APP_T.leftEarly.again, APP_T.leftEarly.learn]);
-      if (pick === 1) await sheet.next([{ t: APP_T.leftEarly.now, role: 'body' }, { t: room.debrief, role: 'soft', gap: 0.02 }], [APP_T.leftEarly.again]);
-      if (room.real) markReached(room.id);
-      await sheet.resume();
-    }
+    if (early && room.real) markReached(room.id);
     await throughDoor({ sheet, leaf, light, room, exitOff });
   };
   return { withRecording, back };

@@ -46,10 +46,7 @@ export const APP_T = {
   // A player who left before the end (src/app/left-early.js).
   leftEarly: {
     now: 'Вы вышли до конца опыта.',
-    before: 'В прошлый раз вы вышли до конца опыта.',
-    back: 'Вернуться в опыт',
-    learn: 'Узнать, что это было',
-    again: 'Пройти заново'
+    back: 'Вернуться в опыт'
   },
   // The game's menu (src/app/menu.js): the Menu button on the left controller, Escape on a computer.
   menu: {

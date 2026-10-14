@@ -122,7 +122,14 @@ async function main() {
     for (let i = 0; i < 60 && !game; i++) { game = await page(/localhost:3000/); if (!game) await pause(500); }
     if (!game) throw new Error('the game tab did not appear');
     run = async (js) => { const v = await game.run(js); if (v && v.error) throw new Error(v.error); return v; };
-    for (let i = 0; i < 80 && (await run("!!document.querySelector('a-scene')?.hasLoaded")) !== true; i++) await pause(250);
+    const loaded = async () => { for (let i = 0; i < 80 && (await run("!!document.querySelector('a-scene')?.hasLoaded")) !== true; i++) await pause(250); };
+    await loaded();
+    // the flow plays a first visit: the mark of an earlier run left mid-room (left-early.js) shows its own page in
+    // place of the consent, so it is cleared and the page loaded again; what was cleared goes in the log
+    if (mode === 'flow') {
+      const cleared = await run("(() => { const k = Object.keys(localStorage).filter((x) => x.startsWith('object.left.')); k.forEach((x) => localStorage.removeItem(x)); return k; })()");
+      if (cleared.length) { log('marks cleared', { cleared }); await run('setTimeout(() => location.reload(), 50); true'); await pause(3000); await loaded(); }
+    }
     log('loaded');
     // the risk named first in the plan: whether an unworn headset enters VR at all (the boundary window may hold it)
     const vr = log('vr', { answer: await run(`Promise.race([document.querySelector('a-scene').enterVR().then(() => 'in VR', (e) => 'failed: ' + e.message),
