@@ -202,3 +202,22 @@ interactive participate learn results"; candidates opened on apps.apple.com.
 - The Machine To Be Another / Body Swap, BeAnotherLab with Bigna Lenggenhager (University of Zurich) [seen:
   https://www.planetdigital.uzh.ch/en/project/the-machine-to-be-another-body-swap]: an installation where two people
   swap bodies in VR headsets; the project "gathers data" for research. Exhibition piece, not a game.
+
+## The owner's own look, 14.10 (installed and played on his phone; screenshots in objekt-files/imports/owner-screens-2026-10-14)
+
+- The Great Brain Experiment, still installable on Android: a survey first ("you will be participating in a science
+  experiment... All information submitted is anonymous": age, gender, life satisfaction, education, location, first
+  language); games titled as questions about the player ("How do I deal with pressure?", "Am I a risk-taker?", "How much
+  can I remember?", "Am I impulsive?"); after a game the result page says "Unable to connect to server": the comparison
+  with other players is gone with its server. Its maker's page (White Bat Games): "At the end of each game, the player
+  is shown a chart showing how their score fits in with other players' performances"; each experiment kept to "a
+  guideline of five minutes"; "Lots of discussion was had on the type and amount of feedback to give, as we wanted the
+  player to understand what was happening but not have the feedback affect their behavior and so the results of the
+  experiment."
+- Psych Lab 101 on Google Play: "31 cognitive and clinical psychology experiments you can try yourself" (the store's
+  Russian text, translated), Education, 10K+ downloads; each experiment has a Background, the figure, References (e.g.
+  Krekelberg & Lappe 2001 for the flash-lag effect) and Run: the player reads what is tested before running it.
+- His words: most such apps are already deleted or unavailable.
+- For us: the 2013 app had our loop in flat form (consent, short tasks, you against others) and lost its comparison when
+  its server went; how "you vs others" survives our server's end is a question for our server's shelf (2) and the rooms
+  (10). Their feedback-versus-behaviour problem is ours too (the reveal comes after the measure, never during it).
