@@ -19,7 +19,7 @@ Claude Code loads this file when a file of the paths above is read or edited; a 
 none of them reads it first (docs/tools.md). All his words: docs/owner-decisions-history.md and its part 2.
 
 - Three texts accepted as written, word for word in the history file: the manifesto, the game and Store page, the corridor's welcome (with the corridor's texts, board item 7) («Да» 10.10); where his «почти готовый текст» goes: his choice.
-- The corridor is the reference every room is built on (after the process rebuild), finished before anything else («доделать эталонный коридор, на который мы опираемся» 9.10); its order «Подпись, печать, лаборатории, картины… указатель… свет» (8.10), visuals first, texts after (9.10).
+- The corridor is the reference every room is built on, finished before anything else («доделать эталонный коридор, на который мы опираемся» 9.10); its order «Подпись, печать, лаборатории, картины… указатель… свет» (8.10), visuals first, texts after (9.10).
 - The headset check before the next room («Мы все время откладывали эту проверку» 9.10).
 - The start best-in-class («Пока первое не будет супер, дальше нечего даже идти» 9.10).
 - The experimenter branch stays on the laptop, next after the corridor («они будут следующие после коридора» 9.10).
