@@ -10,7 +10,7 @@ reviews:
   high_level_summary: true
   high_level_summary_in_walkthrough: true
   request_changes_workflow: false    # never approves anything by itself
-  commit_status: true                # the commit status "CodeRabbit" is what tools/advance-reviewed.mjs reads;
+  commit_status: true                # each pull request shows whether the review of its last push has finished;
   review_progress: false             # the schema uses commit_status only with this off (check runs instead)
   auto_review:
     enabled: true

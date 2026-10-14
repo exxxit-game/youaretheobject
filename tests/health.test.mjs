@@ -11,8 +11,6 @@ import {
   parseRegPath, expandVars, splitPath, deadPathEntries, words, checkPapers, agentLacks, agentHeaderProblems, localImports, sameText, checkGuards,
   parseAdbDevices, headsetInfo, format, MIN_WORDS, databaseCall, checkDatabase
 } from '../tools/health.mjs';
-import { summarize as summarizeRemarks } from '../tools/coderabbit.mjs';
-import { target as advanceTo } from '../tools/advance-reviewed.mjs';
 import { hooksProblems, memoryIndexProblems, pluginProblems, PLUGINS_ON, atLeast, newest, MIN_VERSION } from '../tools/health-setup.mjs';
 
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'health-'));
@@ -139,33 +137,6 @@ assert.deepEqual(pluginProblems({ ...Object.fromEntries(PLUGINS_ON.map((p) => [p
   ['pr-review-toolkit@claude-plugins-official is on, though not decided'], 'a plugin he did not decide is caught; one switched off is not');
 assert.ok(atLeast('2.1.295', '2.1.294') && atLeast('2.1.294', '2.1.294') && !atLeast('2.1.293', '2.1.294') && atLeast('2.2.0', '2.1.294'));
 assert.equal(newest(['2.1.293', '2.1.295', '2.1.30', 'tmp']), '2.1.295', 'versions compared as numbers, not as text');
-// CodeRabbit's remarks read at session start (tools/coderabbit.mjs): only its open ones; its baseline is
-// moved by the robot on GitHub (tools/advance-reviewed.mjs) only past commits it read, with nothing open,
-// and never onto the head, which would close the review window as merged
-const thread = (login, isResolved = false, isOutdated = false, p = 'src/a.js') => ({ isResolved, isOutdated, comments: { nodes: [{ author: { login }, path: p }] } });
-const prData = (threads, { state = 'SUCCESS', description = 'Review completed', changedFiles = 12, committedDate = '2026-10-10T10:00:00Z' } = {}) => ({ data: { repository: { pullRequests: { nodes: threads === null ? [] : [{
-  number: 10, url: 'https://github.com/x/y/pull/10', headRefOid: 'abcdef1234567', changedFiles,
-  commits: { nodes: [{ commit: { committedDate, status: { contexts: [{ context: 'CodeRabbit', state, description }] } } }] }, reviewThreads: { pageInfo: { hasNextPage: changedFiles === 999 }, nodes: threads } }] } } } });
-assert.match(summarizeRemarks(prData([], { changedFiles: 999 })).line, /more than 100 remark threads/, 'threads past the first page are not taken for none');
-const said = (...a) => summarizeRemarks(prData(...a));
-assert.match(said([thread('coderabbitai'), thread('coderabbitai', true), thread('coderabbitai', false, true), thread('exxxit-game')]).line, /^CodeRabbit: 2 open remarks on .*pull\/10 \(src\/a\.js\)/, 'its open remarks count, an outdated one too: its line changed, the remark stands');
-assert.match(said([thread('coderabbitai')]).line, /naming @coderabbitai/, 'the line no longer says to name CodeRabbit: unnamed answers stood two days unread');
-// remarks with no thread, inside its review bodies, of the last day
-const withReviews = (bodies, at = '2026-10-10T09:00:00Z') => { const d = prData([]); d.data.repository.pullRequests.nodes[0].reviews = { nodes: bodies.map((body) => ({ author: { login: 'coderabbitai' }, submittedAt: at, body })) }; return d; };
-assert.match(summarizeRemarks(withReviews(['**Nitpick comments (2)**', 'Outside diff range comments (1)']), Date.parse('2026-10-10T10:00:00Z')).line, /2 nitpick and 1 outside-diff remarks/, 'nitpicks and outside-diff remarks went unseen');
-assert.doesNotMatch(summarizeRemarks(withReviews(['**Nitpick comments (2)**'], '2026-10-08T09:00:00Z'), Date.parse('2026-10-10T10:00:00Z')).line, /nitpick/, 'an old review\'s nitpicks are counted again');
-assert.match(said([], { state: 'PENDING', description: 'Review in progress' }).line, /not read yet/, 'a review still running is said as such');
-const pending = (hoursAgo) => summarizeRemarks(prData([], { state: 'PENDING', description: 'Review in progress' }), Date.parse('2026-10-10T10:00:00Z') + hoursAgo * 3600000).line;
-assert.match(pending(1), /not read yet \(waiting 1 h\)$/, 'a fresh push only waits');
-assert.match(pending(30), /waiting 30 h\): .+ask with a comment "@coderabbitai review"/, 'a push waiting for hours says how to ask for its review');
-assert.match(said([], { description: 'Review skipped: 428 files exceed the limit of 300', changedFiles: 428 }).line, /428 files against its limit of 300/, 'a skipped review is said with its reason');
-const read = (s) => s !== 'c4';
-assert.equal(advanceTo(['c1', 'c2', 'c3'], read, 0), 'c2', 'the head read: the baseline stops one short, so the pull request stays open');
-assert.equal(advanceTo(['c1', 'c2', 'c3', 'c4'], read, 0), 'c3', 'the head not read yet: the baseline goes to the newest commit read');
-assert.equal(advanceTo(['c1', 'c2', 'c3'], read, 1), null, 'an open remark keeps the baseline where it is');
-assert.equal(advanceTo(['c4'], read, 0), null, 'nothing read: nothing moves');
-assert.equal(advanceTo(['c1'], read, 0), null, 'the one commit is the head: nothing moves');
-assert.match(summarizeRemarks(prData(null)).line, /no open pull request from room-polish into reviewed/, 'a missing pull request is said, not passed over');
 // the project switches off what loads into every session though the work never uses it
 const projectSettings = JSON.parse(fs.readFileSync('.claude/settings.json', 'utf8'));
 assert.equal(projectSettings.enabledPlugins['privacy-legal@synced'], false, 'privacy-legal is off for the project');

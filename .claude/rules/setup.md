@@ -9,7 +9,6 @@ paths:
   - "tools/secrets.mjs"
   - "tools/publish-preview.mjs"
   - "tools/usage.mjs"
-  - "tools/coderabbit.mjs"
   - "package.json"
   - "docs/tools.md"
   - "docs/audit/**"
