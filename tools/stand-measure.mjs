@@ -81,11 +81,13 @@ async function main() {
     console.log('not now: the last two runs failed; look first (node tools/stand-measure.mjs look) and name the cause'); process.exit(1);
   }
   const b = await blockers();
-  if (b.length) { console.log(`not ready: ${b.join('; ')}`); process.exit(1); }
+  // the check above left the proximity sensor overridden: given back on every way out, the headset put to sleep
+  // only when nobody wears it
+  if (b.length) { console.log(`not ready: ${b.join('; ')}`); metavr('device', 'proximity', '--enable'); if (!wornByPerson()) sleepNow(); process.exit(1); }
   requireReview(ROOT, 'VR in the headset', { look: true });
   requirePaper(ROOT, 'VR in the headset', { look: true });
   // this run is for a headset nobody wears: on a person it would hold frames and rates against him
-  if (wornByPerson()) { console.log('not now: the owner wears the headset; this measure is for the stand'); process.exit(1); }
+  if (wornByPerson()) { console.log('not now: the owner wears the headset; this measure is for the stand'); metavr('device', 'proximity', '--enable'); process.exit(1); }
   const ids = gpuIds(sh('ovrgpuprofiler -m'), ['GPU Frequency', 'GPU % Utilization']);
 
   const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);

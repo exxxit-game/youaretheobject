@@ -130,3 +130,55 @@ https://code.claude.com/docs/en/best-practices ; quoted below as A1-A9.
   must hold every time moved into a linter or hook [machine]. For us: our CLAUDE.md is held at 45 lines by a test
   (circles 2); the file that grows is docs/owner-decisions.md (about 90 lines, loaded every start) and
   docs/tools.md: the same A3 question ("would removing this line cause a mistake?") applies to them.
+
+### P12. One long window, its cost per step (ours: circles 11, 5b; h14)
+- Official, "Manage costs effectively", https://code.claude.com/docs/en/costs [read 14.10]: "Claude Code sends your
+  full conversation with every request"; "a one-line question in a session that has been open all day still draws
+  usage for the whole conversation"; high spend "usually traces back to long sessions that were never cleared";
+  "`/clear` costs nothing", while `/compact` "is itself a large request"; "Aim to keep CLAUDE.md under 200 lines";
+  agent teams "approximately 7x more tokens" in plan mode. Best practices: A5, A6.
+- The owner's thread: u/studioinafolder (13.10) "Checking usage before and after each unit of work, and writing
+  progress to a file so I can stop at a threshold and resume after the reset"; u/elgringo (14.10) "Too many MCP's
+  can add 100-200k tokens to every chat you start".
+- What fixed it: one task per session and `/clear` between tasks [written habit; the docs' own fix], progress in a
+  file for the next session [written], usage read before and after a step [machine: a counter]. For us: this is
+  docs/tools.md's spending line (tools/usage.mjs per step) and h14's "one task per window"; nothing new to add.
+
+### P15. "Done" without the run behind it (ours: mistakes lines 20, 39, 63; Cosmogram's claim hook)
+- Official: A1 ("Have Claude show evidence rather than asserting success"; a Stop hook "blocks the turn from ending
+  until it passes"); the trust-then-verify gap: "If you can't verify it, don't ship it."
+- Ernest Bednarczyk, "Bondsmith: Hard Bonds for Soft Claims", 12.10.2026, https://coldtake.dev/blog/bondsmith-hard-bonds-for-soft-claims
+  [read] (HN https://news.ycombinator.com/item?id=50063070 , "My coding agent said 'all tests pass.' They were never
+  run" [seen]): tests not run, run before the last edit, or never written; his engine runs the test command itself
+  and checks each postcondition in code, "a missing fact fails closed"; his advice: replace each claim with a
+  script-run check (an exit code, a `git log`, a non-empty file).
+- What fixed it: the claim replaced by a check the machine runs (exit code, CI status) [machine]. For us: our
+  pre-commit runs the quick tests and reads the exit status (line 39's fix); what stays unguarded is "done" for the
+  browser and headset look (line 20) and the chat's words (line 63): A1's rule "show the evidence" (the command and
+  its output in the answer) is the cheap written half.
+
+### P3. Two checks that lock each other (ours: circles 3; loops of 25 tries, 12.10)
+- Official, hooks reference, "Stop input", https://code.claude.com/docs/en/hooks [read 14.10]: `stop_hook_active` is
+  true when Claude is already continuing because of a stop hook: "Check this value or process the transcript to
+  avoid blocking on a condition that will never resolve"; "an 8-consecutive-continuation cap" ends the turn, but
+  "The count of consecutive continuations resets each time Claude calls a tool" (which is how a loop of 25 tries
+  with tool calls between them got past the cap).
+- Forums: no thread found that names two gates locking each other; not found.
+- What fixed it (official): the Stop hook reads `stop_hook_active` and does not block again on a state the agent
+  cannot change [machine]. For us: our Stop hook (tools/claude-guard.mjs stop) could hold only once per state it
+  cannot clear, as the docs say; circles 3's own fix (a check runs only where its input changes) stands.
+
+### P10. Guards that silently do not run (ours: circles 9; mistakes lines 48, 50, 53; Cosmogram)
+- Official, hooks reference [read 14.10]: "Claude never sees stderr from a hook that exits 0"; "Claude Code treats
+  exit code 1 as a non-blocking error, even though 1 is the conventional Unix failure code. If your hook is meant to
+  enforce a policy, use `exit 2`"; "A hook that can't start is a non-blocking error too" (shell code 127); to block
+  instead, `"onFailure": "block"` (v2.1.295 or later, the version in his Claude Desktop since 13.10, h14); "A
+  timed-out ... hook doesn't block the tool call ... don't count on a stalled hook to act as a gate"; "use the
+  permission system rather than a hook to enforce a hard allow or deny".
+- r/ClaudeCode, u/Tunisandwich, 08.09.2026, https://www.reddit.com/r/ClaudeCode/comments/1wb1wrg/ [seen, title]:
+  Claude tested a new permission hook "by removing its own guardrails and then trying to delete a random system
+  file. The hook in fact did not work and I was only saved by the auto-classifier".
+- What fixed it: exit 2 or JSON decisions, `onFailure: block`, deny rules in permissions for hard limits [machine];
+  a guard proved by planting its mistake (ours: tools/prove-guards.mjs). For us: check that every guard in
+  .claude/settings.json that must block has `onFailure: block` (circles 9 says the Write/Edit guard and the Stop hook
+  do not block when they crash).
