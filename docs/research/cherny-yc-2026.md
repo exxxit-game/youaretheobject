@@ -4,7 +4,7 @@ Read 2026-10-14 in full from Y Combinator's own transcript (Root Access, "Boris 
 posted 2026-07-27, https://www.ycrootaccess.com/p/boris-cherny-building-claude-code), linked from the video's
 description (Y Combinator, "Boris Cherny: We Cut 80% of Claude Code's Prompt", 2026-07-27,
 https://www.youtube.com/watch?v=qyPCVqFUyDo). Cherny made Claude Code; Diana Hu (YC) asks. Said the day after
-Opus 5 shipped; we run Opus 5.5, so it fits what we run now. Below: his points in my words, timestamps from YC's
+Opus 5 shipped; we run Opus 5.5: that his advice holds for it too is my inference, not his words. Below: his points in my words, timestamps from YC's
 page, short quotes only.
 
 ## His points

@@ -44,10 +44,11 @@ https://claude.com/blog/the-new-rules-of-context-engineering-for-claude-5-genera
    a typo in CLAUDE.md; commenters disagree whether typos matter. Nothing to take.
 
 ## Where this meets our setup
-- Our always-loaded set (CLAUDE.md and its three imports, 18,652 characters) and the circles printed again at start
-  are "put it all upfront" and "repeat yourself" in the article's terms. Both are his decisions (docs/owner-decisions.md:
-  the start rules shortened, the circles kept in two places), so this goes to him as facts and options, not as a
-  change.
+- Our always-loaded set (CLAUDE.md and its three imports, 18,652 characters when read) is "put it all upfront" in
+  the article's terms; it is his decision (docs/owner-decisions.md: the start rules shortened), so it goes to him as
+  facts and options, not as a change. The circles, printed a second time at start when this was read ("repeat
+  yourself"), now arrive once, with CLAUDE.md: the start prints docs/ten-circles.md only when its import is gone (his choice
+  of 14.10, his words in docs/owner-decisions.md, the line on errors).
 - What the article and threads 2 and 5 keep is what we already hold by machine: hooks, rulesets, tests. Our hooks
   themselves change only through his permission (.claude/settings.json ask rules), which answers thread 5's reports
   of an agent editing its own hook.

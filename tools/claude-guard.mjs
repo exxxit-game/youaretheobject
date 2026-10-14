@@ -445,13 +445,12 @@ if (mode === 'start') {
     const { game, process: proc } = split(log);
     out.push(`Yesterday's commits: ${game} touched the game, ${proc} the process.${proc > game ? ' The process took more than the game: tell the owner.' : ''}`);
   }
-  // the ten circles and the settled decisions are imported by CLAUDE.md, which Claude Code loads at every
-  // start and re-reads after every compaction, so printing them here too makes a second copy; a file is
-  // printed here only when its import is gone
+  // the circles and the settled decisions come with CLAUDE.md (loaded at every start and after every compaction):
+  // printed here only when the import is gone; a missing file is named either way
   let claudeMd = '';
   try { claudeMd = fs.readFileSync(path.join(HERE, 'CLAUDE.md'), 'utf8'); } catch { /* checked below */ }
   for (const [file, what] of [[CIRCLES, 'the ten circles he approved are'], [DECISIONS, "the owner's decisions are"]]) {
-    if (claudeMd.includes(`@${file}`)) continue;
+    if (claudeMd.includes(`@${file}`) && fs.existsSync(path.join(HERE, file))) continue;
     try { out.push(fs.readFileSync(path.join(HERE, file), 'utf8').trim()); } catch { out.push(`WARNING: ${file} is missing here: ${what} not in front of this session.`); }
   }
   // the one feature to work on: the first whose "passes" is false (Anthropic's harness for long-running

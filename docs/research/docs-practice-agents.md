@@ -114,7 +114,7 @@ Grep of C:\Users\admin\Documents\objekt-files\papers\*.txt for CLAUDE.md / AGENT
 
 ## Item 5: subagents as independent reviewers
 - Anthropic, "Create custom subagents", https://code.claude.com/docs/en/sub-agents (live doc, fetched 2026-10-14; first 100k of 110k chars read).
-  - What a reviewer sees: "Explore and Plan start without your CLAUDE.md files ... Other built-in and custom subagents load both, unless you set omitClaudeMd". It "doesn't see your conversation history". => A custom reviewer by default DOES read CLAUDE.md and its @imports (owner decisions, failure list), so it is not blind to the project's framing unless `omitClaudeMd` is set. (Exact frontmatter name to verify in the reference.)
+  - What a reviewer sees: "Explore and Plan start without your CLAUDE.md files ... Other built-in and custom subagents load both, unless you set omitClaudeMd". It "doesn't see your conversation history". => A custom reviewer by default DOES read CLAUDE.md and its @imports (owner decisions, failure list), so it is not blind to the project's framing unless `omitClaudeMd` is set (the field name verified below, same page).
   - Read-only reviewer: restrict `tools`; "omit Agent from its tools list" to stop it spawning.
   - Delegation is driven by the description: "write a clear description so Claude knows when to use it"; descriptions cost context.
   - Persistent subagent memory via `memory` field (`project` scope recommended).
