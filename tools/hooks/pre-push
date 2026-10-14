@@ -11,8 +11,8 @@ while read local_ref local_sha remote_ref remote_sha; do
   case "$local_sha" in 0000000000000000000000000000000000000000) continue ;; esac
   node tools/secrets.mjs "$local_sha --not --remotes=origin" || exit 1
 done
-# the slow tests the commit check leaves out (pre-commit SLOW), so no red test reaches GitHub; a
-# branch made from main (the live site) lacks them yet: GitHub runs its own tests
+# the slow tests the commit check leaves out (pre-commit SLOW), on the working tree, not the pushed
+# commit (GitHub tests that); a branch made from main (the live site) lacks them yet
 unset GIT_DIR GIT_INDEX_FILE GIT_WORK_TREE GIT_PREFIX GIT_EDITOR
 for t in structure review-gate; do
   [ -f "tests/$t.test.mjs" ] || continue
