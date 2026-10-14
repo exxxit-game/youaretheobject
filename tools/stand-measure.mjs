@@ -80,12 +80,14 @@ async function main() {
   if (last.length === 2 && last.every(failed) && !fs.existsSync(path.join(RUNS, last[1], 'look.png'))) {
     console.log('not now: the last two runs failed; look first (node tools/stand-measure.mjs look) and name the cause'); process.exit(1);
   }
+  // the review gates exit on their own, so they run before the sensor is touched: after it a refused gate
+  // would leave the proximity sensor overridden
+  requireReview(ROOT, 'VR in the headset', { look: true });
+  requirePaper(ROOT, 'VR in the headset', { look: true });
   const b = await blockers();
   // the check above left the proximity sensor overridden: given back on every way out, the headset put to sleep
   // only when nobody wears it
   if (b.length) { console.log(`not ready: ${b.join('; ')}`); metavr('device', 'proximity', '--enable'); if (!wornByPerson()) sleepNow(); process.exit(1); }
-  requireReview(ROOT, 'VR in the headset', { look: true });
-  requirePaper(ROOT, 'VR in the headset', { look: true });
   // this run is for a headset nobody wears: on a person it would hold frames and rates against him
   if (wornByPerson()) { console.log('not now: the owner wears the headset; this measure is for the stand'); metavr('device', 'proximity', '--enable'); process.exit(1); }
   const ids = gpuIds(sh('ovrgpuprofiler -m'), ['GPU Frequency', 'GPU % Utilization']);
@@ -122,7 +124,11 @@ async function main() {
     for (let i = 0; i < 60 && !game; i++) { game = await page(/localhost:3000/); if (!game) await pause(500); }
     if (!game) throw new Error('the game tab did not appear');
     run = async (js) => { const v = await game.run(js); if (v && v.error) throw new Error(v.error); return v; };
-    const loaded = async () => { for (let i = 0; i < 80 && (await run("!!document.querySelector('a-scene')?.hasLoaded")) !== true; i++) await pause(250); };
+    // a scene that never loads ends the run with its own cause in the log, not as a later failure to enter VR
+    const loaded = async () => {
+      for (let i = 0; i < 80; i++) { if ((await run("!!document.querySelector('a-scene')?.hasLoaded")) === true) return; await pause(250); }
+      throw new Error('the scene did not load in 20 s');
+    };
     await loaded();
     // the flow plays a first visit: the mark of an earlier run left mid-room (left-early.js) shows its own page in
     // place of the consent, so it is cleared and the page loaded again; what was cleared goes in the log
