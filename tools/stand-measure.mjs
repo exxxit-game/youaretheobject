@@ -65,7 +65,7 @@ async function main() {
   const blockers = async () => { const inFront = await awakeFront(); return [
     !(await fetch(`http://localhost:${localPort()}/`).then((r) => r.ok, () => false)) && `the game server is not running on port ${localPort()}: start the preview "objekt"`,
     wornByPerson() && 'the headset is worn: this measure is for the stand',
-    /guardian/.test(inFront) && 'the headset cannot find its place in the room (its tracking or boundary window is in front): turn the stand to face furniture and things, not a bare wall or a door'
+    /guardian/.test(inFront) && 'the headset cannot find its place in the room (its tracking or boundary window is in front): switch on travel mode in its quick settings (no position tracking, which a still stand does not need; it made the run of 14.10 go), or face the stand to furniture, not a bare wall or a door'
   ].filter(Boolean); };
   if (mode === 'check') { const b = await blockers(); const f = front(); metavr('device', 'proximity', '--enable'); console.log(b.length ? `not ready: ${b.join('; ')}` : `ready (in front: ${f})`); process.exit(b.length ? 1 : 0); }
   // two runs in a row that failed: a third waits for a look at what the headset shows (CLAUDE.md: "Two or three failed

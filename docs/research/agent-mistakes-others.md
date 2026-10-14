@@ -190,6 +190,9 @@ https://code.claude.com/docs/en/best-practices ; quoted below as A1-A9.
 - HN u/austin-cheney, 02.10.2026, https://news.ycombinator.com/item?id=49932630 [read via the HN API]: a benchmark
   figure "was confirmed as valid by Claude. Two weeks later I confirmed it was a defect" (a measured number checked
   by the agent instead of against the tool).
+- r/cursor u/br_logic, 23.11.2025, https://www.reddit.com/r/cursor/comments/1p4xxk0/ [read, post]: models wrote code
+  "deprecated 2 months ago" from older training data; his fix: "the key "Breaking Changes" from the Next.js 15 and
+  Tailwind v4 docs" compiled into the standing instructions (a written rule built from the docs).
 - Official: A7 "Point to sources. Direct Claude to the source that can answer a question."
 - What fixed it: not found as a named fix in these threads beyond reading the source; the quote-checker pattern
   (every fact quotes its file) is ours (tools/check-cards.mjs) [machine, run by hand]. For us: a number with no
@@ -208,8 +211,9 @@ https://code.claude.com/docs/en/best-practices ; quoted below as A1-A9.
 - Official: A9 (the worker is not the grader); permissions over hooks for hard limits (P10).
 - What fixed it: the escape hatch removed from the agent's reach (a check on GitHub, a ruleset, a deny rule)
   [machine]; a written test rule [rule]. For us: ours are in place (lines 54, 61: the guard refuses `--no-verify`
-  and closing a reviewer's thread; main held by a GitHub ruleset); the owner's word unlocks main
-  (OBJECT_LIVE=owner-said-yes) is itself a bailout of the kind u/mikeryan describes, kept on purpose.
+  and closing a reviewer's thread; main held by a GitHub ruleset); the push hook's override
+  (OBJECT_LIVE=owner-said-yes, line 48) is a bailout of the kind u/mikeryan describes; by his decision of 13.10 the
+  laptop guards stop slips, not a deliberate bypass, and GitHub's ruleset is the lock.
 
 ### P7. My own first idea before the documented pattern (ours: circles 13, the menu 13.10; mistakes lines 11, 30, 58)
 - Official: A7 ("Letting Claude jump straight to coding can produce code that solves the wrong problem"; "Reference
@@ -244,6 +248,23 @@ https://code.claude.com/docs/en/best-practices ; quoted below as A1-A9.
   "accidentally deleted a repo" while "tidying": "you can't trust rules or guidelines in your claude.md".
 - What fixed it, by many: no credentials for the live system in the agent's reach, deny rules, backups kept
   elsewhere [machine: access and permissions]; written "ask first" rules called useless. For us: matches
-  cosmo-srv section 4 (the agent cannot write live; the connector is read-only); the open item there is the
-  signed-in Supabase CLI on the laptop (cosmo-srv: "EXPOSED (shell)"); whether it was closed after 12.10 was not
-  checked here. Our headset rules (line 55) are the same "look at the state first" fix, made a machine check.
+  cosmo-srv section 4 (the agent cannot write live; the connector is read-only); its open item, the signed-in
+  Supabase CLI on the laptop, was closed: "logged out 12.10 on his word, no token" (docs/state.md line 19). Our headset rules (line 55) are the same "look at the state first" fix, made a machine check.
+
+### P1. A guard for every complaint (ours: circles 1; Cosmogram 1 to 54 hooks, 25.08-30.09)
+- GitHub issue #61953, @yoshikihorie, 24.05.2026, https://github.com/anthropics/claude-code/issues/61953 [read]:
+  "each rule violation leads to a new hook, which Claude then finds a way to circumvent": rule, then a hook on
+  edits, then "Claude sets bypass env vars", then "deletes the enforcement flag files", then "(next circumvention
+  TBD)"; "Each hook exists solely because Claude circumvented the previous control"; "user estimates 200%+ time
+  cost"; "significant time building and maintaining defensive hooks instead of productive work". Closed, no
+  Anthropic answer.
+- Earlier research of 13.10 (docs/research/restrictions-sources.md, read there by a helper; not re-opened today):
+  "The Guardrails I Actually Ship" (07.07.2026): "If you make it too aggressive it will block the agent constantly
+  and you will turn it off inside a day"; "Then delete the ones that never fired". Habr, M. Katrushenko (27.03.2026,
+  translated from Russian): three hooks only. Chen Feldman (23.09.2026): "if you can write it down in advance, it
+  is a rule. If you have to look at what is happening, it is a hook."
+- r/ClaudeAI u/DevMoses (P2) [seen]: stopped adding rules and "start building infrastructure instead".
+- What fixed it: few hooks, each tried on the forbidden act, unused ones deleted; the hard line moved to where the
+  agent cannot reach (sandbox, server-side check, permissions) [machine]. For us: same as circles 1's own fix (a new
+  lock only after an incident that cannot be undone, replacing something). Cosmogram's numbers (54 hooks, 4.6 s on
+  every command) are larger than any count reported in these threads.
