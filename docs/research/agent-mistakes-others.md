@@ -268,3 +268,54 @@ https://code.claude.com/docs/en/best-practices ; quoted below as A1-A9.
   agent cannot reach (sandbox, server-side check, permissions) [machine]. For us: same as circles 1's own fix (a new
   lock only after an incident that cannot be undone, replacing something). Cosmogram's numbers (54 hooks, 4.6 s on
   every command) are larger than any count reported in these threads.
+
+### P21. Shell heredocs silently changing code (ours: mistakes line 18; h13, h13-2: five times)
+- GitHub issue #97409, @pierrefournier86-hash, 26.09.2026, open, https://github.com/anthropics/claude-code/issues/97409
+  [read]: "On Windows, any run of *n* consecutive backslashes in a command sent through the **Bash tool** reaches
+  bash as ⌈n/2⌉ backslashes"; it happens inside single quotes and quoted heredocs; "The **PowerShell tool is not
+  affected**"; a Python heredoc's `"\n"` arrives as a real newline; "the natural (wrong) conclusion was that
+  \"heredocs eat backslashes\"". Confirmed 28.09 by @MarkLRead on "Windows 10 Pro 10.0.19045", our laptop's build.
+  The same bug is filed again as #98622, #98733, #99410 and #90630 (titles [seen]).
+- Reproduced today while writing this file: a `\b` sent through a Bash heredoc reached Python as `\b`, a backspace
+  character (seen in the output and fixed by hand).
+- What fixed it: the PowerShell tool, or files written with the Write and Edit tools and then run [tool choice]. For
+  us: the cause of line 18 is probably this harness bug, not only shell quoting; our lesson ("edit code with the Edit
+  tool, scripts written by the Write tool", h13-2) is the right fix; tests/structure.test.mjs "a control character
+  at" catches the backspace in code [machine].
+
+### P13. Errors built on errors: my docs and helpers' reports read as sources (ours: circles 12; h13-3; h13-4)
+- GitHub issue #81820, @jbFrameworks, 28.07.2026, https://github.com/anthropics/claude-code/issues/81820 [read],
+  written by the model at the user's direction about its own session: "I labelled claims **VERIFIED (URL)** where
+  the URLs had been asserted by research subagents and never opened by me"; one such number "failed a basic
+  plausibility check the moment it was actually examined"; "Every mechanical guardrail present in this session
+  (pre-registration, immutable records, compare-and-swap pushes) outperformed model virtue; every failure occurred
+  where a guardrail was absent"; the user runs a Stop hook ("PROVE-OR-MOVE") against invented waiting.
+- r/vibecoding u/Sp2ctre, 11.07.2026, https://www.reddit.com/r/vibecoding/comments/1uti86l/ [read, post]: the
+  project's "docs, notes, context — has drifted from what's actually true. So instead of building, I end up
+  re-grounding everything: fixing stale docs, correcting outdated notes".
+- What fixed it: a separate label for what a helper said versus what the agent itself opened; records that cannot
+  be edited after the fact; claims carrying their receipt [machine where possible]. For us: docs/tools.md already
+  says "A doc, the board or another window is a lead"; Cosmogram's old split ("checked" versus "the helper's word",
+  cosmo) is the same label #81820 asks for, and we do not use it on pages now.
+
+### X. How others keep a mistakes list (bears on P1, P2, P18, P21; ours: docs/mistakes.md, docs/circles.md)
+- r/ClaudeCode u/thabxi, 13.08.2026, "I make Claude Code keep a MISTAKES.md file", https://www.reddit.com/r/ClaudeCode/comments/1vn6d5r/
+  [read, 93 entries of its RSS]. His method: each entry "what happened / root cause / consequence / the rule that
+  prevents a repeat"; "When the same failure shows up four or five times it stops being a mistake and becomes a law
+  in CLAUDE.md". His case: "6 UTF-8 corruptions from shell string-replace pipelines between Jul 7 and Jul 21",
+  then one line "Mutate files with the Edit tool, never shell string pipelines", "Zero recurrences in the 10 days
+  since" (P21's twin).
+- Replies with their own numbers or methods: u/RobertasTa_LT: "a 386-line plan file got double-mojibake'd by
+  PowerShell redirects"; "When a lesson repeats, it graduates into a check, not just a rule ... A rule can be
+  ignored; a red test can't"; "Human mistakes get logged too". u/tribat: sessions only deposit "a one-line Pitfall
+  candidate"; a separate job "with none of the authoring context" promotes it "once it's recurred a few times";
+  "The enforced rules doc stays hard-capped and small". u/callmejace: every agent may "oversell" its own lessons,
+  so it proposes a candidate and "is NOT allowed to add" to the pitfalls file. u/Phearless: the list grows "too
+  big"; have Claude write lint rules "that will cause errors if they're broken". u/OkOpposite8159: a rule in
+  CLAUDE.md was broken "twice in the same day" because the agent worked from another file; fix: a copy "at the
+  top of the file where that work actually happens ... the copy that gets obeyed is the one already in front of
+  it". u/OkphexTwin: "CLAUDE.md is merely a suggestion unless you put a hook in."
+- For us: docs/mistakes.md already has the rule several replies arrive at (a row only with the test that catches
+  it); docs/circles.md is the "deposit, then promote on repeat" half. Two points not in our setup: a mistake is
+  promoted only after it repeats (we added a guard after one incident in Cosmogram, P1), and the warning placed in
+  the file where the work happens rather than only in CLAUDE.md.
