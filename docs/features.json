@@ -1,7 +1,7 @@
 {
   "how": "Anthropic, Effective harnesses for long-running agents (26.11.2025): one feature per session, the first whose passes is false unless his message names another; only 'passes' changes here, and only after npm test, the smoke test on GitHub, my own look in the headset or on the stand, and his yes to what he saw (for a test or a tool: to its green GitHub run's link). His words for each feature are on the line of docs/board.md named in 'board'.",
   "features": [
-    { "id": "smoke-test-after-leaving", "what": "GitHub's smoke test green again: it looks at the corridor once door 1 is offered again after leaving a room by the menu", "board": "errors section, item 1", "check": "the test run on GitHub is green", "passes": false },
+    { "id": "smoke-test-after-leaving", "what": "GitHub's smoke test green again: it looks at the corridor once door 1 is offered again after leaving a room by the menu", "board": "errors section, item 1", "check": "the test run on GitHub is green", "passes": true },
     { "id": "corridor-paintings", "what": "Paintings on the corridor's end walls, swapping places on leaving a room", "board": "corridor section, item 1", "check": "his yes 9.10", "passes": true },
     { "id": "corridor-floor-directory", "what": "Floor directory by the stairs; two forms shown to him as pictures, he picks one", "board": "corridor section, item 2", "check": "picture of both forms, then the chosen one in the headset; his yes", "passes": false },
     { "id": "corridor-light", "what": "Light and gloom for the whole corridor at once, no lighting of its own on any object; room 101 after it", "board": "corridor section, item 3", "check": "the corridor in the headset before and after; his yes", "passes": false },
