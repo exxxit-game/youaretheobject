@@ -13,7 +13,7 @@ Done:
   its resolve does not take effect on GitHub, so the `reviewed` robot is stuck.
 - The wall: every part of the setup, what holds it, where everything lies, verified world knowledge, one plan:
   https://claude.ai/artifact/Ld81yG7m4n57KNn5SBwsVs (two blind checks found 20 and 22 problems, all fixed). His
-  «Утверждаю» to the wall as a whole.
+  approval of the wall as a whole (his word in the chat of 14.10).
 Not done: the plan below.
 Next, in this order, one pass: 1) his decisions split (the list shown to him first: his choices of meaning, ethics,
 money stay his; my technical advice to my log; widened lines keep only his words); 2) no more copying between disks;
