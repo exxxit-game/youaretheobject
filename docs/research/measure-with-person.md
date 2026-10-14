@@ -16,8 +16,8 @@ Pages read with `metavr docs fetch` on 14.10.2026 unless marked.
    latency. Reprojection (TimeWarp) fixes rotation only: "TimeWarp does not correct for head translation".
    The page names the OVR Metrics Tool overlay (FPS, stale frames, GPU utilization) as the live check.
    It gives no tester protocol (no movements, no durations).
-   For us: the person's job is to turn the head fast and lean/step while the HUD counts stale frames; black edges
-   and judder are what he reports; a stand at rest cannot provoke them.
+   For us: a person's head moves while he plays, which a stand at rest cannot do; black edges and judder are what he
+   would report. The plan below asks for no special head turns: playing as usual is the measure (finding 2).
 
 2. **Meta's performance test is a person playing through, not a still view.** Meta, "VRC.Quest.Performance.1",
    last_updated 2025-10-22 (the current store check; fits Quest 3 in 2026; it binds store apps, a WebXR page is
@@ -118,8 +118,9 @@ Then in the chat, two questions: one number for how he feels, 0 to 10, 0 no symp
 (the FMS as VERA asked it, Gottsacker et al. 2026, gottsacker-2026.txt), and where it jerked, if anywhere.
 
 What the machine records the whole walk, no still windows: every frame, each late one with its time, its length,
-the frame callback's own duration and the draw calls (so a GPU-bound frame is told from a CPU-bound one, as the
-OVR Metrics page tells them by App T against the budget), the place (as now), the head's own turning speed from
+the frame callback's own duration, the draw calls, and the app's GPU time per second from the VrApi lines of logcat
+(their App field, Meta's App T: a GPU-bound stretch is told from a CPU-bound one by App T against the frame budget, as
+the OVR Metrics page does; without App T the record makes no such claim), the place (as now), the head's own turning speed from
 the viewer pose (the camera's local rotation: a snap turn of the rig is not a head turn), and whether he was
 aiming, moving, or had the menu open; the first 45 s after the page opens marked as Meta's launch boost, not
 waited out; heat and memory at the start and the end; when each note was shown and hidden. No OVR Metrics overlay
