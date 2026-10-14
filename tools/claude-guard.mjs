@@ -545,10 +545,10 @@ if (mode === 'stop') {
     // board's showing and current lines, and a conflict resolved to one side loses the owner's quoted words
     const theirs = gitHere('merge-base', '--is-ancestor', 'room-polish', 'HEAD') === null ? gitHere('rev-list', '--count', 'HEAD..room-polish') : null;
     const first = theirs ? `room-polish has ${theirs} commits of another window: first here run git merge room-polish, keeping both sides of every conflict in docs/board.md (the owner's words), then ` : '';
-    // the branch reaches room-polish through a pull request CodeRabbit reviews (GitHub flow); pushed and in
-    // an open one, it waits on the reviewer, no command hurries it, and the app wakes the session on the review
+    // the branch reaches room-polish through a pull request CodeRabbit reviews (GitHub flow); with HEAD in an
+    // open one of this repository, it waits on the reviewer, no command hurries it, and the app wakes the session
     let waits = false;
-    try { waits = gitHere('merge-base', '--is-ancestor', 'HEAD', `origin/${branch}`) !== null && execFileSync('gh', ['pr', 'list', '--head', branch, '--base', 'room-polish', '--json', 'number', '--jq', 'length'], { cwd: HERE, encoding: 'utf8', timeout: 10000, windowsHide: true }).trim() > '0'; } catch { /* GitHub out of reach: remind */ }
+    try { waits = JSON.parse(execFileSync('gh', ['pr', 'list', '--head', branch, '--base', 'room-polish', '--json', 'headRefOid,isCrossRepository'], { cwd: HERE, encoding: 'utf8', timeout: 10000, windowsHide: true })).some((p) => !p.isCrossRepository && gitHere('merge-base', '--is-ancestor', 'HEAD', p.headRefOid) !== null); } catch { /* GitHub out of reach: remind */ }
     if (!waits) problems.push(`the main folder (room-polish, where the next window starts) lacks ${gitHere('rev-list', '--count', 'room-polish..HEAD')} commits of this branch: ${first}push ${branch}, open or update its pull request into room-polish, answer CodeRabbit's review, merge it, then in the main folder run git pull --ff-only origin room-polish`);
   }
   // a helper's command left running (tools/leftovers.mjs): seen at every turn's end, not by my memory
