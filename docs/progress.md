@@ -4,6 +4,37 @@ Read at the start of every session, with `git log --oneline -20` and docs/featur
 session"). Newest entry on top. Each entry: done, not done and why, next. Anything outside the feature at hand goes
 to the end of docs/board.md, one line each.
 
+## 2026-10-14 night to 2026-10-15 — the app's insides re-checked with him (setup task, his words on the board)
+Done (each with npm test green; the work in PR #16):
+- PR #15 (the previous window) reviewed by CodeRabbit, its four remarks fixed (69828f4), merged by fast-forward on
+  his written permission in the chat, the main folder pulled.
+- A page for him on commands, skills, plugins, connectors and settings: https://claude.ai/artifact/8ffDtPYooD9gfXEJAG7Wfw
+  (88 skills load in every window: 36 Meta, 23 Anthropic, 8 research, 3 CodeRabbit, 17 built in, 1 ours; counted
+  from the transcripts 08-14.10, 24 skill calls in all; evidence in objekt-files/notes/setup-2026-10-14). Checked
+  by two fact-check runs per version; version 2 adds six re-checks (GitHub, Claude Code setup, Supabase, the
+  internet, the future from Cosmogram's notes, why each tool), the reports in the session notes folder.
+- Question 1 of the page: the Meta VR plugin off in this project (7d50c41), on his go-ahead to the page (his words on the board); Meta's docs
+  through `metavr docs search` (docs/tools.md). It takes effect once #16 is merged and the main folder pulled.
+- The stop hook no longer repeats the merge reminder while HEAD is in an open PR of this repository into
+  room-polish (his remark that it flashed at every answer; afb3acd, aff0a21 after CodeRabbit).
+- Found and fixed: CLAUDE.md's import `@docs/tandem.md.` loaded nothing (0a551d9; the size test now reads imports
+  as Claude Code does); four dead lines; the health check reads all four rules of main and requires the "test"
+  check by name (3a50807 and the CodeRabbit fix); test.yml runs on PRs into main too; docs/methodology.md,
+  docs/testing.md and docs/decisions.md now say what the database keeps and that the health check runs by hand.
+Errors of mine, named to him: a word our circles ban ("done") on the page and Meta called off before the merge;
+"the morning check" for the health check; my advice written as his decision in the page's first draft; a CodeRabbit reply
+saying npm test was green while it was red (steps chained with `;`, corrected in the thread; the cause, a paper
+saved without a record, fixed in 58feb5d).
+Not done and why: the average of "you vs others" is computed on every call, while his yes of 12.10 was to batches
+of at least 10 (0011_doors.sql; a migration, on his word); the monthly update check's first run waits in its own
+window since 23:00 14.10 (he has to answer it there); questions 2-4 of the page and the future's nine decisions wait
+for him, one at a time; the GitHub actions' pinning and versions wait for the benefit-and-harm weighing.
+Next: 0) PR #16: CodeRabbit's review answered, merged, the main folder pulled; then, in a new window, check that
+the 36 Meta skills and the tandem show (or not) in its listing. 1) The page's queue, one question at a time:
+the update check's window; Supabase spend cap and two-factor sign-in, GitHub two-factor; GitHub security alerts;
+Supabase SSL, old keys, sign-ups; the average in batches; questions 2-4; the guard on shell writes. 2) His order (the board): a try
+at the game next.
+
 ## 2026-10-14, evening, next window — item 6 done but his merge; our documents compared with experienced practice
 Done:
 - 6b) PR #10 closed with a comment placing each of its 19 unresolved remarks (17 CodeRabbit had verified fixed, the
