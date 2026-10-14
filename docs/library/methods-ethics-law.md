@@ -1,7 +1,7 @@
 # methods, ethics, law
 
 Generated from `docs/library/papers.json` by `node tools/build-library.mjs`. Do not edit by hand.
-102 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
+103 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
 in the library folder's papers\ as `<id>.txt` (a data set: `<dir>/<id>.txt` from the library folder); "text: ocr" marks a scan's
 text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 
@@ -83,6 +83,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **reinecke-2015** Reinecke & Gajos 2015. LabintheWild: Conducting Large-Scale Online Experiments With Uncompensated Samples · LabintheWild, online experiments, uncompensated samples · no card
 - **rivu-2021** Radiah et al. 2021. Remote VR Studies: A Framework for Running Virtual Reality Studies Remotely Via Participant-Owned HMDs · remote VR studies, participant-owned headsets, framework · no card
 - **rivu-2022** Rivu et al. 2022. 'Can you Set It Up On Your Own?' - Investigating Users' Ability To Participate in Remote-Based Virtual Reality Studies · remote VR studies, setup ability · no card
+- **saffo-2021** Saffo et al. 2021. Remote and Collaborative Virtual Reality Experiments via Social VR Platforms · VRChat, remote VR experiments, social VR platforms · no card
 - **salouhou-2026** Salouhou et al. 2026. From Players to Participants: Citizen Science and Video Games to Understand Cognition · citizen science, video games, cognition · no card
 - **schafer-2019** Schäfer & Schwarz 2019. The Meaningfulness of Effect Sizes in Psychological Research: Differences Between Sub-Disciplines and the Impact of Potential Biases · effect sizes, publication bias · no card
 - **scheel-2021** Scheel et al. 2021. An Excess of Positive Results: Comparing the Standard Psychology Literature With Registered Reports · registered reports, positive results, publication bias · no card

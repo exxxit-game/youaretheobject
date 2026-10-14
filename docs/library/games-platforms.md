@@ -1,7 +1,7 @@
 # games and platforms
 
 Generated from `docs/library/papers.json` by `node tools/build-library.mjs`. Do not edit by hand.
-38 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
+39 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
 in the library folder's papers\ as `<id>.txt` (a data set: `<dir>/<id>.txt` from the library folder); "text: ocr" marks a scan's
 text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 
@@ -36,6 +36,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **politowski-2021** Politowski et al. 2021. Game industry problems: An extensive analysis of the gray literature · game development, postmortems, process · no card
 - **reinecke-2015** Reinecke & Gajos 2015. LabintheWild: Conducting Large-Scale Online Experiments With Uncompensated Samples · LabintheWild, online experiments, uncompensated samples · no card
 - **roozenbeek-2019** Roozenbeek & van der Linden 2019. Fake news game confers psychological resistance against online misinformation · fake news game, inoculation, misinformation · no card
+- **saffo-2021** Saffo et al. 2021. Remote and Collaborative Virtual Reality Experiments via Social VR Platforms · VRChat, remote VR experiments, social VR platforms · no card
 - **salouhou-2026** Salouhou et al. 2026. From Players to Participants: Citizen Science and Video Games to Understand Cognition · citizen science, video games, cognition · no card
 - **spiers-2023** Spiers et al. 2023. Explaining world-wide variation in navigation ability from millions of people: Citizen science project Sea Hero Quest · Sea Hero Quest, navigation ability, citizen science · no card
 - **van-den-bussche-2026** Van den Bussche et al. 2026. Citizen Science in Psychology: Challenges, Opportunities and Recommendations · citizen science in psychology, recommendations · no card

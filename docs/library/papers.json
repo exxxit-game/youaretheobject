@@ -8493,6 +8493,25 @@
    "text": "ok",
    "status": "no card",
    "source": "https://homepage.villanova.edu/diego.fernandezduque/Teaching/CognitivePsychology/Lectures_and_Labs/1_Intro/Lab/CogLabManualStudent.PDF"
+  },
+  {
+   "id": "saffo-2021",
+   "authors": "Saffo, Di Bartolomeo, Yildirim, Dunne",
+   "year": "2021",
+   "title": "Remote and Collaborative Virtual Reality Experiments via Social VR Platforms",
+   "sections": [
+    "methods-ethics-law",
+    "games-platforms"
+   ],
+   "tags": [
+    "VRChat",
+    "remote VR experiments",
+    "social VR platforms"
+   ],
+   "type": "conference paper",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://doi.org/10.1145/3411764.3445426"
   }
  ]
 }
