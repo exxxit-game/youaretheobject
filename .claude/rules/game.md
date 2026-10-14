@@ -24,7 +24,6 @@ none of them reads it first (docs/tools.md). All his words: docs/owner-decisions
 - The start best-in-class («Пока первое не будет супер, дальше нечего даже идти» 9.10).
 - The experimenter branch stays on the laptop, next after the corridor («они будут следующие после коридора» 9.10).
 - The engine's own docs of our version (A-Frame 1.8.0, objekt-files/docs-engine) are read for each task («намного легче не выдумывать, а брать уже уроки готовые» 11.10).
-- What can be learned now is learned now; money and the weakest headset's budget first («нужно закрыть это уже сейчас» 10.10).
 - An object: many pictures of the real thing from every side (shops' product photos), then how it is made, then the build («это можно как правило поставить» 11.10).
 - Rooms are faithful re-creations of published experiments, no invented mechanics; our own new experiments too, live, on the closest studies, he picks from the candidates in docs/research/own-experiments-now.md («мы можем ставить свои эксперименты» 9.10).
 - The projector's film in the style of Moderat's "Bad Kingdom" video («У Moderat Bad Kingdom офигенный стиль клипа. Мы возьмем такой.» 13.10; its picture, no music).
@@ -41,5 +40,4 @@ none of them reads it first (docs/tools.md). All his words: docs/owner-decisions
 - Space tiers: seated, standing, roomscale 1.8×1.8 m (base; his area), large (offered only, never shrunk). Live players only where the original had real participants or a design like Mori & Arai; mixed reality where the original was a real room.
 - Formal «вы»; no music. Humour only in the rooms («юмор будет только в экспериментах, в комнатах» 9.10); the corridor's voice serious, the start a serious automatic message; small dry details in print welcome there («дополняет, а не уничтожает серьезность»).
 - A room's voice: a laboratory party host («тамада, но лабораторный»), a children's-game rhythm, the procedure as in the paper; the first room opens with a minute of a funny warm-up, then serious («для разминки» 10.10).
-- The game takes nothing from other sites: the controller models ship with it (A-Frame's AFRAME_CDN_ROOT), the inspector points at our own address, the GitHub check fails on any other host but our server («А, мой совет: возить всё с собой» 13.10).
-- Every headset gets its controller's model: three.js's own loader (XRControllerModelFactory) with the whole MIT set of WebXR Input Profiles kept with the game, its generic models for any other, in place of A-Frame's model loading; a step of its own after the doors migration, then his look that Quest 3 looks as before («пустота это не выход»; «А… как в three.js» 13.10).
+- A controller is never shown as nothing («пустота это не выход» 13.10).

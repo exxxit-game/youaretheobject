@@ -163,3 +163,38 @@ Consequence: a room changed since its paper check stops the headset until the pa
 No helper in .claude/agents sets its own model, so each runs on the session's model (Opus 5.5).
 Why: the measure of 12.10 (https://claude.ai/artifact/REVKLNJQavWbus8Fk1S6ZB): the same four questions on Sonnet 5.5 and Opus 5.5, one run each; the three narrow ones came out equally right, but on the wide one each model missed a source the other found (Opus: the bHaptics vest on an audio cable; Sonnet: Web Serial in Chrome 148 on Android), and Sonnet costs half per token. He first chose Sonnet for the two search helpers, then, told of the wide question, «вернуть Opus» (12.10).
 Consequence: tests/health.test.mjs fails if any helper sets a model.
+
+## Moved from his decisions (14.10)
+My advice that stood in his decision files as his; he approved moving it («Утверждено» 14.10, the list of 36 lines in
+the chat: his choices of meaning, ethics, money and feel stayed his; widened lines kept only his words). Mine now:
+kept while it serves, changed by facts, with one line to him.
+- The permanent prompt put in points, one of three forms I drafted; the text and his pick («Вариант В») stay his.
+- The process frozen: it changes only on a health-check finding or his word, and a change replaces something («согласен» 10.10).
+- The process review: a ban only where a mistake cannot be undone or costs him time; a complaint is no reason for a new guard; his «Убирать, что не надо» stays his.
+- Each stage of the process has its list of what must be known and checked before it (my widening of his «поэтапно»).
+- His part in code is clicks, keys he creates by steps, and his yes (my sentence of 12.10).
+- The revision's shelf order: work off its shelf waits on its shelf, a new window starts at the next shelf («Да» 13.10); his «где… шаг номер один» stays his.
+- Each shelf ends with its map, the map of shelf 2 the pattern; his wish for maps to check against stays his.
+- Until the corridor is done: one window, one item start to finish, all else one line at the board's end, the board's first line counting items («Да» 10.10).
+- The loop's last two steps: check it, write its source beside it; his «Искать, воплощать» stays his.
+- New numbers and conclusions reach him only on a fact-checked page, in the chat a link and one line («Делай» 10.10).
+- How a page is checked: two runs that do not see each other, on a new page only; edits from their findings checked by me against them, no new pair; his words on checks stay his.
+- Three rules of form from Humanizer: no bold label on every item, the result first and his decisions not told back to him, no staging line before the point (my option, pasted by him 12.10).
+- Dates and indexes on every claim (the Kodishes), behind my words and checks.
+- The machine compares our tools with their latest versions.
+- A hard question reaches him at every step that changes something (two remarks of his joined into one rule; each stays his).
+- What can be learned now is learned now; money and the weakest headset's budget first («нужно закрыть это уже сейчас» 10.10).
+- The game takes nothing from other sites: the controller models ship with it, the inspector points at our own address, the GitHub check fails on any other host (my advice «возить всё с собой», pasted by him 13.10).
+- Every headset gets its controller's model through three.js's XRControllerModelFactory and the MIT WebXR Input Profiles, a step after the doors migration («А… как в three.js» 13.10); his «пустота это не выход» stays his.
+- Every change is compared with a baseline, the times and conditions written by the machine.
+- A tester's run goes into the testers' table, without gender and age, the date kept, testers told the group is small («хорошо, Б» 12.10).
+- The shown average of "you and other players" is recomputed only in batches of at least 10 new players («да» 12.10).
+- Room 101 keeps the chosen answer's place and its 40 trials as 40 marks, without times, with the next change of the database («да» 12.10).
+- The database's remaining doors closed: the chat's Supabase connector read only, an explicit deny on the tables, the IP-hash key changed daily; his «encryption later» stays his.
+- Connectors off: Notion, Jam, Adobe, Figma, the GitHub connector, Claude in Chrome, computer use, Minutes, privacy-legal; kept: Claude Docs, the browser pane, Consensus, PubMed, reference lookup, PDF Tools, Dropbox, one Supabase; the superpowers plugin off («да» 10.10).
+- Plugins for every project: CodeRabbit and the TypeScript language server («ставь» 9.10); main protected on GitHub («Да» 9.10).
+- main held by the simple guard against my slips, the forms chasing a deliberate bypass taken off (my choice after his no to a second account).
+- The seven things the studio lacks, each on its shelf (https://claude.ai/artifact/J1VB6ay99JRuS9Zd6niJhg).
+- An outside reviewer's remark is closed only by the reviewer (my remedy for his «ты сам себя можешь оправдать»; I keep it, docs/tandem.md).
+- The tool revision (https://claude.ai/artifact/ShHre3dd8yNXUJcCnXn65D): Blender and compression tools; the site published by GitHub Actions, only the game's files public; one live migration; IWER in the GitHub test.
+- Spending: about 10 weekly points a day, `node tools/usage.mjs` at each step's start and end, past 3 points stop and tell him (my proposal of 13.10; he never said yes to it).
