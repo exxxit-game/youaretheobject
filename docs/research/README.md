@@ -4,6 +4,9 @@ Each note is named from the code, the room or the doc that uses it. These are na
 of the process moved to objekt-files/notes/archive:
 
 - `docs/research/data-architectures.md`: where a tiny lab keeps players' research data.
+- `docs/research/docs-practice-classic.md`, `docs/research/docs-practice-agents.md`: how experienced people keep project
+  documents and the files that steer an AI agent, the evidence for the comparison of 2026-10-14.
+- `docs/research/cherny-yc-2026.md`: Boris Cherny at YC Startup School 2026, read in YC's transcript.
 - `docs/research/data-purchases.md`: purchases and data, for paid rooms.
 - `docs/research/forums-rooms.md`: running psychology experiments in VR and in the browser, what practitioners write.
 - `docs/research/measure-with-person.md`: measuring with a person in the headset, what Meta's docs have the tester do.

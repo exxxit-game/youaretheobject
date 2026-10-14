@@ -4,6 +4,33 @@ Read at the start of every session, with `git log --oneline -20` and docs/featur
 session"). Newest entry on top. Each entry: done, not done and why, next. Anything outside the feature at hand goes
 to the end of docs/board.md, one line each.
 
+## 2026-10-14, evening, next window — item 6 done but his merge; our documents compared with experienced practice
+Done:
+- 6b) PR #10 closed with a comment placing each of its 19 unresolved remarks (17 CodeRabbit had verified fixed, the
+  loading screen moved to the board, the integers already there) and answering its two outside-diff remarks. The
+  `reviewed` robot removed from room-polish by PR #13 (merged as c48820b once CodeRabbit confirmed both its remarks
+  fixed); its copy on main goes by PR #14, which waits for his merge.
+- The push guard let nothing from a branch made from main leave the laptop; fixed in #13: a slow test is skipped
+  only when the pushed commit itself has none.
+- room-polish locked on GitHub by his hand: ruleset "room-polish keeps its history" (no deletion, no force push, no
+  bypass), read back with gh.
+- His words on things that change (versions, time) on the board; CodeRabbit's open remark on the loading screen too.
+- Our 14 main documents compared with how experienced people keep theirs, a page for him:
+  https://claude.ai/artifact/CC3VLWFAifPk3THwKCvGGf (two fact-checks found 20 problems each, all fixed). Evidence:
+  docs/research/docs-practice-classic.md, docs/research/docs-practice-agents.md; IFScale and Xiong re-read in their
+  own text; Cherny's advice to delete CLAUDE.md, skills and hooks every six months read in YC's transcript once he
+  widened the browser pane (docs/research/cherny-yc-2026.md).
+Errors of mine, found and fixed the same day: a too-wide claim in the closing comment on PR #10 (corrected there);
+the page's first draft quoted my English retelling as his words, called work in a pull request done and counted
+lines as mentions.
+Not done and why: PR #14 and the `reviewed` branch's removal wait for him; six Reddit threads he downloads are to be
+read; ten documents (state, engine, rooms, roadmap, tools, testing, baseline, building standards, VR checklist,
+methodology) are not compared yet; items 7 to 10 of the wall's plan not started.
+Next, in order: his merge of #14; the Reddit threads; then the page's own list: the A-Frame version in one place,
+full dates in new records, a status and date on each decision record; with his permission, a guard on "passes" and
+omitClaudeMd for the fact-checker and the practice-reviewer; options on the old versions of his words in the public
+history.
+
 ## 14.10, late night — item 6 half done; this window archived on his word
 Done: 6a) a window's work now reaches room-polish through a pull request CodeRabbit reviews (6f8edb0: CLAUDE.md
 step 6, the Stop hook's reminder, .coderabbit.yaml base branch room-polish, tests on each pull request into
