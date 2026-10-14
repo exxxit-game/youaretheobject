@@ -33,8 +33,8 @@ closed when what breaks it is in place; it stays here, marked, as the memory of 
 ## 2. Rules written until no one reads them — watch
 - Done: Cosmogram's CLAUDE.md 5.8 KB (25.08) → 35 KB (30.09) → cut to 8 KB; 451 memory files; a note of 24.09 that
   "150+" rules were never searched before acting.
-- Here: CLAUDE.md held at 45 lines by a test; docs/owner-decisions.md (his decisions, loaded at every start) is the one
-  that grows, a line a decision.
+- Here: CLAUDE.md was held at 45 lines by a test, and the text moved to its imports and grew there; since 14.10 the
+  whole of the rules and guards is held by one limit in characters that only comes down (.claude/process-size.json).
 - Why us: every lesson wants a line; no line is ever taken out.
 - Breaks it: sizes held by tests; Anthropic's "Ruthlessly prune"; a line whose removal would cause no mistake is cut.
 

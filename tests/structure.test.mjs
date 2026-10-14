@@ -76,17 +76,26 @@ for (const room of fs.readdirSync(path.join(ROOT, 'src/rooms'))) {
 // 5. Notes stay short: the state file is replaced, not appended to.
 const STATE_MAX = 80;
 assert.ok(lines(path.join(ROOT, 'docs/state.md')) <= STATE_MAX, `docs/state.md over ${STATE_MAX} lines: rewrite it shorter`);
-// The rules every message carries stay one page: a long rules file gets lost ("Bloated CLAUDE.md
-// files cause Claude to ignore your actual instructions", code.claude.com/docs/en/best-practices);
-// a new rule goes in only in place of an old one
-const RULES_MAX = 45;
-assert.ok(lines(path.join(ROOT, 'CLAUDE.md')) <= RULES_MAX + 1, `CLAUDE.md over ${RULES_MAX} lines: a new rule replaces an old one`);
-// what an @import pulls in loads with it, so the whole counts: "target under 200 lines per CLAUDE.md file"
-// (code.claude.com/docs/en/memory, "Write effective instructions")
-const IMPORTED_MAX = 200;
-const imported = [...fs.readFileSync(path.join(ROOT, 'CLAUDE.md'), 'utf8').matchAll(/@(docs\/[\w./-]+\.md)/g)].map((m) => m[1]);
-const loaded = lines(path.join(ROOT, 'CLAUDE.md')) + imported.reduce((n, f) => n + lines(path.join(ROOT, f)), 0);
-assert.ok(loaded <= IMPORTED_MAX, `CLAUDE.md with its imports (${imported.join(', ')}) is ${loaded} lines, over ${IMPORTED_MAX}: shorten one`);
+// The rules and guards that steer the agent stay as they are or shrink, never grow. A long rules file
+// gets lost ("Bloated CLAUDE.md files cause Claude to ignore your actual instructions",
+// code.claude.com/docs/en/best-practices), and a cut held by text alone grew back within days twice:
+// Cosmogram's hooks went from 53 to 12 and back to 15 in two days, this project's decisions file from
+// 13.2 to 33.8 KB in three. A cap on lines of one file was kept by longer lines and by moving the text
+// to its imports, so the whole is counted in characters. What is counted and the limit live in
+// .claude/process-size.json, which changes only through the ask rules of .claude/settings.json; after a
+// cut the limit comes down with it, so the room freed is not filled again
+{
+  const size = JSON.parse(fs.readFileSync(path.join(ROOT, '.claude/process-size.json'), 'utf8'));
+  const chars = (f) => fs.readFileSync(f, 'utf8').replace(/\r\n/g, '\n').length;
+  const steering = size.count.flatMap((c) => {
+    if (c === '@CLAUDE.md') return [...fs.readFileSync(path.join(ROOT, 'CLAUDE.md'), 'utf8').matchAll(/@([\w./-]+\.md)/g)].map((m) => path.join(ROOT, m[1]));
+    const p = path.join(ROOT, c);
+    return !fs.existsSync(p) ? [] : c.endsWith('/') ? walk(p) : [p];
+  });
+  const total = steering.reduce((n, f) => n + chars(f), 0);
+  assert.ok(total <= size.limit, `the rules and guards that steer the agent are ${total} characters, over the limit ${size.limit} (.claude/process-size.json): something new goes in only in place of something old`);
+  assert.ok(size.limit - total <= size.slack, `the rules and guards are ${total} characters, ${size.limit - total} under the limit ${size.limit}: bring the limit in .claude/process-size.json down to ${total}, so the room a cut freed is not filled again`);
+}
 
 // 6. No dead code: every module under src/ is imported by another file
 // (the shell main.js and room.js files are entry points).
