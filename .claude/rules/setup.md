@@ -23,7 +23,7 @@ none of them reads it first (docs/tools.md). All his words: docs/owner-decisions
 - Google Drive is the papers' cloud copy; the old Dropbox files stay («мы выбираем Google Driver» 10.10).
 - The strongest model («взял самую-самую умную» 9.10), the search helpers too («вернуть Opus» 12.10).
 - Paid tools only when they help decisively («не готов платить за лишнюю херню» 10.10).
-- CodeRabbit kept only if useful («А если он нам будет очень полезен, я, может, и дальше за него буду платить» 10.10); moved forward by a robot on GitHub, never by the session under review («да, этот» 10.10); it replaces the PR review toolkit («делай» 10.10); its trial and the pull request it reads: docs/state.md.
+- CodeRabbit kept only if useful («А если он нам будет очень полезен, я, может, и дальше за него буду платить» 10.10); it replaces the PR review toolkit («делай» 10.10) and reviews each window's pull request into room-polish; the robot that moved its baseline retired on his word («reviewed, делай что нужно, если это самое умное решение» 14.10); its trial: docs/state.md.
 - The dialogues are kept whole as the archive of why each path was taken, to check against («чтобы оставалась память, по которой мы понимаем, почему мы так поступали… чтобы мы могли всегда свериться» 13.10); Claude Desktop keeps them at any age (Claude Code's docs), and each window is also copied to objekt-files/notes/sessions at its end.
 - He sets up and connects; I check it all as one whole («Все, что надо настроить, подключить, я настрою и подключу» 10.10).
 - No separate GitHub account for the agent («создавать отдельную учетную запись под тебя я просто в рот ебал» 13.10).
