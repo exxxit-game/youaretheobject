@@ -1,12 +1,13 @@
 name: test
 
 on:
-  # on each push to room-polish and main, and on each pull request into room-polish, so a window's work is
-  # tested before it is merged
+  # on each push to room-polish and main, and on each pull request into either, so a window's work is
+  # tested before it is merged; main's ruleset requires this run, and a run skipped by a branch filter
+  # stays pending and blocks the merge (GitHub, "Troubleshooting required status checks")
   push:
     branches: [room-polish, main]
   pull_request:
-    branches: [room-polish]
+    branches: [room-polish, main]
 
 # the tests only read the code: the token cannot write, whatever the repository's default
 permissions:

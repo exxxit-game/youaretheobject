@@ -36,14 +36,13 @@ export function checkGit(root) {
   return out;
 }
 
-// main is the live site: on GitHub it can be neither deleted nor rewritten (the ruleset "main is the
-// live site"); a switch on GitHub leaves no trace in the code
-export const MAIN_RULES = ['deletion', 'non_fast_forward'];
+// main is the live site (its ruleset): a switch on GitHub leaves no trace in the code
+export const MAIN_RULES = ['deletion', 'non_fast_forward', 'pull_request', 'required_status_checks'];
 export function checkMainRules() {
   const rules = sh('gh', ['api', 'repos/exxxit-game/youaretheobject/rules/branches/main', '--jq', '[.[].type] | join(" ")']);
   if (rules === null) return [warning('could not read the rules of main on GitHub (no network, or gh not signed in)')];
   const missing = MAIN_RULES.filter((r) => !rules.split(' ').includes(r));
-  return [missing.length ? broken(`main on GitHub can be ${missing.join(' and ')}: restore the ruleset "main is the live site"`) : ok('main can be neither deleted nor rewritten on GitHub')];
+  return [missing.length ? broken(`main on GitHub lacks the rules ${missing.join(', ')}: restore the ruleset "main is the live site"`) : ok('main on GitHub: green pull requests only, no deletion, no rewrite')];
 }
 
 // --- my memory: a file the index does not name never loads ----------------------------------
