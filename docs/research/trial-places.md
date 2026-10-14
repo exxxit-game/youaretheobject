@@ -205,3 +205,29 @@ the Redlib mirror was down; so every rule below is [seen] and its exact page is 
 - VRPirate (t.me/vrpirate) spreads pirated builds by its own name [seen]: avoid.
 - Ukrainian-language VR group on Telegram: not found (one Ukrainian search). The owner's own Telegram VR community
   (owner-decisions: testers come from it) is the first Ukrainian/Russian-speaking place we already have.
+
+### 3b. Discord (invites need a login: not opened; links listed for the owner)
+- WebXR Discord, https://discord.gg/jJxvuW97c4 , and Supermedium (A-Frame) Discord, https://discord.gg/NPgArtG3Qz ,
+  both listed on https://aframe.io/community/ [read 2026-10-14]; Meta's Browser team is said to watch the WebXR
+  Discord's #browser channel (search summary of Meta's new-tab page) [seen]. Developers more than players: the
+  place to ask about the new-tab review, not to find players.
+- VIVERSE creators' Discord, https://discord.gg/viversecreators (named in VIVERSE docs) [read].
+- Player Discords with a self-promotion channel (Quest, VRChat, WebXR players): not found within the limit.
+
+### 3d. YouTube (YouTube's own search results, fetched 2026-10-14 [read]; views as shown that day; titles may be
+YouTube's automatic translation)
+- WebXR coverage is old and small: Cas and Chary XR "You Should Try Free WebXR Games..." 64,367 views, 6 years
+  ago; Gamertag VR "100+ FREE Web Based Games/Experiences on Oculus Quest" 31,242 views, 7 years ago; Tetiana
+  Discovers "Best FREE VR Games You Don't Need To Install! WebXR on Quest" 12,290 views, 2 years ago; paralore
+  "I Found The Ultimate Free VR Website... (HeyVR.io)" 302 views, 2 months ago.
+- Free Quest game lists are big and current: Diamond VR "Ranking the TOP FREE Quest 3s Games 2026" 206,471 views,
+  2 months ago; VRelity "30 FREE Meta Quest 3 & Quest 3S Games..." 123,707 views, 7 months ago, and "50 FREE
+  Quest 3 Games..." 20,990 views, 3 weeks ago; VR Lad "10 most popular FREE Meta Quest 3 Games!" 2,212,409 views,
+  1 year ago, "5 NEW Free VR Games on Meta Quest 3 & 3S!" 12,537 views, 1 month ago; JCVR "The top 15 best FREE
+  vr games in 2026" 21,444 views; GoransGaming "Top 10 Free VR Games You Can Play RIGHT NOW (2026)" 32,335 views,
+  2 weeks ago; Retro Pocket monthly "NEW VR Games in October 2026" 25,285 views, 4 days ago.
+- Russian-language: Portal News (Quest and Pico lists, 125,848 and 79,496 views), ViarTim (25,698), VRMUSE
+  (22,643), SokolQuest (151,196, 11 months ago); several top results promote piracy loaders (QLoader): avoid.
+  Ukrainian-language: "Pro VR ukrainskoiu" (832 views, 2 years ago) the only one found.
+- No channel found that covers psychology-experiment VR games (query "vr psychology experiment game": lab demos
+  and talks only). How each channel takes submissions: not read (their About pages need a click-through).

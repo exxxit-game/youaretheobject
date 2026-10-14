@@ -50,3 +50,63 @@ description and chapter list, not the speech.
   live via the Meta Quest Developer Hub MCP". Closeness: a developer teaching agent workflows for Quest in Unity; no
   science.
 
+### 1b. New videos found by YouTube's own search (14.10.2026)
+
+Searched (YouTube's results page, read from its data): "Claude Code VR game Quest", "WebXR AI coding agent game",
+"Immersive Web SDK Claude Code", "vibe coding VR game Meta Quest WebXR", "AI made my VR game Meta Horizon Store",
+"Meta XR Operator agent test VR game"; for psychology: "VR game psychology experiments", "Milgram experiment VR",
+"psychology experiment VR game Quest you are the test subject", "Asch conformity experiment virtual reality",
+"bystander effect VR experiment game". Web search with site:youtube.com added little (its index misses most videos).
+
+- Getting Things Dun, "We Built a Meta Quest VR Game in 35 Prompts Using AI + Meta XR Operator!", 14 Aug 2026, 15 min,
+  400 views; video [read: description]. https://www.youtube.com/watch?v=i1_Z-NrhuaE . QuackShot VR in Unity: "We did
+  not personally write the gameplay code or manually assemble the Unity project. Instead, we provided the vision,
+  reviewed the results, shared playtest feedback"; the question was whether the AI could "test its own work"; XR
+  Operator "revealed several important limitations that only became clear when we put the headset on ourselves".
+  Closeness: the same split of roles as ours and the same finding (the headset shows what the agent's own test
+  misses); differs: a one-day prototype, Unity, no science.
+- Meta, "Meta XR Operator" (Unity docs), last updated 9 Sep 2026; documentation [read].
+  https://developers.meta.com/horizon/documentation/unity/meta-xr-operator/ . "an OpenXR API layer that gives AI
+  agents spatial context and control over a running Unity XR app": an MCP agent reads head and controller poses,
+  sets buttons and triggers, performs hand gestures and captures images; on a physical Quest through ADB port
+  forwarding, also in Meta XR Simulator; marked experimental. Closeness: Meta's own tool for the agent to check on
+  the device, the step our studio does over USB; Unity only, nothing for a WebXR page. Taught on YouTube by immersive
+  insiders, "Setup AI Agent for VR | Meta XR Operator", 5 Aug 2026 [read: description]
+  https://www.youtube.com/watch?v=IASapZ8hzoE .
+- immersive insiders, "Who can make VR Games better?", 8 Oct 2026, 9 min, 666 views; video [read: description].
+  https://www.youtube.com/watch?v=7b4zuNcp9P8 . Claude Code (Opus) against OpenAI Codex on the same Unity VR darts
+  game, three tasks, timings, costs and bugs; "That's a recorded experiment, not a benchmark". Closeness: a measured
+  comparison of agents for VR work; no science, Unity.
+- Dilmer Valecillos (Meta developer advocate), "How to Build Full VR/MR Games With Unity AI + Meta Agentic Tools!",
+  3 May 2026, 17 min, 12,612 views; video [read: description]. https://www.youtube.com/watch?v=bWxIF903t_I . A VR/MR
+  basketball game with Unity AI Assistant, Claude Code and Meta's MCP tools; plan file public
+  (github.com/dilmerv/ArcadeHoopsMR_Plans). The first search knew this game only from Meta's blog (Arcade Hoops).
+- onshoulders, "I Made 3 VR Games in 1 Hour Using AI (No Coding)", 15 May 2026, 13 min, 1,910 views [read:
+  description]. https://www.youtube.com/watch?v=h2oUH6vuQ9s . Claude Opus 4.7 and a Quest 3: archery, hand-tracked
+  drums, an AR shooter; ends with "Lessons Learned: Prompt Engineering for AI VR Dev". Closeness: a non-coder making
+  small Quest pieces with Claude; no process, no science.
+- Costa Yannakis, "I Built Anything I Wanted in VR, Just by Asking My Army of AI Agents", 4 Oct 2026, 44 views [read:
+  description]. https://www.youtube.com/watch?v=Un_WH-iyfUg . Brick Office, open source (github.com/CostaYannakis/VROffice):
+  Claude Code and Codex agents on the PC write "live mods" that hot-swap into a WebXR room on Quest 3 while the user
+  stays in the headset. Closeness: agents building WebXR content seen live in the headset; a sandbox, no science.
+- fx node, "Prototype subd modo inspired vr modeller VRDO. WebXR, vibe coded with claude sonnet. 5.5", 6 Oct 2026
+  [read: description]: a WebXR modeller that runs "in quest browser with pass through", shared as a Claude
+  artifact. https://www.youtube.com/watch?v=GpYw9b0RqoY . A tool, not a game.
+- Dr.Drastic, "How well can Claude make a VR Game?", 21 Sep 2026, 6 min, 943 views [read: description, which says
+  only "How well can AI in 2026 make a VR game?" and advertises an AI 3D-model service].
+  https://www.youtube.com/watch?v=RyKSjJHnWBE .
+- Platform news seen on the way: Meta's "Horizon Create" and "Horizon Studio", AI game makers announced at Meta
+  Connect 2026 (Gamefromscratch, 26 Sep 2026, 69,113 views [read: description]: the games "will only ... appear on
+  Facebook and Instagram") https://www.youtube.com/watch?v=m0bhcn38Q0s ; The XR Hustle, 27 Sep 2026 [read:
+  description]: a Horizon Create waitlist, "an AI tool that builds VR games from text prompts, no coding required"
+  https://www.youtube.com/watch?v=zXFqwViQt5k . Not opened at Meta (unverified beyond these descriptions).
+- A Halo VR mod presented as AI-made: Jammyhero, "So AI Can Make VR Games Now...", 24 Jul 2026, 6,043 views [read:
+  description: "Let's talk about the Halo AI Mod!", github.com/pancreations/Halo-MCC-VR]. https://www.youtube.com/watch?v=YCkQhdDh1eg .
+  Another AI-written VR port, as GTA San Andreas and Quake in the first search.
+- Psychology experiments: no video of a VR game whose rooms are classic experiments with the player as the subject.
+  What appears are lab re-creations already known: Mel Slater, "Virtual Reprise of the Stanley Milgram Obedience
+  Experiments" (YouTube upload 10 years ago, 3,630 views) https://www.youtube.com/watch?v=RjUNg3pkEag and his
+  "Bystander Responses to a Violent Incident in an Immersive Virtual Environment" https://www.youtube.com/watch?v=m6kBQk0DCFM ;
+  GET Lab, "VR Conformity" (10 years ago, 321 views) https://www.youtube.com/watch?v=LFBt-0NtvHg [all seen: titles in
+  the results only]; the Theseus "Milgram Experiment" (flat, already in ai-and-vr.md). Not new to us.
+
