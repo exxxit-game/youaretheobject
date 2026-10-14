@@ -76,7 +76,7 @@ P22. Secrets, personal data and database rights: his email in 187 public commits
 
 ### A. The official word: Anthropic, "Best practices for Claude Code" [read 14.10.2026; names v2.1.283, current]
 https://code.claude.com/docs/en/best-practices ; quoted below as A1-A9.
-- A1 (verify): "Without a check it can run, \"looks done\" is the only signal available, and you become the
+- A1 (verify): "Without a check it can run, "looks done" is the only signal available, and you become the
   verification loop"; "Have Claude show evidence rather than asserting success".
 - A2 (review chasing): "A reviewer prompted to find gaps will usually report some, even when the work is sound";
   "Chasing every finding leads to over-engineering"; flag "only gaps that affect correctness or the stated requirements".
@@ -107,3 +107,26 @@ https://code.claude.com/docs/en/best-practices ; quoted below as A1-A9.
   u/LairBob (13.10) Claude tests "your same code ... completely unchanged ... over and over"; u/dbbk (13.10)
   "Just stop. You don't need to be reviewing every PR." Against: u/Professional_Ad705 (13.10) "You can have 100
   passing tests that all enforce the same incorrect assumption" (reviews do not prove tests are right).
+
+### P2. Rules written until nobody reads them (ours: circles 2; Cosmogram 25.08-30.09)
+- Official: A3, A4 above (prune; bloated files make Claude ignore instructions; a rule it keeps breaking: the file
+  is too long).
+- HumanLayer, "Writing a good CLAUDE.md", 25.11.2025, https://www.humanlayer.dev/blog/writing-a-good-claude-md
+  [read]: "Frontier thinking LLMs can follow ~ 150-200 instructions with reasonable consistency"; consensus
+  "< 300 lines is best, and shorter is even better", their own root file under 60 lines; Claude Code wraps the
+  file in a reminder that it "may or may not be relevant", so non-universal lines get skipped. HN discussion,
+  748 points, 290 comments, https://news.ycombinator.com/item?id=46098838 [read, matching comments]:
+  u/anonzzzies (30.11.2025) "claude routinely ignores stuff from CLAUDE.md, even with warning bells etc. You need
+  a linter preventing things"; u/girvo (01.12.2025) "these tools still ignore that line sometimes so I still have
+  to check for it myself"; u/brianwawok (01.12.2025) "Git lint hook has been key. No matter how many times I told
+  it, it lints randomly"; u/vunderba (30.11.2025) the "Table-of-Contents approach": task files listed in
+  CLAUDE.md, read only when relevant.
+- r/ClaudeAI, u/DevMoses, 20.03.2026, "What happens when you stop adding rules to CLAUDE.md and start building
+  infrastructure instead", https://www.reddit.com/r/ClaudeAI/comments/1rz2oo3/ [seen]: "It started lean. 45 lines
+  ... Three months later it was 190 lines and Claude was ignoring more instructions than when I started."
+- The owner's thread (P5): u/tomm3hshipp (14.10) CLAUDE.md "shouldn't ever be big. max 500 lines, even less";
+  u/yangqi (13.10) "your big claude.md is sent with every request" (OP's was 406 lines plus nine playbooks).
+- What fixed it: short file plus files read on demand (skills, a table of contents) [written structure]; what
+  must hold every time moved into a linter or hook [machine]. For us: our CLAUDE.md is held at 45 lines by a test
+  (circles 2); the file that grows is docs/owner-decisions.md (about 90 lines, loaded every start) and
+  docs/tools.md: the same A3 question ("would removing this line cause a mistake?") applies to them.
