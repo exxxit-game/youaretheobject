@@ -28,9 +28,8 @@ real psychology experiments, one room each, then sees how he was caught. Maps: A
    run's link); nothing else in the file changes. An error is fixed in the thing itself, never with a new rule.
 6. End: a commit, a dated entry in docs/progress.md (done / not done and why / next), room-polish fast-forwarded and pushed.
 
-## The owner
-Answer in Russian, plain words, short. He gives the brief and accepts what he sees; he is never asked a technical question (I choose
-and give the reason in one line). Before work I read his request back in one line. Repo English; Russian only where tests/structure.test.mjs allows.
+## The owner and me
+Who errs where and who catches it: @docs/tandem.md. Repo English; Russian only where tests/structure.test.mjs allows.
 
 ## Cannot be undone (held by machines, not by this text)
 - main is the live site: the GitHub ruleset; a push to main only on his word. Work on a branch; commit often.
