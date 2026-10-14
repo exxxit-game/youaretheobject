@@ -89,20 +89,13 @@ Searched (YouTube's results page, read from its data): "Claude Code VR game Ques
   description]. https://www.youtube.com/watch?v=Un_WH-iyfUg . Brick Office, open source (github.com/CostaYannakis/VROffice):
   Claude Code and Codex agents on the PC write "live mods" that hot-swap into a WebXR room on Quest 3 while the user
   stays in the headset. Closeness: agents building WebXR content seen live in the headset; a sandbox, no science.
-- fx node, "Prototype subd modo inspired vr modeller VRDO. WebXR, vibe coded with claude sonnet. 5.5", 6 Oct 2026
-  [read: description]: a WebXR modeller that runs "in quest browser with pass through", shared as a Claude
-  artifact. https://www.youtube.com/watch?v=GpYw9b0RqoY . A tool, not a game.
-- Dr.Drastic, "How well can Claude make a VR Game?", 21 Sep 2026, 6 min, 943 views [read: description, which says
-  only "How well can AI in 2026 make a VR game?" and advertises an AI 3D-model service].
-  https://www.youtube.com/watch?v=RyKSjJHnWBE .
-- Platform news seen on the way: Meta's "Horizon Create" and "Horizon Studio", AI game makers announced at Meta
-  Connect 2026 (Gamefromscratch, 26 Sep 2026, 69,113 views [read: description]: the games "will only ... appear on
-  Facebook and Instagram") https://www.youtube.com/watch?v=m0bhcn38Q0s ; The XR Hustle, 27 Sep 2026 [read:
-  description]: a Horizon Create waitlist, "an AI tool that builds VR games from text prompts, no coding required"
-  https://www.youtube.com/watch?v=zXFqwViQt5k . Not opened at Meta (unverified beyond these descriptions).
-- A Halo VR mod presented as AI-made: Jammyhero, "So AI Can Make VR Games Now...", 24 Jul 2026, 6,043 views [read:
-  description: "Let's talk about the Halo AI Mod!", github.com/pancreations/Halo-MCC-VR]. https://www.youtube.com/watch?v=YCkQhdDh1eg .
-  Another AI-written VR port, as GTA San Andreas and Quake in the first search.
+- Smaller ones [read: descriptions]: fx node, a WebXR modeller "vibe coded with claude sonnet", runs "in quest
+  browser with pass through", 6 Oct 2026 https://www.youtube.com/watch?v=GpYw9b0RqoY ; Dr.Drastic, "How well can
+  Claude make a VR Game?", 21 Sep 2026 (the description says nothing more) https://www.youtube.com/watch?v=RyKSjJHnWBE .
+- Seen on the way [read: descriptions]: Meta's AI game makers "Horizon Create" and "Horizon Studio" (Meta Connect
+  2026; Gamefromscratch, 26 Sep 2026: their games "will only ... appear on Facebook and Instagram")
+  https://www.youtube.com/watch?v=m0bhcn38Q0s ; a Halo VR mod presented as AI-made (Jammyhero, 24 Jul 2026)
+  https://www.youtube.com/watch?v=YCkQhdDh1eg , another AI-written VR port like GTA and Quake in the first search.
 - Psychology experiments: no video of a VR game whose rooms are classic experiments with the player as the subject.
   What appears are lab re-creations already known: Mel Slater, "Virtual Reprise of the Stanley Milgram Obedience
   Experiments" (YouTube upload 10 years ago, 3,630 views) https://www.youtube.com/watch?v=RjUNg3pkEag and his
@@ -194,10 +187,9 @@ psychology: "psychology experiment VR game" (ja: 37), "VR remote experiment at h
     phenomena; the symposium touched the metaverse and media art. https://www.jstage.jst.go.jp/article/psychono/43/2/43_43.25/_article/-char/ja .
     Closeness: the same aim of letting people live a psychology finding, as workshops; which experiments, and
     whether any is in VR, is not on the page.
-  - Method papers seen, not opened: "VR audiovisual experiments: accuracy and precision of stimulus presentation in
-    VR HMDs" (Japanese Journal of Psychonomic Science 41(1)); "cases of immersive HMDs in cognitive psychology
-    experiments" (Brain and Neural Networks 23(3)); "an introduction to the literature on social attitudes in VR"
-    (Cognitive Studies 26(4)). Lab methods, not public games.
+  - Lab method papers seen, not opened: VR HMD stimulus accuracy (Japanese Journal of Psychonomic Science 41(1)),
+    immersive HMDs in cognitive psychology (Brain and Neural Networks 23(3)), social attitudes in VR (Cognitive
+    Studies 26(4)).
 
 ### 3b. CNKI
 
@@ -228,7 +220,7 @@ with site:cnki.net (two queries, in Chinese) reached only journal portal pages (
 How read: Reddit's RSS with curl and a user agent, one request every 46 s (14.10.2026): subreddit searches q=VR,
 WebXR, Quest, headset, psychology, experiment, XR, "Meta Quest", non-programmer (sorted new), the newest 100 posts
 (they reach back only to 7 Oct 2026), and the replies of two threads. q=WebXR, q=psychology: 0 entries;
-q=experiment: an empty answer (likely the rate limit). The sub's about page answered with a non-JSON page
+q=experiment: empty at first (likely the rate limit), retried below. The sub's about page answered with a non-JSON page
 (subscriber count not read).
 
 - u/Dinglemaniac, "I'm 3 weeks into a VR port of Outlaws (1997), running natively on Quest and PC VR", 13 Oct 2026;
@@ -251,6 +243,12 @@ q=experiment: an empty answer (likely the rate limit). The sub's about page answ
   "Lorebound", 23 Aug and 9 Sep 2026, whose author changed the game after watching users play; a Three.js co-op
   RPG, 9 Oct 2026; a ZX Spectrum remake with "Claude Code as the implementation team", 7 Oct 2026; a browser 3D horror
   game, 14 Oct 2026) [seen: titles and first lines]. None is about psychology or experiments; no post names WebXR.
+- q=experiment, retried later: 55 entries back to 3 Aug 2026, matched loosely (games described as "experimenting");
+  filtered for psychology, science, research, study, participant: one science-education game (a biochemistry idle
+  clicker, Godot, Claude and Gemini, 20 Sep 2026) and a non-coder's browser game "Prompt & Pray" ("I have a sales
+  background and no coding experience", 8 Oct 2026) [seen: first lines]; no psychology experiment. Size of the sub:
+  "we're already at 8k subscribers" (its founder u/jogalleciez, 2 Oct 2026, "only been a few months") [read].
+  https://www.reddit.com/r/ClaudeGameDev/comments/1ww7xu4/we_just_hit_8k_subscribers_on_rclaudegamedev/
 - Answer for this place: two VR projects new to us (Outlaws VR, Donkey Kong VR), both ports or remakes built with
   Claude; nothing on psychology experiments.
 
@@ -289,3 +287,29 @@ invite; member counts read 14.10.2026 from Discord's public invite information (
 - Not found: an official Meta developer Discord (Meta's channels are its forums and docs; one web search found
   none), and a Discord of PICO or of IWSDK (IWSDK's README links none; checked through its raw README [read]).
 
+## Answer
+
+Nothing in these five places joins AI building it, VR, and re-created published psychology experiments with a
+reveal. What is new adds to part A of ai-and-vr.md (AI-built VR), not to D:
+- Closest to our studio's form: Mister VR's "AI solo VR studio" of one person and AI (Japan, 9 Sep 2026), whose
+  WebXR (Three.js) shooter NEON SIEGE passed Meta's store review after four rejections; and u/Dinglemaniac's Outlaws
+  VR (13 Oct 2026), where Claude writes "basically all the code", one session plans with a to-do board and the human
+  reports bugs from the headset. Neither has science in it.
+- Meta's XR Operator (docs updated 9 Sep 2026) lets an agent drive and check a running Unity app on a real Quest;
+  nothing like it exists for a WebXR page, so our USB checks remain our own. QuackShot VR (14 Aug 2026) reports the
+  same lesson as ours: the headset showed limits the agent's own tests did not.
+- Psychology: the nearest new item is a body-ownership experiment run inside VRChat (Ishimoto, Kato, Kitazaki 2022),
+  a lab study, not a game; Japan's "Experiment Packages for the Mind" lets the public experience psychology in
+  workshops (VR use unknown). No VR game of classic experiments was found on YouTube, Bilibili, J-STAGE or CNKI.
+
+## Not done / not opened
+
+- Transcripts: none read. YouTube refused its caption file and transcript endpoint; Bilibili's speech was not
+  heard. So for Mister VR's NEON SIEGE (which AI wrote it, how it was tested, why the store sent it back four
+  times) and for the Bilibili "UE+AI VR game, but the reality" video, only titles, chapters and descriptions are known.
+- CNKI: stopped by a slider captcha after three searches; kns.cnki.net does not answer from here.
+- J-STAGE: full texts (PDFs) not opened; the hits were judged by title and abstract page.
+- Bilibili: video pages are blocked to downloads (HTTP 412); one opened in the browser pane.
+- r/ClaudeGameDev: the RSS search returns only the newest matches (VR: 6 entries back to 24 Aug 2026); older posts
+  may exist. Thread replies read for two threads only.
+- Discord: servers listed from their public invite information; nothing inside them was read.
