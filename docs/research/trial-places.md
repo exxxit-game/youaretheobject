@@ -147,3 +147,33 @@ given; [seen] = only a search result, a secondary report or a library note; "unv
   [read earlier]). One title; not a promise.
 - Cost: none beyond our live link (and a VRC-level polish). Learn: our own arrivals, with a `?from=ntp` tag on the
   submitted URL (our site; the tag is our idea, not Meta's). Risk: review time unknown; rotation after four weeks.
+
+### 2a. Meta Horizon Store: a free PWA listing, Early Access possible (already researched)
+- Packaging and the Store: docs/research/revision-1-store.md and projects/distribution.md [read earlier]. Early
+  Access is a developer toggle: "You can enable Early Access during app submission"; "Disabling Early Access is an
+  irreversible action" (Meta, last_updated 2025-12-17, https://developers.meta.com/horizon/resources/early-access/;
+  quoted in forums-store-money-2.md) [read earlier]. Elysian, a free WebXR PWA, has been on the Store since
+  2025-06-26 [read earlier]. Cost: the signed TWA build (Bubblewrap), the Store's review; same web code.
+  Learn: Store installs plus our own arrivals. Risk: review effort now; Early Access cannot be undone.
+
+### 2c. SideQuest's WebXR list: existed, current state unverified
+- UploadVR (undated in the page text): SideQuest made "a beta version of a web page" listing web VR, at
+  http://sdq.st/webxr [seen via search; not opened]. On 2026-10-14 sdq.st/webxr redirected to the SideQuest home
+  page behind a cookie banner offering only "Customize" or "Accept All" (not accepted, so not read) [read: the
+  redirect]. SideQuest audience: "more than two million monthly active users (as of May 2022)" (projects/
+  distribution.md) [read earlier, stale]. Whether a WebXR URL can be listed today: unverified (FOR THE OWNER).
+
+### 2d. WebXR directories and launchers
+- heyVR (heyvr.io): free sign-up, build uploaded to heyVR, "Submit for Review", "we'll inform you of any issues";
+  a Google Analytics tag allowed; a dashboard of "views, interactions, and user feedback", "Not all of these
+  features are available as of yet" (https://docs.heyvr.io/developers/publish-your-game, read in the browser pane
+  2026-10-14 [read]). Traffic: 30.8K visits a month, top country United States 34.23%, Russia 6.48% (Similarweb,
+  page dated September 2026, https://www.similarweb.com/website/heyvr.io/) [read; a traffic estimate]. Cost: a
+  copy of the build hosted by heyVR; whether our own server calls are allowed: not found.
+- itch.io: 111 results under the WebXR tag on 2026-10-14 (https://itch.io/games/tag-webxr) [read]; an HTML5 page
+  can embed or link our build (itch.io's own rules not read). Traffic for the tag: not found.
+- VIVERSE: see 1e-ii (the only directory found that names A-Frame and allows our own server on approval).
+- dmnshd.gg (founded 2026): "Every game on dmnshd.gg is designed, developed, and published in-house by the dmnshd
+  team" (https://dmnshd.gg/developers) [read]. Not a channel for us.
+- PICO Store: takes a PWA by URL (projects/distribution.md) [read earlier]; PICO is not sold in the US (forums-
+  store-money-2.md) [read earlier].
