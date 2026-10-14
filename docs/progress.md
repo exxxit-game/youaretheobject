@@ -22,6 +22,6 @@ Not done:
 - Feature smoke-test-after-leaving: the fix is in abd73cb; GitHub's run on room-polish is green
   (https://github.com/exxxit-game/youaretheobject/actions/runs/38577626182); "passes" waits for his yes to that link.
 - The backup to drive F copied (robocopy: 94.75 MB, 0 failed).
-- His yes to the green run (his words: «да и разрешить, это в архив»): smoke-test-after-leaving passes; his first yes toward 21.10.
+- His yes to the green run (his yes in the chat of 14.10, the revision window): smoke-test-after-leaving passes; his first yes toward 21.10.
 Next: a new window checks the lock (an edit to CLAUDE.md must bring him a permission prompt; he answers no), then the next feature of docs/features.json (corridor-floor-directory: two forms to him as pictures); on 21.10, count his yes to things he saw.
 
