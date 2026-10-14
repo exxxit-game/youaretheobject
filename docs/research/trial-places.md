@@ -132,3 +132,18 @@ given; [seen] = only a search result, a secondary report or a library note; "unv
   server, at first limited to 1 kB and 5 calls a minute per item [seen: zenn.dev and moguravr.com via a Japanese
   search; 2020-2023 articles; 2026 state unverified]. Unity-based; audience mostly Japanese (unverified).
 - Hubs (Mozilla's, now community-run), Spatial, Gorilla Tag custom maps: not researched within the limit.
+
+### 2b. Quest Browser new-tab featuring: the way in is now found
+- Meta "Browser new tab page", last_updated 2026-07-22,
+  https://developers.meta.com/horizon/documentation/web/browser-new-tab/ [read 2026-10-14]: submit through "the
+  public WebXR submission form" at https://fb.me/ntp; steps: initial quality bar, then QA, content and technical
+  reviews, developer iteration, curation or rejection (resubmission allowed); an accepted title is "promoted to the
+  top of the new tab page shelf for an initial four-week period", then ranked against other WebXR titles by monthly
+  user traffic. Criteria: the URL links to one experience, not a landing page or collection; no plain tech demo;
+  hand-tracked titles need a discoverable exit; general Quest VRC requirements apply. "Submission does not
+  guarantee" featuring. Age 13+ wording appeared only in a search summary [seen].
+- Evidence it brings players: "In Tirol" got "tens of thousands of MAU from more than 140 countries" "with
+  little-to-no marketing" after its new-tab launch (Meta blog by J. C. Kane, 2025-08-27; forums-store-money-2.md D2
+  [read earlier]). One title; not a promise.
+- Cost: none beyond our live link (and a VRC-level polish). Learn: our own arrivals, with a `?from=ntp` tag on the
+  submitted URL (our site; the tag is our idea, not Meta's). Risk: review time unknown; rotation after four weeks.
