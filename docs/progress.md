@@ -36,7 +36,9 @@ Not done and why: PR #14 and the `reviewed` branch's removal wait for him; ten d
 methodology) are not compared yet; items 7 to 10 of the wall's plan not started.
 Done after: his merge of #14 (the robot gone from main); the branches `reviewed` and my two merged ones deleted on GitHub
 on his yes.
-Next, in order: 1) his task for the next window, commands and skills (his words on the board's last line). About 88 skills load into every
+Next, in order: 0) PR #15 (this window's work, branch claude/docs-audit): CodeRabbit's review answered, findings fixed
+or shown wrong, then merged into room-polish and the main folder pulled. 1) his task for the next window, commands and
+skills (his words on the board's last line). About 88 skills load into every
 window (36 Meta's, about half for Unity, Android, React Native and Portal, not our WebXR game; 23 Anthropic's, many for
 office work; 7 research; 3 CodeRabbit; about 17 built in; 1 ours). One plain page for him: what a command and a skill
 are, which few he would use himself, which I use and when, which are noise; then his choice group by group (plugins are
