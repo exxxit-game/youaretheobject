@@ -422,6 +422,21 @@ const gitHere = (...a) => { try { return execFileSync('git', a, { cwd: HERE, env
 // checkout made from the old live branch is named before work starts on it.
 if (mode === 'start') {
   const out = [`Session ${event.source || 'start'}. The process: CLAUDE.md, "Every session" (docs/progress.md, the git log, ${FEATURES}). The task is his message; nothing printed here is a task by itself.`];
+  const branch = gitHere('rev-parse', '--abbrev-ref', 'HEAD');
+  // the desktop app can open a window in a reused worktree whose copy is old, without the process the
+  // window must follow; settings and hooks come from the main checkout, but CLAUDE.md and
+  // .claude/rules load from this copy (code.claude.com/docs/en/worktrees, "What worktrees share with the
+  // main checkout"), so a copy with no work of its own is brought up to room-polish first, before
+  // anything below is read from it and before any work
+  if (gitHere('rev-parse', '--verify', '-q', 'room-polish') && gitHere('merge-base', '--is-ancestor', 'room-polish', 'HEAD') === null) {
+    const behind = gitHere('rev-list', '--count', 'HEAD..room-polish');
+    const own = gitHere('rev-list', '--count', 'room-polish..HEAD');
+    if (own === '0' && gitHere('status', '--porcelain') === '' && gitHere('merge', '--ff-only', 'room-polish') !== null) {
+      out.push(`This window's copy (${branch}) was ${behind} commits behind room-polish and is now brought up to it. CLAUDE.md, the files it imports and .claude/rules may have loaded from the old copy: read CLAUDE.md and every file it imports again before anything else.`);
+    } else {
+      out.push(`WARNING: this checkout (${branch}) lacks ${behind} commits of room-polish and has work of its own or unsaved changes: merge room-polish before anything else, then read CLAUDE.md and every file it imports again.`);
+    }
+  }
   // the ten circles and our words, approved by him word for word, first in every window and after every
   // compaction; CLAUDE.md imports the same file, so the two places hold one text
   try { out.push(fs.readFileSync(path.join(HERE, CIRCLES), 'utf8').trim()); } catch { out.push(`WARNING: ${CIRCLES} is missing here: the ten circles he approved are not in front of this session.`); }
@@ -432,10 +447,6 @@ if (mode === 'start') {
   if (log !== null) {
     const { game, process: proc } = split(log);
     out.push(`Yesterday's commits: ${game} touched the game, ${proc} the process.${proc > game ? ' The process took more than the game: tell the owner.' : ''}`);
-  }
-  const branch = gitHere('rev-parse', '--abbrev-ref', 'HEAD');
-  if (gitHere('rev-parse', '--verify', '-q', 'room-polish') && gitHere('merge-base', '--is-ancestor', 'room-polish', 'HEAD') === null) {
-    out.push(`WARNING: this checkout (${branch}) lacks the latest work on room-polish; it was probably made from the old live branch. If it has no commits of its own, reset it to room-polish; otherwise merge room-polish.`);
   }
   // docs/owner-decisions.md is imported by CLAUDE.md, which Claude Code loads at every start and
   // re-reads after every compaction without the 10,000-character cap on hook output; printed here
