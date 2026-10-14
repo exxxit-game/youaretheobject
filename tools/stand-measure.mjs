@@ -93,6 +93,14 @@ async function main() {
     // page and the run stops on a missing scene, so the server is asked for first and named when absent
     const served = await fetch(`http://localhost:${localPort()}/`).then((r) => r.ok, () => false);
     if (!served) throw new Error(`the game server is not running on port ${localPort()}: start it (npm run serve, the preview "objekt")`);
+    // a headset that cannot find its place in the room shows its tracking window over every app and the game stops
+    // drawing; it comes back however often it is closed, so the run stops at once with what to do (seen when the
+    // stand faced a bare wall and a door: its cameras had nothing to hold on to)
+    for (let i = 0; i < 10; i++) {
+      if (!/GuardianDialogActivity/.test(sh("dumpsys activity activities | grep topResumedActivity | head -1"))) break;
+      if (i === 9) throw new Error('the headset cannot find its place in the room: turn the stand so it faces furniture and things, not a bare wall or a door');
+      await pause(3000);
+    }
     await openGame(serveToHeadset(localPort()));
     for (let i = 0; i < 60 && !game; i++) { game = await page(/localhost:3000/); if (!game) await pause(500); }
     if (!game) throw new Error('the game tab did not appear');
