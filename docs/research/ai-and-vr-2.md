@@ -199,3 +199,93 @@ psychology: "psychology experiment VR game" (ja: 37), "VR remote experiment at h
     experiments" (Brain and Neural Networks 23(3)); "an introduction to the literature on social attitudes in VR"
     (Cognitive Studies 26(4)). Lab methods, not public games.
 
+### 3b. CNKI
+
+How read: kns.cnki.net does not answer from here (no connection, from curl and from the browser pane); CNKI's
+overseas site (oversea.cnki.net) answered in the browser pane for three subject searches, then showed a slider
+captcha ("drag the puzzle piece to verify", Chinese), and the search stopped there (not solved, by rule). Web search
+with site:cnki.net (two queries, in Chinese) reached only journal portal pages (cbpt.cnki.net).
+
+- "large language model, virtual reality, development" (subject search, in Chinese), 14.10.2026: 27 records (8
+  journal papers, 17 theses, 1 conference paper) [seen: titles in the list]. https://oversea.cnki.net/kns8s/defaultresult/index?kw=%E5%A4%A7%E8%AF%AD%E8%A8%80%E6%A8%A1%E5%9E%8B%20%E8%99%9A%E6%8B%9F%E7%8E%B0%E5%AE%9E%20%E5%BC%80%E5%8F%91&language=EN .
+  In all of them the LLM is a part inside the VR system, not its developer; e.g. Zhang Wenli, "Research and
+  implementation of a campus fire emergency drill system based on large language models and virtual reality",
+  master's thesis, 1 Jun 2025; Liu Haowei, "Hierarchical 3D model generation driven by natural language: from
+  structured objects to indoor scene generation", master's thesis, 19 May 2025; Yang Yi et al., an evaluation
+  framework for student-teacher lecture training joining VR and an LLM, Information Technology and
+  Informatization, 25 May 2026 (titles as CNKI's English pages give them, or translated).
+- "agent, code generation, virtual reality" (in Chinese): no records. "large model, VR, development" (in Chinese):
+  120 records, the first 20 read by title: LLMs in software engineering, teaching and industry; none about a model
+  or agent building a VR app or game.
+- Psychology: "virtual reality, classic psychology experiments" (in Chinese) returned no records, and the captcha
+  came up on that page. The web search found only Chinese papers on VR and social interaction, VR games and
+  teenagers' values, and gamified learning [seen], none a classic experiment offered to the public as a VR game.
+- Not done: the other CNKI queries planned (AI programming plus VR games; VR replications of social psychology;
+  Milgram in VR), for the captcha.
+
+## 4. r/ClaudeGameDev (Reddit)
+
+How read: Reddit's RSS with curl and a user agent, one request every 46 s (14.10.2026): subreddit searches q=VR,
+WebXR, Quest, headset, psychology, experiment, XR, "Meta Quest", non-programmer (sorted new), the newest 100 posts
+(they reach back only to 7 Oct 2026), and the replies of two threads. q=WebXR, q=psychology: 0 entries;
+q=experiment: an empty answer (likely the rate limit). The sub's about page answered with a non-JSON page
+(subscriber count not read).
+
+- u/Dinglemaniac, "I'm 3 weeks into a VR port of Outlaws (1997), running natively on Quest and PC VR", 13 Oct 2026;
+  post [read, with its one reply]. https://www.reddit.com/r/ClaudeGameDev/comments/1x4ovm1/im_3_weeks_into_a_vr_port_of_outlaws_1997_running/ .
+  A fan remake in Unreal 5 that reads the player's own copy of the game: "Claude writes basically all the code. I
+  run one Claude session that plans and keeps a to-do board, and another that builds and tests with a couple of
+  agents working in parallel. I play it in the headset and report bugs, and most come back fixed the same day."
+  Testers gathered on a Discord. Closeness: the nearest process found in this search to ours (the agent writes all
+  code, a planning session with a board, the human judges in the headset); differs: a port of an existing game,
+  Unreal, no science, three weeks old.
+- u/SuperV1234, "Quake VR: UNLEASHED | Release Trailer", 12 Oct 2026 [read: entry]. https://www.reddit.com/r/ClaudeGameDev/comments/1x3zvzm/quake_vr_unleashed_release_trailer/ .
+  The same project the first search read on r/ClaudeAI; nothing new.
+- u/Electrical_Chard3255, "Donkey Kong in VR", 28 Sep 2026; post [read, with 9 replies]. https://www.reddit.com/r/ClaudeGameDev/comments/1wsno0y/donkey_kong_in_vr/ .
+  Asked how long it took: "It took an hour"; asked about publishing: "Sadley I cant release it as its essentially
+  too close to Nintendo Donkey Kong. I could potentially put it on sidequest". Closeness: a one-hour VR remake by
+  Claude; engine and testing not said.
+- u/Any-Reputation8118, "Little VR experience made by Opus 5.5 in 2 hours", 26 Sep 2026 [read]: cross-posted from
+  r/ClaudeAI, already in ai-and-vr.md (Godot with an MCP plugin, PCVR on Quest 3, MIT).
+- The rest of the hits are flat games built with Claude (browser RTS "MERIDIAN", 24 Aug 2026; browser ARPG
+  "Lorebound", 23 Aug and 9 Sep 2026, whose author changed the game after watching users play; a Three.js co-op
+  RPG, 9 Oct 2026; a ZX Spectrum remake with "Claude Code as the implementation team", 7 Oct 2026; a browser 3D horror
+  game, 14 Oct 2026) [seen: titles and first lines]. None is about psychology or experiments; no post names WebXR.
+- Answer for this place: two VR projects new to us (Outlaws VR, Donkey Kong VR), both ports or remakes built with
+  Claude; nothing on psychology experiments.
+
+## 5. Discord (public servers, not joined)
+
+Discord cannot be searched from outside. Listed below: servers where this work is discussed, each with its public
+invite; member counts read 14.10.2026 from Discord's public invite information (discord.com/api/v10/invites/<code>
+?with_counts=true: name, members, online, description; no account, nothing joined). Kind: server [read: invite info].
+
+- WebXR, https://discord.gg/jJxvuW97c4 : 4,283 members, 395 online; "This server is dedicated to WebXR, a web standard
+  that allows you to create immersive AR and VR experiences on the web!"; has an "#a-frame" channel (A-Frame's
+  community page, https://aframe.io/community/ [read]). Closest to our stack (WebXR, A-Frame); the place for a
+  WebXR question to people who build it.
+- Supermedium, https://discord.gg/NPgArtG3Qz : 5,331 members, 290 online; the server of A-Frame's makers, with an
+  "#aframe" channel (same A-Frame page). A-Frame's own Slack is, by that page, now of "limited history and little
+  activity"; questions go to Stack Overflow's aframe tag and GitHub.
+- Three.js, https://discord.gg/56GBJwAnUS (the invite in three.js's README [read]): 18,330 members, 1,862 online.
+  The renderer under A-Frame.
+- Claude (Anthropic's official server; www.anthropic.com/discord redirects to https://discord.com/invite/6PPFFzqPDZ
+  [read: the redirect]): 130,390 members, 19,259 online. Where people who build with Claude Code meet; which channels
+  it has for games or VR was not seen.
+- Flat2VR Modding, https://discord.com/invite/ZFSCSDe (flat2vr.com redirects there [read: the redirect]): 166,574
+  members, 28,279 online; "Discover and play hundreds of VR mods!". The VR-port community, where AI-written ports
+  (Quake, GTA, Halo, Outlaws) would be shown; a separate commercial server, "Flat2VR Studios & Impact Inked", has a
+  Discord listing page https://discord.com/servers/flat2vr-studios-impact-inked-1280938239997251585 [seen].
+- XR Student Researchers, https://discord.gg/bRHTbT7BYN (from UCF's SREAL lab page, 2022, https://sreal.ucf.edu/?p=6298
+  [seen]): 351 members, 29 online. XR research students; the page says members recruit participants for online
+  studies. The nearest server found for VR studies with people; no server found for psychology experiments in VR as
+  such.
+- Mister VR's "VR Exploration Club" (name translated from Japanese), https://discord.gg/QTJF98jqMj (from the
+  description of the YouTube video in part 1a): 588 members, 113 online; description (translated): "A place that
+  makes VR/AR more fun: news, finding companions, sharing what you make". Where the Japanese "AI solo VR studio"
+  author talks with his audience.
+- OutlawsTheGame, https://discord.com/invite/VVA98hb (from the Outlaws VR post in part 4): 741 members, 80 online;
+  the testers of that Claude-built VR port.
+- Not found: an official Meta developer Discord (Meta's channels are its forums and docs; one web search found
+  none), and a Discord of PICO or of IWSDK (IWSDK's README links none; checked through its raw README [read]).
+
