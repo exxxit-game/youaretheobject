@@ -16,9 +16,8 @@ import * as yaml from './vendor/js-yaml/js-yaml-5.4.2.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 // one folder for every file the project keeps outside the repository: papers\, datasets\, imports\,
-// notes\; the backup on F: is its copy, and the cloud copy comes from the Google Drive program
+// notes\; its copy off the laptop comes from the Google Drive program
 export const PAPERS = path.join(os.homedir(), 'Documents', 'objekt-files');
-export const BACKUP = 'F:\\objekt-files';
 export const MIN_WORDS = 100;
 const result = (level, text, extra = {}) => ({ level, text, ...extra });
 const ok = (text, extra) => result('ok', text, extra);
@@ -170,31 +169,24 @@ function checkPath() {
   return dead.length ? dead.map((d) => info(`PATH names a folder that does not exist (harmless): ${d.entry} (in ${d.where})`)) : [ok('every PATH folder exists')];
 }
 
-// --- The papers and their backup -------------------------------------------------------------
-// the Google Drive program stages its uploads in a hidden .tmp.driveupload folder inside the synced folder
-// (.tmp.drivedownload the other way): its working copies, not papers, so neither counted nor backed up
+// --- The papers ------------------------------------------------------------------------------
+// the copy off the laptop is the Google Drive program's own sync of objekt-files; a second copy on the laptop's
+// other disk was work with no use, since the accounts hold everything off the laptop
+// the Drive program stages its uploads in a hidden .tmp.driveupload folder inside the synced folder
+// (.tmp.drivedownload the other way): its working copies, not papers, so not counted
 const DRIVE_WORK = /^\.tmp\.drive/;
-const COPY_OUT = '/E /XD .tmp.drive*';
 const walk = (dir, base = dir) => fs.readdirSync(dir, { withFileTypes: true })
   .filter((e) => !DRIVE_WORK.test(e.name))
   .flatMap((e) => (e.isDirectory() ? walk(path.join(dir, e.name), base) : [path.relative(base, path.join(dir, e.name)).replaceAll('\\', '/')]));
 export const words = (text) => (text.match(/\S+/g) || []).length;
-export function checkPapers(lib = PAPERS, backup = BACKUP, exists = fs.existsSync) {
-  if (!exists(lib)) return [broken(`the papers library ${lib} is gone: copy it back from the backup: robocopy "${backup}" "${lib}" /E`)];
+export function checkPapers(lib = PAPERS, exists = fs.existsSync) {
+  if (!exists(lib)) return [broken(`the papers library ${lib} is gone: get it back from Google Drive (drive.google.com, the folder objekt-files)`)];
   const files = walk(lib).sort(), have = new Set(files);
   const pdfs = files.filter((f) => /\.pdf$/i.test(f));
   const noText = pdfs.filter((f) => { const t = f.replace(/\.pdf$/i, '.txt'); return !have.has(t) || words(fs.readFileSync(path.join(lib, t), 'utf8')) < MIN_WORDS; });
-  const out = [noText.length
+  return [noText.length
     ? broken(`${count(noText.length, 'paper')} without a text copy of ${MIN_WORDS}+ words beside it (${few(noText)}): make it: pdftotext -enc UTF-8 paper.pdf; a scan: pdftoppm -r 300 -png, then tesseract page.png page -l eng+rus`)
     : ok(`${count(pdfs.length, 'paper')}, each with a text copy`)];
-  const drive = path.parse(backup).root;
-  if (!exists(drive)) return [...out, warning(`the backup drive ${drive} is not plugged in, so the papers' backup was not checked`)];
-  if (!exists(backup)) return [...out, broken(`no backup of the papers on ${drive}: make it: robocopy "${lib}" "${backup}" ${COPY_OUT}`)];
-  const saved = new Set(walk(backup));
-  const unsaved = files.filter((f) => !saved.has(f)), gone = [...saved].sort().filter((f) => !have.has(f));
-  out.push(unsaved.length ? broken(`${count(unsaved.length, 'file')} of the papers library not in the backup (${few(unsaved)}): copy them: robocopy "${lib}" "${backup}" ${COPY_OUT}`) : ok(`the backup holds all ${files.length} files`));
-  if (gone.length) out.push(warning(`the backup holds ${count(gone.length, 'file')} the library no longer has (${few(gone)}): renamed or removed in the library; keep or remove them in the backup by hand`));
-  return out;
 }
 
 // --- The research agents ---------------------------------------------------------------------

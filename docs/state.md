@@ -18,8 +18,8 @@
   insert-only for anon, verified. Sending is ON in code with consent; privacy page `privacy.html`
   (contact t.me/exxxit). Tests pin client fields to the SQL (`tests/results.test.mjs`, `tests/playtest.test.mjs`). The laptop's Supabase CLI: logged out 12.10 on his word, no token.
 - Files outside the repo, one folder `C:\Users\admin\Documents\objekt-files\`: `papers\` (every paper as `<id>.pdf`
-  and `<id>.txt`), `datasets\`, `imports\` (exports as downloaded), `notes\` (his messages, the review record); copied
-  whole to `F:\objekt-files` (`node tools/health.mjs` checks it) and to Google Drive by its program; the card index of
+  and `<id>.txt`), `datasets\`, `imports\` (exports as downloaded), `notes\` (his messages, the review record); its
+  copy off the laptop is Google Drive's own sync, and nothing is copied to another disk (14.10); the card index of
   the whole library: `docs/library.md` (sections, then one line per paper, then card, then text; wanted and
   dropped papers in `docs/library/wanted.md`; a new paper needs a record in `docs/library/papers.json`). 145 cards from full texts: `docs/cards/`, checked by
   `node tools/check-cards.mjs`; catalog generated: `docs/catalog.md` (`node tools/build-catalog.mjs`);

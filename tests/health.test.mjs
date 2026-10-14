@@ -85,27 +85,17 @@ const there = new Set([path.join(tmp, 'a')]);
 const dead = deadPathEntries([{ where: 'the machine PATH', entries: [path.join(tmp, 'a'), path.join(tmp, 'gone')] }, { where: 'your user PATH', entries: [path.join(tmp, 'gone'), path.join(tmp, 'gone2')] }], (e) => there.has(e));
 assert.deepEqual(dead.map((d) => [path.basename(d.entry), d.where]), [['gone', 'the machine PATH'], ['gone2', 'your user PATH']], 'a dead folder named twice is reported once, where it is first');
 
-// the papers: every PDF has a text copy of enough words beside it; the backup holds the same files
-const lib = path.join(tmp, 'papers'), backup = path.join(tmp, 'backup');
+// the papers: every PDF has a text copy of enough words beside it; the Drive program's upload folder is not counted
+const lib = path.join(tmp, 'papers');
 const prose = Array.from({ length: MIN_WORDS }, (_, i) => `word${i}`).join(' ');
 for (const [f, t] of [['a.pdf', '%PDF'], ['a.txt', prose], ['b.pdf', '%PDF'], ['b.txt', 'too few words'], ['c.PDF', '%PDF'], ['sub/d.pdf', '%PDF'], ['sub/d.txt', prose], ['notes.txt', 'no pdf']]) put(`papers/${f}`, t);
 assert.equal(words(` one\ttwo\nthree `), 3);
-put('papers/.tmp.driveupload/4721', 'a copy the Drive program is uploading');
-let papers = checkPapers(lib, backup);
+put('papers/.tmp.driveupload/4721.pdf', 'a copy the Drive program is uploading');
+const papers = checkPapers(lib);
+assert.equal(papers.length, 1);
 assert.equal(papers[0].level, 'broken');
-assert.match(papers[0].text, /^2 papers without a text copy of 100\+ words beside it \(b\.pdf, c\.PDF\): make it: pdftotext/);
-assert.match(papers[1].text, /^no backup of the papers/);
-for (const f of ['a.pdf', 'a.txt', 'b.pdf', 'b.txt', 'c.PDF', 'sub/d.pdf', 'old.txt']) put(`backup/${f}`, 'x');
-papers = checkPapers(lib, backup);
-assert.equal(papers[1].level, 'broken');
-assert.match(papers[1].text, /^2 files of the papers library not in the backup \(notes\.txt, sub\/d\.txt\): copy them: robocopy .+ \/E \/XD \.tmp\.drive\*$/, 'the Drive program\'s upload folder is neither counted nor copied');
-assert.equal(papers[2].level, 'warning');
-assert.match(papers[2].text, /holds 1 file the library no longer has \(old\.txt\)/);
-const drive = path.parse(backup).root;
-papers = checkPapers(lib, backup, (p) => p !== drive && fs.existsSync(p));
-assert.equal(papers.at(-1).level, 'warning', 'the backup drive unplugged is a warning, not broken');
-assert.match(papers.at(-1).text, /is not plugged in/);
-assert.match(checkPapers(path.join(tmp, 'none'), backup)[0].text, /^the papers library .+ is gone/);
+assert.match(papers[0].text, /^2 papers without a text copy of 100\+ words beside it \(b\.pdf, c\.PDF\): make it: pdftotext/, 'the Drive program\'s upload folder is not counted');
+assert.match(checkPapers(path.join(tmp, 'none'))[0].text, /^the papers library .+ is gone: get it back from Google Drive/);
 
 // the research agents: the paper tools, the browser and the library named
 const AGENT = '---\nname: quick-research\ntools: WebSearch, mcp__Claude_Browser__navigate, mcp__4ff8cb31-8eb4-4720-944b-24fa9d492ec5__search, mcp__plugin_research-desk_reference-lookup-hosted__search_works, mcp__PDF_Tools__read_pdf_content\n---\nPapers first: C:\\Users\\admin\\Documents\\objekt-files\\papers\n';
