@@ -33,9 +33,9 @@ Next: 0) PR #16: CodeRabbit's review answered, merged, the main folder pulled; t
 the 36 Meta skills and the tandem show (or not) in its listing. 1) The page's queue, one question at a time:
 the update check's window; turning on two-factor sign-in for his Supabase account (off there, on for GitHub,
 Google, Namecheap and Meta, his word on the board) and a look at its spend cap; GitHub security alerts; Supabase
-SSL, old keys, sign-ups; the average in batches; the 13 Anthropic skills he decided to turn off, once a switch that
-can be undone is found (Settings > Skills offers only Delete, and nothing to add back); questions 3-4; the guard on
-shell writes. 2) His order (the board): a try at the game next.
+SSL, old keys, sign-ups; the average in batches; questions 3-4; the guard on shell writes. (Question 2 settled: no
+switch exists, only Delete; he deleted the 13 Anthropic skills, checked with the skills list; docs and skill-creator
+stay.) 2) His order (the board): a try at the game next.
 
 ## 2026-10-14, evening, next window — item 6 done but his merge; our documents compared with experienced practice
 Done:
