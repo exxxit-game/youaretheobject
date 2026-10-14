@@ -551,10 +551,10 @@ if (mode === 'stop') {
     // board's showing and current lines, and a conflict resolved to one side loses the owner's quoted words
     const theirs = gitHere('merge-base', '--is-ancestor', 'room-polish', 'HEAD') === null ? gitHere('rev-list', '--count', 'HEAD..room-polish') : null;
     const first = theirs ? `room-polish has ${theirs} commits of another window: first here run git merge room-polish, keeping both sides of every conflict in docs/board.md (the owner's words), then ` : '';
-    // room-polish itself goes to GitHub at the end of a step, not every turn: CodeRabbit reads the pull
-    // request from it, its plan reads 10 pushes an hour, and pushes every few minutes kept it from
-    // finishing any review for 5 h 25 min
-    problems.push(`the main folder (room-polish, where the next window starts) lacks ${gitHere('rev-list', '--count', 'room-polish..HEAD')} commits of this branch: ${first}in it run git merge --ff-only ${branch} (push room-polish to GitHub at the end of a step, not every turn)`);
+    // the branch reaches room-polish through a pull request CodeRabbit reviews (GitHub flow: a branch, a
+    // pull request, a review, a merge); CodeRabbit closes its remarks only from the pull request's own
+    // comments, so a long-lived review window never emptied
+    problems.push(`the main folder (room-polish, where the next window starts) lacks ${gitHere('rev-list', '--count', 'room-polish..HEAD')} commits of this branch: ${first}push ${branch}, open or update its pull request into room-polish, answer CodeRabbit's review, merge it, then in the main folder run git pull --ff-only origin room-polish`);
   }
   // a helper's command left running (tools/leftovers.mjs): seen at every turn's end, not by my memory
   const left = leftoverLine();

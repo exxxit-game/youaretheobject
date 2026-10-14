@@ -1,12 +1,12 @@
 name: test
 
 on:
-  # once per commit: every session commit reaches room-polish (the main folder) and is pushed there;
-  # a run on the session branch too was a second run of the same commit. The pull request from
-  # room-polish into reviewed (kept open for CodeRabbit) shows these runs of its commits: a
-  # pull_request trigger would run each commit twice
+  # on each push to room-polish and main, and on each pull request into room-polish, so a window's work is
+  # tested before it is merged
   push:
     branches: [room-polish, main]
+  pull_request:
+    branches: [room-polish]
 
 # the tests only read the code: the token cannot write, whatever the repository's default
 permissions:

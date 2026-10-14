@@ -1,8 +1,8 @@
-# CodeRabbit, the reviewer from outside (the owner's 14-day trial, docs/owner-decisions.md): it reviews the
-# one open pull request from room-polish into the branch `reviewed` (the last state it has read), on every
-# push, against the repository's rules; its open remarks are read at each session start (tools/coderabbit.mjs),
-# and a robot on GitHub moves `reviewed` up once a push is read with nothing open (.github/workflows/reviewed.yml).
-# It changes nothing on its own: the repository is public, and main changes only on the owner's word.
+# CodeRabbit, the reviewer from outside: it reviews each pull request from a window's branch into room-polish
+# (GitHub flow: a branch, a pull request, a review, a merge), against the repository's rules. It closes its
+# remarks only from a pull request's own comments (docs.coderabbit.ai/guides/commands), so the earlier long-lived
+# review window into the branch `reviewed` never emptied. It changes nothing on its own: main changes only on
+# the owner's word.
 # Keys: https://docs.coderabbit.ai/reference/configuration (schema: coderabbit.ai/integrations/schema.v2.json)
 language: en-US                      # the repository is English; the owner hears about it in Russian from the assistant
 reviews:
@@ -16,9 +16,9 @@ reviews:
     enabled: true
     drafts: false
     auto_incremental_review: true
-    auto_pause_after_reviewed_commits: 0   # every push of the long-lived pull request is read, not the first five
+    auto_pause_after_reviewed_commits: 0   # every push of a pull request is read, not the first five
     base_branches:
-      - "^reviewed$"                      # main is the default and is reviewed anyway; the pull request targets this one
+      - "^room-polish$"                   # main is the default and is reviewed anyway; each window's pull request targets this one
   finishing_touches:                 # each of these pushes code or opens pull requests
     docstrings:
       enabled: false

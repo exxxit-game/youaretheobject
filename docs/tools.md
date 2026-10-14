@@ -1,7 +1,6 @@
 # What to take when
 
-A task starts in plan mode: explore first, then plan, then build (code.claude.com/docs/en/best-practices: jumping
-straight to code "can produce code that solves the wrong problem"). Read the line for the task's kind, then plan.
+Read the line for the task's kind first, in plan mode (CLAUDE.md, "Every session", 3).
 
 ## Before a task: what to read first
 The book: Gregory, Game Engine Architecture, 4th ed. (2026): objekt-files/books/gregory-2026-4th-vol1.txt and vol2
@@ -33,4 +32,3 @@ docs search, the hz-quest-verify-first skill), the W3C WebXR spec. The page read
   not by its last line.
 - The headset: the practice review first, then node tools/quest-look.mjs (`say` each step while he wears it; sleep
   after); frame rate and GPU: OVR Metrics, `metavr perf capture` read with Perfetto, RenderDoc for one draw.
-- His words when a line of his decisions is not enough: objekt-files/notes/archive/docs/owner-decisions-history.md.
