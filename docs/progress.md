@@ -31,9 +31,11 @@ window since 23:00 14.10 (he has to answer it there); questions 2-4 of the page 
 for him, one at a time; the GitHub actions' pinning and versions wait for the benefit-and-harm weighing.
 Next: 0) PR #16: CodeRabbit's review answered, merged, the main folder pulled; then, in a new window, check that
 the 36 Meta skills and the tandem show (or not) in its listing. 1) The page's queue, one question at a time:
-the update check's window; Supabase spend cap and two-factor sign-in, GitHub two-factor; GitHub security alerts;
-Supabase SSL, old keys, sign-ups; the average in batches; questions 2-4; the guard on shell writes. 2) His order (the board): a try
-at the game next.
+the update check's window; turning on two-factor sign-in for his Supabase account (off there, on for GitHub,
+Google, Namecheap and Meta, his word on the board) and a look at its spend cap; GitHub security alerts; Supabase
+SSL, old keys, sign-ups; the average in batches; the 13 Anthropic skills he decided to turn off, once a switch that
+can be undone is found (Settings > Skills offers only Delete, and nothing to add back); questions 3-4; the guard on
+shell writes. 2) His order (the board): a try at the game next.
 
 ## 2026-10-14, evening, next window — item 6 done but his merge; our documents compared with experienced practice
 Done:
