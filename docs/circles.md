@@ -90,6 +90,10 @@ closed when what breaks it is in place; it stays here, marked, as the memory of 
   menu with the way out of room 101 (14.10, «Работает»).
 - Why us: I apply a check rule wider than its words (a page, then a draft, then a search), and each of his side
   remarks becomes a search, a page and checks.
+- Where 13.10's spending went, from the transcripts' own usage fields (14.10 morning): the main dialogue 1,720 requests,
+  856M tokens read from cache, 4.2M written; the helpers 4,819 requests, 600M read, 14.5M written; by Anthropic's list
+  prices about 55% and 45%. Two earlier answers to him were wrong both ways ("helpers cost most", then "helpers ~1%"
+  from the helpers' notice counter).
 - His reading (14.10, history file): calling a thing small does not make its errors fewer; the small thing, gone round
   for hours, grows huge. So the cost of a step is measured (tools/usage.mjs), not judged by how small it looks.
 - Breaks it: his word of 14.10 (a plain search goes to him unchecked); a side remark gets one line on the board and,
