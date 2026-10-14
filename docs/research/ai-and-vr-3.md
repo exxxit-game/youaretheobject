@@ -122,3 +122,5 @@ experiments in VR games. Video pages refuse plain downloads (HTTP 412); one was 
   marshmallow test or the rubber hand illusion (flat videos), VR school labs for chemistry and physics (e.g. HiXR's
   "Smart Palace" middle-school VR lab, 29 Mar 2022), and a VR relaxation therapy demo (1 Dec 2024) [all seen].
 - PICO's own AI path (TRAE IDE, PICO CLI) has no Bilibili video in these results.
+
+- NEON SIEGE found by the owner 14.10 on Meta's store: https://www.meta.com/experiences/1198204933382775/ , the page title "NEON SIEGE ネオン防衛戦 on Meta Quest" (its Japanese subtitle, "neon defense battle"), for Quest 2, Pro, 3 and 3S; no rating in the page's data [read]. neonsiege.com is another game (a 5v5 cyberpunk shooter, "COMING SOON") [read].
