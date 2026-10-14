@@ -4,6 +4,22 @@ Read at the start of every session, with `git log --oneline -20` and docs/featur
 session"). Newest entry on top. Each entry: done, not done and why, next. Anything outside the feature at hand goes
 to the end of docs/board.md, one line each.
 
+## 14.10, night — the wall's plan, items 1 to 5 done
+Done (each with npm test green, on GitHub): 1) his decisions split (469b825): 24 lines of my advice and my additions
+to 11 of his moved to docs/decisions.md, "Moved from his decisions"; 2) no copying between disks (bc19c5e);
+3) 26 branches deleted on GitHub (left: main, room-polish, reviewed, claude/end-pictures-look), 4 abandoned
+worktrees and 28 local branches removed (his word «Да, разрешаю»); 4) the history of the process moved to
+objekt-files/notes/archive (15254cb; 51 files, checked byte for byte; the board down to 6,500 characters; the
+cards and research stay, the code names them as sources); 5) a task starts in plan mode, docs/tools.md names
+what to read first by the task's kind: Gregory's book (4th ed., objekt-files/books), A-Frame 1.8.0, three.js r184,
+Meta's docs (3f211e7, his point of 14.10: the light starts from the engine book).
+Not done: unused helpers (request-auditor, architecture-auditor) left in place: removing them costs him windows.
+Next, in order: 6) CodeRabbit's resolve does not take effect on GitHub (17 verified remarks still open): find why,
+then short pull requests in place of the `reviewed` robot; 7) the live site serves only the game: a small pull
+request to main with only that change, merged by him; 8) screenshots compared against his approved ones; then his
+request of 14.10: everything in one place for me and a fast search, from what the market has (connectors beyond
+Anthropic's store), judged by our own experience.
+
 ## 14.10, evening — the whole wall approved
 Done:
 - A window that opens on an old copy brings it up to room-polish itself (092caed); the rules it already read stay old.
