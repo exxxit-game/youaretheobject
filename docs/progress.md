@@ -4,6 +4,21 @@ Read at the start of every session, with `git log --oneline -20` and docs/featur
 session"). Newest entry on top. Each entry: done, not done and why, next. Anything outside the feature at hand goes
 to the end of docs/board.md, one line each.
 
+## 14.10, late night — item 6 half done; this window archived on his word
+Done: 6a) a window's work now reaches room-polish through a pull request CodeRabbit reviews (6f8edb0: CLAUDE.md
+step 6, the Stop hook's reminder, .coderabbit.yaml base branch room-polish, tests on each pull request into
+room-polish); this window's own commits still went in the old way, the new way starts with the next window's work.
+The guard prover removes a stale git lock before its reset (58d505b): one GitHub run had gone red on it.
+Not done: 6b) close PR #10 with a comment, and stop the `reviewed` robot (it runs from main: its workflow disabled by
+his click in GitHub's Actions, or removed by a pull request to main he merges); 7) the live site serves only the
+game: a small pull request to main with only that change, merged by him; 8) screenshots compared against his
+approved ones; 9) his request: everything in one place for me and a fast search, from what the market has
+(connectors beyond Anthropic's store), judged by our own experience; 10) at the end, CLAUDE.md and the rules
+given to him in plain Russian on one page, for him to check that the meaning is his.
+Why the window stopped: two confusions in a row (Russian words twice in this log, the size limit hit three times
+in an hour); circle 8 of the ten says a new window. This window had also loaded the rules of an old copy.
+Next: 6b, then 7, 8, 9, 10, in that order.
+
 ## 14.10, night — the wall's plan, items 1 to 5 done
 Done (each with npm test green, on GitHub): 1) his decisions split (469b825): 24 lines of my advice and my additions
 to 11 of his moved to docs/decisions.md, "Moved from his decisions"; 2) no copying between disks (bc19c5e);
