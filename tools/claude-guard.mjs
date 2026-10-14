@@ -437,9 +437,6 @@ if (mode === 'start') {
       out.push(`WARNING: this checkout (${branch}) lacks ${behind} commits of room-polish and has work of its own or unsaved changes: merge room-polish before anything else, then read CLAUDE.md and every file it imports again.`);
     }
   }
-  // the ten circles and our words, approved by him word for word, first in every window and after every
-  // compaction; CLAUDE.md imports the same file, so the two places hold one text
-  try { out.push(fs.readFileSync(path.join(HERE, CIRCLES), 'utf8').trim()); } catch { out.push(`WARNING: ${CIRCLES} is missing here: the ten circles he approved are not in front of this session.`); }
   // his brake: yesterday's commits to the game and to the process, counted by git, not by me
   const day = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}T00:00`;
   const today = new Date(), yesterday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
@@ -448,13 +445,14 @@ if (mode === 'start') {
     const { game, process: proc } = split(log);
     out.push(`Yesterday's commits: ${game} touched the game, ${proc} the process.${proc > game ? ' The process took more than the game: tell the owner.' : ''}`);
   }
-  // docs/owner-decisions.md is imported by CLAUDE.md, which Claude Code loads at every start and
-  // re-reads after every compaction without the 10,000-character cap on hook output; printed here
-  // it had to be trimmed to fit. Only if the import is gone is it printed here as before.
+  // the ten circles and the settled decisions are imported by CLAUDE.md, which Claude Code loads at every
+  // start and re-reads after every compaction, so printing them here too makes a second copy; a file is
+  // printed here only when its import is gone
   let claudeMd = '';
   try { claudeMd = fs.readFileSync(path.join(HERE, 'CLAUDE.md'), 'utf8'); } catch { /* checked below */ }
-  if (!claudeMd.includes(`@${DECISIONS}`)) {
-    try { out.push(fs.readFileSync(path.join(HERE, DECISIONS), 'utf8').trim()); } catch { out.push(`WARNING: ${DECISIONS} is missing here: the owner's decisions are not in front of this session.`); }
+  for (const [file, what] of [[CIRCLES, 'the ten circles he approved are'], [DECISIONS, "the owner's decisions are"]]) {
+    if (claudeMd.includes(`@${file}`)) continue;
+    try { out.push(fs.readFileSync(path.join(HERE, file), 'utf8').trim()); } catch { out.push(`WARNING: ${file} is missing here: ${what} not in front of this session.`); }
   }
   // the one feature to work on: the first whose "passes" is false (Anthropic's harness for long-running
   // agents: "choose the highest-priority feature that's not yet done"). The board's errors, the health

@@ -1,7 +1,7 @@
 # The ten circles and our words
 
-Approved by the owner word for word («Утверждаю» 14.10; how it came: docs/owner-decisions-history-2.md). Shown
-first at every session start (tools/claude-guard.mjs start) and imported by CLAUDE.md (his «в двух местах» 14.10).
+Approved by the owner word for word («Утверждаю» 14.10; how it came: docs/owner-decisions-history-2.md). Imported
+by CLAUDE.md, which loads at every session start and after every compaction: one copy (his choice of 14.10).
 Changed only by his «утверждаю»; changed once, 14.10: errors without a weight, by his «Вес убрать ошибки, потому что ты сам это добавляешь… Это основа карты Таро».
 
 Наши круги. Ничего нового: одни и те же десять.

@@ -338,9 +338,11 @@ assert.ok(!top(board(['11.10 (new window)', '10.10', '9.10 (same window)', '8.10
 // his brake: yesterday's commits split by what they touched, a commit touching both counted in both
 assert.deepEqual(split('@@a\nsrc/x.js\n\n@@b\ntools/y.mjs\ndocs/z.md\n\n@@c\nsrc/a.js\ntests/b.mjs\n\n@@d\nREADME.md'), { game: 2, process: 2 }, 'commits to the game and to the process counted wrong');
 assert.ok(/Yesterday's commits: \d+ touched the game, \d+ the process/.test(start.stdout), 'the start lost his brake line');
-// the ten circles he approved word for word come first, the whole text, not a shortened copy
+// the ten circles he approved arrive once, with CLAUDE.md, at every start and after every compaction, as
+// he chose; the start prints them only when that import is gone
 const circles = fs.readFileSync(path.join(ROOT, 'docs/ten-circles.md'), 'utf8').trim();
-assert.ok(start.stdout.includes(circles) && start.stdout.indexOf(circles) < start.stdout.indexOf('Yesterday'), 'the start lost the ten circles he approved, or shows them after other lines');
+assert.ok(/^The ten circles[^\n]*@docs\/ten-circles\.md/m.test(fs.readFileSync(path.join(ROOT, 'CLAUDE.md'), 'utf8')), 'CLAUDE.md no longer imports the ten circles he approved');
+assert.ok(!start.stdout.includes(circles), 'the start prints the ten circles again: a second copy beside CLAUDE.md');
 assert.ok(start.stdout.length < 10000, `the start hook prints ${start.stdout.length} characters: over 10,000 Claude Code keeps only a preview`);
 // and on the worst day, not only on this machine: the red-CI line and the branch warning at their longest
 // (GitHub's runner sees no CI line; a start that fit here went over there twice)
