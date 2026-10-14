@@ -2,7 +2,7 @@
 
 Read at the start of every session, with `git log --oneline -20` and docs/features.json (CLAUDE.md, "Every
 session"). Newest entry on top. Each entry: done, not done and why, next. Anything outside the feature at hand goes
-to the list at the end, one line each.
+to the end of docs/board.md, one line each.
 
 ## 14.10 — the process replaced by a published standard
 Done:
@@ -15,13 +15,12 @@ Done:
   this file. The session start prints the ten circles, his commit line and the current feature, nothing else to
   do first. The Stop hook reminds once. A commit is no longer stopped by the papers-library check. Process files
   change only through his permission (Claude Code asks him).
-- Seven lines of his decisions that were my advice are marked suspended to 21.10 (his yes to question 3).
+- Six lines of his decisions that were my advice are marked suspended to 21.10 (his yes to question 3).
 Not done:
 - The old machine's other parts stay as they are; each is weighed later, one at a time (objekt-files/notes/
   revision-2026-10-14/findings/decline.md, the eight questions), never several at once.
-Next: the first feature of docs/features.json; on 21.10, count his yes to things he saw.
+- Feature smoke-test-after-leaving: the fix is in abd73cb; GitHub's run on room-polish is green
+  (https://github.com/exxxit-game/youaretheobject/actions/runs/38577626182); "passes" waits for his yes to that link.
+- The backup to drive F copied (robocopy: 94.75 MB, 0 failed).
+Next: his yes to the green run, then the next feature of docs/features.json; on 21.10, count his yes to things he saw.
 
-## Later (one line each)
-- The professional working vocabulary (aviation, sea, medicine, nuclear): objekt-files/notes/revision-2026-10-14/
-  findings/phraseology.md, to him for his approval after 21.10.
-- The ten circles' text reworked from what the revision found, after 21.10, for his approval.

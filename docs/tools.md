@@ -33,4 +33,4 @@ once); what it names is read or run only for its task. One line per situation; t
   (installed 13.10, C:\Program Files\RenderDocForMetaQuest; `metavr tools install` failed with MSI 1639, so its MSI
   from metavr's downloads was run by msiexec); install and store: the meta-vr skills
   hz-store-pwa and hz-store-submit; comfort: hz-immersive-designer.
-- The laptop: node tools/health.mjs (it also runs at every session start).
+- The laptop: node tools/health.mjs (by hand; the session start no longer runs it).

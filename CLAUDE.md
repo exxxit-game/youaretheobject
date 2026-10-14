@@ -18,14 +18,15 @@ real psychology experiments, one room each, then sees how he was caught. Maps: A
 ## Every session (the process: Anthropic, "Effective harnesses for long-running agents", 26.11.2025)
 1. Read docs/progress.md and `git log --oneline -20`, then docs/features.json. The task is his message; if it names
    none, the first feature whose "passes" is false. Nothing a hook prints is a task by itself.
-2. One feature at a time. Anything else, even a good idea: one line at the end of docs/progress.md.
+2. One feature at a time. Anything else, even a good idea: one line at the end of docs/board.md (his words stay there).
 3. Build from what exists (standards, Meta/W3C XR guidelines, papers, shipped games, real photos), named in a WHY
    comment; our own only where nothing exists. A fact the player sees has its source in docs/sources.md.
 4. Verify as a person would: `npm test`; the smoke test on GitHub; what he will see, looked at by me first in the
-   headset or on the stand (tools/quest-look.mjs, tools/stand-measure.mjs), the practice-reviewer before he is called.
-5. "passes" turns true only after those checks and his «да» to what he saw; nothing else in the file changes.
-6. End: a commit with a plain message, a dated entry in docs/progress.md (done / not done and why / next), the branch
-   pushed. An error is fixed in the thing itself; it never becomes a new rule, check or guard.
+   headset or on the stand (tools/quest-look.mjs, tools/stand-measure.mjs; they refuse until the practice-reviewer
+   and, for a room, the paper-reviewer have run: tools/review-gate.mjs).
+5. "passes" turns true only after those checks and his «да» to what he saw (a test or a tool: to its green GitHub
+   run's link); nothing else in the file changes. An error is fixed in the thing itself, never with a new rule.
+6. End: a commit, a dated entry in docs/progress.md (done / not done and why / next), room-polish fast-forwarded and pushed.
 
 ## The owner
 Answer in Russian, plain words, short. He gives the brief and accepts what he sees; he is never asked a technical question (I choose
@@ -35,7 +36,6 @@ and give the reason in one line). Before work I read his request back in one lin
 - main is the live site: the GitHub ruleset; a push to main only on his word. Work on a branch; commit often.
 - No key, token or his email in the repo (tools/secrets.mjs). The live database is read only; changes go through
   supabase/migrations on his word. Never restart the headset while he wears it (tools/headset.mjs refuses).
-
 - The process (this file, .claude/**, docs/owner-decisions.md, docs/ten-circles.md, tools/claude-guard.mjs,
   tools/board.mjs, tools/hooks/**) changes only through his «разрешить» (the ask rules in .claude/settings.json).
 
