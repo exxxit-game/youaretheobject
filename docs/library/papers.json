@@ -8566,6 +8566,78 @@
    "text": "ok",
    "status": "no card",
    "source": "https://www.faa.gov/documentLibrary/media/Advisory_Circular/AC_120-71B.pdf"
+  },
+  {
+   "id": "huang-2024",
+   "authors": "Huang et al.",
+   "year": "2024",
+   "title": "Large Language Models Cannot Self-Correct Reasoning Yet",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "AI model behaviour",
+    "self-correction",
+    "external feedback"
+   ],
+   "type": "conference paper",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://arxiv.org/abs/2310.01798"
+  },
+  {
+   "id": "foster-2025",
+   "authors": "Foster et al.",
+   "year": "2025",
+   "title": "Mutation-Guided LLM-based Test Generation at Meta",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "mutation testing",
+    "LLM-written tests",
+    "test quality"
+   ],
+   "type": "conference paper",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://arxiv.org/abs/2501.12862"
+  },
+  {
+   "id": "park-2026",
+   "authors": "Park, H., Choi, B.",
+   "year": "2026",
+   "title": "When Do Agent Loops Mistake Stagnation for Progress? Self-Evaluation Bias and Externally Grounded Verification in Long-Running Autonomous LLM Agent Loops",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "AI model behaviour",
+    "self-evaluation bias",
+    "external verification"
+   ],
+   "type": "preprint",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://arxiv.org/abs/2607.25152"
+  },
+  {
+   "id": "leith-2026",
+   "authors": "Leith, D. J.",
+   "year": "2026",
+   "title": "The Quality of Claude AI-authored Python Tests Is Not Weaker Than Human-authored Tests",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "LLM-written tests",
+    "test quality",
+    "mutation testing"
+   ],
+   "type": "preprint",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://arxiv.org/abs/2608.15188"
   }
  ]
 }

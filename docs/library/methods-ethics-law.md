@@ -1,7 +1,7 @@
 # methods, ethics, law
 
 Generated from `docs/library/papers.json` by `node tools/build-library.mjs`. Do not edit by hand.
-106 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
+110 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
 in the library folder's papers\ as `<id>.txt` (a data set: `<dir>/<id>.txt` from the library folder); "text: ocr" marks a scan's
 text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 
@@ -41,6 +41,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **exppsy-2022-2** Experimental Psychology (Russia), ed. Barabanschikov 2022. Experimental Psychology (Russia), vol. 15, no. 2 (whole issue, in Russian with English abstracts) · VR studies in Russia, journal issue, side effects · no card
 - **faa-2017** Federal Aviation Administration 2017. AC 120-71B Standard Operating Procedures and Pilot Monitoring Duties for Flight Deck Crewmembers · crew resource management, challenge-response checklist, two-challenge rule · no card
 - **fitts-1954** Fitts 1954. The information capacity of the human motor system in controlling the amplitude of movement · Fitts law, movement time, motor control · no card · text: ocr · no room: a measuring tool with no reveal (search coverage, motor control)
+- **foster-2025** Foster et al. 2025. Mutation-Guided LLM-based Test Generation at Meta · mutation testing, LLM-written tests, test quality · no card
 - **friehs-2020** Friehs et al. 2020. Effective Gamification of the Stop-Signal Task: Two Controlled Laboratory Experiments · gamification, stop-signal task, inhibition · no card
 - **gavrilov-2021** Gavrilov 2021. The Toloka platform as a source of respondents for an online survey: assessing data quality (in Russian) · Toloka, crowdsourcing, online survey, data quality, attention checks · no card
 - **georges-2007** Georges et al. 2007. Statistically rigorous Java performance evaluation · performance measurement, statistics, benchmarking · no card
@@ -56,6 +57,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **hollnagel-2015** Hollnagel et al. 2015. From Safety-I to Safety-II: a white paper · safety, process, resilience · no card
 - **horing-2016** Hoering et al. 2016. A virtual experimenter to increase standardization for the investigation of placebo effects · virtual experimenter, placebo, standardization · no card
 - **hravnak-2018** Hravnak et al. 2018. A call to alarms: current state and future directions in the battle against alarm fatigue · alarm fatigue, warnings · no card
+- **huang-2024** Huang et al. 2024. Large Language Models Cannot Self-Correct Reasoning Yet · AI model behaviour, self-correction, external feedback · no card
 - **huber-2020** Huber & Gajos 2020. Conducting online virtual environment experiments with uncompensated, unsupervised samples · online experiments, virtual reality, unsupervised samples, replication · no card
 - **jorgensen-2004** Jorgensen 2004. Marrying HCI/Usability and Computer Games: A Preliminary Look · usability, HCI and games · no card
 - **kennedy-1993** Kennedy et al. 1993. Simulator Sickness Questionnaire: An Enhanced Method for Quantifying Simulator Sickness · simulator sickness questionnaire, SSQ, measurement · no card · text: ocr
@@ -64,6 +66,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **klein-2018** Klein et al. 2018. Many Labs 2: Investigating Variation in Replicability Across Samples and Settings · Many Labs 2, replication, variation across samples · no card
 - **koe-2020** koe et al. 2020. Zero to Monero: Second Edition (v2.0.0) · Monero, Pedersen commitments, range proofs, cryptography · no card
 - **lakens-2022** Lakens 2022. Sample Size Justification · sample size justification, statistical power · no card
+- **leith-2026** Leith, D. J. 2026. The Quality of Claude AI-authored Python Tests Is Not Weaker Than Human-authored Tests · LLM-written tests, test quality, mutation testing · no card
 - **lumsden-2016** Lumsden et al. 2016. The effects of gamelike features and test location on cognitive test performance and participant enjoyment · gamelike features, test location, enjoyment, cognitive tests · no card
 - **madary-2016** Madary & Metzinger 2016. Real Virtuality: A Code of Ethical Conduct. Recommendations for Good Scientific Practice and the Consumers of VR-Technology · VR ethics, code of conduct · no card
 - **mcduff-2026** McDuff et al. 2026. Battling the Bots and Defending Against Fraudulent Responses in an International Community-Engaged Web-Based Survey With People Living... · online surveys, bots, fraudulent responses, data integrity · no card
@@ -79,6 +82,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **orne-1962** Orne 1962. On the social psychology of the psychological experiment: With particular reference to demand characteristics and their implications · demand characteristics, experimenter effects · no card
 - **pagulayan-2003** Pagulayan et al. 2003. User-centered design in games · user-centered design, playtesting, Microsoft Game Studios, usability · no card · the authors' draft marked in press for the Handbook of Human-Computer Interaction
 - **pan-2018** Pan & Hamilton 2018. Why and how to use virtual reality to study human social interaction: The challenges of exploring a new research landscape · social interaction, VR methods, virtual characters · no card
+- **park-2026** Park et al. 2026. When Do Agent Loops Mistake Stagnation for Progress? Self-Evaluation Bias and Externally Grounded Verification in Long-Running Autonomous... · AI model behaviour, self-evaluation bias, external verification · no card
 - **pedersen-2023** Pedersen et al. 2023. Measuring Cognitive Abilities in the Wild: Validating a Population-scale Game-Based Cognitive Assessment · game-based assessment, cognitive abilities, citizen science · no card
 - **ratcliffe-2021** Ratcliffe et al. 2021. Extended Reality (XR) Remote Research: a Survey of Drawbacks and Opportunities · remote XR research, survey of researchers · no card
 - **ratliff-2024** Ratliff & Smith 2024. The Implicit Association Test · Implicit Association Test, implicit bias · no card
