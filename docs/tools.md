@@ -1,35 +1,36 @@
 # What to take when
 
-Loaded with CLAUDE.md at every start (a tool on demand only is a tool forgotten: two reviewers here never ran
-once); what it names is read or run only for its task. One line per situation; the first tool named goes first.
+A task starts in plan mode: explore first, then plan, then build (code.claude.com/docs/en/best-practices: jumping
+straight to code "can produce code that solves the wrong problem"). Read the line for the task's kind, then plan.
 
-- A decision whose line is not enough (all his words, how it came, the texts he accepted): docs/owner-decisions-history.md; a task of one theme that touches none of its files (a search about stores, a room idea): its decisions in .claude/rules/ (game, measures, data, setup) first.
-- Before adding or changing a guard, hook, rule, check, tool or step of the process: objekt-files/notes/archive/docs/circles.md (the circles we keep coming back to, and what breaks each).
-- Who does what, where we are on the route, the loop of every step: objekt-files/notes/archive/docs/studio-map.md.
-- A room, new or changed: the new-room skill (its room recipe), then the paper-reviewer agent.
-- A paper: docs/library.md, then its card in docs/cards, then its text in C:\Users\admin\Documents\objekt-files\papers\. A note on one paper: research-desk research-litnote;
-  several papers: paper-compare; are the references real: citation-check.
-- A narrow fact (a real size, a standard's number, a period photo): the quick-research agent; a wide
-  question (a market, every platform, many options, how those who do it work: their forums): the deep-research agent.
-- Searching papers: Consensus, PubMed, the hosted reference lookup; a PDF: PDF Tools (it opens files only
-  under Documents, Downloads or Desktop); a page a fetch cannot read: the browser pane;
-  one it cannot open either (Reddit, a closed forum): its exact link to the owner, who saves it (Ctrl+S).
-- How the engine does a thing (a component, a primitive, the scene, a material): A-Frame's own docs of our
-  version, a copy in C:\Users\admin\Documents\objekt-files\docs-engine\aframe-1.8.0\docs (aframe.io/docs/1.8.0
-  online); the page goes in the WHY comment.
-- A claim about our own setup (a plan, a version, a number): read it from the thing itself first (the service
-  through its connector, the vendored code, a fresh measure); about Quest or WebXR: Meta's docs first
-  (metavr docs search, the meta-vr skill hz-quest-verify-first). A doc, the board or another window is a lead.
-- A claim before anyone relies on it ("done", a number, a quote) on a new page: the fact-checker agent, two runs; edits from their findings I check against them myself, no new pair; no checks of checks, no rounds, and quality does not fall (his decisions of 14.10).
-- The owner's requests since the last check, once at the end of a step: the request-auditor agent.
-- Code and docs against the finished picture, after a large change: the architecture-auditor agent.
-- The headset: the practice review runs before he is called to it, never while he waits in it;
-  node tools/quest-look.mjs (look, measure, `say` for each step while he wears it; sleep after). Meta's own
-  checks and traces: metavr, the Meta VR CLI (device, perf, vrc-local); live frame rate, CPU and GPU in the headset: OVR
-  Metrics Tool's HUD, on and off over adb (installed by the owner 13.10); CPU- or GPU-bound: `metavr perf capture`,
-  read with Perfetto's trace_processor (installed 13.10, metavr tools; `metavr perf monitor` needs Meta Perf Service, whose
-  feed held no build on 13.10); one draw's GPU cost: RenderDoc Meta fork
-  (installed 13.10, C:\Program Files\RenderDocForMetaQuest; `metavr tools install` failed with MSI 1639, so its MSI
-  from metavr's downloads was run by msiexec); install and store: the meta-vr skills
-  hz-store-pwa and hz-store-submit; comfort: hz-immersive-designer.
-- The laptop: node tools/health.mjs (by hand; the session start no longer runs it).
+## Before a task: what to read first
+The book: Gregory, Game Engine Architecture, 4th ed. (2026): objekt-files/books/gregory-2026-4th-vol1.txt and vol2
+(the Russian 3rd ed. for quoting him: gregory-2021-ru-3rd.txt). VR: A-Frame 1.8.0's docs
+(objekt-files/docs-engine/aframe-1.8.0/docs), three.js r184 (what A-Frame 1.8.0 ships), Meta's Quest docs (metavr
+docs search, the hz-quest-verify-first skill), the W3C WebXR spec. The page read goes in the WHY comment.
+- Light, shadow, colour, gloom: Gregory 12 and 11; A-Frame light and renderer; three.js lights and colour management;
+  docs/building-standards.md.
+- An object or a text in the scene: photos of the real thing first; Gregory 16.1-16.2 and 12.8; A-Frame text,
+  geometry, material; docs/vr-checklist.md.
+- A room: the new-room skill (its card, its paper in full), then the paper-reviewer; Gregory 17.8, 17.10, 9 and 15.
+- Loading, frame rate, memory: Gregory 7, 8 and 17.4; Meta's performance docs; docs/baseline.md.
+- Controls and the menu: Gregory 9; Meta's input docs (the default mapping).
+- Data and the server: Supabase's docs (search_docs); docs/methodology.md; .claude/rules/data.md.
+- Tests, GitHub, the process: Gregory 2 and 10; Claude Code's docs (the claude-code-guide helper); GitHub's docs.
+
+## Which tool when
+- Reading or finding in files: Read and Grep myself, no helper.
+- A claim about our setup: the thing itself first (the service through its connector, the vendored code, a fresh
+  measure); a doc, the board or another window is a lead.
+- One narrow fact: quick-research, one question a run. A wide question: deep-research in the background.
+- A whole system (GitHub, Supabase, the app): one general helper per system, in parallel.
+- A paper: docs/library.md, its card in docs/cards, its text in objekt-files/papers; searching: Consensus, PubMed,
+  the reference lookup; a PDF: PDF Tools; a page a fetch cannot read: the browser pane; one it cannot open
+  (Reddit): its exact link to him.
+- A new page before he sees it: the fact-checker, two runs that do not see each other; edits from their findings
+  checked by me against them.
+- Building anything: a short script file in node, never long mixed shell lines; a command judged by its exit code,
+  not by its last line.
+- The headset: the practice review first, then node tools/quest-look.mjs (`say` each step while he wears it; sleep
+  after); frame rate and GPU: OVR Metrics, `metavr perf capture` read with Perfetto, RenderDoc for one draw.
+- His words when a line of his decisions is not enough: objekt-files/notes/archive/docs/owner-decisions-history.md.

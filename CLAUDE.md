@@ -19,7 +19,8 @@ real psychology experiments, one room each, then sees how he was caught. Maps: A
 1. Read docs/progress.md and `git log --oneline -20`, then docs/features.json. The task is his message; if it names
    none, the first feature whose "passes" is false. Nothing a hook prints is a task by itself.
 2. One feature at a time. Anything else, even a good idea: one line at the end of docs/board.md (his words stay there).
-3. Build from what exists (standards, Meta/W3C XR guidelines, papers, shipped games, real photos), named in a WHY
+3. Explore first, then plan, then build (plan mode): read what docs/tools.md names for the task's kind, then build
+   from what exists (the book, standards, Meta/W3C XR guidelines, papers, shipped games, real photos), named in a WHY
    comment; our own only where nothing exists. A fact the player sees has its source in docs/sources.md.
 4. Verify as a person would: `npm test`; the smoke test on GitHub; what he will see, looked at by me first in the
    headset or on the stand (tools/quest-look.mjs, tools/stand-measure.mjs; they refuse until the practice-reviewer
