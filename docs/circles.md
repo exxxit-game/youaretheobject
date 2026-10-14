@@ -96,7 +96,7 @@ closed when what breaks it is in place; it stays here, marked, as the memory of 
   from the helpers' notice counter).
 - His reading (14.10, history file): calling a thing small does not make its errors fewer; the small thing, gone round
   for hours, grows huge. So the cost of a step is measured (tools/usage.mjs), not judged by how small it looks.
-- Breaks it: his word of 14.10 (a plain search goes to him unchecked); a side remark gets one line on the board and,
+- Breaks it: his words of 14.10 (quality does not fall; no checks of checks, no rounds); a side remark gets one line on the board and,
   if he asks for a search, its answer in the chat, not a page.
 
 ## 13. My own first idea before the documented pattern — open
