@@ -25,7 +25,7 @@ if (import.meta.url === pathToFileURL(process.argv[1] || '').href) await main();
 
 async function main() {
   const mode = process.argv[2];
-  if (!['trial', 'long', 'flow', 'restore', 'judge'].includes(mode)) { console.log('usage: node tools/stand-measure.mjs trial | long [--minutes=N] | flow | restore | judge <run folder>'); process.exit(1); }
+  if (!['trial', 'long', 'flow', 'restore', 'judge', 'check', 'look'].includes(mode)) { console.log('usage: node tools/stand-measure.mjs check | trial | long [--minutes=N] | flow | look | restore | judge <run folder>'); process.exit(1); }
   // a run's verdicts again from its own log, with no headset (the samples are all in it)
   if (mode === 'judge') {
     const lines = fs.readFileSync(path.join(process.argv[3], 'log.jsonl'), 'utf8').trim().split(/\r?\n/).map((l) => JSON.parse(l));
@@ -55,6 +55,33 @@ async function main() {
     console.log(JSON.stringify(giveBack('restart')));
     return;
   }
+  // What has stopped runs before they measured anything, checked in one go before he is asked to do anything: the
+  // game server (stopped with the window that started it), and a system window in front (the tracking window of a
+  // headset that cannot find the room comes back however often it is closed)
+  const RUNS = path.join(process.env.USERPROFILE || process.env.HOME, 'Documents', 'objekt-files', 'notes', 'headset');
+  const front = () => (sh('dumpsys activity activities | grep topResumedActivity | head -1').match(/u0 ([\w.]+)\//) || [])[1] || 'none';
+  // read awake: asleep, the headset shows nothing in front; a wake key would open its quick menu instead
+  const awakeFront = async () => { metavr('device', 'proximity', '--disable'); await pause(10000); return front(); };
+  const blockers = async () => { const inFront = await awakeFront(); return [
+    !(await fetch(`http://localhost:${localPort()}/`).then((r) => r.ok, () => false)) && `the game server is not running on port ${localPort()}: start the preview "objekt"`,
+    wornByPerson() && 'the headset is worn: this measure is for the stand',
+    /guardian/.test(inFront) && 'the headset cannot find its place in the room (its tracking or boundary window is in front): turn the stand to face furniture and things, not a bare wall or a door'
+  ].filter(Boolean); };
+  if (mode === 'check') { const b = await blockers(); const f = front(); metavr('device', 'proximity', '--enable'); console.log(b.length ? `not ready: ${b.join('; ')}` : `ready (in front: ${f})`); process.exit(b.length ? 1 : 0); }
+  // two runs in a row that failed: a third waits for a look at what the headset shows (CLAUDE.md: "Two or three failed
+  // tries at one problem: measure first"; five tries went round one cause before this was held by the tool)
+  const last = fs.existsSync(RUNS) ? fs.readdirSync(RUNS).filter((d) => /^stand-(trial|long|flow)-/.test(d)).sort().slice(-2) : [];
+  const failed = (d) => { try { return /"step":"failed"/.test(fs.readFileSync(path.join(RUNS, d, 'log.jsonl'), 'utf8')); } catch (e) { return false; } };
+  if (mode === 'look') {
+    const into = last.length ? path.join(RUNS, last[last.length - 1], 'look.png') : path.join(RUNS, 'look.png');
+    console.log(metavr('capture', 'screenshot', '-o', into).trim(), `| in front: ${front()}`);
+    return;
+  }
+  if (last.length === 2 && last.every(failed) && !fs.existsSync(path.join(RUNS, last[1], 'look.png'))) {
+    console.log('not now: the last two runs failed; look first (node tools/stand-measure.mjs look) and name the cause'); process.exit(1);
+  }
+  const b = await blockers();
+  if (b.length) { console.log(`not ready: ${b.join('; ')}`); process.exit(1); }
   requireReview(ROOT, 'VR in the headset', { look: true });
   requirePaper(ROOT, 'VR in the headset', { look: true });
   // this run is for a headset nobody wears: on a person it would hold frames and rates against him
@@ -89,18 +116,6 @@ async function main() {
     // OVR Metrics' overlay costs GPU time of its own (docs/baseline.md): off for the measure
     sh('am broadcast -n com.oculus.ovrmonitormetricsservice/.SettingsBroadcastReceiver -a com.oculus.ovrmonitormetricsservice.DISABLE_OVERLAY');
 
-    // the game comes from the laptop's own server (the preview "objekt"): without it the headset shows an error
-    // page and the run stops on a missing scene, so the server is asked for first and named when absent
-    const served = await fetch(`http://localhost:${localPort()}/`).then((r) => r.ok, () => false);
-    if (!served) throw new Error(`the game server is not running on port ${localPort()}: start it (npm run serve, the preview "objekt")`);
-    // a headset that cannot find its place in the room shows its tracking window over every app and the game stops
-    // drawing; it comes back however often it is closed, so the run stops at once with what to do (seen when the
-    // stand faced a bare wall and a door: its cameras had nothing to hold on to)
-    for (let i = 0; i < 10; i++) {
-      if (!/GuardianDialogActivity/.test(sh("dumpsys activity activities | grep topResumedActivity | head -1"))) break;
-      if (i === 9) throw new Error('the headset cannot find its place in the room: turn the stand so it faces furniture and things, not a bare wall or a door');
-      await pause(3000);
-    }
     await openGame(serveToHeadset(localPort()));
     for (let i = 0; i < 60 && !game; i++) { game = await page(/localhost:3000/); if (!game) await pause(500); }
     if (!game) throw new Error('the game tab did not appear');
