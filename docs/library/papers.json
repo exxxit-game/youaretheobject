@@ -8638,6 +8638,24 @@
    "text": "ok",
    "status": "no card",
    "source": "https://arxiv.org/abs/2608.15188"
+  },
+  {
+   "id": "di-febo-2026",
+   "authors": "Di Febo, R., Jeanneret Medina, M., Renaud, A., Dridi, M., Pecriaux, V., Lequeux, B., Lafitte, S., Maille, B., Menet, A.",
+   "year": "2026",
+   "title": "Comparative evaluation of artificial intelligence-assisted literature search tools for identifying clinically meaningful evidence in cardiology",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "AI literature search",
+    "Consensus",
+    "Elicit"
+   ],
+   "type": "article",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://doi.org/10.1093/ehjdh/ztag125"
   }
  ]
 }
