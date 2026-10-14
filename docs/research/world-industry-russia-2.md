@@ -170,7 +170,7 @@ quotes our translation):
 - Understanding the task is checked by "a short preliminary training series": success in it "serves as the
   criterion of understanding the instruction"; after the series, an interview to find difficulties and whether the
   participant swapped the experimenter's task for "his own subjective one". (The same practice step and closing
-  question as the room recipe in docs/audit/process-rebuild.md.)
+  question as the room recipe in objekt-files/notes/archive/docs/audit/process-rebuild.md.)
 - "In any experiment there is an element of play, as if of work 'for pretend'", but it is also "a game in
   earnest": the owner's fun-and-serious, in a Russian textbook.
 - Why volunteers come: in sensory-deprivation studies half came "out of curiosity alone"; often "to learn something

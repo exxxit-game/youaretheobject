@@ -20,7 +20,7 @@
      as the game's steps do (tools/quest-look.mjs say), with a sound and a buzz. Walking stays inside his
      boundary with the room lit; the floor is not drawn and the lines fade while he moves (Meta: no
      content on the floor that hides what could trip him, less of it while moving; boundaryless best
-     practices; docs/audit/room-probe-review.md). Nothing from the cameras is recorded or sent. -->
+     practices; objekt-files/notes/archive/docs/audit/room-probe-review.md). Nothing from the cameras is recorded or sent. -->
 <p>Комната глазами очков. Включи свет и освободи свою зону. Все кабели вынуты, подключён только BoboVR — нажимая «Начать», ты это подтверждаешь. Нажми «Начать»: очки спросят разрешение на данные комнаты — разреши. Ты увидишь свою комнату и поверх неё — как очки её оцифровали. Ничего с камер не записывается и не отправляется.</p>
 <button id="start">Начать</button>
 <pre id="out">Результатов пока нет.</pre>
@@ -85,7 +85,7 @@ function draw(main, small) {
 
 // the steps tools/xr-room-run.mjs shows, each for its time. Walking stays inside his boundary: the
 // next room comes last and on its own: both rooms lit, the controllers in hand, nothing drawn over his view
-// while he walks (docs/audit/room-probe-review.md, finding 1: "no lines drawn and the controllers in hand")
+// while he walks (objekt-files/notes/archive/docs/audit/room-probe-review.md, finding 1: "no lines drawn and the controllers in hand")
 window.__steps = [
   { "main": "Это твоя комната глазами очков. Осмотрись, не сходя с места", "small": "1 из 7 · линии — стены и мебель · 15 секунд", "secs": 15 },
   { "main": "Медленно пройдись внутри своей зоны, к стенам не подходи", "small": "2 из 7 · 40 секунд; пока идёшь, всё бледнее", "secs": 40 },

@@ -1,6 +1,6 @@
 # Running our own experiments now: what the field does, what fits us, how to do it properly
 
-Research for the owner's idea of new experiments with real players, in the present (docs/ideas/owner-experiments.md).
+Research for the owner's idea of new experiments with real players, in the present (objekt-files/notes/archive/docs/ideas/owner-experiments.md).
 Every claim has its link and a short quote from the page read. "Unverified" marks what was not confirmed on a
 primary page. Parts 4 (running and publishing), 5 (data-quality risks) and the list of what is still open are in
 [own-experiments-now-2.md](own-experiments-now-2.md). How working labs run studies outside the lab, lab by lab:

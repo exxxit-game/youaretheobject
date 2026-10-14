@@ -23,7 +23,7 @@
   the whole library: `docs/library.md` (sections, then one line per paper, then card, then text; wanted and
   dropped papers in `docs/library/wanted.md`; a new paper needs a record in `docs/library/papers.json`). 145 cards from full texts: `docs/cards/`, checked by
   `node tools/check-cards.mjs`; catalog generated: `docs/catalog.md` (`node tools/build-catalog.mjs`);
-  search coverage: `docs/library/coverage.md`; ideas: `docs/ideas/`; headset abilities:
+  search coverage: `docs/library/coverage.md`; research notes: `docs/research/README.md`; ideas: `objekt-files/notes/archive/docs/ideas/`; headset abilities:
   `docs/headset-capabilities.md`; owner page: https://claude.ai/artifact/Srhwjio7Ukp4FBDQAHpZB2
 - THE WORK is the one-page board `docs/board.md` (shown at every start; his yes is the only measure of progress).
   Every owner message is logged on the laptop by the prompt hook. The big plan (archive and strategy, read only
@@ -66,14 +66,14 @@ One line each: for every window in `docs/owner-decisions.md` (loaded at every st
 ## Technical notes behind the board (the board itself: docs/board.md)
 - The owner's automatic stop: VR in the headset and the test copy wait for a practice review of the files a
   person meets (tools/review-gate.mjs); the first real review was recorded by the hook on 9.10. The rebuilt
-  controllers-and-hands probe (tools/xr-probe-input.html) follows docs/audit/probe-review.md.
+  controllers-and-hands probe (tools/xr-probe-input.html) follows objekt-files/notes/archive/docs/audit/probe-review.md.
 - Prompt and agent hooks need Claude Code 2.1.294 or later, onFailure: block on the guards 2.1.295; the terminal and the app may run different versions (14.10: the app, Claude Desktop 2.37337.1 from the Microsoft Store, installed 13.10 21:16, runs 2.1.295; the terminal's `claude` is 2.1.268, below the hooks' need).
 - Meta's tools: the Meta VR CLI is installed (npm install -g metavr, Meta's own package) and runs from the shell
   (metavr device, perf, vrc-local); the meta-vr plugin's MCP server gave 0 tools (started through npx it answered
   Claude Code's protocol probe late and then refused the tool list), so the CLI is the way in. Supabase: the plugin's server is not signed
   in; the claude.ai connector's writes and any SELECT that calls a writing function are refused by
-  tools/claude-guard.mjs. The process rebuild of 10.10 and its audits' findings: docs/audit/process-rebuild.md.
-- Earlier causes and audits: docs/audit/README.md. Corridor: finished item by item on the board; approved shots in docs/rooms/corridor-shots/.
+  tools/claude-guard.mjs. The process rebuild of 10.10 and its audits' findings: objekt-files/notes/archive/docs/audit/process-rebuild.md.
+- Earlier causes and audits: objekt-files/notes/archive/docs/audit/README.md. Corridor: finished item by item on the board; approved shots in docs/rooms/corridor-shots/.
   Style book: https://claude.ai/artifact/DKDDa4sH1BG9TF24MJyQaH. How to use Claude Code, his memo: https://claude.ai/artifact/V4HzbgVtK8HGqczZ3zyfS9.
 - Process review 11.10: https://claude.ai/artifact/NMfbi3vWaZQX8oR9t39mTC, measures in objekt-files\notes\process-review-2026-10-11;
   lesson one: https://claude.ai/artifact/FVhfv8i8CGGTi4WSHgwbC9.

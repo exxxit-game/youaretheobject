@@ -97,7 +97,7 @@ Part of `05-wow.md`, which says how to read each item and lists the sources read
   humanoid bodies work** — Petkova V.I., Ehrsson H.H., "If I Were You: Perceptual Illusion of Body
   Swapping", PLoS ONE 3(12):e3832, 2008 (in folder) — verified yes (results) — Key line: a box of the
   same size gave no threat response — For us: a two-player body-swap room is sourced (see
-  docs/ideas/europe.md #3).
+  objekt-files/notes/archive/docs/ideas/europe.md #3).
 
 - **Seen hands must sit where real hands are; a body slightly out of place is worse than none** —
   Schell 2015, Lesson Three ("proprioceptive disconnect") — verified yes — Key line: better to show no

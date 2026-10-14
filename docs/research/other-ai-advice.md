@@ -3,7 +3,7 @@
 The owner brought two answers of other AIs (the stack, the libraries, the tools) and asked whether they
 are of use. Each claim was checked against A-Frame 1.8.0's own docs (the local copy) and the build the
 game runs, against each library's npm and GitHub pages, and against our code. The verdicts for the
-owner are on the revision's inventory page (docs/audit/revision.md, shelf 5); the evidence is below,
+owner are on the revision's inventory page (objekt-files/notes/archive/docs/audit/revision.md, shelf 5); the evidence is below,
 in two reports. What the owner then asked for, practitioners' forums in every language, is in
 docs/research/forums-aframe-quest.md.
 

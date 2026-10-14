@@ -179,7 +179,7 @@
   right [machine]. For us: tools/secrets.mjs runs before every commit and push (mistakes line 36); the grants fix
   is Cosmogram's own (revoke from public, anon and authenticated in the same migration; cosmo).
 
-### X. How others keep a mistakes list (bears on P1, P2, P18, P21; ours: docs/mistakes.md, docs/circles.md)
+### X. How others keep a mistakes list (bears on P1, P2, P18, P21; ours: docs/mistakes.md, objekt-files/notes/archive/docs/circles.md)
 - r/ClaudeCode u/thabxi, 13.08.2026, "I make Claude Code keep a MISTAKES.md file", https://www.reddit.com/r/ClaudeCode/comments/1vn6d5r/
   [read, 93 entries of its RSS]. His method: each entry "what happened / root cause / consequence / the rule that
   prevents a repeat"; "When the same failure shows up four or five times it stops being a mistake and becomes a law
@@ -197,6 +197,6 @@
   top of the file where that work actually happens ... the copy that gets obeyed is the one already in front of
   it". u/OkphexTwin: "CLAUDE.md is merely a suggestion unless you put a hook in."
 - For us: docs/mistakes.md already has the rule several replies arrive at (a row only with the test that catches
-  it); docs/circles.md is the "deposit, then promote on repeat" half. Two points not in our setup: a mistake is
+  it); objekt-files/notes/archive/docs/circles.md is the "deposit, then promote on repeat" half. Two points not in our setup: a mistake is
   promoted only after it repeats (we added a guard after one incident in Cosmogram, P1), and the warning placed in
   the file where the work happens rather than only in CLAUDE.md.

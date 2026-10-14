@@ -40,4 +40,4 @@ can open, with what to bring back: `docs/research/own-experiments-now-2.md`.
 
 | Id | Paper | Why |
 |---|---|---|
-| radvansky-2011 | Radvansky et al. (2011). Doorway forgetting study (title not recorded in the repo) | failed to replicate (mcfadyen-2021, docs/experiments.md): not needed |
+| radvansky-2011 | Radvansky et al. (2011). Doorway forgetting study (title not recorded in the repo) | failed to replicate (mcfadyen-2021, objekt-files/notes/archive/docs/experiments.md): not needed |

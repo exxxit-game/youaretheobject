@@ -24,7 +24,7 @@ This was a read-only check. Nothing was changed in either repository or on any d
   - `tools/claude-guard.mjs`, `.claude/settings.json` and `CLAUDE.md`.
   - `supabase/migrations/0001-0010`, `src/engine/results.js`, `src/app/consent.js` and `src/app/session.js`.
   - `tools/health.mjs`, `tools/secrets.mjs`, `tests/structure.test.mjs` and `tests/sql.mjs`.
-  - `docs/state.md`, `docs/board.md` and `docs/audit/revision-shelf2-server.md`.
+  - `docs/state.md`, `docs/board.md` and `objekt-files/notes/archive/docs/audit/revision-shelf2-server.md`.
 - Two measurements taken today:
   - `supabase --version` and `--help` on the laptop.
   - `supabase projects list`, a read-only call that lists projects.

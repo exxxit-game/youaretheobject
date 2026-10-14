@@ -10,7 +10,7 @@ it against a million players of every country and age, over the long run. The ev
 - Cosmogram (exxxit-game/cosmogram-app, read 13.10): its hooks and rules over time, from its git history.
 - The owner's 910 messages (objekt-files/notes/owner-messages.md, 09.10–13.10): what he asks to protect, what he
   calls friction.
-How each of us is built, and the circles we keep coming back to: [docs/circles.md](../circles.md).
+How each of us is built, and the circles we keep coming back to: [objekt-files/notes/archive/docs/circles.md](../circles.md).
 
 ## What the sources share (each line backed in restrictions-sources.md)
 
@@ -109,7 +109,7 @@ What follows from his rule without a new choice (each removes or narrows; none a
 4. The papers-library refusal matches the library's real path only (its one firing was a stray folder elsewhere).
 5. A CodeRabbit remark that finds another way round a client-side guard is answered with principle 4, not with a new
    form; a slip it finds is fixed.
-6. docs/mistakes.md no longer asks a guard for each mistake: a recurring mistake goes to docs/circles.md with what
+6. docs/mistakes.md no longer asks a guard for each mistake: a recurring mistake goes to objekt-files/notes/archive/docs/circles.md with what
    breaks its circle, which may be a design change, a lock moved to the server, or a guard removed.
 
 ## Fits the owner's recorded words (docs/owner-decisions.md and its history)

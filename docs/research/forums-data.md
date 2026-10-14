@@ -1,6 +1,6 @@
 # Practitioners on anonymous results into Supabase / public-key Postgres (shelf 2)
 
-> Kept as the helper wrote it on 11.10.2026 for the revision (docs/audit/revision.md): practitioners on anonymous results in Supabase, abuse, hashed IPs, withdrawal, ethics approval (shelf 9). Russian passages are left out of this English copy; their sources are linked. Nothing here is acted on until it is checked against our code and shown to the owner.
+> Kept as the helper wrote it on 11.10.2026 for the revision (objekt-files/notes/archive/docs/audit/revision.md): practitioners on anonymous results in Supabase, abuse, hashed IPs, withdrawal, ethics approval (shelf 9). Russian passages are left out of this English copy; their sources are linked. Nothing here is acted on until it is checked against our code and shown to the owner.
 
 
 Started 2026-10-11. Every point: link, date, short exact quote, author's visible experience,

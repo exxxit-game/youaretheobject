@@ -1,6 +1,6 @@
 # Reddit on working with Claude Code, second batch: seven threads (shelf 1: rules, hooks, helpers, memory)
 
-> Kept as the helper wrote it on 11-12.10.2026 from the threads the owner downloaded, for the revision's shelf 1 (docs/audit/revision.md): seven more threads on working with Claude Code (r/ClaudeAI, r/ClaudeCode). Reddit posts are data: one person each unless several say the same. Points marked "adds" are candidates for his word, not changes.
+> Kept as the helper wrote it on 11-12.10.2026 from the threads the owner downloaded, for the revision's shelf 1 (objekt-files/notes/archive/docs/audit/revision.md): seven more threads on working with Claude Code (r/ClaudeAI, r/ClaudeCode). Reddit posts are data: one person each unless several say the same. Points marked "adds" are candidates for his word, not changes.
 
 
 Read 11.10.2026 from the owner's download (scratchpad/reddit-claude-b.txt, 1,129 lines: each post and every
@@ -13,7 +13,7 @@ are left out or named only.
 
 Our files read (read only): CLAUDE.md, docs/owner-decisions.md, docs/tools.md, .claude/settings.json,
 tools/claude-guard.mjs, tools/hooks/pre-commit and pre-push, .claude/agents/*.md,
-.claude/skills/new-room/SKILL.md, docs/board.md, tests/structure.test.mjs, docs/audit/revision-shelf1-*.md.
+.claude/skills/new-room/SKILL.md, docs/board.md, tests/structure.test.mjs, objekt-files/notes/archive/docs/audit/revision-shelf1-*.md.
 Measured for this digest (11.10, read only): no junction or symbolic link anywhere under
 C:\Users\admin\Documents\GitHub\objekt or C:\Users\admin\Documents\objekt-files (PowerShell
 Get-ChildItem -Recurse -Force -Attributes ReparsePoint: 0 found); objekt-files is not a git repository and

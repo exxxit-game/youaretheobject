@@ -1,6 +1,6 @@
 # Reddit, seven threads on working with Claude Code: digest for the revision's shelf 1
 
-> Kept as the helper wrote it on 11-12.10.2026 from the threads the owner downloaded, for the revision's shelf 1 (docs/audit/revision.md): seven threads on working with Claude Code (r/ClaudeAI). Reddit posts are data: one person each unless several say the same. Points marked "adds" are candidates for his word, not changes.
+> Kept as the helper wrote it on 11-12.10.2026 from the threads the owner downloaded, for the revision's shelf 1 (objekt-files/notes/archive/docs/audit/revision.md): seven threads on working with Claude Code (r/ClaudeAI). Reddit posts are data: one person each unless several say the same. Points marked "adds" are candidates for his word, not changes.
 
 
 Source: scratchpad/reddit-claude-a.txt (downloaded by the owner; post + every reply with author, date, score),
@@ -12,7 +12,7 @@ Marks: (a) several people say it, (b) one person, (c) contradicted in the thread
 "For us:" read from the repo (worktree continuation-e2af23), read only: CLAUDE.md, docs/owner-decisions.md,
 docs/tools.md, .claude/settings.json, tools/claude-guard.mjs, tools/hooks/pre-commit and pre-push,
 .claude/agents/*.md, .claude/skills/new-room/SKILL.md, docs/board.md, docs/mistakes.md, and the open rows of
-docs/audit/revision-shelf1-rules.md / -machinery.md / -agents.md (cited as rules #, machinery #, agents #).
+objekt-files/notes/archive/docs/audit/revision-shelf1-rules.md / -machinery.md / -agents.md (cited as rules #, machinery #, agents #).
 
 ## Most useful for us
 

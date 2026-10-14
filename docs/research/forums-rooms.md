@@ -1,6 +1,6 @@
 # Running psychology experiments in VR and in the browser: what practitioners write (2026-10-11)
 
-> Kept as the helper wrote it on 11.10.2026 for the revision (docs/audit/revision.md): researchers who ran experiments in VR and in the browser (shelf 7, rooms). Russian passages are left out of this English copy; their sources are linked. Nothing here is acted on until it is checked against our code and shown to the owner.
+> Kept as the helper wrote it on 11.10.2026 for the revision (objekt-files/notes/archive/docs/audit/revision.md): researchers who ran experiments in VR and in the browser (shelf 7, rooms). Russian passages are left out of this English copy; their sources are linked. Nothing here is acted on until it is checked against our code and shown to the owner.
 
 
 Weight: (a) several practitioners agree, (b) one source, (c) contradicted. Pre-2018 = possibly stale.

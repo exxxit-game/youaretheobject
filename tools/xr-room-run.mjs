@@ -3,7 +3,7 @@
 // Usage: node tools/xr-room-run.mjs [folder]   the game tab open on localhost:3000 in the headset; the
 // result goes to <folder>/room-result.json, or is printed. It starts only while the owner wears the
 // headset and once a practice review has seen these very files, as tools/xr-probe-run.mjs does
-// (docs/audit/room-probe-review.md). He presses the start button himself, after reading the page.
+// (objekt-files/notes/archive/docs/audit/room-probe-review.md). He presses the start button himself, after reading the page.
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

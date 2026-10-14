@@ -1,6 +1,6 @@
 # What experienced Claude Code users write about long-project setup (shelf 1, "Rules and Claude Code")
 
-> Kept as the helper wrote it on 11.10.2026 for the revision (docs/audit/revision.md): what experienced Claude Code users wrote (shelf 1). Russian passages are left out of this English copy; their sources are linked. Nothing here is acted on until it is checked against our code and shown to the owner.
+> Kept as the helper wrote it on 11.10.2026 for the revision (objekt-files/notes/archive/docs/audit/revision.md): what experienced Claude Code users wrote (shelf 1). Russian passages are left out of this English copy; their sources are linked. Nothing here is acted on until it is checked against our code and shown to the owner.
 
 
 Searched 11.10.2026 (UTC). Practitioners first; official docs only as a cross-check.
@@ -12,7 +12,7 @@ Our setup read (read only): CLAUDE.md 45 lines + imports docs/owner-decisions.md
 SubagentStart/Stop (practice-reviewer), Stop (180 s timeout), all through tools/claude-guard.mjs (493 lines);
 7 subagents (.claude/agents/); 1 skill (.claude/skills/new-room/SKILL.md, 71 lines); docs/board.md (91 lines) shown by the start hook;
 worktrees per session; auto-memory folder (MEMORY.md, 7 entries).
-Earlier official-docs digest: docs/audit/rebuild/claude-code-practice.md (10.10).
+Earlier official-docs digest: objekt-files/notes/archive/docs/audit/rebuild/claude-code-practice.md (10.10).
 
 ## Parts (each gets an answer or "not found")
 1. CLAUDE.md: length, content, imports, what people cut and why
@@ -66,7 +66,7 @@ Original thread: https://x.com/bcherny/status/2007179832300581177 (not opened: X
 Filed by @DEKEDMC (Opus 4.6, macOS); no maintainer reply; closed "not planned" by bot 23 May 2026 for inactivity.
 - (1)(2) CLAUDE.md rules ("seek clarification over guessing"; read docs before proposing) broken in one session; asks for "A mechanism to make CLAUDE.md instructions enforceable rather than advisory".
 - Comments: @penguinboi "There's no such thing as a 'mandatory instruction' for an LLM" and the model should not be "the sole verifier of its own work"; @MaxwellCalkin suggests PreToolUse hooks; @ratkitesurfer: 13 violations of a plan-approval rule, model quoted: "The moment I start reasoning about whether this particular case is an exception, I've already broken the rule."; @ARDA-World: required first-action file read skipped; memory writes never happened unless prompted.
-  Mark (a): CLAUDE.md is advisory, hard rules belong in hooks/permissions — same as official docs ("context, not enforced configuration", docs/audit/rebuild/claude-code-practice.md) and S2.
+  Mark (a): CLAUDE.md is advisory, hard rules belong in hooks/permissions — same as official docs ("context, not enforced configuration", objekt-files/notes/archive/docs/audit/rebuild/claude-code-practice.md) and S2.
   Ours: matches — must-not-break things are in hooks (owner-decisions "What matters is kept by checks the machine runs by itself"); independent reviewers check the main agent (fact-checker, practice-reviewer) — matches "not the sole verifier".
 
 ### S5. GitHub issue #55754 "Stop hook returning {"ok": false} causes infinite loop", 3 May 2026 — https://github.com/anthropics/claude-code/issues/55754
@@ -174,7 +174,7 @@ Author: Steve Yegge (ex-Amazon/Google, Sourcegraph; README itself does not state
 Author: a team at Kurashiru (large Japanese recipe app company), Rails project as of Apr 2026.
 - (1)(5) Failures go first to a personal, gitignored .claude/workspace/FAILURES.md; only after 3 or more similar failures does `/failure-promote` propose a rule (a draft PR into `.claude/rules/{project}/*.md`; general principles into CLAUDE.md). Reason: one-off failures turned into rules inflate maintenance; threshold "still being tuned".
 - `/retro` sorts lessons into 5 kinds: code style → hook/linter; architecture → rules; domain knowledge → memory; external integration → skills; dangerous operations → hook.
-- Pruning test: "この行を削除したらClaudeが間違えるか？" ("If I delete this line, would Claude make a mistake?") — same as Anthropic's docs test (docs/audit/rebuild/claude-code-practice.md).
+- Pruning test: "この行を削除したらClaudeが間違えるか？" ("If I delete this line, would Claude make a mistake?") — same as Anthropic's docs test (objekt-files/notes/archive/docs/audit/rebuild/claude-code-practice.md).
   Mark (a) with S3, S11: rules from observed failures; adds a threshold.
   Ours: every observed failure the owner names becomes a line in owner-decisions.md at once (no threshold) — differs; our sorting (hooks for irreversible, skills for room procedure, memory for the rest) matches their 5-way sort in shape.
 

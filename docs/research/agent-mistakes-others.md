@@ -13,8 +13,8 @@
 
 ## Part 1. Our mistake patterns (from our records)
 
-Records: circles = docs/circles.md; mistakes = docs/mistakes.md (line = its line number on 14.10); cosmo = docs/research/projects/cosmogram.md; cosmo-srv = docs/research/projects/cosmogram-server.md;
-h13, h13-2, h13-3, h13-4, h14 = docs/audit/handoff-2026-10-13*.md and handoff-2026-10-14.md. Dates are 2026.
+Records: circles = objekt-files/notes/archive/docs/circles.md; mistakes = docs/mistakes.md (line = its line number on 14.10); cosmo = docs/research/projects/cosmogram.md; cosmo-srv = docs/research/projects/cosmogram-server.md;
+h13, h13-2, h13-3, h13-4, h14 = objekt-files/notes/archive/docs/audit/handoff-2026-10-13*.md and handoff-2026-10-14.md. Dates are 2026.
 
 P1. A guard (hook, rule form) for every complaint: Cosmogram's hooks 1 (25.08) to 53-54 (30.09), cut to 12 the same
     day; the bar for a new hook fell from 3-5 repeats to 1; here nine command forms added 13.10 after CodeRabbit's
@@ -80,7 +80,7 @@ P22. Secrets, personal data and database rights: his email in 187 public commits
 
 - docs/research/agent-mistakes-others-2.md: A (Anthropic's best practices, A1-A9), P1 to P10.
 - docs/research/agent-mistakes-others-3.md: P11 with P20, P12 to P19, P21, P22, and X (how others keep a mistakes
-  list, the closest match to our docs/mistakes.md and docs/circles.md).
+  list, the closest match to our docs/mistakes.md and objekt-files/notes/archive/docs/circles.md).
 - Nothing found in forums for: P3 (two gates locking each other; only Anthropic's hooks reference speaks to it),
   P4 (the person called before the machine checks), P9 (a test suite freezing the laptop), the database-grants
   half of P22; for P6 and P17 the threads name the habit that helped but count no losses.

@@ -1,6 +1,6 @@
 # Forums sweep: A-Frame / WebXR on Quest (practitioners' experience)
 
-> Kept as the research agent wrote it on 11.10.2026 for the revision (docs/audit/revision.md, shelf 5): English forums, issues and blogs, weighed by the author's visible experience.
+> Kept as the research agent wrote it on 11.10.2026 for the revision (objekt-files/notes/archive/docs/audit/revision.md, shelf 5): English forums, issues and blogs, weighed by the author's visible experience.
 > Each point still has to be checked against our code and A-Frame 1.8.0 before anything changes; the first pass of that is on the revision page.
 
 

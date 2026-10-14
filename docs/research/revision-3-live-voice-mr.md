@@ -43,7 +43,7 @@ primary page. Meta pages through `metavr docs` where it had them. Prices are our
   of you in turn to announce your judgments"; l.39: "Each trial took approximately 30 seconds"; groups of four. A
   faithful live version needs voice between players (part 2 meets part 1 here).
 - **The mirror game is the one hard case.** Noy et al. 2011 (papers/noy-2011.txt l.34): "synchronized to less than
-  40 ms". Out of reach over the internet; docs/ideas/multiplayer-voice.md §3 already plans it on one local network.
+  40 ms". Out of reach over the internet; objekt-files/notes/archive/docs/ideas/multiplayer-voice.md §3 already plans it on one local network.
 - **Disconnects cost more than delay.** Hawkins et al. 2020 (papers/hawkins-2020.txt l.67): games ended "due to
   server error or network disconnection (40 in free matching and 33 in cued)". A dropout rule and a reconnect path
   come first.
@@ -119,7 +119,7 @@ primary page. Meta pages through `metavr docs` where it had them. Prices are our
 | Voice (4 players, 10 min, 32 kbit/s assumed: ~7 MB a player) | cannot carry it | cannot carry it | 10,000: ~72 GB, inside Cloudflare's free 1,000 GB |
 
 - Peak connections: 10,000 a month is far below 500 at once except at scheduled events (the largest room in
-  docs/ideas/multiplayer-voice.md is 14 at once). The rule: decisions through the server, bodies peer-to-peer.
+  objekt-files/notes/archive/docs/ideas/multiplayer-voice.md is 14 at once). The rule: decisions through the server, bodies peer-to-peer.
 
 ### 2a-2b. The browser's own speech in the Quest Browser
 
@@ -160,7 +160,7 @@ primary page. Meta pages through `metavr docs` where it had them. Prices are our
   customers". Player voice sent there is stored by a US company.
 - **Law (our docs).** own-experiments-now-2.md 4c: GDPR biometric only when processed "for the purpose of uniquely
   identifying"; 152-FZ Art. 18(5): Russian citizens' data not to be collected into databases abroad.
-  docs/ideas/multiplayer-voice.md: "Only numbers leave it, never audio or transcripts". A cloud recogniser breaks
+  objekt-files/notes/archive/docs/ideas/multiplayer-voice.md: "Only numbers leave it, never audio or transcripts". A cloud recogniser breaks
   that rule; an on-device one keeps it.
 - **Russian provider (Yandex SpeechKit):** its price page redirected to aistudio.yandex.ru, which refused the
   connection: **not read** (owner link below).

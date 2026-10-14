@@ -1,6 +1,6 @@
 # Forums: shipping a WebXR PWA to stores, paid content, payouts outside the US (sweep of 2026-10-11)
 
-> Kept as the helper wrote it on 11.10.2026 for the revision (docs/audit/revision.md): developers who shipped to the Horizon Store and other stores, purchases and payouts (shelf 14). Russian and Ukrainian passages are left out of this English copy; their sources are linked. Nothing here is acted on until it is checked and shown to the owner.
+> Kept as the helper wrote it on 11.10.2026 for the revision (objekt-files/notes/archive/docs/audit/revision.md): developers who shipped to the Horizon Store and other stores, purchases and payouts (shelf 14). Russian and Ukrainian passages are left out of this English copy; their sources are linked. Nothing here is acted on until it is checked and shown to the owner.
 
 
 For the revision's shelf 14 ("Money, store, law"). Practitioners' reports, not rules. Every point: link, date,

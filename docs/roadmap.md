@@ -29,10 +29,10 @@ watching is better, living through it is the strongest form of explanation.
   computers, not in VR.
 - Before any data counts as science: a university partner, ethics approval, a separate
   science consent, preregistration (OSF) of one study.
-- First study candidates are the open questions in `docs/ideas/` (e.g. does mixed reality
+- First study candidates are the open questions in `objekt-files/notes/archive/docs/ideas/` (e.g. does mixed reality
   bring VR effects back to real-room size; how much one reveal weakens the next room): by region
-  `docs/ideas/europe.md`, `docs/ideas/east-europe-global-south.md`, `docs/ideas/east-asia.md`;
-  playing together by voice `docs/ideas/multiplayer-voice.md`; the owner's own ideas `docs/ideas/owner-experiments.md`.
+  `objekt-files/notes/archive/docs/ideas/europe.md`, `objekt-files/notes/archive/docs/ideas/east-europe-global-south.md`, `objekt-files/notes/archive/docs/ideas/east-asia.md`;
+  playing together by voice `objekt-files/notes/archive/docs/ideas/multiplayer-voice.md`; the owner's own ideas `objekt-files/notes/archive/docs/ideas/owner-experiments.md`.
 
 ## Principles (from research)
 | Area | Rule | Source |

@@ -165,7 +165,7 @@ export async function page(match, { noAnswerMs = 120000 } = {}) {
 
 // The owner's next step, inside the headset, so he does not take it off to read the chat (his
 // practice, .claude/rules/measures.md). The input probe's panel and type as they were reviewed
-// (tools/xr-probe-input.html, docs/audit/probe-review.md), cut to its two lines, and placed as Meta
+// (tools/xr-probe-input.html, objekt-files/notes/archive/docs/audit/probe-review.md), cut to its two lines, and placed as Meta
 // places captions: at the edge of the view, not over what he looks at ("at the top or bottom of their
 // 40-degree field of view", developers.meta.com/horizon/design/accessibility), here 15 degrees above
 // the horizon, since what he is asked to look at mostly stands lower (the extinguisher, the desk, the

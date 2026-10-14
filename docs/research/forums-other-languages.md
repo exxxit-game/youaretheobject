@@ -1,6 +1,6 @@
 # WebXR / A-Frame / Quest Browser practice in non-English sources (sweep of 2026-10-11)
 
-> Kept as the research agent wrote it on 11.10.2026 for the revision (docs/audit/revision.md, shelf 5): Japanese, Chinese, Korean, Russian, Ukrainian, German, French, Spanish and Portuguese sources.
+> Kept as the research agent wrote it on 11.10.2026 for the revision (objekt-files/notes/archive/docs/audit/revision.md, shelf 5): Japanese, Chinese, Korean, Russian, Ukrainian, German, French, Spanish and Portuguese sources.
 > Each point still has to be checked against our code and A-Frame 1.8.0 before anything changes; the first pass of that is on the revision page.
 
 
