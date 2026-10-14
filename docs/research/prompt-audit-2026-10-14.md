@@ -39,6 +39,17 @@ incantations; Group 2 (brittle configuration) 3 high, 5 medium, 7 flags; Group 3
 ## Proposed diff (proposals only: process files change through his permission)
 H1, M1, M2 (three hunks), M3, M4, M5, each one hunk, as worded in the table. H2, H3 and the flags go to him.
 
+## Outcome (same day)
+- Mine, with his permission: H1, M1, M2, M3, M4, M5 rewritten as proposed.
+- His, one at a time with his answer: H2 rewritten («Утверждаю 1»); H3 rewritten («Утверждаю 2»); F1: the circles load
+  once, with CLAUDE.md, and the start hook prints them only when the import is gone (option A); F2 and F3: the
+  one-time exception and the shelves' status removed, his words kept in the archived history (option A each); F4: the
+  reference to a past state removed (option A); F5: held by a monthly scheduled task in the desktop app
+  (monthly-updates-check), his line unchanged.
+- F6 withdrawn: the archived history shows the letter was asked and answered on 11.10 ("the variant that named the
+  documents' paths", so B); my error to have flagged it without reading the archive first.
+- F7 left as is: the two research agents do different jobs; the two auditors are named by docs/tools.md for a step's end.
+
 ## Verify (Step 7)
 After any accepted hunk: npm test (the structure test reads several of these files), and for M1 one request-auditor
 run on a short span of his messages.

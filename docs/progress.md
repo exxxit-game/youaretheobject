@@ -20,15 +20,23 @@ Done:
   docs/research/docs-practice-classic.md, docs/research/docs-practice-agents.md; IFScale and Xiong re-read in their
   own text; Cherny's advice to delete CLAUDE.md, skills and hooks every six months read in YC's transcript once he
   widened the browser pane (docs/research/cherny-yc-2026.md).
-Errors of mine, found and fixed the same day: a too-wide claim in the closing comment on PR #10 (corrected there);
-the page's first draft quoted my English retelling as his words, called work in a pull request done and counted
-lines as mentions.
 - Six Reddit threads he saved read, and the article they point to: Anthropic's rules of context for Claude 5 models
   (docs/research/context-claude-5.md); added to the page as its most important part.
+- Anthropic's prompt audit run on our instruction files (docs/research/prompt-audit-2026-10-14.md): six of my own
+  places fixed on his yes; his lines one at a time, each by his answer (outcome in that file); the circles now arrive
+  once, with CLAUDE.md; a monthly scheduled task in the desktop app (monthly-updates-check) watches A-Frame, three.js,
+  Claude Code, the Quest Browser and Meta's tools and writes him a page, updating nothing; the old separate Claude
+  Code copy (npm, 2.1.268) removed on his word, the app's own copy updates itself.
+Errors of mine, found and fixed the same day: #13 merged before a remark CodeRabbit posted three minutes earlier was
+read (fixed in #15); an audit finding (the prompt's variant letter) raised without reading the archive, where it was
+settled; a too-wide claim in the closing comment on PR #10 (corrected there);
+the page's first draft quoted my English retelling as his words, called work in a pull request done and counted
+lines as mentions.
 Not done and why: PR #14 and the `reviewed` branch's removal wait for him; ten documents (state, engine, rooms, roadmap, tools, testing, baseline, building standards, VR checklist,
 methodology) are not compared yet; items 7 to 10 of the wall's plan not started.
-Next, in order: his merge of #14; his answer on testing our steering files the way Anthropic advises for Claude 5
-models (`/doctor`, then rules removed one at a time; his decisions are among them, so his call); then the page's list: the A-Frame version in one place,
+Next, in order: #15 merged once CodeRabbit's review is answered, then the main folder pulled; his merge of #14, then
+the `reviewed` branch removed on his yes; the first run of the monthly update check read with him; then the page's
+list: the A-Frame version in one place,
 full dates in new records, a status and date on each decision record; with his permission, a guard on "passes" and
 omitClaudeMd for the fact-checker and the practice-reviewer; options on the old versions of his words in the public
 history.
