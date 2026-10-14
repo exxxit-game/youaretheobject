@@ -143,3 +143,59 @@ pages are blocked to plain downloads (HTTP 412); one was read in the browser pan
   "Smart Palace" middle-school VR lab, 29 Mar 2022), and a VR relaxation therapy demo (1 Dec 2024) [all seen].
 - PICO's own AI path (TRAE IDE, PICO CLI) has no Bilibili video in these results.
 
+## 3. J-STAGE (Japanese papers) and CNKI (Chinese papers)
+
+### 3a. J-STAGE
+
+How read: J-STAGE's own search (all its journals and proceedings), 14 queries, written here in English, run in
+Japanese where marked (ja): "LLM VR development" (ja: 193 hits), "Claude Code", "coding agent VR" (ja: 0 hits),
+"generative AI Unity VR content development" (ja: 32), "ChatGPT VR app development programming" (ja: 40), "LLM VR
+scene generation" (ja: 1), "generative AI game development VR" (ja: 17), "AI agent game development automatic" (ja:
+9), "WebXR" (22), "generative AI coding VRChat" (ja: 3), "LLM Unity code automatic generation" (ja: 10); for
+psychology: "psychology experiment VR game" (ja: 37), "VR remote experiment at home head-mounted display" (ja: 1),
+"social psychology VR replication" (ja: 30), "virtual reality psychology experiment general participants online"
+(ja: 8); plus a web search with site:jstage.jst.go.jp. Article pages opened: 5.
+
+- AI building VR: no J-STAGE paper found in which an LLM or a coding agent develops a VR/XR application or game.
+  In the hits the LLM is inside the VR (a guide, an avatar, an NPC) or the paper is about code generation in general:
+  - Hiratsuka, Tanaka, Yamazaki, Sakai, "Proposal of VR tourism guidance for regional cities by AI agents using
+    large language models and databases" (title translated from Japanese), HOSPITALITY (Japan Hospitality Management
+    Society) 35, 111-119, 31 Mar 2025, doi:10.57467/jashj.35.0_111; paper [read: article page; no abstract on it].
+    https://www.jstage.jst.go.jp/article/jashj/35/0/35_111/_article/-char/ja . By its title the agent is the guide
+    inside the VR, not its builder (the PDF not read).
+  - Yasuda (Xooms) et al., "Content development with telepresence robots, XR and generative AI" (translated), JSME
+    annual meeting 2024, F113-3, doi:10.1299/jsmemecj.2024.F113-3; paper [read: abstract page]. The abstract names
+    "technologies such as XR (VR/AR/MR), image recognition, and machine learning" and a VR interface for driving
+    telepresence robots; it does not say generative AI wrote the code.
+    https://www.jstage.jst.go.jp/article/jsmemecj/2024/0/2024_F113-3/_article/-char/ja
+  - "Layout generation agent using large language models" (translated), JSAI 2024, 2F4-GS-5-03 [seen: search
+    snippet]: GPT-4V places objects one by one in a 3D virtual space to follow a user's instruction.
+    https://www.jstage.jst.go.jp/article/pjsai/JSAI2024/0/JSAI2024_2F4GS503/_article/-char/ja
+  - Journal of the Virtual Reality Society of Japan 30(2), June 2025, special issue "VR and AI", a round-table on how
+    generative and dialogue AI will change VR research [seen: search snippet].
+    https://www.jstage.jst.go.jp/article/jvrsj/30/2/30_8/_pdf
+  - Imada, Yamaguchi, Tokita, "Development of 'The Commissure', a cervical spine surgery 3D teaching material
+    learned through a web app" (translated), JSMVR 2026, published 16 Sep 2026 [read: article page; no abstract, no
+    word of AI]. https://www.jstage.jst.go.jp/article/jsmvr/2026/0/2026_21/_article/-char/ja
+- Psychology experiments in VR for the public: the nearest items, both from Kitazaki's group (Toyohashi University
+  of Technology):
+  - Ishimoto, Kato, Kitazaki, "Construction and validation of an experimental environment for body ownership in the
+    virtual reality social network service VRChat" (translated), Japanese Journal of Psychonomic Science 40(2),
+    121-134, 2022, doi:10.14947/psychono.40.21; paper [read: abstract]. "we constructed a laboratory in VRChat";
+    full-body ownership with synchronous or 1 s delayed avatar movement, 5 min of ball reaching, then ratings;
+    synchronous gave stronger ownership and agency; "the laboratory in the public VR social network enables us to
+    manipulate experimental conditions". https://www.jstage.jst.go.jp/article/psychono/40/2/40_40.21/_article/-char/ja .
+    Closeness: a classic illusion paradigm run inside a public VR world, as our rooms run in the Quest browser;
+    differs: a lab study (whether the participants were VRChat's public is not on the page), no game, no reveal, no AI.
+  - Watanabe, Ikeda, Kubota, Suganuma, Kitazaki, report of the Japanese Psychonomic Society's committee for
+    "Experiment Packages for the Mind" (satellite symposium on science communication with children), Japanese
+    Journal of Psychonomic Science 43(2), 150-160, 31 Mar 2025, doi:10.14947/psychono.43.25; report [read: abstract].
+    Since 2012 the committee builds hands-on workshops and materials that let the public experience psychological
+    phenomena; the symposium touched the metaverse and media art. https://www.jstage.jst.go.jp/article/psychono/43/2/43_43.25/_article/-char/ja .
+    Closeness: the same aim of letting people live a psychology finding, as workshops; which experiments, and
+    whether any is in VR, is not on the page.
+  - Method papers seen, not opened: "VR audiovisual experiments: accuracy and precision of stimulus presentation in
+    VR HMDs" (Japanese Journal of Psychonomic Science 41(1)); "cases of immersive HMDs in cognitive psychology
+    experiments" (Brain and Neural Networks 23(3)); "an introduction to the literature on social attitudes in VR"
+    (Cognitive Studies 26(4)). Lab methods, not public games.
+
