@@ -41,7 +41,7 @@ H1, M1, M2 (three hunks), M3, M4, M5, each one hunk, as worded in the table. H2,
 
 ## Outcome (same day)
 - Mine, with his permission: H1, M1, M2, M3, M4, M5 rewritten as proposed.
-- His, one at a time with his answer: H2 rewritten («Утверждаю 1»); H3 rewritten («Утверждаю 2»); F1: the circles load
+- His, one at a time with his answer: H2 and H3 rewritten (his approval of each); F1: the circles load
   once, with CLAUDE.md, and the start hook prints them only when the import is gone (option A); F2 and F3: the
   one-time exception and the shelves' status removed, his words kept in the archived history (option A each); F4: the
   reference to a past state removed (option A); F5: held by a monthly scheduled task in the desktop app
