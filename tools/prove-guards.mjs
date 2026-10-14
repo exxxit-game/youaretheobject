@@ -151,6 +151,8 @@ const CASES = [
 ];
 
 const restore = () => {
+  // a refused commit can leave git's lock behind; git's advice: remove a stale lock
+  fs.rmSync(path.join(dir, '.git', 'index.lock'), { force: true });
   git('reset', '-q', '--hard');
   git('clean', '-qfdx', '-e', 'node_modules');
   git('config', 'user.email', PRIVATE_EMAIL);

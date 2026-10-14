@@ -170,8 +170,7 @@ function checkPath() {
 }
 
 // --- The papers ------------------------------------------------------------------------------
-// the copy off the laptop is the Google Drive program's own sync of objekt-files; a second copy on the laptop's
-// other disk was work with no use, since the accounts hold everything off the laptop
+// the copy off the laptop is Google Drive's own sync of objekt-files
 // the Drive program stages its uploads in a hidden .tmp.driveupload folder inside the synced folder
 // (.tmp.drivedownload the other way): its working copies, not papers, so not counted
 const DRIVE_WORK = /^\.tmp\.drive/;
