@@ -177,3 +177,19 @@ given; [seen] = only a search result, a secondary report or a library note; "unv
   team" (https://dmnshd.gg/developers) [read]. Not a channel for us.
 - PICO Store: takes a PWA by URL (projects/distribution.md) [read earlier]; PICO is not sold in the US (forums-
   store-money-2.md) [read earlier].
+
+### 3a. Subreddits (Reddit cannot be opened from here: reddit.com 403, the browser pane refuses old.reddit.com,
+the Redlib mirror was down; so every rule below is [seen] and its exact page is in FOR THE OWNER)
+- Library evidence that it works for VR studies: Mottelson 2021 (most participants from r/OculusQuest, r/oculus,
+  r/sidequest, r/virtualreality) and Rivu 2021 (rules differ per group, karma and account-age gates, spam filters
+  on the same link in several places) [read, see top].
+- r/virtualreality: about 2.1M members (GummySearch listing dated June 2026) [seen]; own-project rule: not found.
+- r/OculusQuest: about 639k-666k members (GummySearch, June 2026) [seen]; wiki mirror: "Avoid excessive
+  self-promotion. Make sure your posts are relevant to Oculus Quest" [seen: a Redlib mirror via search].
+- r/VRGaming: about 184k members (June 2026) [seen]; sidebar: "zero tolerance for self promotion", use the weekly
+  "self promotion Saturday post" [seen: mirror via search].
+- r/MetaQuestVR: 62k-105k members (GummySearch; dates differ) [seen]; rules not found.
+- r/WebXR: about 3k members, "self-promotion" among its common post types (GummySearch, undated) [seen].
+- r/sidequest, r/oculus: named by Mottelson 2021 [read]; sizes and rules not found.
+- Not searched (for the owner's pick): r/SampleSize (research participation), r/playmygame, r/WebGames,
+  r/IndieGaming.
