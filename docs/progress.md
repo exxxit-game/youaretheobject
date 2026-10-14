@@ -23,10 +23,12 @@ Done:
 Errors of mine, found and fixed the same day: a too-wide claim in the closing comment on PR #10 (corrected there);
 the page's first draft quoted my English retelling as his words, called work in a pull request done and counted
 lines as mentions.
-Not done and why: PR #14 and the `reviewed` branch's removal wait for him; six Reddit threads he downloads are to be
-read; ten documents (state, engine, rooms, roadmap, tools, testing, baseline, building standards, VR checklist,
+- Six Reddit threads he saved read, and the article they point to: Anthropic's rules of context for Claude 5 models
+  (docs/research/context-claude-5.md); added to the page as its most important part.
+Not done and why: PR #14 and the `reviewed` branch's removal wait for him; ten documents (state, engine, rooms, roadmap, tools, testing, baseline, building standards, VR checklist,
 methodology) are not compared yet; items 7 to 10 of the wall's plan not started.
-Next, in order: his merge of #14; the Reddit threads; then the page's own list: the A-Frame version in one place,
+Next, in order: his merge of #14; his answer on testing our steering files the way Anthropic advises for Claude 5
+models (`/doctor`, then rules removed one at a time; his decisions are among them, so his call); then the page's list: the A-Frame version in one place,
 full dates in new records, a status and date on each decision record; with his permission, a guard on "passes" and
 omitClaudeMd for the fact-checker and the practice-reviewer; options on the old versions of his words in the public
 history.
