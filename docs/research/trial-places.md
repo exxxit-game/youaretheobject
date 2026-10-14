@@ -46,7 +46,7 @@ given; [seen] = only a search result, a secondary report or a library note; "unv
   seconds"; trusted hosts listed: *.disbridge.com, *.github.io, gist.githubusercontent.com, pastebin.com,
   *.vrcdn.cloud (creators.vrchat.com/worlds/udon/string-loading/, last updated 2026-06-17) [read]. Sending data out:
   no API on either page; with URLs fixed at upload time a world cannot report a player's result to our server.
-  So: no data collection in a VRChat trial (consistent with the board's advice "без сбора данных").
+  So: no data collection in a VRChat trial (consistent with the board's advice "without data collection").
 - Outside link: no documented way for an ordinary world to open a browser. Ask VRChat thread, 2024-02-03/04:
   "Opening links is usually quite limited, like the vket worlds have access to such a function"; workarounds
   offered: "a text field" to copy the URL and "a QR code" (https://ask.vrchat.com/t/getting-udon-in-unity-to-open-a-link-when-pressing-a-button/22702)
