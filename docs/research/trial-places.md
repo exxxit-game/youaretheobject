@@ -193,3 +193,15 @@ the Redlib mirror was down; so every rule below is [seen] and its exact page is 
 - r/sidequest, r/oculus: named by Mottelson 2021 [read]; sizes and rules not found.
 - Not searched (for the owner's pick): r/SampleSize (research participation), r/playmygame, r/WebGames,
   r/IndieGaming.
+
+### 3c. Telegram, Russian- and Ukrainian-speaking (preview pages read 2026-10-14; quotes are our translation)
+- "VR Games RUS", https://t.me/VRGamesRUS : "119 138 members, 17 791 online"; sections "Questions/answers",
+  "Games/programs", "Tech support", buying games onto a Meta account, a "Cooperation" contact [read]. Largest found;
+  a shop runs it, so a post there is likely a paid placement (unverified).
+- "Meta Quest RU", https://t.me/MetaQuestRUS : "7 245 members, 852 online"; "the main VR RU community of Meta
+  Quest"; "Questions/offers/advertising" through two named admins [read].
+- "VR games | Meta Quest | Discussion", https://t.me/vr_oculusquest : "2 556 members, 317 online"; rule: "non-VR
+  advertising is forbidden" (so VR projects are not banned in words) [read].
+- VRPirate (t.me/vrpirate) spreads pirated builds by its own name [seen]: avoid.
+- Ukrainian-language VR group on Telegram: not found (one Ukrainian search). The owner's own Telegram VR community
+  (owner-decisions: testers come from it) is the first Ukrainian/Russian-speaking place we already have.
