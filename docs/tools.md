@@ -6,7 +6,7 @@ Read the line for the task's kind first, in plan mode (CLAUDE.md, "Every session
 The book: Gregory, Game Engine Architecture, 4th ed. (2026): objekt-files/books/gregory-2026-4th-vol1.txt and vol2
 (the Russian 3rd ed. for quoting him: gregory-2021-ru-3rd.txt). VR: A-Frame 1.8.0's docs
 (objekt-files/docs-engine/aframe-1.8.0/docs), three.js r184 (what A-Frame 1.8.0 ships), Meta's Quest docs (metavr
-docs search, the hz-quest-verify-first skill), the W3C WebXR spec. The page read goes in the WHY comment.
+docs search), the W3C WebXR spec. The page read goes in the WHY comment.
 - Light, shadow, colour, gloom: Gregory 12 and 11; A-Frame light and renderer; three.js lights and colour management;
   docs/building-standards.md.
 - An object or a text in the scene: photos of the real thing first; Gregory 16.1-16.2 and 12.8; A-Frame text,
