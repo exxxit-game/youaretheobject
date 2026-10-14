@@ -39,9 +39,9 @@ export function checkGit(root) {
 // main is the live site (its ruleset): a switch on GitHub leaves no trace in the code
 export const MAIN_RULES = ['deletion', 'non_fast_forward', 'pull_request', 'required_status_checks'];
 export function checkMainRules() {
-  const rules = sh('gh', ['api', 'repos/exxxit-game/youaretheobject/rules/branches/main', '--jq', '[.[].type] | join(" ")']);
+  const rules = sh('gh', ['api', 'repos/exxxit-game/youaretheobject/rules/branches/main', '--jq', '[.[] | .type, (.parameters.required_status_checks[]?.context | "check:" + .)] | join(" ")']);
   if (rules === null) return [warning('could not read the rules of main on GitHub (no network, or gh not signed in)')];
-  const missing = MAIN_RULES.filter((r) => !rules.split(' ').includes(r));
+  const missing = [...MAIN_RULES, 'check:test'].filter((r) => !rules.split(' ').includes(r));
   return [missing.length ? broken(`main on GitHub lacks the rules ${missing.join(', ')}: restore the ruleset "main is the live site"`) : ok('main on GitHub: green pull requests only, no deletion, no rewrite')];
 }
 
