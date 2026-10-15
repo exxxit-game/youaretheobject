@@ -27,12 +27,21 @@ moved into the test (text moved where the limit does not count, row 22); the lib
 (narrowing adds code); systemMessage until the phone is checked; the deny rules as the spare lock.
 Checked: npm test green after every commit; tools/prove-guards.mjs CRLF and LF: 39 of 39 after the first cut, 37 of
 37 at e52f656.
-Not checked: the hooks act only after the merge and the main folder's pull; the start without its first line.
+- PR #23: CodeRabbit's two findings: the record rule narrowed, not dropped (ea41abd, it agreed); assets/ shown never
+  to have existed (it withdrew). The app's auto-mode classifier refused my fast-forward push to room-polish ("CI
+  Bypass"), so he merged with the button (15a7615); the main folder pulled.
+- The floor directory: 8 period photos with him and two helpers (form A: WSU Johnson Hall 1969, Pepperdine 1965,
+  Chattanooga 1970-74, Tampa banks, Portland courthouse about 1980-84; form B: a 1959 catalog, a Tampa bank 1960),
+  shown to him as one page, https://claude.ai/artifact/JjV8FUgjbXgaLJr9KR9Kbc; the research note (b5384a5).
+Not checked: the start without its first line (the next window's start shows it).
 Errors of mine: a node one-liner of mine was stopped by the guard's false rule (fixed in 1c93161); a script of mine
-failed on CRLF lines in docs/tools.md (nothing written there; redone).
+failed on CRLF lines in docs/tools.md (nothing written there; redone); the allow rule for a push to room-polish
+removed as unused (c889c07), then my push refused (whether the two are linked: not checked); the LoC link held back
+"for the end" instead of given to him at once; the 1970 Tampa board's link in the research note was wrong (marked).
 For him later: "never advised against" in his decisions (row 34); the circles' header said twice; rare setup lines
 out of what loads, by his principle of this window.
-Next: the pull request, CodeRabbit, the merge, the main folder pulled; the floor directory (features.json number 3).
+Next (his choice: a new window): the two forms of the floor directory by the stairs, south wall right of the door,
+from the photos; pictures of both to him; his pick in the headset; his accept word for feature 3.
 
 ## 2026-10-15, late evening — old problems one by one: the one list, the cleanup, four cuts
 A window opened by the evening window (its brief: one list of the old problems from the analyses already made, the
