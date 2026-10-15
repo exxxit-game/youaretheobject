@@ -3,10 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Objekt</title>
+  <title>You are the object</title>
   <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/fonts.css">
   <link rel="stylesheet" href="css/hint.css">
-  <script src="vendor/aframe-1.7.1.min.js"></script>
+  <!-- WHY: A-Frame fetches the controllers' models from cdn.aframe.io, which sees the player before any
+       consent; set before A-Frame loads, this root makes it take them from the game itself (A-Frame 1.8.0
+       docs, introduction/faq.md, "Can I use A-Frame offline or self hosted?"; the owner's word of 13.10) -->
+  <script>window.AFRAME_CDN_ROOT = './vendor/aframe-assets/';</script>
+  <script src="vendor/aframe-1.8.0.min.js"></script>
   <script type="module" src="src/main.js"></script>
 </head>
 <body>

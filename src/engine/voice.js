@@ -1,4 +1,4 @@
-import { getContext } from './audio.js';
+import { getContext, onUnlock } from './audio.js';
 
 // Experimenter voice from pre-recorded files. Quest Browser has no speech
 // synthesis at all, so recorded audio is the only voice that works in a headset.
@@ -6,6 +6,7 @@ import { getContext } from './audio.js';
 const raw = new Map();      // text -> Promise<ArrayBuffer | null>
 const decoded = new Map();  // text -> Promise<AudioBuffer | null>
 let current = null;
+let hushed = 0;   // hush() counts up: a line asked before it, still loading, never starts after it
 
 // lines: [{ text, file }]; file is resolved against baseUrl (the room module URL).
 export function loadVoice(lines, baseUrl) {
@@ -16,23 +17,42 @@ export function loadVoice(lines, baseUrl) {
   }
 }
 
-// Plays the recording for this exact text, stopping the previous one.
-// Silent when there is no recording or audio is not unlocked yet.
+// Plays the recording for this exact text, stopping the previous one. Asked for before the
+// player's first gesture, it waits for it (audio.js, onUnlock). Resolves when the line has
+// finished, at once when there is no recording, and unheard (false) on a device with no audio.
 export function speak(text) {
+  if (!raw.has(text)) return Promise.resolve(false);
+  return new Promise((resolve) => onUnlock(() => resolve(play(text))));
+}
+
+// Stops the line being spoken (the player left the room in the middle of it); its promise resolves as
+// when a line ends, and what waited on it decides whether to go on (room.js: within).
+export function hush() {
+  hushed++;
+  if (current) { try { current.stop(); } catch (e) { /* already stopped */ } current = null; }
+}
+
+function play(text) {
+  const asked = hushed;
   const ctx = getContext();
-  if (!ctx || !raw.has(text)) return;
+  if (!ctx) return Promise.resolve(false);
   if (!decoded.has(text)) {
     decoded.set(text, raw.get(text)
       .then(buf => (buf ? ctx.decodeAudioData(buf.slice(0)) : null))
       .catch(() => null));
   }
-  decoded.get(text).then((buffer) => {
-    if (!buffer) return;
+  return decoded.get(text).then((buffer) => {
+    if (!buffer || asked !== hushed) return false;
     if (current) { try { current.stop(); } catch (e) { /* already stopped */ } }
     const src = ctx.createBufferSource();
     src.buffer = buffer;
     src.connect(ctx.destination);
-    src.start();
     current = src;
+    // announced for checks that count spoken lines (tools/quest-check.mjs)
+    window.dispatchEvent(new CustomEvent('voice-line', { detail: text }));
+    return new Promise((resolve) => {
+      src.onended = () => resolve(true);
+      src.start();
+    });
   });
 }

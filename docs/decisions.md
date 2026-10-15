@@ -3,16 +3,198 @@
 Three lines each: what, why, consequence. No diary.
 
 ## No build step, A-Frame vendored
-Plain ES modules and `vendor/aframe-1.7.1.min.js`, served as static files.
+Plain ES modules and `vendor/aframe-1.8.0.min.js` (one line put back for multiview: tests/vendor.test.mjs), served as static files.
 Fewer moving parts for a non-programmer owner and for AI sessions.
 Consequence: no bundler, no npm runtime dependencies.
 
 ## Rooms talk to the engine only through the contract
 Engine never imports rooms; components communicate by DOM events
-(`look-change`) or the shared `eventLog`. Keeps rooms replaceable.
+(e.g. `taken` from the clipboard) or the shared `eventLog`. Keeps rooms replaceable.
 Consequence: no `window.*` globals between files.
 
 ## Heavy tests run in GitHub Actions, not on the laptop
 The smoke test needs Chromium; the owner's laptop must stay free.
-Locally only `npm test` (Node, under a second).
+Locally only `npm test` (Node, about 30 s; the commit hook runs its quick part in seconds).
 Consequence: the smoke result is seen on GitHub after a push.
+
+## Rooms by play space, never shrunk
+Each room carries the space its original procedure needs: seated, standing (Meta's 1 × 1 m stationary boundary), roomscale (walking within 1.8 × 1.8 m, the base design) or large W × L m.
+Why 1.8 and not Meta's 2 × 2 m minimum: on the owner's headset the browser reported 1.88 × 2.10 m, less than Meta's minimum, so a 2 × 2 m room would not fit even there.
+A room bigger than the player's boundary is offered only to players who have that space; it is never shrunk, since a shrunk procedure is a different experiment.
+Consequence: every room states the space its original needs; at the start the game is to read the player's boundary (WebXR bounded-floor, works on the owner's Quest 3) and compare (not built yet: no room needs more than the base space so far). Too small: say how much is needed and offer another room. Boundary unreadable: only seated and standing rooms, or ask the player.
+
+## Research studies are always free for the player
+A room whose data goes into a registered study is free while the study runs; paid rooms are entertainment only, and payment is recorded.
+Why: paying changes who takes part and biases the sample; all known citizen-science projects are free.
+Consequence: a study is paid for by the partner lab or a grant, never by the participant.
+
+## A player who leaves early chooses whether to learn what it was
+Leaving VR mid-room shows "go back" or "learn what it was"; a closed page asks the same at the next visit. Nothing is revealed without a click.
+Why: debriefing must be available to early leavers (BPS), but someone who left by accident may want to come back naive.
+Consequence: src/app/left-early.js; test runs (?speed=N) leave no mark.
+
+## The arrival: a lab corridor whose doors are the menu
+The player starts in a 1979 lab corridor behind the room's door: the experimenter's welcome and the consent are there (once, before the door); each door with its plaque is a room, the plaque showing its number from the corridor plan (src/app/lobby/plan.js) until the room is done. Pointing at a door opens it, the screen fades, and the player is at the table, on the chair when seated. One page and one scene, so VR is never left between corridor and room.
+Why: the owner wants an unbroken journey that begins like a real experiment and says the promise first ("take part in a real experiment and learn how YOU react"); a page change would end the VR session.
+Consequence: the room's flow starts after the corridor hands over the consent; the hook question (bias blind spot) is to be asked to a random half before the room and to the other half after it, recorded, once the paper is read in full (not built yet).
+
+## Everything the player reads or answers is on a clipboard in front of them
+A 1979 clipboard sheet is read 1 m in front of the player, a little below the eyes, facing them, and stays still there (world-fixed) until the answer; between readings it hangs on a hook in the room (the corridor: the experimenter's board), and it follows a player who is placed again or moves with the thumbsticks (entries below); answers are given with the laser (the mouse on a desktop). One thought per sheet, pages in turn; the walls stay a lab.
+Why: a wall board shared its space between text and buttons and broke (five consent paragraphs squeezed the buttons to 19 px); the original questionnaire was on paper. Proven practice, chosen over the hand-held idea: studies rated a world-fixed questionnaire answered with a pointer best (Alexandrovsky et al. CHI 2020: SUS 91 vs 79 hand-held; Küntzer et al. TVCG 2026: 92 vs 75 on the wrist; Regal et al. 2019: billboard preferred over hand-mounted); Meta: do not anchor menus to the hand (developers.meta.com/horizon/design/hands-ui-best-practices), about 1 m is comfortable to read (…/design/display), rays are comfortable from 0.8 to 3 m, targets 2.5–3° of view.
+Consequence: one engine part serves every room and works the same seated, standing, one-handed and on a desktop. Text that does not fit a sheet is an error caught by the smoke test, never shrunk; letters at least the smallest letter, 24 mm at 1 m (1.375°: see "Every paper in the game is a large-print document"); answer targets at least 2.5° high.
+
+## The opening is calm: the sign plays with the site's name, the clipboard waits on the wall
+In VR nothing happens for the first 10 s. Then the light box over door 1, one lamp per word, starts like an old fluorescent box and reads "youaretheobject.com"; the ".com" lamp fails and dies, "are" and "the" dim to leave "you object", and the sign then plays one of its endings ("The sign ends differently from visit to visit"). Only then does the voice point to the clipboard hanging on the experimenter's board; the player clicks it and it glides on an arc, out to the side and below, to the reading spot 1 m ahead; after the last answer it glides back to its hook.
+Why: people spend at least the first 10 s of a new VR place looking around (West 2015, Unity Labs); motion is comfortable when the user starts it (Android XR motion guide) and looming content makes people dodge (Meta health and safety; Ball & Tronick 1971: approach, not a miss path, alarms), so nothing pops up or flies at the face. A word goes dark alone only with its own lamp or transformer (Signs of the Times, neon and fluorescent articles); a sign losing letters to say something else is a known device (TV Tropes "Signs of Disrepair", e.g. L.A. Noire's "LIE"); ".com" did not exist in 1979 (first registration 1985). The clipboard does not stay in the hand: Meta advises against hand-anchored menus, wants at least 0.5 m for long reading and 0.8 m for laser UI, and raised arms tire (Hincapié-Ramos et al. CHI 2014; VRDoc, Lee et al. 2022: 4 of 8 tired within 20 min).
+Consequence: src/engine/lightbox.js draws the sign word by word; src/engine/glide.js moves the sheet, its path math in src/engine/ui/sheet-math.js; sheet.js gains hang, take and back; tests/glow.test.mjs and tests/sheet.test.mjs guard the timings and the path; the smoke test and the headset check take the clipboard first.
+
+## The sign ends differently from visit to visit
+The sign's play keeps one shared start and has several last beats (src/app/lobby/sign.js, SIGN_ENDINGS): the first visit gets "breaker", then "YOU", then "snap", then round again (SIGN_ROUND); the count of visits stays on the player's device. New endings join the round.
+Why: the owner wants a player who comes back to meet something new each time, as a signature of the game; each ending follows the same pattern of a strong last beat (a pause, one clear event, a still hold on the name) and the same flash limits.
+Consequence: tests/glow.test.mjs checks every ending and the round; ?sign=a|b|c forces one ending for checks.
+
+## The studio's mark hangs on the experimenter's board
+The board beside door 1 carries two Letter sheets: a flyer calling for participants ("Вы подходите", tear-off strips to door 1) and the studio's poster, EXXXIT under its mark: the official ISO 7010 E001 exit sign whose doorway opens onto black space, only the sign's green and black (src/app/logo.js, src/app/lobby/board.js).
+Why: the owner's own mark (an exit sign, a figure stepping into space) in place of blank notices; built only from the official drawing, in his colours (green and black, no "studio": the name alone, as Playdead signs).
+Consequence: tests/logo.test.mjs keeps the figure official and nothing else drawn into the mark; sources in docs/art/credits.md. The mark may change over time (the owner's wish: a detail for those who notice).
+
+## Moving in the corridor with the thumbsticks
+In VR the player moves through the corridor by teleport: a stick pushed forward shows an arc to the floor, releasing it moves them there, a click on the stick cancels; a stick to the side turns them 45° at once, a quick pull back steps them back 80 cm (src/engine/locomotion.js, tests/locomotion.test.mjs). Only the corridor's floor is a target; walls are never crossed. Off in the rooms behind the doors.
+Why: the owner found he could not walk in a corridor made for walking. Meta's locomotion guidance (developers.meta.com/horizon/design/locomotion-user-preferences and locomotion-input-maps): default to the comfort-friendly options (teleport, snap turn), snap angles of 30, 45 or 90°, a quick pull back steps back 80 cm; a stick fires past 0.8 as in Meta's Immersive Web SDK, re-arming under 0.5 is ours; snap turning cut sickness in Farmani & Teather 2020. Smooth sliding is the player's other choice (1.4 m/s at once, no acceleration, a vignette while moving: Meta, Bonato et al. 2008, Al Zayer et al. 2019), with smooth turning; until a settings page is approved it is reached with ?move=smooth and ?turn=smooth.
+Consequence: the clipboard follows a player who moved (event player-moved); recenter keeps the new place when a seated player stands up.
+
+## The studio's poster on the board is the game's "leave" button
+Pointing at the EXXXIT poster on the experimenter's board brightens it; pressing asks "Прекратить участие?" on the clipboard, in the lab's words, not a game's (it cuts in on any page and gives it back on "Продолжить"); the consent page says how to stop: take the headset off or close the page (the poster needs no pointer: anyone points at it); leaving fades out, ends VR and says how to come back (src/app/lobby/exit.js; sheet.js interrupt/resume). No exit door of its own.
+Why: the owner's idea in his words: the logo will be taken for an exit, so let pressing it be the way out; a participant may leave at any time without penalty (ethics). A separate exit door with its own sign was built first and removed: the owner had asked for the poster itself.
+Consequence: the corridor has three doors (tests/standards.test.mjs); the poster stops answering once the player is through door 1; rooms leave through the left-early flow.
+## Recording is for adults: the age is asked, not stated
+Before the recording choice the clipboard asks "Вам уже исполнилось 18 лет?"; "Нет" goes to a page of its own and the game starts without recording, with no way back to the choice in that run (src/app/consent.js).
+Why: a sentence "from 18" checks nothing, and Meta lets children from 10 use Quest; Steed et al. 2016 (IEEE TVCG) asked an 18+ item in their at-home VR study; the BPS guidance for internet research (2021) sends under-age entries to an exit page with no re-entry (docs/research/vr/06-science.md).
+Consequence: privacy.html already says recording is from 18; the game itself stays playable without recording; the smoke test answers "Да" in one run and "Нет" in the other.
+## The room stands behind its door
+The app holds the scene, the player and the corridor with every door for the whole visit (src/app/lab.js, stage.js); a room is only its inside, built in its own metres, and the corridor's plan stands it behind its door (roomPlace in src/app/lobby/plan.js). Room 101 stands where it was built, so its look and its measures hold.
+Why: a room that held the corridor drew the corridor behind its shut door, and every new room would have had to put the corridor in again; Meta's IWSDK keeps the player rig while levels are loaded and unloaded round it, Unity keeps one scene loaded while others are added to it (objekt-files/notes/archive/docs/audit/architecture-2026-10-10.md); in A-Frame a place is a group of entities, hidden whole by its container's visibility (A-Frame 1.8.0, components/visible.md). The room is put in before the scene loads, and the whole scene, the room's hidden inside too, is drawn once unseen before the first frame, and once more on the first frame in a headset, whose multiview shaders differ (src/engine/prewarm.js): A-Frame says to "draw all materials and textures up front" (introduction/best-practices.md). On the laptop the room's inside, first drawn as the door opened, took 36 ms; after, 4 ms, and no shader is built at the door (a frame is 11 ms in the headset at 90 Hz). In the owner's Quest 3 in VR (multiview): 24.6 s from the door, about 2,200 frames at 90 Hz; one frame late while the door turned in view (22 ms), four under the full black, the one shader built there under the black (the mirror's).
+Consequence: docs/rooms.md is the contract; tests/plan.test.mjs holds a room on either long wall beyond its wall; tests/structure.test.mjs keeps the scene, the player and the doors out of a room's markup.
+## What walls hide is not drawn
+While its door is shut the room behind it (class room-interior) is not drawn; it appears as the door starts to open (src/app/lobby/lobby.js). Once the player is in, the corridor (its group and the clipboard on its board) is not drawn, and its lights are turned to nothing: the room is lit by its own lamps alone, no light from nowhere. Door 1's way (frame, stops, threshold, leaf) is its own group outside the corridor's, seen from both sides. Lights are turned down, never hidden: a hidden light changes how many lights there are, and three.js then rebuilds every lit material in the middle of play.
+Why: the corridor sat at 200 draw calls a frame in the headset, Meta's limit for Quest 3 (fewer than 200; device optimization comparison), and most of them were the room behind the wall; Meta's WebXR guidance: cull what cannot be seen. Measured: 124 to 41 draw calls for one view; in room 101, with the corridor no longer drawn, its worst view on a computer's screen went from 66 calls to 40. Without the corridor's lamp, which had reached through the wall, the desk lost an eighth of its light: the room's own lamp went from 2.2 to 2.55, where the light meter reads the desk as before (0.622 against 0.626) and the corridor floor stays under a fifth of it (0.185; docs/building-standards.md, S13); while the door opens the corridor brightens 1.62 times (1.58 with the old lamp).
+Consequence: every room marks its inside (tests/structure.test.mjs); `node tools/quest-look.mjs perf` checks the budget in the headset before any new detail goes in.
+## Every door is built by one function
+src/engine/door.js builds every doorway: the 3'0" × 7'0" leaf in a hollow metal frame through the block wall, stops, threshold, kick plate on the push side, a round knob (1979: knobs, levers came to Schlage's commercial locks only in 1983 and 1989; Schlage A Series Plymouth: 2 1/8 in wide, 2 5/16 in projection, rose 2 9/16 in, Allegion cut sheet). The "soon" doors stand in openings like door 1; every door carries its sign on the leaf (see "Door signs are one real sign family").
+Why: the owner saw one door in an opening and two bolted onto the wall, plaques on the wall and on doors: things that are the same must be built the same, and one builder makes a difference impossible.
+Consequence: tests/standards.test.mjs checks every door the same depth in its wall and its knob at the strike height; tests/masonry.test.mjs every opening on the block module.
+## The corridor is built from its plan to its end
+src/app/lobby/plan.js holds the first floor to its end (plan B, docs/art/corridor-plan.svg): one corridor 14.6 × 1.8 m, the stairs in the middle of the south wall behind the arrival spot, room 101 facing them, a room every 3.2 m on both walls (9 rooms), every door's latch toward the entrance, its sign on the leaf; walls, openings, doors, plaques, rails, lights, the walking area and the tests all read it.
+Why: the corridor grew piece by piece and its parts stopped matching (doors, plaques); room numbering in university buildings runs from the entrance (Northwestern, Georgia Tech, Smithsonian guidelines), and a floor of 9 rooms is one pack: floor 1 free, floors above sold as one-time purchases in the Horizon Store app (Meta's Digital Goods API; web pages on Quest have no payments).
+Consequence: a new floor is a new plan; tests/masonry.test.mjs, standards.test.mjs and sheet.test.mjs take their doors, walls and area from the plan.
+
+## Door signs are one real sign family
+Every door sign is taken from one university standard, not drawn by us: Northern Illinois University's Campus Interior Signage Program, Type A (room numbers on main corridors) and Type E (stairwells), both 9 × 9 in, centred 60 in above the floor; on the leaf's corridor face, the push side (ADA 2010 703.4.2 allows signs on the push side of doors with closers), so each door is told apart from the next; a room's number centred and 2 in high (ADA 2010 703.2.5 maximum), the stairs' 1979 US DOT / AIGA stair symbol 4 1/2 in over the word 3/4 in. A wall sign (inside room 01) hangs 4 in from the frame (NIU). The number is the door's, from the corridor plan (101 faces the stairs); once a room is done its name and date take the number's place (the board's room steps).
+Why: the plaque's 0.2 m size and its 4 cm from the frame were our own and kept being redone; a standard answers them at once (CLAUDE.md, "Truth: we recreate"). On the wall all the doors looked alike, and a small number in a corner of the sign could not be read: the owner chose the sign on the door with the number centred and as large as the rules allow.
+Consequence: `SIGN` in src/app/brand.js holds the family and src/engine/door.js puts a sign on a leaf; tests/masonry.test.mjs checks every door sign is the 9 in sign at 60 in, tests/plaque.test.mjs every number against the plan drawing.
+
+## The extinguisher is the 1972 General WS-900, polished, mirroring the corridor
+The extinguisher is shaped after a seller's photo of a 1972 General WS-900 the owner found: polished stainless shell with a high round top and a foot ring, the grey hose down the left to a brass nozzle, the lever to the right, the gauge with a red rim, and the label laid out as on it (an oval mark, a blue band with how to operate it, small print), in Russian and without the maker's trade mark. A new engine component, src/engine/reflect-env.js, gives polished metal a picture of the room round it, taken a few times after load and then never.
+Why: the owner saw only a white label and a grey body; we recreate the real object, and polished steel with nothing to mirror reads as grey plastic. A cube map taken once costs nothing per frame afterwards.
+Consequence: the extinguisher stays out of the merge (data-dynamic), a dozen more draw calls; tests/standards.test.mjs still checks its height and that no part hangs in the air.
+
+## The game draws its text in a face of its own: Inter
+Every canvas text is drawn in Inter (Meta's system typeface; Meta asks for a sans with a high x-height in VR), shipped with the game (vendor/fonts/, OFL 1.1, latin and cyrillic files from fontsource 5.3.0) and loaded before the first room mounts. A typewriter face for the clipboard's pages (Cousine, after the Selectric's Courier) was tried and dropped: thinner strokes and a low x-height, one small size to fit the form; reading comes first, the period look does not outrank it.
+Why: each device drew its own sans, so a page that fitted in the headset (Roboto) ran off the sheet in Arial's widths and the tests failed; the owner chose Inter from a picture of three.
+Consequence: css/fonts.css declares it, src/main.js waits for it, `FONT` in src/engine/panel.js; layout is measured in the same face on every device and in the smoke test; tests/fonts.test.mjs keeps every character of the texts inside its files (a new language adds its script's file); tests/smoke.mjs fails sheet text under 24 mm.
+One exception, the lab's seal: its ring is set in Oswald, a bold sans fit for a stamp (thin serifs do not print), the owner's pick of four when the ring in Inter looked uneven to him; set as text along a line is set (SVG textPath: the face's advances and kerning, the spare length as letter spacing), vendored the same way (src/app/seal.js). A deviation from Meta's typography guidance, which asks for large counters: Oswald's are small (its O's hole 0.14 em against Inter's 0.38); the ring's letters keep the large-print size (MIN_LETTER), and how they read is checked in the headset. The ring's letters are spread over its whole arc, wider than the 5-12 % extra spacing usual for capitals (Butterick, Practical Typography, "Letterspacing"): the owner's pick of three pictures (as now; the usual spacing on a shorter arc; the usual spacing with larger letters).
+
+## Every paper in the game is a large-print document
+The clipboard's page is a real Letter page brought from the hand to the reading spot 1 m away with its angle kept (2.59 times); what is printed on it is set again in large print, never enlarged from the real page: its smallest letter is 24 mm at 1 m, 1.375° (Google's 24 dmm body text, McKenzie & Glazier 2017, docs/research/vr/03c-viewing-text.md), and that letter, never the paper, sets the size of everything printed: a seal's or a stamp's ring, labels in pictures, check boxes, table rows, a scale's anchors. A form that does not fit grows into pages; nothing shrinks, nothing is cut. A page on its hook is read from where the player stands, not from the hand: its lines for that distance get the smallest letter's angle from there (24 mm a metre; in the corridor `HOOK_READ`, 1.93 m from the arrival spot's eyes, so 47 mm).
+Why: in the headset text needs about 2.3 times the angle of text on paper held in the hand, so a real page cannot show its small print; sized from the paper, the lab's seal came out with 8 mm letters. Large-print documents solve exactly this (UKAAF G003, 2012: set again, not enlarged on a photocopier; small print raised to body size; text in pictures as large as the text round it; the document grows in pages; CNIB 2019: one large font across a form, check boxes the size of the font); Meta: keep angular, not physical, size when UI moves in depth (docs/research/vr/08-paper.md).
+Consequence: one constant for the smallest letter; the lab's seal is drawn at the radius its ring letters need (src/app/seal.js) by the signature (GOST R 7.0.97-2025, 5.24), on the form's page with the date and the signature; tests fail a printed thing whose letters are smaller; the audit's paper findings (objekt-files/notes/archive/docs/audit/paper.md) are fixed by this rule; tests/smoke.mjs measures a hook page's letters from the player's eyes.
+
+## Paper is white as measured, and nothing on it is brighter than #DADADA
+Paper, ink and the controls on paper stay inside Meta's limits for text, backgrounds and all UI: light no brighter than #DADADA, dark no darker than #1A1A1A, every channel. The paper is white offset paper as measured (FOGRA29, ISO 12647-2 paper type 4) dimmed to the light limit; the notices on the board are US Letter sheets (8.5 × 11 in), not A4.
+Why: pure white and black strain the eyes in a headset (Meta, "Color"); the cream page had no source and was brighter than the limit; a 1979 US university printed on Letter (docs/research/vr/07-corridor-1979.md, C21). The owner saw both looks side by side and chose the measured one (docs/research/vr/08-paper.md).
+Consequence: one palette in src/engine/ui/sheet-math.js (`PAPER_BG`, `INK`, `BUTTON`, `LETTER`); tests/sheet.test.mjs fails any colour in the engine's UI code outside the limits and text under 4.5:1 on its ground; tests/standards.test.mjs fails notices that are not Letter.
+
+## The consent form is signed by hand
+The consent form has blanks for the name and the signature; the player writes in them with the laser (the trigger held) or the mouse, in blue ballpoint ink smoothed by the 1€ filter (Casiez, Roussel & Vogel 2012, CHI); the button comes once both have writing; the name and the signature stay in this browser only (privacy.html says so), never sent or logged (src/engine/ui/ink.js, src/app/consent.js).
+Why: a real experiment's consent is signed; the owner signed it in the headset and judged it right ("не надо идеальная точность"). A pen held at arm's length shakes: the 1€ filter smooths slow movement and keeps fast strokes.
+Consequence: tests/smoke.mjs signs both pages and fails a form that moves on unsigned or a field the rays cannot hit; the pen lifts on any let-go, exit or slip off the field (docs/mistakes.md).
+
+## Control that does not rest on my memory
+The owner cannot see when I am wrong ("я не знаю, что мы пошли в разнос"), so mistakes are stopped by machines and by checkers that do not share my reasoning, at fixed moments, not when I remember. Machine stops: no commit while the quick tests fail (tools/hooks/pre-commit; the full npm test runs on GitHub); nothing private leaves, from any folder (tools/secrets.mjs); main, the live site, only on the owner's word (tools/hooks/pre-push), and on GitHub it can be neither deleted nor rewritten by anyone (the ruleset "main is the live site", on the owner's yes; the health check, run by hand, fails when it is off). Independent checks: every claim in the plan and the docs ("done", "checked", a number, a name, a source) can be checked against its evidence by the fact-checker agent (.claude/agents/fact-checker.md), run on demand in two runs that do not see each other; a disagreement is settled by reading the source again (CLAUDE.md, "Truth").
+Why: Chain-of-Verification (Dhuliawala et al. 2023, arXiv 2309.11495): a model's errors fall when the checks are answered apart from the draft that made them, so the checker gets the claim and the sources, never my reasoning; the premortem (Klein 2007, Harvard Business Review 85(9)) finds a plan's failures before they happen by assuming it has failed and asking why.
+Consequence: a status without its proof (a test, a commit, a file, a frame, a quote) is written "не проверено"; the plan gets a premortem before it is relied on; the health check, run by hand, fails when a hook is missing.
+
+## A thin thing lying on a surface is drawn as a decal
+A print or a plate thinner than 5 mm keeps its real thickness and lies on what it is fixed to, drawn over it by a depth offset as decals are (`decal` in src/engine/decal.js; `panel` decal for prints): a kick plate on a leaf, a hanger strap on a wall, a label on a shell, a dial on its gauge, a sign's face on its box. Where several prints lie on one surface at their own depths (the clipboard's page, its ink and its buttons on the board), the surface is pushed back instead, so the prints keep their order. Walls are not stacked: the paint band below the rail and the wall above it lie in one plane, meeting under the rail.
+Why: two faces that face the same way a few millimetres apart flicker into each other in a headset, the farther the worse (docs/vr-checklist.md); thickening a plate of a millimetre or two to 5 mm would be a size without a source, and a gap with nothing in it would float; the depth offset is how engines lay decals (three.js polygonOffset; OpenGL glPolygonOffset).
+Consequence: a thing lying on a decal is a layer up (`decal="layer: 2"`: two equal offsets cancel); tests/near-faces.mjs scans the drawn scene for faces of different looks facing one way under 5 mm apart and overlapping, excused only when their offsets order them, no eye anywhere inside the place's walls can be in front of them, or a solid stands on the spot; tests/smoke.mjs fails on any in the corridor, on the form and in the room; merge-static keeps decals apart from what they lie on.
+
+## The owner's automatic stop before the headset and the test copy
+VR in the headset (`tools/quest-look.mjs` vr, `tools/xr-probe-run.mjs`) and the test copy (`tools/publish-preview.mjs`) refuse until a practice reviewer has seen exactly the files a person meets (`tools/review-gate.mjs`).
+Why: a check built from a first idea wasted his headset run, and a rule in text did not stop the next one; a stop that does was proposed in the assistant's words («автоматический стоп, который не даст начать проверку в очках без его разбора») and the owner said «Давай.» (9.10 13:34). The record is written by Claude Code's own SubagentStart and SubagentStop hooks, never by the assistant, and counts only if the files did not change while the reviewer read them.
+Consequence: every change to the game or the probe needs a fresh practice review before the owner meets it; no flag skips it (`tests/review-gate.test.mjs`, seen red in `tools/prove-guards.mjs`).
+
+## The same picture on both end walls, one upside down
+Each end wall carries Arcimboldo's Vegetable Gardener (about 1590, public domain) as it hangs in its museum in Cremona, at its own width in a gilded frame after the museum's (the owner's pick from its photo): the right way up (a face) at one end, upside down (a bowl of vegetables) at the other, swapping ends with each visit, with no caption (src/app/lobby/scene.js).
+Why: the empty ends did not draw the player down the corridor; the owner chose this picture from real ones shown to him, for its meaning («Человек видит то, что хочет. Или то, что мы скажем ему видеть») and as a detail for whoever notices it is one picture («Без всяких подсказок»). What hung in 1970s psychology corridors is not documented online (docs/research/vr/09-end-wall-pictures.md).
+Consequence: the frames lie on the block module like every flat thing on a wall (tests/masonry.test.mjs, now for the end walls too); the print's size and frame face still need a dated source; the ends are the corridor's darkest part, which the light item answers.
+
+## A picture frame is one moulding profile run round the picture
+src/engine/moulding.js builds a frame as framers do: one cross-section, read off a photo of the real frame, cut at 45 degrees and joined round the picture, so its beads, steps and hollows run round the corners (the end walls' Arcimboldo, after its frame in Cremona).
+Why: boxes stacked in bands read as square steps (the owner: «не квадратная, как у тебя… такие волны внутрь идут»); a profile is how a moulding is made and gives any later frame the same way.
+Consequence: a frame's widths come from its photo; how high each part stands off the wall cannot be read off a frontal photo and is marked as our estimate where it is used.
+
+## Room 101's observation window has closed blinds, not a one-way mirror
+The owner took mirrors out (a VR player has no body to see) and chose blinds of three options; they follow the federal specification of the time (AA-V-00200B, 1973), 2-inch slats.
+Why: the paper's observation is kept in words in the reveal (p. 450), with no claim stronger than the paper's "could be observed".
+Consequence: no transparent surface and no observation room behind it; raising the blinds to show something is his to decide later.
+
+## Every helper stops at a turn limit the machine holds
+Each agent in .claude/agents sets maxTurns (Claude Code's subagent field: at the limit it stops and returns its output marked partial): deep-research 200, quick-research 40, fact-checker, practice-reviewer, paper-reviewer and architecture-auditor 150, request-auditor 80.
+Why: the owner's worry that a search runs for hours (11.10); the limits were prose only. The numbers sit above the longest runs measured on 11.10 (deep-research 138 turns, fact-checker 107, request-auditor 31, quick-research 16) and above deep-research's own budget of 60 searches and 80 page reads.
+Consequence: a run cut at its limit comes back partial and says so; one hung command is not a turn and is still the leftover guard's (tools/leftovers.mjs, 10 minutes). tests/health.test.mjs holds that every agent has a limit.
+
+## The headset and the test copy also wait for each room's check against its paper
+VR in the headset (`tools/quest-look.mjs` vr) and the test copy (`tools/publish-preview.mjs`) refuse until the paper reviewer checked each room in `src/rooms/` as its folder now stands (`requirePaper` in `tools/review-gate.mjs`); its report's last line lists the rooms it checked, and Claude Code's subagent hooks record the run room by room, as they record the practice review. The own look in the headset goes after a fix of only the files its report named. The headset probe shows no room and does not wait.
+Why: the owner's «Сделать сейчас» (12.10) to the divergences page, card 5: «тестовая копия и очки ждут сверки со статьёй после последней правки комнаты — как сейчас ждут проверки перед очками»; a ban, by his rule, where a mistake costs him time: an unchecked room in the headset. Room 101 had changed 7 times since 11.10 with no paper check. It replaces the recipe's words «then run it again on the fixes» (`.claude/skills/new-room/SKILL.md`, step 8).
+Consequence: a room changed since its paper check stops the headset until the paper reviewer runs on it (`tests/review-gate.test.mjs`, seen red in `tools/prove-guards.mjs`).
+
+## The search helpers stay on the session's model
+No helper in .claude/agents sets its own model, so each runs on the session's model (Opus 5.5).
+Why: the measure of 12.10 (https://claude.ai/artifact/REVKLNJQavWbus8Fk1S6ZB): the same four questions on Sonnet 5.5 and Opus 5.5, one run each; the three narrow ones came out equally right, but on the wide one each model missed a source the other found (Opus: the bHaptics vest on an audio cable; Sonnet: Web Serial in Chrome 148 on Android), and Sonnet costs half per token. He first chose Sonnet for the two search helpers, then, told of the wide question, «вернуть Opus» (12.10).
+Consequence: tests/health.test.mjs fails if any helper sets a model.
+
+## Moved from his decisions (14.10)
+My advice that stood in his decision files as his; he approved moving it («Утверждено» 14.10, the list of 36 lines in
+the chat: his choices of meaning, ethics, money and feel stayed his; widened lines kept only his words). Mine now:
+kept while it serves, changed by facts, with one line to him.
+- The permanent prompt put in points, one of three forms I drafted; the text and his pick («Вариант В») stay his.
+- The process frozen: it changes only on a health-check finding or his word, and a change replaces something («согласен» 10.10).
+- The process review: a ban only where a mistake cannot be undone or costs him time; a complaint is no reason for a new guard; his «Убирать, что не надо» stays his.
+- Each stage of the process has its list of what must be known and checked before it (my widening of his «поэтапно»).
+- His part in code is clicks, keys he creates by steps, and his yes (my sentence of 12.10).
+- The revision's shelf order: work off its shelf waits on its shelf, a new window starts at the next shelf («Да» 13.10); his «где… шаг номер один» stays his.
+- Each shelf ends with its map, the map of shelf 2 the pattern; his wish for maps to check against stays his.
+- Until the corridor is done: one window, one item start to finish, all else one line at the board's end, the board's first line counting items («Да» 10.10).
+- The loop's last two steps: check it, write its source beside it; his «Искать, воплощать» stays his.
+- New numbers and conclusions reach him only on a fact-checked page, in the chat a link and one line («Делай» 10.10).
+- How a page is checked: two runs that do not see each other, on a new page only; edits from their findings checked by me against them, no new pair; his words on checks stay his.
+- Three rules of form from Humanizer: no bold label on every item, the result first and his decisions not told back to him, no staging line before the point (my option, pasted by him 12.10).
+- Dates and indexes on every claim (the Kodishes), behind my words and checks.
+- The machine compares our tools with their latest versions.
+- A hard question reaches him at every step that changes something (two remarks of his joined into one rule; each stays his).
+- What can be learned now is learned now; money and the weakest headset's budget first («нужно закрыть это уже сейчас» 10.10).
+- The game takes nothing from other sites: the controller models ship with it, the inspector points at our own address, the GitHub check fails on any other host (my advice «возить всё с собой», pasted by him 13.10).
+- Every headset gets its controller's model through three.js's XRControllerModelFactory and the MIT WebXR Input Profiles, a step after the doors migration («А… как в three.js» 13.10); his «пустота это не выход» stays his.
+- Every change is compared with a baseline, the times and conditions written by the machine.
+- A tester's run goes into the testers' table, without gender and age, the date kept, testers told the group is small («хорошо, Б» 12.10).
+- The shown average of "you and other players" is recomputed only in batches of at least 10 new players («да» 12.10).
+- Room 101 keeps the chosen answer's place and its 40 trials as 40 marks, without times, with the next change of the database («да» 12.10).
+- The database's remaining doors closed: the chat's Supabase connector read only, an explicit deny on the tables, the IP-hash key changed daily; his «encryption later» stays his.
+- Connectors off: Notion, Jam, Adobe, Figma, the GitHub connector, Claude in Chrome, computer use, Minutes, privacy-legal; kept: Claude Docs, the browser pane, Consensus, PubMed, reference lookup, PDF Tools, Dropbox (not connected on 15.10; Google Drive is the papers' copy, .claude/rules/setup.md), one Supabase; the superpowers plugin off («да» 10.10).
+- Plugins for every project: CodeRabbit and the TypeScript language server («ставь» 9.10); main protected on GitHub («Да» 9.10).
+- main held by the simple guard against my slips, the forms chasing a deliberate bypass taken off (my choice after his no to a second account).
+- The seven things the studio lacks, each on its shelf (https://claude.ai/artifact/J1VB6ay99JRuS9Zd6niJhg).
+- An outside reviewer's remark is closed only by the reviewer (my remedy for his «ты сам себя можешь оправдать»; I keep it, docs/tandem.md).
+- The tool revision (https://claude.ai/artifact/ShHre3dd8yNXUJcCnXn65D): Blender and compression tools; the site published by GitHub Actions, only the game's files public; one live migration; IWER in the GitHub test.
+- Spending: about 10 weekly points a day, `node tools/usage.mjs` at each step's start and end, past 3 points stop and tell him (my proposal of 13.10; he never said yes to it).

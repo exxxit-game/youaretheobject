@@ -18,3 +18,30 @@
 #hint.show { opacity: 1; }
 #hint b { font-weight: 600; }
 #hint span { color: var(--muted); }
+
+/* The choice shown when a player leaves VR before the end of a room (src/app/left-early.js). */
+#left-early {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 24px 16px;
+  background: var(--bg);
+  text-align: center;
+  font: 20px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+#left-early p { max-width: 560px; margin: 0 0 6px; }
+#left-early button {
+  min-width: 260px;
+  padding: 12px 20px;
+  font: inherit;
+  color: var(--ink);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  cursor: pointer;
+}

@@ -1,0 +1,148 @@
+Virtual proximity state: DISABLED
+isAutosleepDisabled: false
+AutoSleepTime: 15000 ms
+isHotplugEnabled: true
+Force standby: false
+State: STANDBY
+Device idle state: Not idle
+MountWakeLock count: 0
+UnmountedWakeLock count: 0
+ForceUnmountedWakeLock count: 0
+Event log:
+  12:40:17.249 (20757,98s ago) - received com.oculus.vrpowermanager.automation_disable broadcast: duration=0
+  12:39:51.348 (20783,88s ago) - transition from WAITING_FOR_SLEEP_MSG to STANDBY
+  12:39:51.348 (20783,88s ago) - processing message: system sleep
+  12:39:51.348 (20783,88s ago) - received android.intent.action.SCREEN_OFF broadcast: duration=0
+  12:39:51.097 (20784,14s ago) - Calling goToSleep()
+  12:39:51.097 (20784,14s ago) - transition from HEADSET_UNMOUNTED to WAITING_FOR_SLEEP_MSG
+  12:39:51.097 (20784,14s ago) - processing message: timer expired
+  12:39:36.089 (20799,14s ago) - processing message: mount state changed
+  12:39:36.088 (20799,14s ago) - transition from HEADSET_MOUNTED to HEADSET_UNMOUNTED
+  12:39:36.088 (20799,14s ago) - onMountSensorChanged: hasMountWakeLocks: false, hasUnmountWakeLocks: false, hasForceUnmountedWakeLocks: false
+  12:39:36.088 (20799,14s ago) - onMountSensorChanged: don: false, currentState: 1
+  12:39:36.088 (20799,14s ago) - processing message: sensor changed
+  12:39:36.088 (20799,14s ago) - received wakeup event: PROX_OFF
+  12:36:07.405 (21007,83s ago) - onSystemWakeup: state: HEADSET_MOUNTED
+  12:36:07.405 (21007,83s ago) - processing message: system wakeup
+  12:36:07.404 (21007,83s ago) - received android.intent.action.SCREEN_ON broadcast: duration=0
+  12:36:07.324 (21007,91s ago) - processing message: mount state changed
+  12:36:07.321 (21007,91s ago) - processing message: leave standby
+  12:36:07.317 (21007,92s ago) - transition from WARM_UP to HEADSET_MOUNTED
+  12:36:07.317 (21007,92s ago) - onMountSensorChanged: hasMountWakeLocks: false, hasUnmountWakeLocks: false, hasForceUnmountedWakeLocks: false
+  12:36:07.317 (21007,92s ago) - onMountSensorChanged: don: true, currentState: 5
+  12:36:07.308 (21007,92s ago) - transition from STANDBY to WARM_UP
+  12:36:07.308 (21007,92s ago) - onDeviceWarmUp: state: STANDBY
+  12:36:07.308 (21007,92s ago) - processing message: sensor changed
+  12:36:07.308 (21007,92s ago) - received wakeup event: PROX_ON
+  12:34:18.150 (21117,08s ago) - transition from WAITING_FOR_SLEEP_MSG to STANDBY
+  12:34:18.150 (21117,08s ago) - processing message: system sleep
+  12:34:18.150 (21117,08s ago) - received android.intent.action.SCREEN_OFF broadcast: duration=0
+  12:34:17.911 (21117,32s ago) - Calling goToSleep()
+  12:34:17.911 (21117,32s ago) - transition from HEADSET_UNMOUNTED to WAITING_FOR_SLEEP_MSG
+  12:34:17.911 (21117,32s ago) - processing message: timer expired
+  12:34:02.905 (21132,33s ago) - processing message: mount state changed
+  12:34:02.904 (21132,33s ago) - transition from HEADSET_MOUNTED to HEADSET_UNMOUNTED
+  12:34:02.904 (21132,33s ago) - onMountSensorChanged: hasMountWakeLocks: false, hasUnmountWakeLocks: false, hasForceUnmountedWakeLocks: false
+  12:34:02.904 (21132,33s ago) - onMountSensorChanged: don: false, currentState: 1
+  12:34:02.904 (21132,33s ago) - processing message: sensor changed
+  12:34:02.904 (21132,33s ago) - received wakeup event: PROX_OFF
+  12:31:53.310 (21261,92s ago) - onMountSensorChanged: hasMountWakeLocks: false, hasUnmountWakeLocks: false, hasForceUnmountedWakeLocks: false
+  12:31:53.310 (21261,92s ago) - onMountSensorChanged: don: true, currentState: 1
+  12:31:53.310 (21261,92s ago) - processing message: sensor changed
+  12:31:53.310 (21261,92s ago) - received wakeup event: PROX_ON
+  12:31:53.310 (21261,92s ago) - onMountSensorChanged: hasMountWakeLocks: false, hasUnmountWakeLocks: false, hasForceUnmountedWakeLocks: false
+  12:31:53.310 (21261,92s ago) - onMountSensorChanged: don: true, currentState: 1
+  12:31:53.310 (21261,92s ago) - releasePowerStateLock: MOUNTED
+  12:31:53.310 (21261,92s ago) - processing message: broadcast wakelock expiring
+  12:31:53.309 (21261,92s ago) - setVirtualProxState(DISABLED)
+  12:31:53.309 (21261,92s ago) - received com.oculus.vrpowermanager.automation_disable broadcast: duration=0
+  12:31:07.433 (21307,80s ago) - setActivityMonitorState: Not idle
+  12:28:40.281 (21454,95s ago) - onDeviceIdle: state: HEADSET_MOUNTED, forceUnmountWakelock: false, mountWakelock: true
+  12:28:40.281 (21454,95s ago) - processing message: device idling
+  12:28:40.281 (21454,95s ago) - setActivityMonitorState: Idle
+  12:28:39.280 (21455,95s ago) - setActivityMonitorState: Not idle
+  12:27:17.197 (21538,04s ago) - onDeviceIdle: state: HEADSET_MOUNTED, forceUnmountWakelock: false, mountWakelock: true
+  12:27:17.197 (21538,04s ago) - processing message: device idling
+  12:27:17.197 (21538,04s ago) - setActivityMonitorState: Idle
+  12:27:15.195 (21540,04s ago) - setActivityMonitorState: Not idle
+  12:27:14.196 (21541,04s ago) - onDeviceIdle: state: HEADSET_MOUNTED, forceUnmountWakelock: false, mountWakelock: true
+  12:27:14.196 (21541,04s ago) - processing message: device idling
+  12:27:14.196 (21541,04s ago) - setActivityMonitorState: Idle
+  12:25:46.240 (21628,99s ago) - setVirtualProxState(CLOSE)
+  12:25:46.238 (21628,99s ago) - onMountSensorChanged: hasMountWakeLocks: true, hasUnmountWakeLocks: false, hasForceUnmountedWakeLocks: false
+  12:25:46.238 (21628,99s ago) - onMountSensorChanged: don: true, currentState: 1
+  12:25:46.238 (21628,99s ago) - acquirePowerStateLock: MOUNTED
+  12:25:46.238 (21628,99s ago) - received com.oculus.vrpowermanager.prox_close broadcast: duration=0
+  12:25:33.777 (21641,46s ago) - onSystemWakeup: state: HEADSET_MOUNTED
+  12:25:33.777 (21641,46s ago) - processing message: system wakeup
+  12:25:33.776 (21641,46s ago) - received android.intent.action.SCREEN_ON broadcast: duration=0
+  12:25:33.684 (21641,55s ago) - processing message: mount state changed
+  12:25:33.669 (21641,56s ago) - processing message: leave standby
+  12:25:33.667 (21641,57s ago) - transition from WARM_UP to HEADSET_MOUNTED
+  12:25:33.667 (21641,57s ago) - onMountSensorChanged: hasMountWakeLocks: false, hasUnmountWakeLocks: false, hasForceUnmountedWakeLocks: false
+  12:25:33.667 (21641,57s ago) - onMountSensorChanged: don: true, currentState: 5
+  12:25:33.653 (21641,58s ago) - transition from STANDBY to WARM_UP
+  12:25:33.653 (21641,58s ago) - onDeviceWarmUp: state: STANDBY
+  12:25:33.653 (21641,58s ago) - processing message: sensor changed
+  12:25:33.653 (21641,58s ago) - received wakeup event: PROX_ON
+  12:16:23.400 (22191,83s ago) - transition from WAITING_FOR_SLEEP_MSG to STANDBY
+  12:16:23.400 (22191,83s ago) - processing message: system sleep
+  12:16:23.397 (22191,84s ago) - received android.intent.action.SCREEN_OFF broadcast: duration=0
+  12:16:23.152 (22192,08s ago) - Calling goToSleep()
+  12:16:23.152 (22192,08s ago) - transition from HEADSET_UNMOUNTED to WAITING_FOR_SLEEP_MSG
+  12:16:23.152 (22192,08s ago) - processing message: timer expired
+  12:16:08.137 (22207,10s ago) - processing message: mount state changed
+  12:16:08.136 (22207,10s ago) - transition from HEADSET_MOUNTED to HEADSET_UNMOUNTED
+  12:16:08.136 (22207,10s ago) - onMountSensorChanged: hasMountWakeLocks: false, hasUnmountWakeLocks: false, hasForceUnmountedWakeLocks: false
+  12:16:08.136 (22207,10s ago) - onMountSensorChanged: don: false, currentState: 1
+  12:16:08.136 (22207,10s ago) - processing message: sensor changed
+  12:16:08.136 (22207,10s ago) - received wakeup event: PROX_OFF
+  12:12:42.150 (22413,08s ago) - processing message: mount state changed
+  12:12:42.150 (22413,08s ago) - transition from HEADSET_UNMOUNTED to HEADSET_MOUNTED
+  12:12:42.150 (22413,08s ago) - onMountSensorChanged: hasMountWakeLocks: false, hasUnmountWakeLocks: false, hasForceUnmountedWakeLocks: false
+  12:12:42.150 (22413,08s ago) - onMountSensorChanged: don: true, currentState: 2
+  12:12:42.150 (22413,08s ago) - processing message: sensor changed
+  12:12:42.150 (22413,08s ago) - received wakeup event: PROX_ON
+  12:12:32.446 (22422,79s ago) - processing message: mount state changed
+  12:12:32.445 (22422,79s ago) - transition from HEADSET_MOUNTED to HEADSET_UNMOUNTED
+  12:12:32.445 (22422,79s ago) - onMountSensorChanged: hasMountWakeLocks: false, hasUnmountWakeLocks: false, hasForceUnmountedWakeLocks: false
+  12:12:32.445 (22422,79s ago) - onMountSensorChanged: don: false, currentState: 1
+  12:12:32.445 (22422,79s ago) - processing message: sensor changed
+  12:12:32.445 (22422,79s ago) - received wakeup event: PROX_OFF
+  12:12:24.795 (22430,44s ago) - setActivityMonitorState: Not idle
+  12:12:24.580 (22430,65s ago) - onSystemWakeup: state: HEADSET_MOUNTED
+  12:12:24.580 (22430,65s ago) - processing message: system wakeup
+  12:12:24.580 (22430,65s ago) - received android.intent.action.SCREEN_ON broadcast: duration=0
+  12:12:24.549 (22430,68s ago) - processing message: mount state changed
+  12:12:24.537 (22430,70s ago) - processing message: leave standby
+  12:12:24.535 (22430,70s ago) - transition from WARM_UP to HEADSET_MOUNTED
+  12:12:24.535 (22430,70s ago) - onMountSensorChanged: hasMountWakeLocks: false, hasUnmountWakeLocks: false, hasForceUnmountedWakeLocks: false
+  12:12:24.535 (22430,70s ago) - onMountSensorChanged: don: true, currentState: 5
+  12:12:24.517 (22430,72s ago) - transition from STANDBY to WARM_UP
+  12:12:24.517 (22430,72s ago) - onDeviceWarmUp: state: STANDBY
+  12:12:24.517 (22430,72s ago) - processing message: sensor changed
+  12:12:24.517 (22430,72s ago) - received wakeup event: PROX_ON
+  11:36:55.141 (24560,09s ago) - Adding client <Client from android.uid.system:1000(1220)>, num clients: 8
+  11:36:34.784 (24580,45s ago) - Ignoring notifyDeviceIdle: AutosleepDisabled - false, current state - STANDBY
+  11:36:34.784 (24580,45s ago) - setActivityMonitorState: Idle
+  11:35:51.690 (24623,54s ago) - transition from WAITING_FOR_SLEEP_MSG to STANDBY
+  11:35:51.690 (24623,54s ago) - processing message: system sleep
+  11:35:51.690 (24623,54s ago) - received android.intent.action.SCREEN_OFF broadcast: duration=0
+  11:35:51.474 (24623,76s ago) - Calling goToSleep()
+  11:35:51.474 (24623,76s ago) - transition from HEADSET_UNMOUNTED to WAITING_FOR_SLEEP_MSG
+  11:35:51.474 (24623,76s ago) - processing message: timer expired
+  11:35:41.295 (24633,94s ago) - Adding client <Client from com.oculus.companion.server(2200)>, num clients: 7
+  11:35:41.243 (24633,99s ago) - Adding client <Client from com.oculus.micservice_notificationproxy(2189)>, num clients: 6
+  11:35:40.565 (24634,67s ago) - Adding client <Client from com.oculus.os.cm(2155)>, num clients: 5
+  11:35:40.019 (24635,21s ago) - onMountSensorChanged: hasMountWakeLocks: false, hasUnmountWakeLocks: false, hasForceUnmountedWakeLocks: false
+  11:35:40.019 (24635,21s ago) - onMountSensorChanged: don: false, currentState: 2
+  11:35:40.019 (24635,21s ago) - processing message: sensor changed
+  11:35:40.019 (24635,21s ago) - received wakeup event: PROX_OFF
+  11:35:40.018 (24635,21s ago) - processing message: mount state changed
+  11:35:40.018 (24635,21s ago) - received hotplug state: HMD_CONNECTED
+  11:35:40.008 (24635,22s ago) - processing message: prepare service
+  11:35:39.288 (24635,94s ago) - Adding client <Client from android.uid.system:1000(1260)>, num clients: 4
+  11:35:39.288 (24635,94s ago) - Adding client <Client from system(1561)>, num clients: 3
+  11:35:39.288 (24635,94s ago) - Adding client <Client from system(1561)>, num clients: 2
+  11:35:39.288 (24635,94s ago) - Adding client <Client from system(1561)>, num clients: 1
+  11:35:39.286 (24635,95s ago) - setInitialState: HEADSET_UNMOUNTED

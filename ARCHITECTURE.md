@@ -1,43 +1,55 @@
 # Architecture
 
 Browser VR game. Static files, GitHub Pages, no build step.
-Desktop: mouse. Headset: WebXR via A-Frame, laser pointers.
+Desktop: mouse and keyboard. Headset: WebXR via A-Frame, laser pointers and hands.
+Read [docs/state.md](docs/state.md) first: decisions, lessons, where the work is.
 
 ## Layers
 
 | Layer | Folder | Job | Details |
 |---|---|---|---|
-| Shell | `index.html`, `src/main.js` | Load A-Frame, pick room from `?room=` (default `01-ono`; no lobby yet) | — |
-| Engine | `src/engine/` | Reusable parts: text panels, sound, voice, timers, event log, gaze and reach tracking | [docs/engine.md](docs/engine.md) |
-| Rooms | `src/rooms/NN-name/` | One experiment each: scene, logic, analysis, texts | [docs/rooms.md](docs/rooms.md) |
-| Styles | `css/` | Page chrome only (hint). The 3D world has no CSS | — |
-| Content | `texts.ru.js`, `docs/sources.md` | Player text and the facts behind it | [docs/sources.md](docs/sources.md) |
-| Tests | `tests/` | Pure analysis tests + one headless run per room | [docs/testing.md](docs/testing.md) |
+| Shell | `index.html`, `src/main.js` | Load A-Frame and the game's face, pick the room behind door 1 from `?room=` (default `01-control`), start the lab with it | — |
+| App | `src/app/` | Holds the scene, the player and the corridor for the whole visit and stands the room behind its door (`lab.js`, `stage.js`); what every room shares: the arrival corridor (`lobby/`: sign, clipboard, board, doors), consent (the two-page form and the lab's seal, `seal.js`), session (first/repeat, sending, test speed), the studio's mark and the sign family (`brand.js`, the font's capital height `CAP`), shared texts, playtest and issue reports | [docs/decisions.md](docs/decisions.md) |
+| Engine | `src/engine/` | Reusable parts: text panels, the clipboard sheet, answer buttons, rating scale, voice, sound, event log, VR recenter, moving, surfaces, doors, the light box | [docs/engine.md](docs/engine.md) |
+| Rooms | `src/rooms/NN-name/` | One experiment each: protocol, scene, flow, report, reveal, texts, recordings | [docs/rooms.md](docs/rooms.md) |
+| Styles | `css/` | Page chrome (the hint, the privacy page) and the game's face, Inter (`fonts.css`, files in `vendor/fonts/`). The 3D world has no CSS | — |
+| Server | `supabase/migrations/`, `supabase/schemas/` | Anonymous results: insert-only functions; each room version's report checked against its JSON Schema | — |
+| Tests | `tests/` | Pure tests (`npm test`), structure rules, one headless run of the game in CI | [docs/testing.md](docs/testing.md) |
+| Tools | `tools/` | Voice and sound making, the headset checks, the test copy | [docs/testing.md](docs/testing.md) |
+
+Imports go one way: room → app → engine. `tests/structure.test.mjs` enforces it.
 
 ## Data flow in a room
 ```
-build scene → intro (experimenter speaks) → run (player acts, engine logs events)
-            → analyse(log) → reveal (what you did, how it worked, the original study)
+consent (clipboard) → instructions (voice + the room's screen) → experiment (engine logs events)
+        → questions → analyse(log) → reveal (what you did, the truth, the original,
+          the replication, how this room differs) → result sent only with consent
 ```
-The event log is the single source of truth for the reveal. The reveal states
-only what the log can prove.
+The event log is the single source of truth for the reveal.
 
 ## Folder map
-```
-index.html
-css/            base.css · hint.css
-src/main.js
-src/engine/     panel.js · audio.js · voice.js · timeline.js · log.js
-                swing.js · look-watch.js · reach-watch.js
-src/rooms/01-ono/
-                room.js       flow
-                scene.js      A-Frame markup
-                report.js     log → report (pure, no DOM)
-                painting.js · room-bounds.js
-                texts.ru.js   every word the player sees
-vendor/aframe-1.7.1.min.js
-tests/          report.test.mjs · voice.test.mjs · names.test.mjs · smoke.mjs
-.github/workflows/test.yml   runs both tests on every push
-docs/           engine.md · rooms.md · testing.md · sources.md · decisions.md
-docs/rooms/     01-ono.md (one spec per room)
-```
+
+Every file of these folders, and nothing else: `tests/structure.test.mjs` fails when a file is
+added, renamed or removed without this table. `voice/` and `sound/` hold recordings.
+
+| Folder | Files |
+|---|---|
+| `src/` | main.js (shell) · app/ · engine/ · rooms/ |
+| `src/app/` | lab.js (the lab: the corridor and the room behind its door) · menu.js (the game's menu on the left controller's Menu button: leave the room, stop taking part) · stage.js (the scene and the player) · brand.js (the game's colours, the sign family) · consent.js · hint.js (desktop hint) · issue-report.js · left-early.js · logo.js (the studio's mark) · playtest.js · playtest-report.js · seal.js (the lab's seal) · session.js · texts.ru.js · lobby/ |
+| `src/app/lobby/` | lobby.js (the corridor's flow) · scene.js · plan.js (the corridor to its end) · opening.js · sign.js · board.js · exit.js (the poster: leave the game) · stairs-sign.js · extinguisher.js · extinguisher-label.js · texts.ru.js · voice-lines.js · sound-list.js · voice/ · sound/ |
+| `src/engine/` | panel.js (canvas text) · menu-button.js (the left controller's Menu button, B/Y and Escape as events) · audio.js · voice.js · sfx.js · log.js · results.js · fader.js · recenter.js · recenter-math.js · locomotion.js · locomotion-math.js · vignette.js · grab-press.js · haptics.js · blob-shadow.js · room-bounds.js · away-meter.js · surface.js · tile-math.js · lightbox.js · glide.js · merge-static.js · prewarm.js (everything drawn once before it is first seen) · controller-batch.js (a controller drawn as one mesh) · laser-beam.js (the ray shown only where it can act) · shapes.js · cable.js · door.js (every doorway) · decal.js (thin things drawn over their surface) · reflect-env.js (mirrored surroundings) · moulding.js (a picture frame from its profile) · ui/ |
+| `src/engine/ui/` | choice.js (answer buttons) · scale.js · sheet.js (the clipboard) · sheet-page.js (its page: text, buttons, fields) · ink.js (writing by hand on a form) · sheet-math.js |
+| `src/rooms/` | 01-control/ (one folder per room, docs/rooms.md) |
+| `src/rooms/01-control/` | illusion of control (Alloy & Abramson 1979): protocol.js (every number, with paper pages) · original.js (results in the reveal) · schedule.js · trials.js · flow.js (one run of the room and its end through the menu; pauses that stop while it holds) · questions.js · report.js (log → measures) · reveal.js · scene.js · chair.js · room.js · texts.ru.js · voice-lines.js · sound-list.js · voice/ · sound/ |
+| `css/` | base.css · hint.css · privacy.css · fonts.css · xr-probe.css (the headset probe page) |
+| `tests/` | names.test.mjs · library.test.mjs (the papers library index matches its records and the cards) · voice.test.mjs · sound.test.mjs · recenter.test.mjs · tiles.test.mjs · sheet.test.mjs · fonts.test.mjs · standards.test.mjs · glow.test.mjs · logo.test.mjs · locomotion.test.mjs · plaque.test.mjs · plan.test.mjs (where the corridor stands a room behind its door) · masonry.test.mjs · structure.test.mjs · control-protocol.test.mjs · control-schedule.test.mjs · control-report.test.mjs · control-reveal.test.mjs · playtest.test.mjs · results.test.mjs · issues.test.mjs · secrets.test.mjs (the secret check and the git hooks) · guard.test.mjs (the guard on the assistant's commands, both ways) · review-gate.test.mjs (the owner's automatic stop before VR and the test copy, both ways) · health.test.mjs (the laptop's health check on fixtures) · usage.test.mjs (tools/usage.mjs counts a response once across its lines, on a made-up two-line transcript) · smoke.mjs (CI) · near-faces.mjs (the smoke test's scan for faces that flicker) · vendor.test.mjs (the A-Frame build is 1.8.0 with multiview's lost line put back; the controllers' models and the inspector come from the game itself, each its licensed origin) · outside.mjs (the GitHub runs fail on a request to any site but ours and our results server) · gdc-captions.test.mjs (captions to text on a made-up WebVTT sample) · measure.test.mjs (tools/measure.mjs reads the headset's temperatures, GPU metrics and frame windows as printed, on outputs saved from his Quest 3) · stand.test.mjs (tools/stand-measure.mjs reads the headset's processes, memory and proximity as printed, and each known change of the stand trial must be seen) · fixtures/ (outputs saved from his Quest 3 on 13.10: thermalservice, battery, ovrgpuprofiler's list and samples, meminfo, vrpowermanager) · smoke-vr.mjs (the same game in VR on Meta's emulated headset, IWER: the trigger on the clipboard, both eyes' draw calls) · draw-calls.mjs (the worst view against the weakest headset's draw-call budget, both eyes) · sql.mjs (what the server accepts, read from the migrations, for the tests that pin the game to it) · static-server.mjs |
+| `tools/` | stand-measure.mjs (the measure with the headset unworn on a stand: a trial that proves each tool on a change of known size, before the 45-minute run; a flow run from the corridor's start to room 101's end) · stand-judge.mjs (its readers of the headset's dumps and its judges of a run, held by tests/stand.test.mjs) · stand-flow.mjs (the player of the flow run, inside the game's page: the clipboard, the consent, door 101, the room's trials and questions, pressed as tests/smoke.mjs presses them) · gdc-captions.mjs (a GDC Vault talk's own captions as text with a mark each minute, for reading developers' talks; the text kept in objekt-files/notes) · measure.mjs (the baseline's measure in his headset as one walk: every step's time from the headset's clock and every tool's raw output in one log, the summary made from it; docs/baseline.md) · build-library.mjs (builds docs/library.md and its section files from docs/library/papers.json) · health.mjs (the laptop's health in plain words, run by hand: programs, PATH, the papers and their backup, every agent loads, the research agents' tools, the live guards) · vendor/ (the tools' own copies of outside code: js-yaml 5.4.2, MIT, which reads the agents' headers as Claude Code does) · health-setup.mjs (the setup around the code read from the laptop: git's address and hooks, main protected, the memory index, the decided plugins, the app's Claude Code version) · headset.mjs (the link to the headset every headset tool shares) · board.mjs (the owner's one-page board, docs/board.md: the start shows its top and yesterday's commits to the game and to the process) · review-gate.mjs (the owner's automatic stop: no VR in the headset and no test copy until the practice reviewer saw the files a person meets, and the paper reviewer each room as it stands; the record is written by the subagent hooks of claude-guard.mjs) · leftovers.mjs (helpers' commands left running: what runs under a Claude Code session longer than ten minutes, for the stop hook) · owner-links.mjs (whose turn a message is: his typed words, not the app's notices, go into his message log) · secrets.mjs (nothing private goes out: run before every push by hooks/pre-push, and by publish-preview.mjs on its copy) · hooks/ (pre-commit: no commit while the quick tests fail; pre-push: main only on the owner's word, then secrets.mjs) · prove-guards.mjs (plants each guard's mistake in a clone and checks it goes red) · claude-guard.mjs (Claude Code's hooks on the assistant, .claude/settings.json: no skipping the git hooks, no browser on the laptop, the live database read only, no turn ends with work unsaved or unpushed, nor while a command has run under Claude Code over ten minutes (leftovers.mjs); his decisions (imported by CLAUDE.md) and the board come back at start and after every compaction; a practice reviewer's run is recorded; every owner message logged outside the repository) · make-voice.mjs · check-voice.mjs · make-sounds.mjs · publish-preview.mjs (the test copy) · quest-look.mjs (look and measure in the headset) · quest-check.mjs (the corridor and room played in the headset) · quest-wifi.mjs · xr-probe.html · xr-probe-input.html (controllers, hands and body asked one task at a time in the headset) · xr-room.html (his real room in mixed reality: its mesh as triangles, planes, his walk, hands, body, depth and boundary recorded) · xr-room-run.mjs (runs that probe step by step from the laptop) · xr-probe-run.mjs · build-catalog.mjs · check-cards.mjs · usage.mjs (where the Claude plan's usage goes: every Claude Code transcript on the laptop counted once per response, per week of the plan's limit and per day, by model, project and session, beside Claude Desktop's own record of the plan's percentages as tokens per percent; its snap adds a reading of the usage card to objekt-files/notes/usage, outside the repository) |
+
+## Docs
+
+- [docs/state.md](docs/state.md): read first. [docs/decisions.md](docs/decisions.md): why things are as they are. [docs/mistakes.md](docs/mistakes.md): mistakes and the guards that catch them.
+- [docs/engine.md](docs/engine.md), [docs/rooms.md](docs/rooms.md) (the room contract), [docs/testing.md](docs/testing.md).
+- [docs/building-standards.md](docs/building-standards.md): the trade standards the corridor is built to. [docs/sources.md](docs/sources.md): the source of every fact shown to the player.
+- [docs/target-architecture.md](docs/target-architecture.md): where the game ends up, and what is still to build. [docs/roadmap.md](docs/roadmap.md): the long view.
+- [docs/rooms/01-control.md](docs/rooms/01-control.md): room 01 against its paper. [docs/vr-checklist.md](docs/vr-checklist.md): what every scene is checked for.
+- [docs/research/vr/README.md](docs/research/vr/README.md): VR and MR norms read from their sources (Meta, W3C, papers), the base of every scene and UI decision.

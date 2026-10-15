@@ -1,0 +1,299 @@
+# Trial places: where VR players can try one room first, then come to the game (sweep of 2026-10-14)
+
+The owner's ask (board, 14.10): a trial room where VR players already are, headsets first, then PC and phones;
+we give them something to try, we do not pull them away. Our game: a free browser WebXR game (A-Frame, Quest 3
+first), also flat in a desktop or phone browser. Marks: [read] = the primary page opened and quoted on the date
+given; [seen] = only a search result, a secondary report or a library note; "unverified" = not confirmed.
+
+## Parts (each gets an answer or "not found")
+1. Social VR platforms on Quest with a creator's own world: 1a VRChat, 1b Rec Room, 1c Meta Horizon Worlds,
+   1d Resonite, 1e others current in 2026 (Roblox on Quest, Spatial, cluster, VIVERSE, Gorilla Tag maps, Hubs).
+   For each: users on Quest (dated), build tool, outside server / data, outside link, written rules on promotion.
+2. A trial of the WebXR game itself on Quest, no port: 2a Meta Horizon Store (PWA, Early Access, free),
+   2b Quest Browser new-tab featuring, 2c SideQuest web listings, 2d WebXR directories and launchers in use
+   (heyVR, VIVERSE, itch.io, others) with traffic evidence, 2e PICO (known).
+3. Communities: 3a subreddits (rules on own projects, members), 3b Discord servers, 3c Telegram and other
+   Russian- and Ukrainian-speaking VR groups, 3d YouTubers and streamers who cover free or WebXR VR games.
+4. Per option: cost to us, what we learn (do people come over), risks; then the ranked short list.
+
+## Already in the project (read 2026-10-14)
+- Library: Rivu et al. 2021 (papers/rivu-2021.txt, arXiv 2102.11207): recruiting VR users "through Facebook,
+  Reddit and platform-specific forums (e.g., Steam, Rec Room)"; "it took some time to ensure that we complied
+  with the rules of each subgroup"; "many forums also make it mandatory for users to achieve a certain number of
+  points"; "auto-moderators flag the posts as spam" when one link goes to several subforums. [read]
+- Library: Mottelson et al. 2021 (papers/mottelson-2021.txt, doi 10.3389/frvir.2021.681482): "The vast majority of
+  participants came from Reddit; specifically ... r/OculusQuest, r/oculus, r/sidequest, and r/virtualreality". [read]
+- Library, new: Saffo et al. 2021 (CHI), experiments run in VRChat: see "1a, added" below. [read]
+- docs/research/world-asia.md 2-VR-JP: Japanese experiments run wholly inside VRChat, recruited "in VRChat
+  communities on X ..., Misskey and Discord, and also inside VRChat". [read earlier]
+- forums-store-money-2.md D2: "In Tirol" "launched on the new tab page for every Quest 2, Pro, 3, and 3S browser";
+  "tens of thousands of MAU"; how to apply was not found then (now found, 2b). [read earlier]
+
+## Findings
+
+### 1a. VRChat
+- Users: record "nearly 150,000" online at once at New Year 2025-26 (Central time zone peak 148886); "well over
+  half the user base access VRChat in headset"; no Quest share given. UploadVR, 2026-01-01 (updated 2026-01-12),
+  https://www.uploadvr.com/vrchat-nye-user-record/ [read 2026-10-14]. Quest-only monthly users: not found.
+- Build tool: Unity with the VRChat SDK and Udon (the scripting the board already names); our A-Frame code does not
+  run there [read: creators.vrchat.com/worlds/udon/ is the scripting home; no web engine is offered].
+- Outside server: "By default, a VRCUrl can only be accessed if it is on VRChat's domain allowlist"; the VRCUrl
+  constructor "can only be called at editor time" (creators.vrchat.com/worlds/udon/external-urls, last updated
+  2024-06-04) [read 2026-10-14]. String loading only downloads text: "One string can be downloaded every five
+  seconds"; trusted hosts listed: *.disbridge.com, *.github.io, gist.githubusercontent.com, pastebin.com,
+  *.vrcdn.cloud (creators.vrchat.com/worlds/udon/string-loading/, last updated 2026-06-17) [read]. Sending data out:
+  no API on either page; with URLs fixed at upload time a world cannot report a player's result to our server.
+  So: no data collection in a VRChat trial (consistent with the board's advice "without data collection").
+- Outside link: no documented way for an ordinary world to open a browser. Ask VRChat thread, 2024-02-03/04:
+  "Opening links is usually quite limited, like the vket worlds have access to such a function"; workarounds
+  offered: "a text field" to copy the URL and "a QR code" (https://ask.vrchat.com/t/getting-udon-in-unity-to-open-a-link-when-pressing-a-button/22702)
+  [read; a forum answer, not VRChat's word; no newer SDK note adding a link API was found in a search, unverified].
+- Rules (all [read] 2026-10-14):
+  - Terms of Service, effective 2026-02-09 (https://hello.vrchat.com/legal): 13.2(g)(ii) forbids "making any
+    unsolicited offer or advertisement to another User"; 12: "You may not use any part of the Platform for any
+    commercial uses ... without entering into a separate written agreement with VRChat"; 8.10: identifying data may
+    be collected only "with the User's consent, outside of the Platform".
+  - Creator Guidelines, last updated 2026-10-06 (https://hello.vrchat.com/creator-guidelines): "You are responsible
+    for your own content and any content you link to", naming "world portals, URLs"; "We do not permit the
+    promotion, advertising, integration, or solicitation of unauthorized products or services" stands in the NFT,
+    crypto and blockchain section.
+  - Community Guidelines, last updated 2025-09-24 (https://hello.vrchat.com/community-guidelines): advertising bans
+    name illegal products and "commercial gambling services"; nothing on self-promotion of a free game.
+  - Reading: a free world that tells its own story and names its source game is not banned in words; pushing
+    strangers ("unsolicited") is; a paid game later may count as "commercial uses" needing VRChat's written
+    agreement. Unverified: how VRChat moderators treat a "made by / play the full game at" poster; ask VRChat
+    support before building.
+- Cost: a new Unity + Udon build of one room (procedure, texts, voice reused; code new). Learn: visits and
+  favourites on the world page (VRChat shows them; not read here, unverified), plus arrivals on our site from a
+  QR / short URL unique to the world. Risk: no data, no link button, the rules above, Quest's world size limits
+  (not read).
+
+### 1b. Rec Room: closed
+- "closing its doors on June 1, 2026"; "we never quite figured out how to make Rec Room a sustainably profitable
+  business"; "grew to 150 million users over the last decade". UploadVR, 2026-03-31,
+  https://uploadvr.com/rec-room-to-shut-down-in-june [read 2026-10-14]. Not an option.
+
+### 1c. Meta Horizon Worlds: VR kept only for existing worlds (2026-03-19)
+- Bosworth: Meta will "keep Horizon Worlds working in VR for existing games"; "We're not bringing new games"; the
+  VR app stays on Quest's store "for the foreseeable future", worlds not recommended by the OS or storefront; the
+  new Horizon Engine (Horizon Studio) is for flatscreen, web and phones. UploadVR, 2026-03-19,
+  https://www.uploadvr.com/meta-will-keep-horizon-worlds-vr-support-for-existing-games/ [read 2026-10-14].
+- Build tool: the Desktop Editor (Windows, legacy Unity runtime, TypeScript scripting) [seen: Road to VR and Meta's
+  GDC 2025 blog in search results; not opened]. Outside server, outside link, promotion rules: not read (dropped
+  as an option once VR became existing-worlds-only). Users on Quest in 2026: not found.
+- Verdict: a new VR trial world here has no future on the headset; skip.
+
+### 1d. Resonite: PC VR only
+- Steam page: "VR Support: SteamVR, Oculus SDK", "OS: Windows 10", "Free To Play"; no standalone Quest client
+  (https://store.steampowered.com/app/2519830/Resonite/) [read 2026-10-14]; Quest owners reach it only through
+  a PC (Link / Steam Link) [seen: wiki.resonite.com via search; the wiki page did not render].
+- Users: about 150-250 concurrent on Steam in 2026, June 2026 average 170-206 [seen: tracker.gg, steambase.io,
+  live-player-count.com in search; steambase returned HTTP 500]. ProtoFlux has HTTP GET and WebSocket nodes, so a
+  world could talk to our server [seen: wiki.resonite.com ProtoFlux:GETString, WebSocket pages via search].
+- Verdict: tiny audience, not on standalone Quest; skip.
+
+### 1e-i. Roblox on Quest: links off the platform forbidden
+- Community Standards (https://about.roblox.com/community-standards, read 2026-10-14 [read]): URLs may be shown
+  only "through the Social Links feature" on game, group or user pages, for users who pass the age check and are at
+  least 16; "Any other efforts to direct users off of Roblox to an external website or service are prohibited."
+  Content with "calls to action for off-platform products or services" counts as Advertising and must follow the
+  Advertising Standards; from 2026-05-04 ad integrations must be registered in advance.
+- Users on Quest: Roblox's help page "Meta Quest FAQ" (over 50,000 VR experiences per a search summary) returned
+  HTTP 403; no 2025-26 Quest number found [seen]. Build tool: Roblox Studio, Luau (common knowledge, not read here).
+- Verdict: the trial room could not point to our game except through the game page's Social Links; the age mix of its
+  Quest players was not read (our recording is 18+; unverified). Skip.
+
+### 1e-ii. VIVERSE (HTC): our A-Frame build as it is, on the web, Quest browser included
+- Engines: VIVERSE "supports most ThreeJS projects, as well as the many tools and frameworks that have been built on
+  top of the library, such as React-Three-Fibre (R3F)nd AFRAME" [sic]; publishing by ZIP upload in VIVERSE Studio
+  or the VIVERSE CLI (docs.viverse.com, text copy https://docs.viverse.com/llms-full.txt, read 2026-10-14 [read]).
+  News post 2025-06-12 lists A-Frame among supported engines
+  (https://news.viverse.com/post/viverse-webxr-creator-studio-engine-support) [read].
+- Outside server: "developers may also provision and connect with their own servers/analytics on VIVERSE. This
+  process does require manual approval by the VIVERSE team, but we are able to quickly approve these requests" [read,
+  llms-full.txt section "Bringing Your Own Game Servers & Analytics"]. So our Supabase calls would need that approval.
+- Review: "Moderation usually takes less than 48 hours"; content is "iframed by default", WebXR needs the
+  `xr-spatial-tracking` permission requested at "Submit for Review" [read]. Uploads stay at preview URLs until
+  reviewed.
+- What we learn: Studio shows "the total number of views" and "views over 30 seconds" per world [read]. Money:
+  "Viewership Compensation ... Up to $0.011 USD monthly per player" for Partner Program members [read].
+- Users: no VIVERSE audience figure in its docs; it says only "Millions of users play video games in the browser
+  each month" (general web, not VIVERSE) [read]. Not found: a dated VIVERSE MAU.
+- Rules on pointing to our own site from a VIVERSE world: not found in the docs (unverified; the terms of use at
+  https://www.viverse.com/terms-of-use were not opened).
+- Cost: the same build, a second copy hosted by HTC (a fork of our deploy, its own review). Risk: small or unknown
+  audience; our data then runs through HTC's iframe and needs their approval.
+
+### 1e-iii. Others (seen only, not opened)
+- cluster (Japan): a Quest app since 2021 (App Lab); Cluster Script has `callExternal`, a beta call to an outside
+  server, at first limited to 1 kB and 5 calls a minute per item [seen: zenn.dev and moguravr.com via a Japanese
+  search; 2020-2023 articles; 2026 state unverified]. Unity-based; audience mostly Japanese (unverified).
+- Hubs (Mozilla's, now community-run), Spatial, Gorilla Tag custom maps: not researched within the limit.
+
+### 2b. Quest Browser new-tab featuring: the way in is now found
+- Meta "Browser new tab page", last_updated 2026-07-22,
+  https://developers.meta.com/horizon/documentation/web/browser-new-tab/ [read 2026-10-14]: submit through "the
+  public WebXR submission form" at https://fb.me/ntp; steps: initial quality bar, then QA, content and technical
+  reviews, developer iteration, curation or rejection (resubmission allowed); an accepted title is "promoted to the
+  top of the new tab page shelf for an initial four-week period", then ranked against other WebXR titles by monthly
+  user traffic. Criteria: the URL links to one experience, not a landing page or collection; no plain tech demo;
+  hand-tracked titles need a discoverable exit; general Quest VRC requirements apply. "Submission does not
+  guarantee" featuring. Age 13+ wording appeared only in a search summary [seen].
+- Evidence it brings players: "In Tirol" got "tens of thousands of MAU from more than 140 countries" "with
+  little-to-no marketing" after its new-tab launch (Meta blog by J. C. Kane, 2025-08-27; forums-store-money-2.md D2
+  [read earlier]). One title; not a promise.
+- Cost: none beyond our live link (and a VRC-level polish). Learn: our own arrivals, with a `?from=ntp` tag on the
+  submitted URL (our site; the tag is our idea, not Meta's). Risk: review time unknown; rotation after four weeks.
+
+### 2a. Meta Horizon Store: a free PWA listing, Early Access possible (already researched)
+- Packaging and the Store: docs/research/revision-1-store.md and projects/distribution.md [read earlier]. Early
+  Access is a developer toggle: "You can enable Early Access during app submission"; "Disabling Early Access is an
+  irreversible action" (Meta, last_updated 2025-12-17, https://developers.meta.com/horizon/resources/early-access/;
+  quoted in forums-store-money-2.md) [read earlier]. Elysian, a free WebXR PWA, has been on the Store since
+  2025-06-26 [read earlier]. Cost: the signed TWA build (Bubblewrap), the Store's review; same web code.
+  Learn: Store installs plus our own arrivals. Risk: review effort now; Early Access cannot be undone.
+
+### 2c. SideQuest's WebXR list: existed, current state unverified
+- UploadVR (undated in the page text): SideQuest made "a beta version of a web page" listing web VR, at
+  http://sdq.st/webxr [seen via search; not opened]. On 2026-10-14 sdq.st/webxr redirected to the SideQuest home
+  page behind a cookie banner offering only "Customize" or "Accept All" (not accepted, so not read) [read: the
+  redirect]. SideQuest audience: "more than two million monthly active users (as of May 2022)" (projects/
+  distribution.md) [read earlier, stale]. Whether a WebXR URL can be listed today: unverified (FOR THE OWNER).
+
+### 2d. WebXR directories and launchers
+- heyVR (heyvr.io): free sign-up, build uploaded to heyVR, "Submit for Review", "we'll inform you of any issues";
+  a Google Analytics tag allowed; a dashboard of "views, interactions, and user feedback", "Not all of these
+  features are available as of yet" (https://docs.heyvr.io/developers/publish-your-game, read in the browser pane
+  2026-10-14 [read]). Traffic: 30.8K visits a month, top country United States 34.23%, Russia 6.48% (Similarweb,
+  page dated September 2026, https://www.similarweb.com/website/heyvr.io/) [read; a traffic estimate]. Cost: a
+  copy of the build hosted by heyVR; whether our own server calls are allowed: not found.
+- itch.io: 111 results under the WebXR tag on 2026-10-14 (https://itch.io/games/tag-webxr) [read]; an HTML5 page
+  can embed or link our build (itch.io's own rules not read). Traffic for the tag: not found.
+- VIVERSE: see 1e-ii (the only directory found that names A-Frame and allows our own server on approval).
+- dmnshd.gg (founded 2026): "Every game on dmnshd.gg is designed, developed, and published in-house by the dmnshd
+  team" (https://dmnshd.gg/developers) [read]. Not a channel for us.
+- PICO Store: takes a PWA by URL (projects/distribution.md) [read earlier]; PICO is not sold in the US (forums-
+  store-money-2.md) [read earlier].
+
+### 3a. Subreddits (Reddit cannot be opened from here: reddit.com 403, the browser pane refuses old.reddit.com,
+the Redlib mirror was down; so every rule below is [seen] and its exact page is in FOR THE OWNER)
+- Library evidence that it works for VR studies: Mottelson 2021 (most participants from r/OculusQuest, r/oculus,
+  r/sidequest, r/virtualreality) and Rivu 2021 (rules differ per group, karma and account-age gates, spam filters
+  on the same link in several places) [read, see top].
+- r/virtualreality: about 2.1M members (GummySearch listing dated June 2026) [seen]; own-project rule: not found.
+- r/OculusQuest: about 639k-666k members (GummySearch, June 2026) [seen]; wiki mirror: "Avoid excessive
+  self-promotion. Make sure your posts are relevant to Oculus Quest" [seen: a Redlib mirror via search].
+- r/VRGaming: about 184k members (June 2026) [seen]; sidebar: "zero tolerance for self promotion", use the weekly
+  "self promotion Saturday post" [seen: mirror via search].
+- r/MetaQuestVR: 62k-105k members (GummySearch; dates differ) [seen]; rules not found.
+- r/WebXR: about 3k members, "self-promotion" among its common post types (GummySearch, undated) [seen].
+- r/sidequest, r/oculus: named by Mottelson 2021 [read]; sizes and rules not found.
+- Not searched (for the owner's pick): r/SampleSize (research participation), r/playmygame, r/WebGames,
+  r/IndieGaming.
+
+### 3c. Telegram, Russian- and Ukrainian-speaking (preview pages read 2026-10-14; quotes are our translation)
+- "VR Games RUS", https://t.me/VRGamesRUS : "119 138 members, 17 791 online"; sections "Questions/answers",
+  "Games/programs", "Tech support", buying games onto a Meta account, a "Cooperation" contact [read]. Largest found;
+  a shop runs it, so a post there is likely a paid placement (unverified).
+- "Meta Quest RU", https://t.me/MetaQuestRUS : "7 245 members, 852 online"; "the main VR RU community of Meta
+  Quest"; "Questions/offers/advertising" through two named admins [read].
+- "VR games | Meta Quest | Discussion", https://t.me/vr_oculusquest : "2 556 members, 317 online"; rule: "non-VR
+  advertising is forbidden" (so VR projects are not banned in words) [read].
+- VRPirate (t.me/vrpirate) spreads pirated builds by its own name [seen]: avoid.
+- Ukrainian-language VR group on Telegram: not found (one Ukrainian search). The owner's own Telegram VR community
+  (owner-decisions: testers come from it) is the first Ukrainian/Russian-speaking place we already have.
+
+### 3b. Discord (invites need a login: not opened; links listed for the owner)
+- WebXR Discord, https://discord.gg/jJxvuW97c4 , and Supermedium (A-Frame) Discord, https://discord.gg/NPgArtG3Qz ,
+  both listed on https://aframe.io/community/ [read 2026-10-14]; Meta's Browser team is said to watch the WebXR
+  Discord's #browser channel (search summary of Meta's new-tab page) [seen]. Developers more than players: the
+  place to ask about the new-tab review, not to find players.
+- VIVERSE creators' Discord, https://discord.gg/viversecreators (named in VIVERSE docs) [read].
+- Player Discords with a self-promotion channel (Quest, VRChat, WebXR players): not found within the limit.
+
+### 3d. YouTube (YouTube's own search results, fetched 2026-10-14 [read]; views as shown that day; titles may be
+YouTube's automatic translation)
+- WebXR coverage is old and small: Cas and Chary XR "You Should Try Free WebXR Games..." 64,367 views, 6 years
+  ago; Gamertag VR "100+ FREE Web Based Games/Experiences on Oculus Quest" 31,242 views, 7 years ago; Tetiana
+  Discovers "Best FREE VR Games You Don't Need To Install! WebXR on Quest" 12,290 views, 2 years ago; paralore
+  "I Found The Ultimate Free VR Website... (HeyVR.io)" 302 views, 2 months ago.
+- Free Quest game lists are big and current: Diamond VR "Ranking the TOP FREE Quest 3s Games 2026" 206,471 views,
+  2 months ago; VRelity "30 FREE Meta Quest 3 & Quest 3S Games..." 123,707 views, 7 months ago, and "50 FREE
+  Quest 3 Games..." 20,990 views, 3 weeks ago; VR Lad "10 most popular FREE Meta Quest 3 Games!" 2,212,409 views,
+  1 year ago, "5 NEW Free VR Games on Meta Quest 3 & 3S!" 12,537 views, 1 month ago; JCVR "The top 15 best FREE
+  vr games in 2026" 21,444 views; GoransGaming "Top 10 Free VR Games You Can Play RIGHT NOW (2026)" 32,335 views,
+  2 weeks ago; Retro Pocket monthly "NEW VR Games in October 2026" 25,285 views, 4 days ago.
+- Russian-language: Portal News (Quest and Pico lists, 125,848 and 79,496 views), ViarTim (25,698), VRMUSE
+  (22,643), SokolQuest (151,196, 11 months ago); several top results promote piracy loaders (QLoader): avoid.
+  Ukrainian-language: "Pro VR ukrainskoiu" (832 views, 2 years ago) the only one found.
+- No channel found that covers psychology-experiment VR games (query "vr psychology experiment game": lab demos
+  and talks only). How each channel takes submissions: not read (their About pages need a click-through).
+
+### 1a, added: researchers who ran experiments in VRChat (new in the library)
+- Saffo, Di Bartolomeo, Yildirim, Dunne, CHI 2021, "Remote and Collaborative Virtual Reality Experiments via Social
+  VR Platforms" (doi 10.1145/3411764.3445426, printed in the paper; preprint https://osf.io/3crhg/), saved as
+  objekt-files/papers/saffo-2021.pdf and .txt [read 2026-10-14]: the SDK "currently does not allow any data to be
+  sent or received outside of the VRChat client"; results were printed on a wall log, photographed and run through
+  OCR; recruited "through two channels: the VRChat Reddit page and the VRChat official forum", after checking that
+  the "post would not break any of the forum rules"; "In less than 24 hours we reached our recruitment goal of 23
+  participants". (2021: text download was added later, see 1a; sending data out still has no API.)
+- VRChat on Quest: "Post processing systems are disabled completely on Android and Quest" (creators.vrchat.com
+  quest-content-limitations, last updated 2025-10-08) [read]; a world size cap was not on that page.
+
+### PC and phones (the owner's second step; a first look only)
+- Our build already opens flat in desktop and phone browsers, so the same trial link serves them.
+- Poki (big web-game portal): "Remove splash screens and outgoing links"; "Poki blocks all external requests by
+  default" (https://developers.poki.com/guide/requirements-quality, no date shown) [read 2026-10-14]: a Poki copy
+  could neither send our data nor link to us except through `PokiSDK.openExternalLink`.
+- CrazyGames: "No external ads", "No external login options"; no rule on outgoing links on the page
+  (https://docs.crazygames.com/requirements/intro/, no date) [read]. VR on either portal: not mentioned.
+- itch.io: see 2d (an HTML5 page can carry our link; its rules not read).
+
+## 4. Per option: cost, what we learn, risk
+How "do people come over" is measured everywhere (our proposal, no source): each place gets its own link tag
+(`?from=ntp`, `?from=vrchat`, ...) and our server counts arrivals per tag as an anonymous number, like the other
+anonymous numbers we keep; a VRChat world shows the tagged short link as text and a QR code.
+
+| Place | Cost to us | What we learn | Main risk |
+|---|---|---|---|
+| Quest Browser new tab (2b) | our live link; a Meta review | arrivals by tag; Meta ranks by monthly traffic | rejection; rotation after 4 weeks |
+| Horizon Store free PWA (2a) | TWA build, Store review | installs + arrivals | Early Access irreversible |
+| Telegram groups (3c) | a post; maybe a paid slot | arrivals by tag | shop-run groups; piracy groups |
+| Reddit (3a) | a post by the owner | arrivals by tag, comments | karma/age gates, spam filter, rules unread |
+| YouTube free-game lists (3d) | a message to a creator | arrivals by tag | no answer; channel rules unread |
+| VRChat world (1a) | new Unity + Udon build of one room | world visits (unverified) + tag | no data out, no link, ToS 12 and 13.2(g)(ii) |
+| VIVERSE (1e-ii) | same build, a second host | views, views over 30 s | unknown audience; server calls need approval |
+| heyVR, itch.io (2d) | same build, an upload | heyVR views; arrivals | small (heyVR 30.8K visits a month) |
+| Rec Room, Horizon Worlds VR, Roblox, Resonite, Poki | - | - | closed / frozen / links banned / PC-only / no links |
+
+## Ranked short list (headsets first)
+1. Quest Browser new-tab submission (https://fb.me/ntp): Meta's own shelf for WebXR in every Quest browser, no
+   port, our link as it is; In Tirol got tens of thousands of monthly users from it. When the first room is whole.
+2. Horizon Store free PWA: the same code installed from the Store; we need this listing anyway for paid floors.
+3. The owner's Telegram VR community, then "VR games | Meta Quest | Discussion" (non-VR ads banned, VR not) and
+   "Meta Quest RU" (ads through its admins): free, now, Russian-speaking players with Quests.
+4. Reddit r/OculusQuest, r/virtualreality, r/WebXR, r/VRGaming's Saturday thread: the library shows VR study
+   recruiting works there (Mottelson 2021; Saffo 2021, 23 people in under 24 hours via the VRChat subreddit and
+   forum); rules must be read by the owner first.
+5. Creators of free Quest game lists (VR Lad, VRelity, Diamond VR, GoransGaming; in Russian Portal News,
+   SokolQuest): their lists draw 20K to 2.2M views; WebXR-only channels are small and old.
+6. VRChat trial world: the biggest live headset crowd (about 150K at once), and experiments have run there, but it
+   costs a new Unity build, sends no data, cannot open our link, and its Terms need a careful reading or VRChat
+   support's answer first. After the first interesting room, as the board says.
+7. VIVERSE: the same A-Frame build with our server on approval, but no audience number found.
+8. heyVR and itch.io: cheap copies, small traffic.
+
+## Unverified / not done
+- VRChat: a link-opening API for ordinary worlds (none found); world page visit counts; how moderators treat a
+  "full game at" poster; Quest-only users. Horizon Worlds rules (dropped). VIVERSE terms and audience. heyVR and
+  itch.io rules on outside links and our server calls. SideQuest's current WebXR listing. Every subreddit's rules
+  and current sizes. Player Discords. Spatial, Hubs, Gorilla Tag maps, cluster in 2026. YouTubers' submission
+  rules. A Ukrainian-language VR group.
+
+## FOR THE OWNER (pages only a person can open; what to find there)
+- https://www.reddit.com/r/OculusQuest/about/rules , https://www.reddit.com/r/virtualreality/about/rules ,
+  https://www.reddit.com/r/VRGaming/about/rules , https://www.reddit.com/r/WebXR/about/rules ,
+  https://www.reddit.com/r/vrchat/about/rules : the rule on posting your own free game, and the member count.
+- https://discord.gg/jJxvuW97c4 (WebXR Discord): the #browser channel, how long Meta's new-tab review takes.
+- https://sdq.st/webxr (cookie banner, only "Accept All"): whether SideQuest still lists WebXR links, and how.
+- https://fb.me/ntp : Meta's new-tab submission form (what it asks), when the first room is whole.

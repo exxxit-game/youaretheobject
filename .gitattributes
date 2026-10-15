@@ -1,0 +1,6 @@
+# git runs the hooks with sh: their lines must end in LF on every checkout
+tools/hooks/* text eol=lf
+# vendored files are kept byte for byte as published (tests/vendor.test.mjs checks the inspector's sha256);
+# -text stops core.autocrlf turning their LF into CRLF on a Windows checkout (git-scm.com/docs/gitattributes, "text")
+vendor/** -text
+tools/vendor/** -text

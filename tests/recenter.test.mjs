@@ -33,3 +33,15 @@ assert.equal(seatedLift(1.36), 0);
 assert.ok(Math.abs(seatedLift(1.15) - 0.45) < 1e-9);
 assert.ok(Math.abs(1.0 + seatedLift(1.0) - 1.6) < 1e-9);
 console.log('seated tests: ok');
+
+// The player is placed on the frame after the first one whose head pose is tracked (WebXR
+// getViewerPose, not emulated), never after a guessed delay: a slow first frame read the head
+// before it existed and placed the player off the spot (objekt-files/notes/archive/docs/audit/flow.md F5).
+import { placementStep } from '../src/engine/recenter-math.js';
+const real = { emulatedPosition: false }, guessed = { emulatedPosition: true };
+assert.deepEqual(placementStep('waiting', null), { state: 'waiting', place: false }, 'no pose yet: wait');
+assert.deepEqual(placementStep('waiting', guessed), { state: 'waiting', place: false }, 'an emulated pose is no head yet: wait');
+assert.deepEqual(placementStep('waiting', real), { state: 'seen', place: false }, 'the first tracked pose: place on the next frame');
+assert.deepEqual(placementStep('seen', real), { state: 'idle', place: true }, 'the frame after: place');
+assert.deepEqual(placementStep('idle', real), { state: 'idle', place: false }, 'nothing asked: nothing moves');
+console.log('placement tests: ok (placed by the first tracked pose, not a timer)');

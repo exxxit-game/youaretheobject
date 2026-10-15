@@ -1,0 +1,30 @@
+#!/bin/sh
+# A commit is checked in seconds, so saving often (the power is cut daily) costs nothing: nothing
+# private is staged (tools/secrets.mjs --staged), every staged script parses, and the quick tests
+# of npm test pass. The slow ones (SLOW: each takes over about 2 s) and the smoke test run in the
+# whole npm test before "done" and on GitHub. Set once per clone: git config core.hooksPath tools/hooks
+SLOW='structure review-gate'
+# not a check of what is committed: the library test reads the owner's papers folder, and papers a search
+# saved there stopped commits of the game; it runs in npm test
+NOT_COMMIT='library'
+stop() { echo "STOP  the commit check fails: $1; nothing was committed"; exit 1; }
+# read before git's own variables go: for "commit -a" GIT_INDEX_FILE names what is being committed
+staged=$(git diff --cached --name-only --diff-filter=ACMR -- '*.js' '*.mjs')
+node tools/secrets.mjs --staged > /dev/null 2>&1 || stop "something private is staged or git signs with another address (node tools/secrets.mjs --staged)"
+git show :docs/features.json 2>/dev/null | node tools/claude-guard.mjs accepted || stop "features.json: a pass, a drop or a parse error with no yes of his in 3 hours"
+# git sets GIT_DIR and GIT_INDEX_FILE for a hook: unset, no test's git can reach into this repository
+unset GIT_DIR GIT_INDEX_FILE GIT_WORK_TREE GIT_PREFIX GIT_EDITOR
+while IFS= read -r f; do
+  [ -z "$f" ] || node --check "$f" > /dev/null 2>&1 || stop "$f does not parse (node --check $f)"
+done <<EOF
+$staged
+EOF
+# the quick tests, all at once: the test files npm test names, less the slow ones
+pids=''
+for t in $(grep -o 'node tests/[a-z0-9.-]*\.test\.mjs' package.json | cut -c6-); do
+  case " $SLOW $NOT_COMMIT " in *" $(basename "$t" .test.mjs) "*) continue ;; esac
+  node "$t" > /dev/null 2>&1 &
+  pids="$pids $!=$t"
+done
+for p in $pids; do wait "${p%%=*}" || stop "${p#*=} fails (node ${p#*=})"; done
+exit 0

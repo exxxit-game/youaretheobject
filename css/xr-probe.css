@@ -1,0 +1,4 @@
+/* The headset capability probe page (tools/xr-probe.html): large type and buttons, read in a headset. */
+body { font: 22px/1.4 system-ui, sans-serif; background: #111; color: #eee; margin: 0; padding: 24px; }
+button { font: inherit; padding: 18px 28px; margin: 0 16px 16px 0; border-radius: 10px; border: 0; background: #f0c96a; color: #111; }
+pre { white-space: pre-wrap; background: #000; padding: 16px; border-radius: 8px; font-size: 18px; }

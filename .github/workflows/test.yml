@@ -1,18 +1,45 @@
 name: test
 
 on:
+  # on each push to room-polish and main, and on each pull request into either, so a window's work is
+  # tested before it is merged; main's ruleset requires this run, and a run skipped by a branch filter
+  # stays pending and blocks the merge (GitHub, "Troubleshooting required status checks")
   push:
+    branches: [room-polish, main]
   pull_request:
+    branches: [room-polish, main]
+
+# the tests only read the code: the token cannot write, whatever the repository's default
+permissions:
+  contents: read
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # the guard prover clones the repository
+          persist-credentials: false   # it clones the local checkout, so no step needs the token
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm install
+      - run: npm ci
       - run: npx playwright install --with-deps chromium
       - run: npm test
+      # the guard prover runs only when a guard or its test changed in this push: run on every push it
+      # turned the tests red 23 times in a row through its own planting and found one blind guard
+      # (the process review of 11.10, the owner's yes); a new branch or a lost "before" runs it
+      - id: guards
+        env:
+          BEFORE: ${{ github.event.before }}
+        run: |
+          if [ -z "$BEFORE" ] || ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null \
+            || git diff --name-only "$BEFORE" HEAD | grep -qE '^(tools/(claude-guard|prove-guards|review-gate|secrets|health|health-setup|owner-links|board|leftovers)\.mjs|tools/hooks/|tests/(guard|structure|review-gate|secrets)\.test\.mjs|\.claude/settings\.json|docs/mistakes\.md|\.github/workflows/test\.yml)'; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.guards.outputs.changed == 'true'
+        run: node tools/prove-guards.mjs --lf   # every guard must go red on its own mistake
+      - if: steps.guards.outputs.changed == 'true'
+        run: node tools/prove-guards.mjs        # and with Windows line ends, as on the laptop
       - run: npm run test:smoke

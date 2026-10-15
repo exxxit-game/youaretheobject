@@ -1,0 +1,17 @@
+{
+  "how": "Anthropic, Effective harnesses for long-running agents (26.11.2025): one feature per session, the first whose passes is false unless his message names another; only 'passes' changes here, and only after npm test, the smoke test on GitHub, my own look in the headset or on the stand, and his yes to what he saw. His words for each feature are on the line of docs/board.md named in 'board'.",
+  "features": [
+    { "id": "smoke-test-after-leaving", "what": "GitHub's smoke test green again: it looks at the corridor once door 1 is offered again after leaving a room by the menu", "board": "errors section, item 1", "check": "the test run on GitHub is green", "passes": true },
+    { "id": "corridor-paintings", "what": "Paintings on the corridor's end walls, swapping places on leaving a room", "board": "corridor section, item 1", "check": "his yes 9.10", "passes": true },
+    { "id": "corridor-floor-directory", "what": "Floor directory by the stairs; two forms shown to him as pictures, he picks one", "board": "corridor section, item 2", "check": "picture of both forms, then the chosen one in the headset; his yes", "passes": false },
+    { "id": "corridor-light", "what": "Light and gloom for the whole corridor at once, no lighting of its own on any object; room 101 after it", "board": "corridor section, item 3", "check": "the corridor in the headset before and after; his yes", "passes": false },
+    { "id": "corridor-extinguisher", "what": "Fire extinguisher matched to his 19 photos of the 1970 WS-900", "board": "corridor section, item 4", "check": "his yes 10.10", "passes": true },
+    { "id": "corridor-tear-off-strips", "what": "Tear-off strips on the notice", "board": "corridor section, item 5", "check": "in the headset; his yes", "passes": false },
+    { "id": "corridor-signed-form", "what": "The signed consent form hangs on the board, filled in", "board": "corridor section, item 6", "check": "in the headset; his yes", "passes": false },
+    { "id": "corridor-texts", "what": "The corridor's texts: a serious welcome, small dry details on paper; the start with the projector and the screen over the board", "board": "corridor section, item 7", "check": "in the headset; his yes", "passes": false },
+    { "id": "first-room", "what": "The first room: 2-3 trial rooms of 5 minutes, he picks one, then plays it whole", "board": "path section, item 2", "check": "his yes after playing it whole", "passes": false },
+    { "id": "testers", "what": "5-10 testers from his community install through Meta's closed test channel; their records arrive", "board": "path section, item 3", "check": "their records in the database", "passes": false },
+    { "id": "gate-0", "what": "7 of 10 testers finish; their mean rating is 7 of 10 or more", "board": "path section, item 4", "check": "the numbers from the testers' table", "passes": false },
+    { "id": "meta-store", "what": "Release on the Meta Horizon Store", "board": "path section, item 5", "check": "the store page live, on his word", "passes": false }
+  ]
+}

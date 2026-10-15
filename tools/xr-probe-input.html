@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>XR probe: controllers and hands</title>
+<link rel="stylesheet" href="../css/fonts.css">
+<link rel="stylesheet" href="../css/xr-probe.css">
+<!-- WHY: the controllers' and hands' models from the game itself, not cdn.aframe.io (index.html; A-Frame 1.8.0 docs, faq.md) -->
+<script>window.AFRAME_CDN_ROOT = '../vendor/aframe-assets/';</script>
+<script src="../vendor/aframe-1.8.0.min.js"></script>
+</head>
+<body>
+<!-- What the controllers, hands and body give a page, asked of the owner in the headset one task
+     at a time (objekt-files/notes/archive/docs/audit/probe-review.md): one line of words on a panel 1 m ahead, the real
+     controller models lighting the button pressed, the next line once the press is read, started
+     by his own trigger. The run is read over the debug link from window.__probe.input. -->
+<p>Проверка контроллеров и рук. Кнопку нажимает ноутбук, сами её не нажимайте. Всё, что нужно делать, будет написано внутри очков.</p>
+<button id="input">Начать в очках</button>
+<pre id="out">Результатов пока нет.</pre>
+<a-scene id="scene" inspector="url: ../vendor/aframe-inspector/aframe-inspector-1.8.0.min.js" vr-mode-ui="enabled: false" background="color: #121212"
+  webxr="optionalFeatures: local-floor, hand-tracking, body-tracking">
+  <a-entity id="head" camera look-controls position="0 1.6 0"></a-entity>
+  <a-entity meta-touch-controls="hand: left; buttonHighlightColor: #e8b84a"></a-entity>
+  <a-entity meta-touch-controls="hand: right; buttonHighlightColor: #e8b84a"></a-entity>
+  <a-entity hand-tracking-controls="hand: left"></a-entity>
+  <a-entity hand-tracking-controls="hand: right"></a-entity>
+  <a-entity id="task" panel="w: 1; h: 0.54; px: 1432; ref: 1024; bg: #1c1c1c" visible="false"></a-entity>
+  <a-entity light="type: ambient; intensity: 0.9"></a-entity>
+  <a-entity light="type: directional; intensity: 0.7" position="0 2 1"></a-entity>
+</a-scene>
+<script type="module">
+import '../src/engine/panel.js';
+
+// Buttons by index of the xr-standard mapping (Meta: "Buttons 0 to 5 are defined the same as the
+// complex xr-standard mapping", webxr-pro-controller): 0 trigger, 1 grip, 3 stick press, 4 A or X,
+// 5 B or Y. The round Meta button belongs to the system and is never asked for. A task that is
+// not done in WAIT_S offers a skip by the right trigger: a control that never reports is the finding.
+const WAIT_S = 12;
+const HANDS_S = 25;
+// the side in the two forms the lines need: «правого», «на правом». The buzz comes on his own press
+// and is asked about right after (Meta: a clear causal link between the action and the feedback,
+// developers.meta.com/horizon/design/haptics-best-practices/); both answers are always there.
+const pair = (hand, [gen, loc], b) => [
+  { id: `${hand}-trigger`, hand, button: 0, say: `Нажмите курок на ${loc} контроллере` },
+  { id: `${hand}-grip`, hand, button: 1, say: `Сожмите боковую кнопку на ${loc} (под средним пальцем)` },
+  { id: `${hand}-${b[0]}`, hand, button: 4, say: `Нажмите кнопку ${b[0]} на ${loc}` },
+  { id: `${hand}-${b[1]}`, hand, button: 5, say: `Нажмите кнопку ${b[1]} на ${loc}` },
+  { id: `${hand}-stick`, hand, button: 3, say: `Нажмите на стик ${gen}, как на кнопку` },
+  { id: `${hand}-stick-move`, hand, axis: true, say: `Отклоните стик ${gen} в любую сторону` },
+  { id: `${hand}-buzz`, hand, button: 0, buzz: true, say: `Нажмите курок на ${loc} — контроллер дрогнет` },
+  { id: `${hand}-felt`, hand, felt: b[1], noSkip: true, say: `Почувствовали дрожь? Да — курок на ${loc}, нет — кнопка ${b[1]}` }
+];
+// The menu button last: Meta says it can take the user out of a WebXR session
+// (developers.meta.com/horizon/documentation/web/webxr-hands/); the hands go back and forth as in
+// Meta's own check VRC.Quest.Input.7 (controllers down, hands, controllers back).
+const TASKS = [
+  { id: 'start', hand: 'right', button: 0, say: 'Нажмите курок на правом контроллере — начнём', noSkip: true },
+  ...pair('right', ['правого', 'правом'], ['A', 'B']).slice(1),
+  ...pair('left', ['левого', 'левом'], ['X', 'Y']),
+  { id: 'hands', hands: true, say: 'Положите оба контроллера и поднимите руки перед собой' },
+  { id: 'fingers', fingers: true, say: 'Пошевелите пальцами обеих рук' },
+  { id: 'back', back: true, say: 'Возьмите оба контроллера снова' },
+  { id: 'left-menu', hand: 'left', menu: true, say: 'Последнее: нажмите кнопку с тремя полосками на левом. Если проверка закроется — так и должно быть. Круглую кнопку на правом не трогайте' },
+  { id: 'end', end: true, say: 'Готово. Можно снимать очки' }
+];
+const KNOWN = [0, 1, 3, 4, 5, 6];
+
+const scene = document.getElementById('scene');
+const panel = document.getElementById('task');
+try { window.__probe = JSON.parse(localStorage.getItem('xr-probe') || '{}'); } catch (e) { window.__probe = {}; }
+let r = null;
+const save = () => {
+  document.getElementById('out').textContent = JSON.stringify(r, null, 2);
+  try { localStorage.setItem('xr-probe', JSON.stringify(window.__probe)); } catch (e) { /* private mode */ }
+};
+const write = (main, small) => panel.components.panel.write([
+  { t: main, size: 54, weight: 500, color: '#dadada' },
+  ...(small ? [{ t: small, size: 34, color: '#9a9a9a', gap: 30 }] : [])
+]);
+
+let step = -1, began = 0, placed = false, waiting = false, hinted = false;
+const task = () => TASKS[step];
+const next = (result) => {
+  if (step >= 0) r.tasks.push({ id: task().id, result, s: +((performance.now() - began) / 1000).toFixed(1) });
+  step++;
+  began = performance.now();
+  hinted = false;
+  save();
+  if (step >= TASKS.length) return;
+  const t = task();
+  write(t.say, `${step + 1} из ${TASKS.length}`);
+  if (t.end) setTimeout(() => { r.finished = new Date().toISOString(); save(); scene.exitVR(); }, 5000);
+};
+// a press is read on its rising edge after the task began, so one press never answers two tasks
+const prev = {};
+const pressed = (src, i) => {
+  const now = !!(src.gamepad.buttons[i] && src.gamepad.buttons[i].pressed);
+  const key = `${src.handedness}-${i}`, was = prev[key];
+  prev[key] = now;
+  return now && !was;
+};
+const ok = () => {
+  waiting = true;
+  write('✓');
+  setTimeout(() => { waiting = false; next('done'); }, 600);
+};
+async function buzz(hand) {
+  const src = [...scene.xrSession.inputSources].find((s) => s.handedness === hand && s.gamepad);
+  const act = src && src.gamepad.hapticActuators && src.gamepad.hapticActuators[0];
+  if (!act) { r.haptics.push(`${hand}: no actuator`); return; }
+  try { await act.pulse(0.8, 400); r.haptics.push(`${hand}: pulse ok`); } catch (e) { r.haptics.push(`${hand}: ${e.name}`); }
+}
+
+AFRAME.registerComponent('probe-input', {
+  tick() {
+    const session = scene.xrSession, frame = scene.frame;
+    if (!r || !session || !frame) return;
+    const space = scene.renderer.xr.getReferenceSpace();
+    // the panel 1 m ahead of where he looks first, a little under eye level, facing him: read from
+    // the camera itself, which carries the headset's pose wherever A-Frame applies it (as
+    // src/engine/ui/sheet.js reads it); a camera's world direction is where it looks
+    if (!placed) {
+      const at = new THREE.Vector3(), dir = new THREE.Vector3();
+      scene.camera.getWorldPosition(at); scene.camera.getWorldDirection(dir);
+      dir.y = 0;
+      if (at.y > 0.3 && dir.lengthSq() > 1e-4) {
+        dir.normalize();
+        panel.object3D.position.set(at.x + dir.x, at.y - 0.1, at.z + dir.z);
+        panel.object3D.lookAt(at.x, at.y - 0.1, at.z);
+        panel.object3D.visible = placed = true;
+        next();
+      }
+      return;
+    }
+    record(frame, session, space);
+    const t = task();
+    if (!t || waiting || t.end || performance.now() - began < 300) return;
+    const s = (performance.now() - began) / 1000;
+    const srcs = [...session.inputSources];
+    const pad = srcs.find((x) => x.handedness === t.hand && x.gamepad);
+    const right = srcs.find((x) => x.handedness === 'right' && x.gamepad);
+    if (t.hands || t.fingers) {
+      const both = ['left', 'right'].every((h) => (r.hands[h] || {}).trackedNow > 20);
+      if (t.hands && both) ok();
+      else if (t.hands && s > HANDS_S) next('not seen');
+      else if (t.fingers && s > 5) next('done');
+      return;
+    }
+    if (t.back) {
+      const both = ['left', 'right'].every((h) => srcs.some((x) => x.handedness === h && x.gamepad && !x.hand));
+      if (both) return ok();
+      if (s > HANDS_S) return next('not seen');
+      return;
+    }
+    if (pad && t.button !== undefined && pressed(pad, t.button)) { if (t.buzz) buzz(t.hand); return ok(); }
+    if (pad && t.axis && pad.gamepad.axes.some((a) => Math.abs(a) > 0.8)) return ok();
+    if (pad && t.felt) {
+      if (pressed(pad, 0)) return next('felt');
+      if (pressed(pad, 5)) return next('not felt');
+    }
+    if (pad && t.menu) {
+      const i = pad.gamepad.buttons.findIndex((b, k) => b.pressed && !KNOWN.includes(k));
+      if (i >= 0) { r.menuIndex = i; return ok(); }
+    }
+    if (!t.noSkip && s > WAIT_S) {
+      if (!hinted) { hinted = true; write(t.say, 'Если не получается — нажмите курок на правом, чтобы пропустить'); }
+      if (right && t.hand !== 'right' && pressed(right, 0)) return next('skipped');
+      if (right && t.hand === 'right' && t.button !== 0 && pressed(right, 0)) return next('skipped');
+    }
+  }
+});
+scene.setAttribute('probe-input', '');
+
+// everything the sources give while the tasks run, as the old probe kept it
+function record(frame, session, space) {
+  for (const src of session.inputSources) {
+    const k = src.handedness + (src.hand ? ' hand' : ' controller'), pad = src.gamepad;
+    const e = r.sources[k] || (r.sources[k] = { profiles: [...src.profiles], mapping: pad ? pad.mapping : null, buttons: pad ? pad.buttons.length : 0, axes: pad ? pad.axes.length : 0, pressed: [], touched: [] });
+    if (pad) pad.buttons.forEach((b, i) => { if (b.pressed && !e.pressed.includes(i)) e.pressed.push(i); if (b.touched && !e.touched.includes(i)) e.touched.push(i); });
+    if (src.hand && frame.getJointPose) {
+      let seen = 0;
+      for (const joint of src.hand.values()) if (frame.getJointPose(joint, space)) seen++;
+      const h = r.hands[src.handedness] || (r.hands[src.handedness] = { joints: src.hand.size, trackedMost: 0 });
+      h.trackedNow = seen;
+      h.trackedMost = Math.max(h.trackedMost, seen);
+      // the joints' sizes (W3C Hand Input: each joint's radius in metres), once the hand is seen whole
+      if (seen === src.hand.size && frame.fillJointRadii && !h.radiusMm) {
+        const radii = new Float32Array(src.hand.size), names = [...src.hand.keys()];
+        if (frame.fillJointRadii([...src.hand.values()], radii)) h.radiusMm = { wrist: +(radii[names.indexOf('wrist')] * 1000).toFixed(1), indexTip: +(radii[names.indexOf('index-finger-tip')] * 1000).toFixed(1) };
+      }
+    }
+  }
+  for (const h of ['left', 'right']) if (r.hands[h] && ![...session.inputSources].some((s) => s.hand && s.handedness === h)) r.hands[h].trackedNow = 0;
+  if (frame.body) {
+    let seen = 0;
+    for (const joint of frame.body.values()) { try { if (frame.getPose(joint, space)) seen++; } catch (err) { /* a joint the browser does not pose */ } }
+    r.body = { joints: frame.body.size, trackedMost: Math.max((r.body && r.body.trackedMost) || 0, seen) };
+  }
+}
+
+scene.addEventListener('enter-vr', () => {
+  const session = scene.xrSession;
+  r.enabledFeatures = session.enabledFeatures ? [...session.enabledFeatures] : 'not reported';
+  session.addEventListener('visibilitychange', () => r.events.push(`visibility ${session.visibilityState} at ${task() ? task().id : '-'}`));
+  for (const ev of ['select', 'squeeze']) session.addEventListener(ev, (e) => r.events.push(`${ev} ${e.inputSource.handedness}`));
+});
+scene.addEventListener('exit-vr', () => { if (r && !r.finished) r.stopped = `left VR at ${task() ? task().id : '-'}`; if (r) { r.frames = r.tasks.length; save(); } });
+
+document.getElementById('input').onclick = async () => {
+  // a second press while the tasks run would start them over and lose those already done
+  if (scene.is('vr-mode') || (r && !r.finished && !r.stopped && !r.error)) return;
+  r = window.__probe.input = { mode: 'input', started: new Date().toISOString(), tasks: [], sources: {}, hands: {}, haptics: [], events: [] };
+  step = -1; placed = false; waiting = false;
+  await document.fonts.load('500 54px Inter').catch(() => {});
+  if (!scene.hasLoaded) await new Promise((done) => scene.addEventListener('loaded', done, { once: true }));
+  try { await scene.enterVR(); } catch (e) { r.error = `${e.name}: ${e.message}`; save(); }
+};
+</script>
+</body>
+</html>

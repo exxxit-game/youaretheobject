@@ -1,0 +1,112 @@
+# VR norms and hardware
+
+Generated from `docs/library/papers.json` by `node tools/build-library.mjs`. Do not edit by hand.
+102 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
+in the library folder's papers\ as `<id>.txt` (a data set: `<dir>/<id>.txt` from the library folder); "text: ocr" marks a scan's
+text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
+
+- **abdlkarim-2024** Abdlkarim et al. 2024. A methodological framework to assess the accuracy of virtual reality hand-tracking systems: A case study with the Meta Quest 2 · hand tracking accuracy, Meta Quest 2, measurement method · no card
+- **al-zayer-2019-dissertation** Al Zayer 2019. Universal Usability of Virtual Reality · universal usability, accessibility, locomotion · no card
+- **alger-2015** Alger 2015. Visual Design Methods for Virtual Reality · VR interface design, volumetric interfaces, design methods · no card
+- **ang-2023** Ang & Quarles 2023. Reduction of cybersickness in head mounted displays use: A systematic review and taxonomy of current strategies · cybersickness, mitigation strategies, systematic review · no card
+- **ansi-hfes-100-2007** Human Factors and Ergonomics Society 2007. ANSI/HFES 100-2007 Human Factors Engineering of Computer Workstations · workstation ergonomics, display height, viewing distance · no card
+- **bailenson-2024** Bailenson et al. 2024. Seeing the World Through Digital Prisms: Psychological Implications of Passthrough Video Usage in Mixed Reality · video passthrough, mixed reality, perception, psychological effects · no card
+- **banaszczyk-2024** Banaszczyk et al. 2024. How Accurate is the Positioning in VR? Using Motion Capture and Robotics to Compare Positioning Capabilities of Popular VR Headsets · positioning accuracy, headset tracking, motion capture · no card
+- **bonato-2008** Bonato et al. 2008. Vection change exacerbates simulator sickness in virtual environments · vection, simulator sickness · no card
+- **brown-2022** Brown et al. 2022. The simulator sickness questionnaire, and the erroneous zero baseline assumption · simulator sickness questionnaire, baseline, measurement · no card
+- **carmack-2021-tweet** Carmack 2021. The design focal distance for the Quest/Quest 2 optics is 1.3 meters · Quest optics, focal distance · no card
+- **carnevale-2022** Carnevale et al. 2022. Virtual Reality for Shoulder Rehabilitation: Accuracy Evaluation of Oculus Quest 2 · tracking accuracy, Quest 2, rehabilitation · no card
+- **caserman-2019** Caserman et al. 2019. Effects of end-to-end latency on user experience and performance in immersive virtual reality applications · latency, cybersickness, performance · no card
+- **caserman-2021** Caserman et al. 2021. Cybersickness in current-generation virtual reality head-mounted displays: systematic review and outlook · cybersickness, current headsets, systematic review · no card
+- **cauz-2024** Cauz et al. 2024. Text readability in augmented reality: a multivocal literature review · text readability, augmented reality, literature review · no card
+- **cesanek-2024** Cesanek et al. 2024. Ouvrai opens access to remote virtual reality studies of human behavioural neuroscience · remote VR studies, Ouvrai, online VR experiments, motor learning · no card
+- **chen-2024** Chen et al. 2024. Impact of Tutorial Modes with Different Time Flow Rates in Virtual Reality Games · tutorials, time flow, VR games, onboarding · no card
+- **chu-2014-slide-3d-feeling** Chu 2014. Slide: 3D feeling (SDC 2014) · VR interface layout, depth, comfort zone · no card · text: none · supplement of chu-2014-voicesofvr
+- **chu-2014-slide-depth-perception** Chu 2014. Slide: depth perception (SDC 2014) · VR interface layout, depth perception, comfort zone · no card · text: none · supplement of chu-2014-voicesofvr
+- **chu-2014-slide-layout** Chu 2014. Slide: layout (SDC 2014) · VR interface layout, comfort zone · no card · text: none · supplement of chu-2014-voicesofvr
+- **chu-2014-slide-sphere-depths** Chu 2014. Slide: sphere depths (SDC 2014) · VR interface layout, depth, comfort zone · no card · text: none · supplement of chu-2014-voicesofvr
+- **chu-2014-slide-spheres** Chu 2014. Slide: spheres (SDC 2014) · VR interface layout, depth, comfort zone · no card · text: none · supplement of chu-2014-voicesofvr
+- **chu-2014-voicesofvr** Bye (interview with Alex Chu) 2015. Voices of VR #117: Alex Chu on Designing Milk VR for the Samsung Gear VR · VR interface design, Milk VR, depth, layout · no card
+- **clifton-2020** Clifton & Palmisano 2020. Effects of steering locomotion and teleporting on cybersickness and presence in HMD-based virtual reality · locomotion, teleporting, steering, cybersickness, presence · no card · repository cover dated 2019
+- **datasets/ansur2/ANSURII-TR15-007** Gordon et al. 2014. 2012 Anthropometric Survey of U.S. Army Personnel: Methods and Summary Statistics (NATICK/TR-15/007) · anthropometry, ANSUR II, body measurements, eye height · no card · text: ocr
+- **datasets/ansur2/ansur2-percentiles** computed for this project 2026. ANSUR II unweighted percentiles computed from the public CSVs · anthropometry, percentiles, eye height, interpupillary distance · no card · derived from ANSUR_II_FEMALE_Public and ANSUR_II_MALE_Public
+- **dilanchian-2021** Dilanchian et al. 2021. A Pilot Study Exploring Age Differences in Presence, Workload, and Cybersickness in the Experience of Immersive Virtual Reality Environments · age differences, presence, cybersickness, older adults · no card
+- **dingler-2018** Dingler et al. 2018. VR Reading UIs: Assessing Text Parameters for Reading in VR · reading in VR, text parameters, font size · no card
+- **dodgson-2004** Dodgson 2004. Variation and extrema of human interpupillary distance · interpupillary distance, anthropometry · no card
+- **duzmanska-2018** Duzmańska et al. 2018. Can Simulator Sickness Be Avoided? A Review on Temporal Aspects of Simulator Sickness · simulator sickness, exposure time, review · no card
+- **elchemaly-2025** El Chemaly et al. 2025. Geometry Aware Passthrough Mitigates Cybersickness · passthrough, cybersickness, geometry-aware rendering · no card
+- **ely-1970** Ely et al. 1970. Instructional Hardware/A Guide to Architectural Requirements · 1970s audiovisual equipment, projection screens, viewing distance, classroom planning · no card
+- **exppsy-2022-2** Experimental Psychology (Russia), ed. Barabanschikov 2022. Experimental Psychology (Russia), vol. 15, no. 2 (whole issue, in Russian with English abstracts) · VR studies in Russia, journal issue, side effects · no card
+- **farmani-2020** Farmani & Teather 2020. Evaluating discrete viewpoint control to reduce cybersickness in virtual reality · viewpoint control, snap turning, cybersickness · no card
+- **fernandes-2016** Fernandes & Feiner 2016. Combating VR Sickness through Subtle Dynamic Field-Of-View Modification · field-of-view restriction, vignette, cybersickness · no card
+- **fryar-2021** Fryar et al. 2021. Anthropometric Reference Data for Children and Adults: United States, 2015-2018 · anthropometry, body measurements, NHANES, height · no card
+- **golding-2021** Golding et al. 2021. Predicting Individual Susceptibility to Visually Induced Motion Sickness by Questionnaire · motion sickness susceptibility, questionnaire, visually induced motion sickness · no card
+- **gottsacker-2026** Gottsacker et al. 2026. Beyond the Lab: Large-Scale Remote Cybersickness Research in Virtual Reality Using the VERA Platform · remote VR research, cybersickness, VERA platform · no card
+- **han-2023** Han et al. 2023. People, places, and time: a large-scale, longitudinal study of transformed avatars and environmental context in group interaction in the... · avatars, social VR, longitudinal study, metaverse · no card
+- **hincapie-ramos-2014** Hincapié-Ramos et al. 2014. Consumed Endurance: A Metric to Quantify Arm Fatigue of Mid-Air Interactions · arm fatigue, mid-air interaction, consumed endurance, gorilla arm · no card
+- **hoffman-2008** Hoffman et al. 2008. Vergence-accommodation conflicts hinder visual performance and cause visual fatigue · vergence-accommodation conflict, visual fatigue, stereo displays · no card
+- **holzwarth-2021** Holzwarth et al. 2021. Comparing the Accuracy and Precision of SteamVR Tracking 2.0 and Oculus Quest 2 in a Room Scale Setup · tracking accuracy, SteamVR, Quest 2, room scale · no card
+- **horejsi-2025** Horejsi et al. 2025. Virtual reality locomotion methods differentially affect spatial orientation and cybersickness during maze navigation · locomotion, spatial orientation, cybersickness, maze · no card
+- **hu-2024** Hu et al. 2024. Apple vs. Meta: A Comparative Study on Spatial Tracking in SOTA XR Headsets · spatial tracking, Apple Vision Pro, Meta Quest, mixed reality · no card
+- **huber-2020** Huber & Gajos 2020. Conducting online virtual environment experiments with uncompensated, unsupervised samples · online experiments, virtual reality, unsupervised samples, replication · no card
+- **iso-9241-306-2018-preview** ISO 2018. ISO 9241-306: Ergonomics of human-system interaction, Part 306: Field assessment methods for electronic visual displays (preview pages only) · display ergonomics, field assessment, standard · no card
+- **jin-2021** Jin et al. 2021. Effect of field of view on egocentric distance perception in real and virtual environment (in Korean) · distance perception, field of view, egocentric distance, real vs VR · [card](../cards/jin-2021.md)
+- **kelly-2021** Kelly et al. 2021. Who Are Virtual Reality Headset Owners? A Survey and Comparison of Headset Owners and Non-Owners · headset owners, survey, demographics · no card
+- **kelly-2024** Kelly et al. 2024. Field of view restriction and snap turning as cybersickness mitigation tools · field-of-view restriction, snap turning, cybersickness · no card
+- **kennedy-1993** Kennedy et al. 1993. Simulator Sickness Questionnaire: An Enhanced Method for Quantifying Simulator Sickness · simulator sickness questionnaire, SSQ, measurement · no card · text: ocr
+- **keshavarz-2023** Keshavarz et al. 2023. The Visually Induced Motion Sickness Susceptibility Questionnaire (VIMSSQ): Estimating Individual Susceptibility to Motion Sickness-Like... · motion sickness susceptibility, VIMSSQ, questionnaire · no card
+- **kilpelainen-2023** Kilpeläinen & Häkkinen 2023. An effective method for measuring text legibility in XR devices reveals clear differences between three devices · text legibility, XR devices, measurement method · no card
+- **langbehn-2019-dissertation** Langbehn 2019. Walking in Virtual Reality: Perceptually-inspired Interaction Techniques for Locomotion in Immersive Environments · locomotion, redirected walking, walking in VR · no card
+- **madary-2016** Madary & Metzinger 2016. Real Virtuality: A Code of Ethical Conduct. Recommendations for Good Scientific Practice and the Consumers of VR-Technology · VR ethics, code of conduct · no card
+- **mateer-2017** Mateer 2017. Directing for Cinematic Virtual Reality: how the traditional film director's craft applies to immersive environments and notions of presence · cinematic VR, film directing, presence · no card
+- **mckenzie-glazier-2017** McKenzie & Glazier 2017. Designing Screen Interfaces for VR (Google I/O 2017, captions) · VR interface design, screen interfaces, Daydream · no card
+- **meehan-2002** Meehan et al. 2002. Physiological measures of presence in stressful virtual environments · presence, heart rate, pit room, fear of heights · [card](../cards/meehan-2002.md)
+- **miller-2020** Miller et al. 2020. Personal identifiability of user tracking data during observation of 360-degree VR video · user identification, tracking data, privacy · no card
+- **mottelson-2017** Mottelson & Hornbæk 2017. Virtual reality studies outside the laboratory · VR studies outside the lab, crowdsourcing · no card
+- **mottelson-2021** Mottelson et al. 2021. Conducting Unsupervised Virtual Reality User Studies Online · unsupervised VR studies, remote, online · no card
+- **nair-2023** Nair et al. 2023. Results of the 2023 Census of Beat Saber Users: Virtual Reality Gaming Population Insights and Factors Affecting Virtual Reality E-Sports... · Beat Saber, VR users census, demographics · no card
+- **oculus-2016-rift-health-safety** Oculus 2016. Oculus Rift Health and Safety Warnings · health and safety warnings, age limit, seizures · no card
+- **oliva-2022** Oliva et al. 2022. QuickVR: A standard library for virtual embodiment in unity · QuickVR, embodiment library, Unity · no card
+- **pausch-1996** Pausch et al. 1996. Disney's Aladdin: First Steps Toward Storytelling in Virtual Reality · Disney Aladdin, storytelling, VR attraction, guests · no card
+- **pfeil-2021** Pfeil et al. 2021. Distance perception with a video see-through head-mounted display · distance perception, video passthrough, mixed reality · [card](../cards/pfeil-2021.md)
+- **raaen-2021** Raaen & Eg 2021. Who uses VR in Norway? · VR adoption, Norway, survey · no card
+- **ratcliffe-2021** Ratcliffe et al. 2021. Extended Reality (XR) Remote Research: a Survey of Drawbacks and Opportunities · remote XR research, survey of researchers · no card
+- **rivu-2021** Radiah et al. 2021. Remote VR Studies: A Framework for Running Virtual Reality Studies Remotely Via Participant-Owned HMDs · remote VR studies, participant-owned headsets, framework · no card
+- **rivu-2022** Rivu et al. 2022. 'Can you Set It Up On Your Own?' - Investigating Users' Ability To Participate in Remote-Based Virtual Reality Studies · remote VR studies, setup ability · no card
+- **rothe-2018** Rothe & Hußmann 2018. Guiding the Viewer in Cinematic Virtual Reality by Diegetic Cues · attention guidance, cinematic VR, diegetic cues · no card
+- **rothe-2019** Rothe et al. 2019. Guidance in Cinematic Virtual Reality-Taxonomy, Research Status and Challenges · attention guidance, cinematic VR, taxonomy · no card
+- **santoso-2024** Santoso & Bailenson 2024. How Video Passthrough Headsets Influence Perception of Self and Others · video passthrough, self-perception, perception of others · no card
+- **saredakis-2020** Saredakis et al. 2020. Factors Associated With Virtual Reality Sickness in Head-Mounted Displays: A Systematic Review and Meta-Analysis · VR sickness, meta-analysis, risk factors · no card
+- **shibata-2011** Shibata et al. 2011. The zone of comfort: Predicting visual discomfort with stereo displays · stereo comfort, vergence-accommodation conflict, visual discomfort · no card
+- **sitzmann-2018** Sitzmann et al. 2018. How do people explore virtual environments? · gaze, head movement, 360 panoramas, saliency · no card · the copy is arXiv v2 of 2017
+- **slater-2009** Slater 2009. Place Illusion and Plausibility Can Lead to Realistic Behaviour in Immersive Virtual Environments · place illusion, plausibility, presence · no card
+- **slater-2016** Slater & Sanchez-Vives 2016. Enhancing Our Lives with Immersive Virtual Reality · immersive VR applications, opinion · no card
+- **slater-2022** Slater et al. 2022. A Separate Reality: An Update on Place Illusion and Plausibility in Virtual Reality · place illusion, plausibility, presence · no card
+- **slater-2023** Slater et al. 2023. The sentiment of a virtual rock concert · virtual concert, sentiment, presence · no card
+- **solbach-2026** Solbach et al. 2026. Passthrough Rigidity: The Behavioral and Visuomotor Costs of Mediated Perception · passthrough, visuomotor costs, mediated perception · no card
+- **stanney-2020** Stanney et al. 2020. Virtual Reality Is Sexist: But It Does Not Have to Be · gender differences, cybersickness, interpupillary distance fit · no card
+- **stauffert-2020** Stauffert et al. 2020. Latency and cybersickness: impact, causes, and measures. A review · latency, cybersickness, frame drops · no card
+- **steam-hwsurvey-2026** Valve 2026. Steam Hardware & Software Survey, September 2026 (VR headsets section) · Steam hardware survey, headset market share · no card
+- **steed-2016** Steed et al. 2016. An 'In the Wild' Experiment on Presence and Embodiment using Consumer Virtual Reality Equipment · in-the-wild VR experiment, presence, embodiment, consumer headsets · no card
+- **steed-2021** Steed et al. 2021. Some Lessons Learned Running Virtual Reality Experiments Out of the Laboratory · VR experiments out of the lab, remote studies · no card
+- **steptoe-2014** Steptoe et al. 2014. Presence and discernability in conventional and non-photorealistic immersive augmented reality · presence, augmented reality, video passthrough, discernability · [card](../cards/steptoe-2014.md)
+- **terenzi-2020** Terenzi & Zaal 2020. Rotational and Translational Velocity and Acceleration Thresholds for the Onset of Cybersickness in Virtual Reality · cybersickness, velocity thresholds, acceleration · no card
+- **tran-2024** Tran et al. 2024. A Survey On Measuring Presence in Mixed Reality · presence measurement, mixed reality, survey · no card
+- **valve-2016** Barnett (Valve) 2016. SteamVR Play Area Size Stats · play area size, SteamVR, room scale · no card
+- **van-zelderen-2026** van Zelderen et al. 2026. Creating common virtual ground: Protocols to democratize open VR research · open VR research, protocols, reporting standard · no card · text: ocr
+- **vona-2025** Vona et al. 2025. Comparing Pass-Through Quality of Mixed Reality Devices: A User Experience Study During Real-World Tasks · passthrough quality, mixed reality devices, user experience · no card
+- **vrprotocols-checklist-v0.62** vrprotocols.org 2026. Project Checklist VR/XR Open Science Framework v0.62 · VR open science, checklist, reporting · no card · supplement of van-zelderen-2026
+- **vrprotocols-project-v0.62** vrprotocols.org 2026. VR/XR Open Science Framework v0.62 project export · VR open science, protocol export · no card · supplement of van-zelderen-2026
+- **wang-2023** Wang et al. 2023. Perceptual thresholds of visual size discrimination in augmented and virtual reality · size discrimination, augmented reality, video passthrough, perceptual thresholds · [card](../cards/wang-2023.md)
+- **wang-2023-framerate** Wang et al. 2023. Effect of frame rate on user experience, performance, and simulator sickness in virtual reality · frame rate, cybersickness, performance · no card
+- **wang-2026** Wang et al. 2026. Resolution deficits drive simulator sickness and compromise reading performance in virtual environments · display resolution, simulator sickness, reading performance, text clarity · no card
+- **wang-xm-2026** Wang et al. 2026. Divergent Perceptuomotor Recalibration in Virtual Reality and Video-Passthrough Mixed Reality on the Same Head-Mounted Display · perceptuomotor recalibration, video passthrough, mixed reality · no card
+- **warburton-2022** Warburton et al. 2022. Measuring motion-to-photon latency for sensorimotor experiments with virtual reality systems · motion-to-photon latency, measurement · no card
+- **wiesing-2020** Wiesing et al. 2020. Accuracy and precision of stimulus timing and reaction times with Unreal Engine and SteamVR · stimulus timing, reaction times, Unreal Engine, SteamVR · no card
+- **zielasko-2021** Zielasko & Riecke 2021. To Sit or Not to Sit in VR: Analyzing Influences and (Dis)Advantages of Posture and Embodied Interaction · seated vs standing VR, posture, embodied interaction · no card
+
+## Not in the library
+
+- **aziz-2024** Aziz et al. 2024. Evaluation of eye tracking signal quality for virtual reality applications: A case study in the Meta Quest Pro · eye tracking, Quest Pro, signal quality · read, not saved (wanted.md)
+- **nair-2022-metaguard** Nair et al. 2022. Going Incognito in the Metaverse (MetaGuard; UIST 2023) · motion data anonymisation, MetaGuard, privacy, differential privacy · read, not saved (wanted.md)
+- **parsons-2015** Parsons 2015. Virtual reality for enhanced ecological validity and experimental control in the clinical, affective and social neurosciences · ecological validity, VR in neuroscience, experimental control · read, not saved (wanted.md)

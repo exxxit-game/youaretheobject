@@ -1,0 +1,45 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$comment": "Room 01 (illusion of control), version 1: the report of a finished run (src/rooms/01-control/report.js, room.js). The server checks every report against it (supabase/migrations/0009_data_protection.sql); tests/results.test.mjs checks the game against it.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["condition", "speed"],
+  "properties": {
+    "condition": { "enum": ["25-25", "75-75"] },
+    "speed": { "const": 1 },
+    "seated": { "type": "boolean" },
+    "trials": { "type": "number", "minimum": 0, "maximum": 1000 },
+    "presses": { "type": "number", "minimum": 0, "maximum": 1000 },
+    "greens": { "type": "number", "minimum": 0, "maximum": 1000 },
+    "greenIfPress": { "type": "number", "minimum": 0, "maximum": 1000 },
+    "greenIfNoPress": { "type": "number", "minimum": 0, "maximum": 1000 },
+    "confirming": { "type": "number", "minimum": 0, "maximum": 1000 },
+    "voided": { "type": "number", "minimum": 0, "maximum": 1000 },
+    "strays": { "type": "number", "minimum": 0, "maximum": 1000 },
+    "total": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "ifPress": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "ifNoPress": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "successes": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "successesOfAll": { "type": ["number", "null"], "minimum": 0, "maximum": 100 },
+    "actualControl": { "type": ["number", "null"], "minimum": -100, "maximum": 100 },
+    "errTotal": { "type": ["number", "null"], "minimum": -100, "maximum": 100 },
+    "errIfPress": { "type": ["number", "null"], "minimum": -100, "maximum": 100 },
+    "errIfNoPress": { "type": ["number", "null"], "minimum": -100, "maximum": 100 },
+    "answers": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "control": { "type": "number", "minimum": 0, "maximum": 100 },
+        "total": { "type": "number", "minimum": 0, "maximum": 100 },
+        "ifPress": { "type": "number", "minimum": 0, "maximum": 100 },
+        "ifNoPress": { "type": "number", "minimum": 0, "maximum": 100 },
+        "certainty": { "type": "number", "minimum": 0, "maximum": 100 },
+        "evidence": { "type": "number", "minimum": 0, "maximum": 5 },
+        "hypotheses": { "type": "number", "minimum": 0, "maximum": 1 },
+        "gender": { "type": "number", "minimum": 0, "maximum": 2 },
+        "age": { "type": "number", "minimum": 0, "maximum": 6 },
+        "knew": { "type": "number", "minimum": 0, "maximum": 3 }
+      }
+    }
+  }
+}

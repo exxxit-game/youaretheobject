@@ -1,0 +1,13 @@
+/* The privacy page: one readable column, light and dark. */
+:root { --bg: #f4f4f1; --ink: #1c1d1b; --muted: #5b5f58; --line: #d8dbd3; --accent: #2c5d8a; }
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #151614; --ink: #e8e9e4; --muted: #a3a89e; --line: #33372f; --accent: #7fb0e0; color-scheme: dark; }
+}
+.privacy { background: var(--bg); color: var(--ink); font: 17px/1.6 "Segoe UI", Roboto, Arial, sans-serif; margin: 0; }
+.privacy main { max-width: 720px; margin: 0 auto; padding: 32px 18px 64px; }
+.privacy h1 { font-size: 30px; line-height: 1.2; margin: 0 0 6px; }
+.privacy h2 { font-size: 20px; margin: 32px 0 8px; padding-top: 14px; border-top: 1px solid var(--line); }
+.privacy p, .privacy li { margin: 8px 0; }
+.privacy ul { padding-left: 22px; }
+.privacy .date { color: var(--muted); font-size: 14px; }
+.privacy a { color: var(--accent); }

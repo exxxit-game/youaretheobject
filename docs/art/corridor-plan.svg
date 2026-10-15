@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 760" font-family="Segoe UI, Arial, sans-serif" font-size="13">
+  <!-- Corridor of the lab, seen from above, two ways to lay it out to its end (1 m = 40 px).
+       Every room is a bay of 3.2 m (the width of room 1); in every bay the door stands at the same
+       place, its latch toward the way the player comes from; plan A drew the plaques on the wall at
+       the latch side, plan B (built) has them on the doors. -->
+  <style>
+    .wall { fill: #8a9479; }
+    .floor { fill: #e9e2cf; }
+    .room { fill: #f4f1ea; stroke: #b9bcbf; stroke-width: 1; }
+    .door { fill: #6a5641; }
+    .plaque { fill: #15161a; }
+    .stairs { fill: #c9cfd6; stroke: #5b5d60; stroke-width: 1; }
+    .board { fill: #b9bcbf; }
+    .ext { fill: #a8231d; }
+    .start { fill: #237f52; }
+    .t { fill: #1d1b17; }
+    .s { fill: #4a453c; font-size: 12px; }
+    .h { font-size: 17px; font-weight: 700; fill: #1d1b17; }
+    .num { font-size: 12px; font-weight: 700; fill: #1d1b17; }
+  </style>
+  <rect width="980" height="760" fill="#fbfaf6"/>
+
+  <!-- ===== A: entrance at the end ===== -->
+  <text class="h" x="20" y="30">А. Вход с торца: коридор уходит вперёд, комнаты по обе стороны</text>
+  <g transform="translate(20 50)">
+    <!-- rooms north (odd) and south (even): 5 bays of 3.2 m after a 2.4 m entrance hall -->
+    <rect class="stairs" x="0" y="40" width="96" height="152"/>
+    <text class="s" x="8" y="120">лестница</text>
+    <text class="s" x="8" y="136">(этажи 2, 3…)</text>
+    <rect class="floor" x="96" y="96" width="736" height="72"/>
+    <rect class="wall" x="96" y="88" width="736" height="8"/>
+    <rect class="wall" x="96" y="168" width="736" height="8"/>
+    <rect class="wall" x="832" y="88" width="8" height="88"/>
+    <!-- bays -->
+    <g>
+      <rect class="room" x="192" y="0" width="128" height="88"/><text class="num" x="236" y="48">101</text>
+      <rect class="room" x="320" y="0" width="128" height="88"/><text class="num" x="364" y="48">103</text>
+      <rect class="room" x="448" y="0" width="128" height="88"/><text class="num" x="492" y="48">105</text>
+      <rect class="room" x="576" y="0" width="128" height="88"/><text class="num" x="620" y="48">107</text>
+      <rect class="room" x="704" y="0" width="128" height="88"/><text class="num" x="748" y="48">109</text>
+      <rect class="room" x="192" y="176" width="128" height="88"/><text class="num" x="236" y="226">102</text>
+      <rect class="room" x="320" y="176" width="128" height="88"/><text class="num" x="364" y="226">104</text>
+      <rect class="room" x="448" y="176" width="128" height="88"/><text class="num" x="492" y="226">106</text>
+      <rect class="room" x="576" y="176" width="128" height="88"/><text class="num" x="620" y="226">108</text>
+      <rect class="room" x="704" y="176" width="128" height="88"/><text class="num" x="748" y="226">110</text>
+    </g>
+    <!-- doors (1.0 m) and plaques (latch side, toward the entrance) -->
+    <g>
+      <rect class="door" x="232" y="88" width="40" height="8"/><rect class="plaque" x="220" y="92" width="8" height="4"/>
+      <rect class="door" x="360" y="88" width="40" height="8"/><rect class="plaque" x="348" y="92" width="8" height="4"/>
+      <rect class="door" x="488" y="88" width="40" height="8"/><rect class="plaque" x="476" y="92" width="8" height="4"/>
+      <rect class="door" x="616" y="88" width="40" height="8"/><rect class="plaque" x="604" y="92" width="8" height="4"/>
+      <rect class="door" x="744" y="88" width="40" height="8"/><rect class="plaque" x="732" y="92" width="8" height="4"/>
+      <rect class="door" x="232" y="168" width="40" height="8"/><rect class="plaque" x="220" y="168" width="8" height="4"/>
+      <rect class="door" x="360" y="168" width="40" height="8"/><rect class="plaque" x="348" y="168" width="8" height="4"/>
+      <rect class="door" x="488" y="168" width="40" height="8"/><rect class="plaque" x="476" y="168" width="8" height="4"/>
+      <rect class="door" x="616" y="168" width="40" height="8"/><rect class="plaque" x="604" y="168" width="8" height="4"/>
+      <rect class="door" x="744" y="168" width="40" height="8"/><rect class="plaque" x="732" y="168" width="8" height="4"/>
+    </g>
+    <rect class="door" x="96" y="112" width="6" height="40"/>
+    <rect class="board" x="128" y="92" width="64" height="4"/><text class="s" x="112" y="112">доска</text>
+    <rect class="ext" x="152" y="168" width="8" height="5"/>
+    <circle class="start" cx="252" cy="140" r="9"/><path class="start" d="M246 128 L252 116 L258 128 Z"/>
+    <text class="s" x="268" y="144">игрок появляется лицом к 101</text>
+    <text class="s" x="96" y="292">длина 18,4 м; 10 комнат; номера растут от входа, нечётные слева, чётные справа</text>
+  </g>
+
+  <!-- ===== B: entrance in the middle (the start as approved) ===== -->
+  <text class="h" x="20" y="400">Б. Вход посередине: начало как сейчас, коридор растёт в обе стороны</text>
+  <g transform="translate(20 420)">
+    <rect class="floor" x="28" y="96" width="584" height="72"/>
+    <rect class="wall" x="28" y="88" width="584" height="8"/>
+    <rect class="wall" x="28" y="168" width="584" height="8"/>
+    <rect class="wall" x="20" y="88" width="8" height="88"/>
+    <rect class="wall" x="612" y="88" width="8" height="88"/>
+    <!-- north: 103 101 [room 1 in the middle] 102... ; south: the stair hall in the middle bay -->
+    <rect class="room" x="0" y="0" width="128" height="88"/><text class="num" x="44" y="48">105</text>
+    <rect class="room" x="128" y="0" width="128" height="88"/><text class="num" x="172" y="48">103</text>
+    <rect class="room" x="256" y="0" width="128" height="88"/><text class="num" x="300" y="48">101</text>
+    <rect class="room" x="384" y="0" width="128" height="88"/><text class="num" x="428" y="48">102</text>
+    <rect class="room" x="512" y="0" width="128" height="88"/><text class="num" x="556" y="48">104</text>
+    <rect class="room" x="0" y="176" width="128" height="88"/><text class="num" x="44" y="226">109</text>
+    <rect class="room" x="128" y="176" width="128" height="88"/><text class="num" x="172" y="226">107</text>
+    <rect class="stairs" x="256" y="176" width="128" height="88"/><text class="s" x="270" y="216">лестница</text><text class="s" x="270" y="232">(этажи 2, 3…)</text>
+    <rect class="room" x="384" y="176" width="128" height="88"/><text class="num" x="428" y="226">106</text>
+    <rect class="room" x="512" y="176" width="128" height="88"/><text class="num" x="556" y="226">108</text>
+    <g>
+      <rect class="door" x="44" y="88" width="40" height="8"/>
+      <rect class="door" x="172" y="88" width="40" height="8"/>
+      <rect class="door" x="300" y="88" width="40" height="8"/>
+      <rect class="door" x="428" y="88" width="40" height="8"/>
+      <rect class="door" x="556" y="88" width="40" height="8"/>
+      <rect class="door" x="44" y="168" width="40" height="8"/>
+      <rect class="door" x="172" y="168" width="40" height="8"/>
+      <rect class="door" x="300" y="168" width="40" height="8"/>
+      <rect class="door" x="428" y="168" width="40" height="8"/>
+      <rect class="door" x="556" y="168" width="40" height="8"/>
+    </g>
+    <rect class="board" x="232" y="92" width="64" height="4"/><text class="s" x="232" y="112">доска</text>
+    <rect class="ext" x="256" y="168" width="8" height="5"/>
+    <circle class="start" cx="320" cy="140" r="9"/><path class="start" d="M314 128 L320 116 L326 128 Z"/>
+    <text class="s" x="336" y="144">игрок появляется лицом к 101, лестница за спиной</text>
+    <text class="s" x="0" y="292">длина 14,6 м (торцы за 0,4 м от крайних дверей); 9 комнат; номера растут от входа в обе стороны; таблички на дверях</text>
+  </g>
+
+  <!-- legend -->
+  <g transform="translate(700 420)">
+    <text class="h" x="0" y="10">Обозначения</text>
+    <rect class="door" x="0" y="24" width="24" height="8"/><text class="t" x="34" y="33">дверь (одинаковая везде)</text>
+    <rect class="plaque" x="0" y="46" width="8" height="6"/><text class="t" x="34" y="53">табличка у замка (только А; в Б — на двери)</text>
+    <rect class="board" x="0" y="66" width="24" height="5"/><text class="t" x="34" y="73">доска с планшеткой</text>
+    <rect class="ext" x="0" y="86" width="8" height="6"/><text class="t" x="34" y="93">огнетушитель</text>
+    <circle class="start" cx="6" cy="112" r="6"/><text class="t" x="34" y="116">где появляется игрок</text>
+    <text class="s" x="0" y="146">пролёт = 3,2 м = ширина комнаты 1</text>
+    <text class="s" x="0" y="164">ширина коридора 1,8 м</text>
+  </g>
+</svg>

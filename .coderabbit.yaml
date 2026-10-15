@@ -1,0 +1,64 @@
+# CodeRabbit, the reviewer from outside: it reviews each pull request from a window's branch into room-polish
+# (GitHub flow: a branch, a pull request, a review, a merge), against the repository's rules. It closes its
+# remarks only from a pull request's own comments (docs.coderabbit.ai/guides/commands), so the earlier long-lived
+# review window into the branch `reviewed` never emptied. It changes nothing on its own: main changes only on
+# the owner's word.
+# Keys: https://docs.coderabbit.ai/reference/configuration (schema: coderabbit.ai/integrations/schema.v2.json)
+language: en-US                      # the repository is English; the owner hears about it in Russian from the assistant
+reviews:
+  profile: chill
+  high_level_summary: true
+  high_level_summary_in_walkthrough: true
+  request_changes_workflow: false    # never approves anything by itself
+  commit_status: true                # each pull request shows whether the review of its last push has finished;
+  review_progress: false             # the schema uses commit_status only with this off (check runs instead)
+  auto_review:
+    enabled: true
+    drafts: false
+    auto_incremental_review: true
+    auto_pause_after_reviewed_commits: 0   # every push of a pull request is read, not the first five
+    base_branches:
+      - "^room-polish$"                   # main is the default and is reviewed anyway; each window's pull request targets this one
+  finishing_touches:                 # each of these pushes code or opens pull requests
+    docstrings:
+      enabled: false
+    unit_tests:
+      enabled: false
+    autofix:
+      enabled: false
+    simplify:
+      enabled: false
+    fix_ci:
+      enabled: false
+    resolve_merge_conflict:
+      enabled: false
+  path_instructions:
+    - path: "src/**"
+      instructions: >-
+        Plain ES modules for a WebXR game (A-Frame, three.js), no build step. Player-facing text lives only in
+        texts.ru.js files and styles only in css/; the engine (src/engine) never imports a room (src/rooms).
+        Every comment says why, never when or who. Files stay about 300 lines. Lights in a scene come from
+        the scene's own lamps, never a light that exists only to brighten one object. Quest 2 frame budget:
+        flag anything that adds draw calls or per-frame allocations.
+    - path: "src/rooms/**"
+      instructions: >-
+        Each room re-creates a published psychology experiment faithfully. A number, a procedure step or a
+        claim shown to the player must match the paper named in the room's card (docs/cards); flag any that has
+        no source in the code's WHY comments or docs/sources.md.
+    - path: "tools/**"
+      instructions: >-
+        Laptop tools on Windows 10 (PowerShell 5.1 and Git Bash). Flag anything that would run Playwright or
+        Chromium on the laptop, push to main, write to the live database, or print a key or token.
+  tools:
+    markdownlint:
+      enabled: false                 # the docs keep long lines on purpose (one row per line)
+    languagetool:
+      enabled: false                 # the docs quote Russian; an English grammar check only adds noise
+chat:
+  auto_reply: false                  # public repository: it answers only when asked by name
+knowledge_base:
+  code_guidelines:
+    enabled: true
+    filePatterns:                    # CLAUDE.md is read by default; its import is not followed
+      - "docs/owner-decisions.md"
+      - "ARCHITECTURE.md"
