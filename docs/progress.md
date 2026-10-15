@@ -36,7 +36,8 @@ Errors of mine: I gave him a technical choice (the cut); I named each allow wind
 and missed docs/mistakes.md; a shell heredoc ate backslashes twice before I wrote the draft as a file; Russian in
 four files outside the allowed list (caught by the structure test).
 Next (his words on the board, 15.10: CodeRabbit set up fully now, not window after window): 1) CodeRabbit set up
-fully from docs.coderabbit.ai read in that window, its plan and price first; 2) his answer on the allow windows
+fully from docs.coderabbit.ai read in that window, its plan and price first (90 $ a month is too much for him now:
+2-3 plans with what each gives and costs, as plain options); 2) his answer on the allow windows
 (asked at this window's end); 3) a copy cut from main brought up by the machine itself; then the hand-over's order
 (GitHub by his clicks, his 21.10 date, the map with his questions: why each choice among all that exists, the part
 "me" from Anthropic's sources and our own record).
