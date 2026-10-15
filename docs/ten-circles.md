@@ -1,12 +1,13 @@
 # Our words
 
-Approved by the owner word for word («Утверждаю» 14.10; how it came: docs/owner-decisions-history-2.md). Imported
-by CLAUDE.md, which loads at every session start and after every compaction: one copy (his choice of 14.10).
+Approved by the owner word for word («Утверждаю» 14.10; how it came: docs/owner-decisions-history-2.md); one copy,
+imported by CLAUDE.md (his choice of 14.10).
 Changed only by his «утверждаю»; 15.10: the list of ten circles archived (it did not lower my errors), «Принимаю N»
 added.
 
 Мои слова:
 «Принял» — я получил твоё сообщение. Это не согласие и не обещание.
+«Понял так: …» — итог твоих слов одной строкой перед делом, с кнопками; решение ты нажимаешь, а не диктуешь.
 «Выполняю: …» — что именно я сейчас делаю, одной строкой. Дальше идёт само действие.
 «Не могу: … потому что …»
 «Проверено: чем → что показало». «Не проверено: …»

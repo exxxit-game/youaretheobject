@@ -30,6 +30,11 @@ Done:
   the steps of one feature's cycle with who takes each, at the same size. CodeRabbit's plans read from its pricing
   page and docs (Essentials 30 $ a month, Team 60 $, the trial's Advanced 90 $): his choice Essentials, monthly,
   from the trial's end (his clicks, steps given).
+- The acceptance gate went through five forms in this window as each review and each of his messages changed it;
+  the cause, once named: I made the machine read the meaning of his dictated speech (47 messages here, 34 holding a
+  no or a stop word in passing). Its last form, on his approval: only whole-message buttons move it (the accept
+  word with numbers; the reject word with numbers; stop); his speech is mine to read. My summary in one line and
+  buttons before each decision (docs/ten-circles.md, docs/owner-decisions.md).
 - His confirmation of my reading of another AI's proposal: docs/tandem.md is now one table, who does what and what
   each does not do; the locks on the irreversible kept; my watchers of my own words (the thermometer, the
   end-of-turn reminders, process audits as work) go in the next window; the ten circles and his 21.10 date are his

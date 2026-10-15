@@ -1,8 +1,5 @@
 # The tandem: who does what, and what each does not do
 
-Why split so: a human and AI pair does worse on average than the better of the two, and gains where the human is
-better at the task (Vaccaro et al. 2024, Nature Human Behaviour).
-
 | Who | Does | Does not |
 |---|---|---|
 | He | what the game should be; looks in the headset; his accept word with the number (CLAUDE.md step 5), "not", "stop"; money and logins | read code, judge rules |

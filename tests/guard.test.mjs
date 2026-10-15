@@ -436,8 +436,11 @@ assert.ok(worstStart < 10000, `on the worst day the start would print ${worstSta
   assert.equal(gate({ a: true, b: true, c: true }), 1, 'two features passed on his «Принимаю» of one of them');
   said([1, 'Принимаю 1 и 2']);
   assert.equal(gate({ a: true, b: true, c: true }), 0, 'his «Принимаю» of two features did not count for both');
-  said([1, 'Принимаю 1'], [0.5, 'Подожди, стоп']);
-  assert.equal(gate({ a: true, b: false, c: true }), 1, 'a «стоп» later in his message did not take back his «Принимаю 1»');
+  // only the buttons move the gate: his dictated speech doubts aloud, and its words are read by me, not the machine
+  said([1, 'Принимаю 1'], [0.5, 'Подожди, стоп, нет, не то']);
+  assert.equal(gate({ a: true, b: false, c: true }), 0, 'words of his speech took back his «Принимаю 1»: only the buttons move the gate');
+  said([1, 'Принимаю 1'], [0.5, 'Стоп']);
+  assert.equal(gate({ a: true, b: false, c: true }), 1, 'his «Стоп» did not take back his «Принимаю 1»');
   said([1, 'Принимаю не принимаю 1']);
   assert.equal(gate({ a: true, b: false, c: true }), 1, 'a message that took itself back counted as his acceptance');
   said([1, 'Свет хороший. Принимаю 1']);
@@ -454,7 +457,7 @@ assert.ok(worstStart < 10000, `on the worst day the start would print ${worstSta
   said([1, 'Принимаю 1'], [0.5, 'да, давай']);
   assert.equal(gate({ a: true, b: false, c: true }), 0, 'a short «да» to something else took back his «Принимаю 1»');
   said([1, 'Принимаю 1'], [0.5, 'Принимаю, но свет надо поменять везде']);
-  assert.equal(gate({ a: true, b: false, c: true }), 1, 'a «Принимаю» he qualified after it still counted');
+  assert.equal(gate({ a: true, b: false, c: true }), 0, 'a sentence of his speech moved the gate');
   said([1, 'Принимаю 1'], [0.5, 'Не принимаю 1']);
   assert.equal(gate({ a: true, b: false, c: true }), 1, 'a «Принимаю» he took back with «Не принимаю» counted');
   said([1, 'Принимаю 1']);
@@ -466,8 +469,8 @@ assert.ok(worstStart < 10000, `on the worst day the start would print ${worstSta
   said();
   assert.equal(first(''), 0, 'a commit with no list anywhere was stopped');
   assert.equal(first(list({ a: true })), 1, 'a first list that came in passing went through with no «да» of his');
-  said([1, 'Принимаю 1'], [0.5, 'нет, свет не тот']);
-  assert.equal(gate({ a: true, b: false, c: true }), 1, 'a «Принимаю» he took back with «нет» counted');
+  said([1, 'Принимаю 1'], [0.5, 'Не принимаю 1.']);
+  assert.equal(gate({ a: true, b: false, c: true }), 1, 'a «Принимаю» he took back with «Не принимаю 1.» counted');
   said([4, 'Принимаю 1']);
   assert.equal(gate({ a: true, b: false, c: true }), 1, 'a «Принимаю» four hours old counted');
   said([0.2, 'Принимаю 1, хотя это совсем не то, что я хотел']);
