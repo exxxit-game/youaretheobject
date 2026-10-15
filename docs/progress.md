@@ -26,12 +26,12 @@ Done:
   windows on guards and process files removed (.claude/settings.json ask rules); kept on his words
   (docs/owner-decisions.md, docs/ten-circles.md, .claude/rules/). His decision's line in docs/owner-decisions.md,
   CLAUDE.md's line made true, the whole record off the repository (owner-decisions-history-2.md).
-Checked: npm test green; tools/prove-guards.mjs: all 52 guards saw their mistake; a real commit through the hook
-in a temporary clone (an unbound yes and one bound to another feature stopped, one bound to it passed); the prompt
-hook on a copy of the previous window's 11.6 MB transcript (nothing bound as it is, my closing question bound, his
-text alone logged, under half a second).
-Not checked: everything acts only after the merge and the main folder's pull; whether a click on the box's button
-writes an enqueue (if not, he types his yes); the first real yes (the floor directory).
+Checked (the numbered word, after the transcript reading went): npm test green; tools/prove-guards.mjs: all 52
+guards saw their mistake; a real commit through the hook in a temporary clone turning the floor directory (number
+3) to passing: a plain yes stopped, the accept word with 4 stopped, with 3 passed.
+Not checked: everything acts only after the merge and the main folder's pull; the first real acceptance (the floor
+directory); whether voice input writes the number as a digit (a number in words binds nothing).
+Also: npm test stopped on five papers the self-study saved with no library record; records added, the index rebuilt.
 Found: why the window opened without its rules: the app's base branch main; the start hook takes main's 4 commits
 (they change no file against room-polish) for the window's own work and only warns; the old CLAUDE.md loads first.
 CodeRabbit: a note pasted by him from an earlier window says the free plan after 23.10; his screenshot of its
