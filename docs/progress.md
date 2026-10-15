@@ -41,9 +41,11 @@ the four windows; of the tandem's four rows one built. What caught my errors was
 claims wider than their evidence), CodeRabbit (six holes in the gate and one unclear stop message, fixed in 848ab71, 8f9ee1f, 7e7729d and e6aa377), ChatGPT's
 analysis brought by an experienced person he knows (a privacy promise the code breaks, confirmed in
 src/rooms/01-control/room.js:198). Its conclusion, the audit's and the premortem's agree: the tools outrun the game.
-Next: the PR's review and merge, the main folder pulled; then the map of every part he asked for (the anthill: each
-part's job for the one goal, what holds it, why it was chosen, what is open), from his artifacts, the board, the
-audit and outside experience; then rows 2 and 4, Qwen Coder, the letter to Anthropic, in the order he picks on it.
+Next (his order of 15.10; the four windows reconciled, the husk left out:
+objekt-files/notes/tandem-2026-10-15/next-window-2026-10-15.md): a new window he opens himself; 1) GitHub's security
+switches by his clicks, then Supabase's two-factor sign-in and Spend Cap; 2) his 21.10 check date as plain options;
+3) CodeRabbit's rules for docs; 4) the map, the anthill, with the cut candidates; 5) ChatGPT with Codex as the
+outside reviewer once he buys it (Qwen paused); 6) the game: the privacy page's promise, then the floor directory.
 
 ## 2026-10-15, morning — the tandem, step 1: the thermometer, his measure by machine, the tandem loaded
 On his words after the audit (the split of the work between him, me, us both and the other tools; he cannot keep
