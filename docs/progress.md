@@ -38,7 +38,7 @@ called two pages identical and counted 8 rebuilds (all named to him there); the 
 Measured at his question whether four windows did the one task (15.10, his local day): 0 commits to the game, 62 to
 the process (git, tools/board.mjs's split); 3 of 12 features passing, as the day before; his 117 typed messages in
 the four windows; of the tandem's four rows one built. What caught my errors was outside eyes: two fact-checkers (9
-claims wider than their evidence), CodeRabbit (4 real holes in the gate, fixed in 848ab71 and 8f9ee1f), ChatGPT's
+claims wider than their evidence), CodeRabbit (six holes in the gate and one unclear stop message, fixed in 848ab71, 8f9ee1f, 7e7729d and e6aa377), ChatGPT's
 analysis brought by an experienced person he knows (a privacy promise the code breaks, confirmed in
 src/rooms/01-control/room.js:198). Its conclusion, the audit's and the premortem's agree: the tools outrun the game.
 Next: the PR's review and merge, the main folder pulled; then the map of every part he asked for (the anthill: each
