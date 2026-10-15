@@ -80,8 +80,8 @@ Errors of mine, named to him: a word our circles ban ("done") on the page and Me
 saying npm test was green while it was red (steps chained with `;`, corrected in the thread; the cause, a paper
 saved without a record, fixed in 58feb5d).
 Not done and why: the average of "you vs others" is computed on every call, while his yes of 12.10 was to batches
-of at least 10 (0011_doors.sql; a migration, on his word); the monthly update check's first run waits in its own
-window since 23:00 14.10 (he has to answer it there); questions 2-4 of the page and the future's nine decisions wait
+of at least 10 (0011_doors.sql; a migration, on his word); the monthly update check's first run stopped after two
+commands at 23:00 14.10 and made no page (why: not checked; that it waits for his permission was my guess); questions 2-4 of the page and the future's nine decisions wait
 for him, one at a time; the GitHub actions' pinning and versions wait for the benefit-and-harm weighing.
 Next: 0) PR #16: CodeRabbit's review answered, merged, the main folder pulled; then, in a new window, check that
 the 36 Meta skills and the tandem show (or not) in its listing. 1) The page's queue, one question at a time:
