@@ -17,9 +17,7 @@
 //   stop: a turn does not end while work is unsaved or not on GitHub, or the main folder lacks it,
 //         or a command has run under Claude Code longer than ten minutes (tools/leftovers.mjs)
 //   start: a copy behind room-polish is brought up to it; loaded: what Claude Code really loads is noted
-//   accepted: a feature passes only on his «да» in his log
-//   prompt: his messages are logged; he sees his measure once a window, and a file CLAUDE.md names
-//         that did not load, or loaded before the copy was brought up
+//   prompt: his messages are logged; his measure and what did not load go to me to say to him
 // Imported with no mode (tests/guard.test.mjs), it only defines refusal(), readOnlySql() and imports().
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
@@ -39,7 +37,7 @@ const input = mode ? await new Promise((done) => {
   let s = '';
   process.stdin.on('data', (c) => { s += c; }).on('end', () => done(s));
 }) : '';
-const event = (() => { try { return JSON.parse(input || '{}'); } catch { return {}; } })();
+const event = mode === 'accepted' ? { cwd: process.cwd() } : (() => { try { return JSON.parse(input || '{}'); } catch { return {}; } })();
 const stop = (why) => { process.stderr.write(`${why}\n`); process.exit(2); };
 // The checkout the session works in: Claude Code runs this script from the folder the session was
 // opened in (the main folder), while the work sits in the session's own worktree, named by the
@@ -431,11 +429,12 @@ if (mode === 'loaded') { note({ f: String(event.file_path || '') }); process.exi
 
 const gitHere = (...a) => { try { return execFileSync('git', a, { cwd: HERE, env: withoutGitVars(), encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim(); } catch { return null; } };
 
-// accepted (tools/hooks/pre-commit pipes in the staged list): "passes" turns true only on his «да» (CLAUDE.md
-// step 5) in his log (a pasted "## " is shifted): «да» and two words at most, in 3 hours, no «нет» or «стоп» after
+// accepted (tools/hooks/pre-commit; stdin the staged list, never an event naming a folder): a feature passing or
+// gone needs his «да» in his log (CLAUDE.md step 5; a pasted "## " shifted): «да» and two words at most, 3 hours,
+// no «нет» or «стоп» after; an unreadable list stops but at HEAD's birth
 if (mode === 'accepted') {
-  const off = (f) => { try { return JSON.parse(f()).features.filter((x) => !x.passes).map((x) => x.id); } catch { return null; } };
-  const now = off(() => input), was = off(() => gitHere('show', `HEAD:${FEATURES}`));
+  const list = (f) => { try { return JSON.parse(f()).features; } catch { return null; } };
+  const now = list(() => input), was = list(() => gitHere('show', `HEAD:${FEATURES}`));
   let yes = false;
   try {
     for (const m of fs.readFileSync(LOG, 'utf8').split('\n## ')) {
@@ -443,8 +442,8 @@ if (mode === 'accepted') {
       if (Date.parse(m.split(' ')[0]) > Date.now() - 108e5 && /^(да|нет|стоп)$/.test(w[0])) yes = w[0] === 'да' && w.length < 4;
     }
   } catch { /* no log */ }
-  // none at HEAD: a first commit; a broken list stops even on «да»
-  process.exit(!was || (now && (yes || was.every((id) => now.includes(id)))) ? 0 : 1);
+  const moved = was?.some((w) => !now?.some((n) => n.id === w.id && (w.passes || !n.passes)));
+  process.exit(gitHere('rev-parse', '-q', '--verify', 'HEAD') === null || (now && was && (yes || !moved)) ? 0 : 1);
 }
 
 // start: Claude Code adds this output to the context at startup, at resume and after each compaction.

@@ -410,14 +410,17 @@ assert.ok(worstStart < 10000, `on the worst day the start would print ${worstSta
   const log = path.join(dir, 'Documents', 'objekt-files', 'notes', 'owner-messages.md');
   fs.mkdirSync(path.dirname(log), { recursive: true });
   const said = (...m) => fs.writeFileSync(log, `# log\n${m.map(([h, t]) => `\n## ${new Date(Date.now() - h * 36e5).toISOString()} S\n${t}\n`).join('')}`);
-  // the staged list comes on stdin, as the hook pipes it; cwd names the repository whose HEAD it is compared with
-  const gate = (passes) => spawnSync(process.execPath, [path.join(ROOT, 'tools/claude-guard.mjs'), 'accepted'], { encoding: 'utf8', env, input: JSON.stringify({ cwd: repo, ...JSON.parse(list(passes)) }) }).status;
+  // the staged list comes on stdin, as the hook pipes it, run in the repository's own folder as git runs a hook
+  const raw = (text) => spawnSync(process.execPath, [path.join(ROOT, 'tools/claude-guard.mjs'), 'accepted'], { cwd: repo, encoding: 'utf8', env, input: text }).status;
+  const gate = (passes) => raw(list(passes));
   said();
   assert.equal(gate({ a: false, b: false, c: true }), 0, 'a commit with no feature turned to passing was stopped');
   assert.equal(gate({ a: true, b: false, c: true }), 1, 'a feature turned to passing with no «да» of his');
   assert.equal(gate({ a: false, c: true }), 1, 'a feature left the list with no «да» of his');
-  const raw = (text) => spawnSync(process.execPath, [path.join(ROOT, 'tools/claude-guard.mjs'), 'accepted'], { encoding: 'utf8', env, input: text }).status;
   assert.equal(raw(JSON.stringify({ cwd: repo })), 1, 'a staged list with no features in it passed');
+  assert.equal(gate({ a: false, b: false }), 1, 'a passing feature left the list with no «да» of his');
+  // a list naming another folder is still compared with this repository's HEAD
+  assert.equal(raw(JSON.stringify({ cwd: os.tmpdir(), ...JSON.parse(list({ a: true, b: false, c: true })) })), 1, 'a staged list chose the repository it is compared with');
   said([1, 'да, красиво']);
   assert.equal(gate({ a: true, b: false, c: true }), 0, 'his «да» an hour ago did not count');
   assert.equal(raw('{ broken'), 1, 'a broken staged list passed on his «да»');
