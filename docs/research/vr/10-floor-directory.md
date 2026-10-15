@@ -20,6 +20,49 @@ minutes, 10.10.2026). Marks as in `07-corridor-1979.md`: **opened**, **search**,
   1 Oct 1970, Tampa (USF Digital Commons, Gandy 29_0750, CC BY-NC 3.0),
   https://digitalcommons.usf.edu/gandy_commercial/10844 : a weathered wooden board on a white wall, the names
   on dark embossed label-tape strips (Dymo-style) with numbers. A commercial building, not a university one.
+  On this site an image's number (/NNNN/preview.jpg) is not its record's number, so a preview does not check a
+  record (16.10).
+
+## 1a. Period photos found 16.10 (the owner and two helpers; each image looked at)
+
+Shown to the owner as one page: https://claude.ai/artifact/JjV8FUgjbXgaLJr9KR9Kbc (private). Images and notes:
+the side-session notes folder of 15.10 (floor-directory/, from-owner/, floor-directory-photos-2.md).
+
+- Form A, changeable white letters on black grooved felt behind glass:
+  - Pepperdine College, Academic Life Building, 1965 (archive date; a "Dean of Ethnic Studies" line may mean
+    about 1969-70, unverified): two cases side by side facing a stair (its rail in the glass); header "PEPPERDINE
+    COLLEGE / WELCOMES YOU", office left, room right, sub-header "ACADEMIC DEPARTMENTS"; bottom edge at a
+    student's shoulder. https://calisphere.org/item/49424119f845bb08a48b3f6ce38dbf65/ (non-commercial, credit)
+  - University of Tennessee at Chattanooga, Founders Hall, 1970-74: one board in a light frame on a brick pier by a
+    door; "ADMINISTRATIVE OFFICES" and 16 lines, office left, room right; about 32 x 21 in (estimate from brick).
+    https://digital-collections.library.utc.edu/digital/collection/p16877coll50/id/1673 (CC BY-NC 4.0)
+  - Washington State University, Johnson Hall foyer, 13 Feb 1969 (DPLA's record of the WSU photo): a light band
+    "DIRECTORY" over a dark panel of columns, on the lobby wall by the corridor, over a narrow shelf.
+    https://content.libraries.wsu.edu/digital/collection/p16866coll20/id/27590 (copyright not evaluated)
+  - Texas and Pacific Railway office building, Fort Worth, 29 Feb 1976 (written under the print): a tall
+    glazed directory in a metal frame, header plaque, dark panels in three columns.
+    https://texashistory.unt.edu/ark:/67531/metapth853161/
+  - U.S. Courthouse, Portland OR, HABS OR-134-30, survey dated April 20, 1983 (its data pages; the judges named
+    fit 1980-84): "DIRECTORY" plaque over glass doors, four columns, in the 1933 bronze frame.
+    https://www.loc.gov/resource/hhh.or0141.photos/?sp=30 (public domain)
+  - Gandy photographs, Tampa, record not identified (the image numbers below are not record numbers): two boards
+    in plain light frames on stone under the letters "EXCHANGE NATIONAL", date unknown,
+    https://digitalcommons.usf.edu/gandy_commercial/11609/preview.jpg ; an elevator lobby with a large board high
+    on the back wall, people for scale, https://digitalcommons.usf.edu/gandy_commercial/12485/preview.jpg (the
+    owner's search list titled it "Elevator Lobby at Tampa Marine Bank", 1960: not matched to a record).
+  - Catalogs: Rubberline, about 1965 (archive.org TNM_Rubberline_changeable_letter_signs_-_Aluminum_20170922_0650):
+    "Style C, 20" x 30"" glass-door directory, 1, 3/4 and 1/2 in letters, its sample grouped by "2ND FLOOR",
+    "3RD FLOOR"; Nelson-Harkins 1960 (archive.org nelsonharkinsindustriesinc.77): black felt unless specified,
+    letters 1/4 to 2 in, stock sizes 12 x 15 to 34 x 48 in.
+- Form B, fixed engraved plates: BEST Mfg. catalog, "7-59" (archive.org bestmanufacturingcompany80): VA hospital
+  Topeka, 36 x 54 in, wood panel, dark plates with white capitals, name plate and room-number plate per line, "1"
+  Moderne-C style letters on a 2" high plate"; the same Tampa elevator lobby (image 12484/preview.jpg, record not
+  identified): one dark plate per firm on the piers.
+- Both forms by role, August 1979: DTIC ADA202855, "An Interior Signage System for the USAF Academy Hospital"
+  (archive.org, item "DTIC ADA202855", public domain): the one main directory at the entrance is "a framed vinyl-covered
+  board with changeable letters"; floor directories at the elevators and stairs are frames with inserted panels,
+  e.g. a 22" x 14" frame of 2" x 14" panels, "Blue/White", flat on the wall, with arrows (Appendix F, Table 1);
+  its floor plans put two stair-and-elevator cores at the building's ends.
 
 ## 2. Sizes, colours, mounting
 
@@ -80,9 +123,8 @@ minutes, 10.10.2026). Marks as in `07-corridor-1979.md`: **opened**, **search**,
 
 ## Gaps and next steps
 
-1. No period photo or 1970s catalog page of a directory board (Tablet & Ticket, Nelson-Harkins,
-   Gaylord, Demco). Next: archive.org full-text search for "directory boards" "changeable
-   letters" (the search page did not render in the browser pane); Sweet's Catalog File 1975-80.
+1. Form A is covered (1a). Form B has no dated 1965-85 photo; Means Square Foot Costs 1983 lists directory
+   board sizes (archive.org isbn_0911950540, lending only, not opened).
 2. NFPA 101-1976 and BOCA 1978 text on stair identification: not found online.
 3. The Local Law 5/1973 text itself (only the 1974 directive and today's code were read).
 
