@@ -1,7 +1,7 @@
 # The tandem: who does what, and what each does not do
 
-Why split so: a human and AI pair does worse than the better of
-the two unless each takes the part he is better at (Vaccaro et al. 2024, Nature Human Behaviour).
+Why split so: a human and AI pair does worse on average than the better of the two, and gains where the human is
+better at the task (Vaccaro et al. 2024, Nature Human Behaviour).
 
 | Who | Does | Does not |
 |---|---|---|
@@ -13,5 +13,6 @@ the two unless each takes the part he is better at (Vaccaro et al. 2024, Nature 
 | Locks | stop the irreversible: the live database, the live site, the headset on his head, keys, the papers library | watch my words |
 | The headset | the one place the game is seen as it is | |
 
-The chain: he says what is needed, I build, tests, CodeRabbit, my look, his look, his accept word. What he pastes
+The chain: he says what is needed, I build, tests, CodeRabbit, the reviewers (tools/review-gate.mjs), my look, his
+look, his accept word. What he pastes
 from other AIs is a lead, checked before use. Answer him in Russian, plain words, short.

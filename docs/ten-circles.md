@@ -2,9 +2,8 @@
 
 Approved by the owner word for word («Утверждаю» 14.10; how it came: docs/owner-decisions-history-2.md). Imported
 by CLAUDE.md, which loads at every session start and after every compaction: one copy (his choice of 14.10).
-Changed only by his «утверждаю». Changed 15.10 by his «Утверждаю»: the list of ten circles went to the archive (as
-text it did not lower my errors: 32.8 per 100 of his messages before it, 45.8 after; docs/progress.md), the words
-stay, «Принимаю N» and «Не принимаю N» added; «стоп» lost its circle number with the list.
+Changed only by his «утверждаю»; 15.10: the list of ten circles archived (it did not lower my errors), «Принимаю N»
+added.
 
 Мои слова:
 «Принял» — я получил твоё сообщение. Это не согласие и не обещание.

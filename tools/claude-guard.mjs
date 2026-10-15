@@ -430,23 +430,23 @@ if (mode === 'loaded') { note({ f: String(event.file_path || '') }); process.exi
 const gitHere = (...a) => { try { return execFileSync('git', a, { cwd: HERE, env: withoutGitVars(), encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim(); } catch { return null; } };
 
 // accepted (tools/hooks/pre-commit; stdin: the staged list): a feature passing that was not, or gone, needs his
-// «Принимаю N» in his log (CLAUDE.md step 5), N its number in the list, as his «Утверждаю N» names a text: the word
-// first, two words more at most, 3 hours; a «нет», «не», «стоп» or a longer «Принимаю» after it takes back every one
-// before; no list at HEAD nor staged: nothing to hold; a staged list that will not read stops
+// «Принимаю N» (CLAUDE.md step 5) in 3 hours, N right after it, numbered in HEAD's list (it still holds a dropped
+// feature; so no reorder in the same commit); a «нет», «не», «стоп» or a longer «Принимаю» takes back all before
 if (mode === 'accepted') {
   const list = (f) => { try { return JSON.parse(f()).features; } catch { return null; } };
   const now = list(() => input), was = list(() => gitHere('show', `HEAD:${FEATURES}`)), n = was || now || [];
+  const order = (l) => (l || []).map((f) => f.id).filter((id) => was?.some((f) => f.id === id) && now?.some((f) => f.id === id)).join();
   const yes = new Set();
   try {
     for (const m of fs.readFileSync(LOG, 'utf8').split('\n## ')) {
       const said = m.slice(m.indexOf('\n') + 1), w = said.toLowerCase().match(/[а-яё]+/g) || [];
       if (!(Date.parse(m.split(' ')[0]) > Date.now() - 108e5)) continue;
       if (/^(нет|не|стоп)$/.test(w[0]) || (w[0] === 'принимаю' && w.length > 3)) yes.clear();
-      else if (w[0] === 'принимаю') for (const k of said.match(/\d+/g) || []) yes.add(n[k - 1]?.id);
+      else if (w[0] === 'принимаю') for (const k of said.match(/принимаю((?:[\s,]+(?:и\s+)?\d+)+)/i)?.[1].match(/\d+/g) || []) yes.add(n[k - 1]?.id);
     }
   } catch { /* no log */ }
   const moved = [...(now || []).filter((n) => n.passes && !was?.some((w) => w.id === n.id && w.passes)), ...(was || []).filter((w) => !now?.some((n) => n.id === w.id))];
-  process.exit((!was && !input.trim()) || (now && moved.every((f) => yes.has(f.id))) ? 0 : 1);
+  process.exit((!was && !input.trim()) || (now && order(now) === order(was) && moved.every((f) => yes.has(f.id))) ? 0 : 1);
 }
 
 // start: Claude Code adds this output to the context at startup, at resume and after each compaction.
