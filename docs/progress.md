@@ -39,7 +39,11 @@ Errors of mine: I gave him a technical choice (the cut); I named each allow wind
 (his words: zero knowledge of it); the plan's first draft bound any mention of a feature, counted 2 023 for 1 991
 and missed docs/mistakes.md; a shell heredoc ate backslashes twice before I wrote the draft as a file; Russian in
 four files outside the allowed list (caught by the structure test).
-Next (his words on the board, 15.10: CodeRabbit set up fully now, not window after window): 1) CodeRabbit set up
+Next (his words on the board, 15.10: the process breaks instead of being set up; a tandem where every action is
+distributed by points, who does what, when, why; CodeRabbit set up fully now): 0) every action of the process by
+points (who: he, I, the machine, outside eyes; when; why; what holds it), built from what exists (a RACI matrix,
+research on human and AI teams, my weak spots from Anthropic's docs and our error record), his part only what he
+sees, money and logins; CodeRabbit one of its rows; 1) CodeRabbit set up
 fully from docs.coderabbit.ai read in that window, its plan and price first (90 $ a month is too much for him now:
 2-3 plans with what each gives and costs, as plain options); 2) the allow windows: done at this
 window's end, by his choice; 3) a copy cut from main brought up by the machine itself; then the hand-over's order
