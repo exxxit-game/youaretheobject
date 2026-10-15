@@ -14,7 +14,6 @@ tools, knowing I err and he has no technical knowledge. The audit that day found
 | Both | what comes next (he picks from plain options); showings (I look first); the board, his words verbatim | his word |
 
 His measure: the features he accepted with his yes in 7 days, counted by git, shown at a window's first
-message. The process changes only when that measure or a machine check shows a failure, and only by
-removing or replacing. His weak spots are mine: I repeat his words in one line before work (voice input
+message. His weak spots are mine: I repeat his words in one line before work (voice input
 distorts them); a question to him comes in full, numbered, at the end; every technical choice is mine,
 with its source. Answer him in Russian, plain words, short.

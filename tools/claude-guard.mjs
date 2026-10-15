@@ -47,11 +47,11 @@ const HERE = (() => {
   try { return execFileSync('git', ['rev-parse', '--show-toplevel'], { cwd: event.cwd || ROOT, env: withoutGitVars(), encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim(); } catch { return ROOT; }
 })();
 
-// What Claude Code loads with a memory file (code.claude.com/docs/en/memory, "Import additional files"):
+// What Claude Code loads with a memory file (code.claude.com/docs/en/memory):
 // @path outside code, ending at the first space no backslash escapes, relative to its file, 4 hops deep
 export function imports(file, hops = 4) {
   let t = '';
-  try { t = fs.readFileSync(file, 'utf8').replace(/^(`{3,}|~{3,})[^]*?^\1/gm, '').replace(/`[^`\n]*`/g, ''); } catch { return []; }
+  try { t = fs.readFileSync(file, 'utf8').replace(/^(`{3,}|~{3,})[^]*?^\1/gm, '').replace(/(`+)(?!`)[^]*?[^`]\1(?!`)/g, ''); } catch { return []; }
   const found = [...t.matchAll(/(?:^|\s)@((?:\\ |\S)+)/g)].map((m) => path.resolve(path.dirname(file), m[1].replace(/\\ /g, ' ')));
   return hops > 1 ? found.flatMap((f) => [f, ...imports(f, hops - 1)]) : found;
 }
@@ -534,11 +534,11 @@ if (mode === 'prompt') {
     me.push(`Shown to him: ${took} accepted in 7 days; yesterday ${game} game commits, ${proc} process.`);
     note({ measure: 1 });
   }
-  // the thermometer: what really loaded against what CLAUDE.md names (its text passed "@docs/tandem.md.")
+  // the thermometer: what really loaded against what CLAUDE.md names, after the latest catch-up
   const loads = mine.filter((l) => l.f);
   if (!loads.length) me.push('No instruction load recorded yet (InstructionsLoaded).');
   else {
-    const key = (f) => f.replace(/\\/g, '/').toLowerCase(), up = mine.find((l) => l.caughtUp)?.t ?? 0;
+    const key = (f) => f.replace(/\\/g, '/').toLowerCase(), up = Math.max(0, ...mine.filter((l) => l.caughtUp).map((l) => l.t));
     const last = (f) => Math.max(-1, ...loads.filter((l) => key(l.f) === key(f)).map((l) => l.t));
     const md = path.join(HERE, 'CLAUDE.md'), want = [md, ...imports(md)];
     const names = (l) => l.map((f) => path.relative(HERE, f).replace(/\\/g, '/')).join(', ');

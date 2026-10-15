@@ -344,7 +344,7 @@ assert.ok(worstStart < 10000, `on the worst day the start would print ${worstSta
   assert.deepEqual(gone, [], `CLAUDE.md imports a name with no file behind it, which loads nothing: ${gone.join(', ')}`);
   assert.ok(imports(md).some((f) => f.endsWith(path.join('docs', 'tandem.md'))), 'CLAUDE.md no longer imports docs/tandem.md');
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'imports-'));
-  fs.writeFileSync(path.join(dir, 'CLAUDE.md'), 'Who errs: @docs/tandem.md. More.\nCode: `@not/this.md`, a@mail.com\n```\n@nor/this.md\n```\n');
+  fs.writeFileSync(path.join(dir, 'CLAUDE.md'), 'Who errs: @docs/tandem.md. More.\nCode: `@not/this.md`, ``@nor/this.md``, a@mail.com\n```\n@nor/that.md\n```\n');
   assert.deepEqual(imports(path.join(dir, 'CLAUDE.md')).map((f) => path.relative(dir, f).replace(/\\/g, '/')), ['docs/tandem.md.'], 'an import is not read as Claude Code reads it');
   fs.rmSync(dir, { recursive: true, force: true });
 }
@@ -371,6 +371,13 @@ assert.ok(worstStart < 10000, `on the worst day the start would print ${worstSta
   load('C', all);
   fs.appendFileSync(path.join(dir, 'Documents', 'objekt-files', 'notes', 'instructions-loaded.jsonl'), `${JSON.stringify({ t: Date.now() + 1000, s: 'C', caughtUp: true })}\n`);
   assert.match(out('C').systemMessage || '', /загрузились до обновления копии/, 'files loaded before the copy was brought up were not told to him');
+  // two catch-ups: a load between them predates the copy now in use, so the latest one counts
+  const log = path.join(dir, 'Documents', 'objekt-files', 'notes', 'instructions-loaded.jsonl');
+  for (const [t, more] of [[1000, null], [2000, { caughtUp: true }], [3000, null], [4000, { caughtUp: true }]]) {
+    if (more) fs.appendFileSync(log, `${JSON.stringify({ t, s: 'D', ...more })}\n`);
+    else for (const f of all) fs.appendFileSync(log, `${JSON.stringify({ t, s: 'D', f })}\n`);
+  }
+  assert.match(out('D').systemMessage || '', /загрузились до обновления копии/, 'a load between two catch-ups passed as current');
   fs.rmSync(dir, { recursive: true, force: true });
 }
 
