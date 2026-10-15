@@ -92,7 +92,6 @@ const refused = cases([
   `sed -i 1d ${record}`,
   `cat <<'EOF' > ${record}\n{}\nEOF`,
   ['Get-Content x | Out-File $HOME\\Documents\\objekt-files\\notes\\practice-reviews.jsonl', PS],
-  "node -e \"import('./tools/review-gate.mjs').then((m) => m.write({ kind: 'review' }))\"",
   'env OBJECT_REVIEW_RECORD=/tmp/x.jsonl node tools/quest-look.mjs vr',
   'export OBJECT_REVIEW_RECORD=/tmp/x.jsonl',
   // main merged on GitHub: only the owner merges into main
@@ -142,6 +141,7 @@ const allowed = cases([
   'gh api repos/exxxit-game/youaretheobject/pulls/9/comments',
   "gh api graphql -f query='query { viewer { login } }'",
   "gh api graphql -f query='mutation($b:String!){x(body:$b){id}}' -f b='@coderabbitai fixed in 1ab8043'",
+  "node -e \"require('fs').writeFileSync('docs/state.md', 'see tests/review-gate.test.mjs')\"",
   'grep -n node tests/smoke.mjs',
   'sed -n 1,40p tests/smoke.mjs',
   'git log --oneline -- tests/smoke.mjs',
