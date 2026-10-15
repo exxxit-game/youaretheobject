@@ -1,4 +1,4 @@
-// Proves every guard sees its mistake. A test that passes says only that nothing broke the rule
+// A test that passes says only that nothing broke the rule
 // OR that the test cannot see it; the way to tell them apart is to plant the mistake and watch the
 // guard go red (mutation testing). Each case below plants exactly the mistake one guard exists
 // for, in a throwaway clone of the last commit, runs that guard, and puts the clone back.
@@ -94,7 +94,7 @@ const CASES = [
   ['claude-guard pre', 'data: read only', 'a write hidden behind a read on the live database', () => {}, () => askGuard('pre', { tool_name: 'mcp__db__execute_sql', tool_input: { query: 'select 1; delete from app.runs' } }), 'REFUSED'],
   ['claude-guard pre', 'data: read only', 'a write called from a read on the live database', () => {}, () => askGuard('pre', { tool_name: 'mcp__db__execute_sql', tool_input: { query: "select public.submit_run('{}'::jsonb)" } }), 'REFUSED'],
   ['settings deny', 'main only on the owner\'s word', 'files may be pushed to GitHub past the push hook', () => swap('.claude/settings.json', '"mcp__*__push_files",', ''), test('guard.test.mjs'), 'mcp__*__push_files'],
-  ['claude-guard start', 'the owner\'s decisions', 'a session starts without his decisions in front of it', () => fs.rmSync(at('docs/owner-decisions.md')), test('guard.test.mjs'), 'does not show the owner\'s decisions'],
+  ['guard test', 'the owner\'s decisions', 'a session starts without his decisions in front of it', () => fs.rmSync(at('docs/owner-decisions.md')), test('guard.test.mjs'), 'does not show the owner\'s decisions'],
   ['CLAUDE.md imports', 'the tandem', 'an import that loads nothing', () => swap('CLAUDE.md', '@docs/tandem.md', '@docs/tandem.md.'), test('guard.test.mjs'), 'no file behind it'],
 ];
 

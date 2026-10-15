@@ -1,8 +1,7 @@
 #!/bin/sh
 # A commit is checked in seconds, so saving often (the power is cut daily) costs nothing: nothing
 # private is staged (tools/secrets.mjs --staged), every staged script parses, and the quick tests
-# of npm test pass. The slow ones (SLOW: each takes over about 2 s) and the smoke test run in the
-# whole npm test before "done" and on GitHub. Set once per clone: git config core.hooksPath tools/hooks
+# of npm test pass. The slow ones (SLOW) run at push; all, and the smoke test, on GitHub. Set once per clone: git config core.hooksPath tools/hooks
 SLOW='structure review-gate'
 # not a check of what is committed: the library test reads the owner's papers folder, and papers a search
 # saved there stopped commits of the game; it runs in npm test
@@ -19,7 +18,6 @@ while IFS= read -r f; do
 done <<EOF
 $staged
 EOF
-# the quick tests, all at once: the test files npm test names, less the slow ones
 pids=''
 for t in $(grep -o 'node tests/[a-z0-9.-]*\.test\.mjs' package.json | cut -c6-); do
   case " $SLOW $NOT_COMMIT " in *" $(basename "$t" .test.mjs) "*) continue ;; esac

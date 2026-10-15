@@ -1,6 +1,5 @@
 #!/bin/sh
 # Before any push nothing private leaves this laptop (tools/secrets.mjs); main is held by its GitHub rule.
-# Set once per clone: git config core.hooksPath tools/hooks
 while read local_ref local_sha remote_ref remote_sha; do
   case "$local_sha" in 0000000000000000000000000000000000000000) continue ;; esac
   node tools/secrets.mjs "$local_sha --not --remotes=origin" || exit 1
