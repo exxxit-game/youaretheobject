@@ -1,19 +1,6 @@
 // Guards on the assistant itself, run by Claude Code (.claude/settings.json), not by its memory:
 // a rule written as text is skipped under load, a hook is not. Exit 2 stops the action and tells
 // the assistant why (code.claude.com/docs/en/hooks: PreToolUse exit 2 blocks the tool call).
-// Bans only where a mistake cannot be undone or costs the owner time; judgments by word lists were
-// taken out with the process review (docs/owner-decisions.md): they held words, not
-// claims, and stopped correct work more often than wrong.
-//   pre:  a shell command that skips the git hooks or runs Playwright on the laptop is refused, and
-//         so are a query that writes to the live database and any write of mine to the practice review
-//         record, and a delete in the papers library or a move out of it, which no git holds
-//         (connected tools banned by name alone are deny rules in .claude/settings.json)
-//   subagent-start, subagent-stop: a practice reviewer's run, and a paper reviewer's run room by room,
-//         is recorded for the owner's automatic stop before VR in the headset and the test copy
-//         (tools/review-gate.mjs)
-//   start: a copy behind room-polish is brought up to it; a new window's start gives his measure to him and me
-//   prompt: his messages are logged
-// Imported with no mode (tests/guard.test.mjs), it only defines refusal(), readOnlySql() and imports().
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -55,7 +42,7 @@ export function imports(file, hops = 4) {
 // the text fed to it (heredoc bodies, here-strings). Separators inside quotes or heredoc bodies
 // split nothing, so text that only names a command is no command; $(...) and `...` do run, so
 // their commands are listed too. A backslash before a letter stays (a Windows path).
-export function commands(line, ps = false) {
+function commands(line, ps = false) {
   const out = [];
   let i = 0;
   const list = (end) => {
@@ -141,7 +128,6 @@ export function commands(line, ps = false) {
 // Each refusal names the guard it would switch off (CLAUDE.md "Cannot be undone", tools/hooks)
 const WHY = {
   verify: 'skips the git hooks: no commit past the commit check, no push without the secret check',
-  commitN: '"git commit -n" skips the git hooks',
   hooks: 'switches the git hooks off',
   browser: 'runs Playwright or Chromium, which run only on GitHub: the owner\'s laptop stays free',
   headset: 'restarts the headset or its browser past tools/quest-look.mjs, which first checks that the owner is not wearing it',
@@ -198,7 +184,7 @@ function git(a) {
     // a cluster of short options: -n is the skip; m F C c t take the rest or the next word
     if (/^-[^-]/.test(x)) {
       for (let q = 1; q < x.length; q++) {
-        if (x[q] === 'n') return WHY.commitN;
+        if (x[q] === 'n') return WHY.verify;
         if ('mFCct'.includes(x[q])) { if (q === x.length - 1) j++; break; }
         if ('uS'.includes(x[q])) break;
       }
@@ -373,27 +359,20 @@ export function refusal(line, ps = false, here = false) {
   }
   return null;
 }
-const RECORD_FILE = /practice-reviews/i;
 
-// Connected tools banned by name alone (a browser started on the laptop, writes to the live database,
-// writes to GitHub past the push hook) are deny rules in .claude/settings.json, Claude Code's own way:
-// a tool a bare-name deny rule matches is taken out of the assistant's tools altogether (its
-// permissions reference, "Tool name wildcards"). This hook keeps what needs the call read: the SQL.
 // A SELECT still writes when it calls a function that writes: ours (submit_* add rows) and the
 // built-ins and extensions that change the server, sequences, settings, files or the outside world.
 const SQL_WRITE_CALLS = /(\b(submit_\w+|nextval|setval|set_config|pg_terminate_backend|pg_cancel_backend|pg_reload_conf|pg_rotate_logfile|pg_switch_wal|pg_promote|pg_notify|pg_advisory\w*|pg_stat_reset\w*|pg_create_\w+|pg_drop_\w+|pg_replication_\w+|pg_file_\w+|lo_\w+|dblink\w*|http\w*)\s*\(|\b(vault|net|pgmq)\.\w+|\bcron\.\w+\s*\()/i;
 // a query that only reads: one statement, starting with a read, naming no write. Text in quotes is a
-// value, not a command: a privilege check names 'INSERT' or 'submit_run(jsonb)' and only reads (four
-// such reads were refused); reading the cron schedule's table is a read, calling cron's functions is not
+// value, not a command: a privilege check names 'INSERT' or 'submit_run(jsonb)' and only reads; reading the cron schedule's table is a read, calling cron's functions is not
 const unquoted = (q) => String(q).replace(/'(?:[^']|'')*'/g, "''");
-export const readOnlySql = (raw) => {
+const readOnlySql = (raw) => {
   const q = unquoted(raw);
   return /^\s*(select|with|explain|show)\b/i.test(q) && !/;\s*\S/.test(q)
     && !/\b(insert|update|delete|drop|alter|create|grant|revoke|truncate|copy|call|do|merge|vacuum|comment|set|reset|lock|refresh|reindex|cluster|import|security)\b/i.test(q)
     && !SQL_WRITE_CALLS.test(q);
 };
 
-// GitHub's tests on room-polish: ten red runs in a row went unseen, so the start names a red last run
 // a start line is cut to EXTRA_LINE characters, so the start's length on the worst day is known
 export const EXTRA_LINE = 350;
 const clip = (line) => (line.length > EXTRA_LINE ? `${line.slice(0, EXTRA_LINE - 1)}…` : line);
@@ -406,7 +385,7 @@ export const ciLine = (run) => (NEEDS_LOOK.has(run?.conclusion)
 if (mode === 'pre') {
   const tool = String(event.tool_name || '');
   if (/__execute_sql$/.test(tool) && !readOnlySql(String(event.tool_input?.query || ''))) stop('REFUSED: only a single read-only query (SELECT) may run on the live database.');
-  if (/^(Write|Edit|MultiEdit|NotebookEdit)$/.test(tool) && RECORD_FILE.test(String(event.tool_input?.file_path || event.tool_input?.notebook_path || ''))) stop('REFUSED: the practice review record is written only by Claude Code\'s hook when a reviewer run ends; run the practice-reviewer agent instead.');
+  if (/^(Write|Edit|NotebookEdit)$/.test(tool) && RECORD.test(String(event.tool_input?.file_path || event.tool_input?.notebook_path || ''))) stop('REFUSED: the practice review record is written only by Claude Code\'s hook when a reviewer run ends; run the practice-reviewer agent instead.');
   // the shell keeps its folder between calls, so a session standing in the library is seen by its cwd
   const why = refusal(String(event.tool_input?.command || ''), tool === 'PowerShell', inLib(`${String(event.cwd || '').replace(/\\/g, '/')}/`));
   if (why) stop(`REFUSED: this command ${why}. Do the work so the guard passes instead.`);
@@ -439,7 +418,7 @@ if (mode === 'accepted') {
 
 // start: Claude Code adds this output to the context at startup, at resume and after each compaction.
 if (mode === 'start') {
-  const out = [`Session ${event.source || 'start'}. The process: CLAUDE.md, "Every session" (docs/progress.md, the git log, ${FEATURES}). The task is his message; nothing printed here is a task by itself.`];
+  const out = [];
   const branch = gitHere('rev-parse', '--abbrev-ref', 'HEAD');
   // the app can reuse an old worktree; hooks come from the main checkout, but CLAUDE.md and .claude/rules
   // from this copy (code.claude.com/docs/en/worktrees), so a copy with no work of its own is brought up first
