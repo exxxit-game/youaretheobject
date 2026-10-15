@@ -20,6 +20,36 @@ minutes, 10.10.2026). Marks as in `07-corridor-1979.md`: **opened**, **search**,
   1 Oct 1970, Tampa (USF Digital Commons, Gandy 29_0750, CC BY-NC 3.0),
   https://digitalcommons.usf.edu/gandy_commercial/10844 : a weathered wooden board on a white wall, the names
   on dark embossed label-tape strips (Dymo-style) with numbers. A commercial building, not a university one.
+  16.10: that link's preview (/10844/preview.jpg) shows another photo (a group by a machine), so this board is
+  **unverified** until its own record is found.
+
+## 1a. Period photos found 16.10 (the owner and two helpers; each image looked at)
+
+Shown to the owner as one page: https://claude.ai/artifact/JjV8FUgjbXgaLJr9KR9Kbc (private). Images and notes:
+the side-session notes folder of 15.10 (floor-directory/, from-owner/, floor-directory-photos-2.md).
+
+- Form A, changeable white letters on black grooved felt behind glass:
+  - Pepperdine College, Academic Life Building, 1965 (archive date; a "Dean of Ethnic Studies" line may mean
+    about 1969-70, unverified): two cases side by side facing a stair (its rail in the glass); header "PEPPERDINE
+    COLLEGE / WELCOMES YOU", office left, room right, sub-header "ACADEMIC DEPARTMENTS"; bottom edge at a
+    student's shoulder. https://calisphere.org/item/49424119f845bb08a48b3f6ce38dbf65/ (non-commercial, credit)
+  - University of Tennessee at Chattanooga, Founders Hall, 1970-74: one board in a light frame on a brick pier by a
+    door; "ADMINISTRATIVE OFFICES" and 16 lines, office left, room right; about 32 x 21 in (estimate from brick).
+    https://digital-collections.library.utc.edu/digital/collection/p16877coll50/id/1673 (CC BY-NC 4.0)
+  - Exchange National Bank, Tampa (Gandy 11609, date not read): two boards in plain light frames on stone, small
+    letters in several columns. https://digitalcommons.usf.edu/gandy_commercial/11609/
+  - U.S. Courthouse, Portland OR, HABS OR-134-30 (the judges named date it to about 1980-84; the survey's date
+    not read): "DIRECTORY" plaque over glass doors, four columns, in the 1933 bronze frame.
+    https://www.loc.gov/resource/hhh.or0141.photos/?sp=30 (public domain)
+  - Tampa Marine Bank elevator lobby, 1960 (Gandy 12485): a large board high on the back wall, people for scale.
+  - Catalogs: Rubberline, about 1965 (archive.org TNM_Rubberline_changeable_letter_signs_-_Aluminum_20170922_0650):
+    "Style C, 20" x 30"" glass-door directory, 1, 3/4 and 1/2 in letters, its sample grouped by "2ND FLOOR",
+    "3RD FLOOR"; Nelson-Harkins 1960 (archive.org nelsonharkinsindustriesinc.77): black felt unless specified,
+    letters 1/4 to 2 in, stock sizes 12 x 15 to 34 x 48 in.
+- Form B, fixed engraved plates: BEST Mfg. catalog, "7-59" (archive.org bestmanufacturingcompany80): VA hospital
+  Topeka, 36 x 54 in, wood panel, dark plates with white capitals, name plate and room-number plate per line, "1"
+  Moderne-C style letters on a 2" high plate"; Tampa Marine Bank 1960 (Gandy 12484): one dark plate per firm on
+  the piers. No dated 1965-85 photo of form B found.
 
 ## 2. Sizes, colours, mounting
 
@@ -80,9 +110,8 @@ minutes, 10.10.2026). Marks as in `07-corridor-1979.md`: **opened**, **search**,
 
 ## Gaps and next steps
 
-1. No period photo or 1970s catalog page of a directory board (Tablet & Ticket, Nelson-Harkins,
-   Gaylord, Demco). Next: archive.org full-text search for "directory boards" "changeable
-   letters" (the search page did not render in the browser pane); Sweet's Catalog File 1975-80.
+1. Form A is covered (1a). Form B has no dated 1965-85 photo; Means Square Foot Costs 1983 lists directory
+   board sizes (archive.org isbn_0911950540, lending only, not opened).
 2. NFPA 101-1976 and BOCA 1978 text on stair identification: not found online.
 3. The Local Law 5/1973 text itself (only the 1974 directive and today's code were read).
 
