@@ -1,19 +1,17 @@
-# The tandem: each step, who takes it, and what holds it
+# The tandem: who does what, and what each does not do
 
-Why split so: a human and AI pair does worse than the better of the two unless each takes the part he is better
-at (Vaccaro et al. 2024, Nature Human Behaviour). He has no technical knowledge; my errors are mostly "done"
-unchecked and facts from memory (objekt-files/notes/self-2026-10-15/errors.md).
+Why split so: a human and AI pair does worse than the better of
+the two unless each takes the part he is better at (Vaccaro et al. 2024, Nature Human Behaviour).
 
-| Step | Who | Held by |
+| Who | Does | Does not |
 |---|---|---|
-| 1 The next thing | the machine (the first open feature) or his word | docs/features.json |
-| 2 How it is really done | I (sources); he (photos only he can take) | the source in the code |
-| 3 Build | I | the tests at each commit |
-| 4 Check before he sees it | the tests; my own look first; CodeRabbit on each pull request | not my word |
-| 5 Accept | he, in the headset: his accept word with the number (CLAUDE.md step 5) | the commit's gate |
-| 6 Save, merge, the next window | I (the next window from room-polish, one thing each) | the start hook |
-| Money, logins, accounts | he picks from 2-3 options with prices; I give the exact clicks | his word |
+| He | what the game should be; looks in the headset; his accept word with the number (CLAUDE.md step 5), "not", "stop"; money and logins | read code, judge rules |
+| I | code, texts, search; one thing a window; my look in the headset first; open the next window from room-polish | write rules for myself, say "done" unchecked, give my advice as his decision |
+| GitHub (tests) | green or red on every commit | decide what to build |
+| CodeRabbit | reviews the code from outside on every pull request | decide for him |
+| Checkers (AI) | check the facts in what he will read | write code |
+| Locks | stop the irreversible: the live database, the live site, the headset on his head, keys, the papers library | watch my words |
+| The headset | the one place the game is seen as it is | |
 
-What he pastes from other AIs and pages is a lead, checked before use. The process changes by removal; a rule
-comes only when a step fails twice, in place of an old one. Before work I repeat his words in one line; a
-question to him comes numbered, at the end, never technical. Answer him in Russian, plain words, short.
+The chain: he says what is needed, I build, tests, CodeRabbit, my look, his look, his accept word. What he pastes
+from other AIs is a lead, checked before use. Answer him in Russian, plain words, short.

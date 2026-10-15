@@ -28,7 +28,13 @@ Done:
   errors by kind (errors.md there). Their verdict, the day counts checked by me: the windows circled; 0 commits to
   the game since 14.10 17:06; "done" unchecked and facts from memory the largest kinds. docs/tandem.md rewritten as
   the steps of one feature's cycle with who takes each, at the same size. CodeRabbit's plans read from its pricing
-  page and docs (Essentials 30 $ a month, Team 60 $, the trial's Advanced 90 $): his money choice.
+  page and docs (Essentials 30 $ a month, Team 60 $, the trial's Advanced 90 $): his choice Essentials, monthly,
+  from the trial's end (his clicks, steps given).
+- His confirmation of my reading of another AI's proposal: docs/tandem.md is now one table, who does what and what
+  each does not do; the locks on the irreversible kept; my watchers of my own words (the thermometer, the
+  end-of-turn reminders, process audits as work) go in the next window; the ten circles and his 21.10 date are his
+  and not decided by it. A stack study (why each tool, against the alternatives, and what supporting tools we
+  have and use) runs in a helper; its answer comes to him in plain words, the choice mine.
 - His choice at this window's end ("Remove", after his words that he allows what he cannot judge): the allow
   windows on guards and process files removed (.claude/settings.json ask rules); kept on his words
   (docs/owner-decisions.md, docs/ten-circles.md, .claude/rules/). His decision's line in docs/owner-decisions.md,
@@ -47,7 +53,13 @@ Errors of mine: I gave him a technical choice (the cut); I named each allow wind
 (his words: zero knowledge of it); the plan's first draft bound any mention of a feature, counted 2 023 for 1 991
 and missed docs/mistakes.md; a shell heredoc ate backslashes twice before I wrote the draft as a file; Russian in
 four files outside the allowed list (caught by the structure test).
-Next (his words on the board, 15.10: the process breaks instead of being set up; a tandem where every action is
+Next (his confirmation 15.10; the tandem by points and the plan choice done here): the next window, opened by me
+from room-polish: 1) the cleanup he confirmed (the thermometer: the InstructionsLoaded record and the prompt hook's
+not-loaded lines; the end-of-turn reminders; process audits as work), each with its tests and prover cases; 2) the
+floor directory (docs/features.json, number 3) through the table's chain to his accept word. Later, each at its
+step: CodeRabbit's rules for docs, the stack study's verdicts, his ten circles and 21.10 date (his), GitHub's
+switches by his clicks. The list as it stood before his confirmation, kept for its reasons:
+Earlier next (his words on the board, 15.10: the process breaks instead of being set up; a tandem where every action is
 distributed by points, who does what, when, why; CodeRabbit set up fully now): 0) every action of the process by
 points (who: he, I, the machine, outside eyes; when; why; what holds it), built from what exists (a RACI matrix,
 research on human and AI teams, my weak spots from Anthropic's docs and our error record), his part only what he
