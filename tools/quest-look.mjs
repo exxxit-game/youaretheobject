@@ -8,8 +8,9 @@
 //                                              in the headset as its own localhost:3000
 //   node tools/quest-look.mjs sleep            give the proximity sensor back and put it to sleep
 //   node tools/quest-look.mjs reload           reload it, skipping every cache (after publish-preview)
-//   node tools/quest-look.mjs vr               enter VR, as if the VR button were pressed; only while
-//                                              the owner wears the headset (headset.mjs, onHead)
+//   node tools/quest-look.mjs vr               enter VR, as if the VR button were pressed, OVR Metrics'
+//                                              HUD on; only while the owner wears the headset
+//                                              (headset.mjs, onHead)
 //   node tools/quest-look.mjs frame out.png    save what the headset shows right now, both eyes (in VR)
 //   node tools/quest-look.mjs eval "<js>"      run JavaScript in the game page, print the result
 //   node tools/quest-look.mjs worn on|off      make the headset act as worn (on) or normal (off):
@@ -94,6 +95,12 @@ if (cmd === 'reload') {
   // it restarts: twice the owner could not get in. No wake key either: it opens the quick menu over
   // the browser.
   if (!wornByPerson()) { console.log('not now: VR only while the owner wears the headset'); process.exit(1); }
+  // OVR Metrics Tool's HUD on for every look in VR: frame rate and CPU and GPU load in the headset
+  // the whole time (Meta, webxr-perf-tools: "highly recommended that you keep this HUD up and running
+  // throughout development", docs/research/engine-and-tools-2.md); measures turn it off, since it costs
+  // GPU time of its own (docs/baseline.md; tools/measure.mjs --clean, tools/stand-measure.mjs)
+  adb('shell', 'am broadcast -n com.oculus.ovrmonitormetricsservice/.SettingsBroadcastReceiver -a com.oculus.ovrmonitormetricsservice.ENABLE_OVERLAY ; true');
+  console.log("OVR Metrics' HUD asked on");
   console.log(await run("document.querySelector('a-scene').enterVR().then(() => 'in VR', (e) => 'failed: ' + e.message)"));
 } else if (cmd === 'levels') {
   // every connection to the speakers is also fed to an analyser for the time of the check

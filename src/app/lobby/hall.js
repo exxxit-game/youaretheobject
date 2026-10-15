@@ -90,10 +90,13 @@ function callStation(x) {
     <a-cylinder position="${r(out + facing * 0.006)} ${r(E.call.y - 0.03)} ${z}" rotation="0 0 90" radius="0.0095" height="0.006" color="#e9e6dc"></a-cylinder>`;
 }
 
-// the light slot along the top of each side wall: a lamp's lens in a slot in the ceiling at the wall,
-// lit as the corridor's troffers are (their glow, no light of its own: the corridor's lights)
-const slot = (x) => `
-    <a-plane position="${r(x + (x === HALL.minX ? 1 : -1) * 0.06)} ${r(2.5 - 0.004)} ${HALL_CENTRE.z}" rotation="90 0 0" width="0.1" height="${r(HALL_LENGTH - 0.2)}"
+// the light slot along the top of each side wall: a lamp's lens filling a strip of the ceiling at the
+// wall, the hall's whole length, lit as the corridor's troffers are (their glow, no light of its
+// own: the corridor's lights); the ceiling between the two strips, in the same plane and edge to edge
+// with them, so no face lies over another (faces closer than 5 mm flicker: docs/vr-checklist.md)
+const SLOT = 0.11;
+const slot = (x, ceil) => `
+    <a-plane position="${r(x + (x === HALL.minX ? 1 : -1) * SLOT / 2)} ${ceil} ${HALL_CENTRE.z}" rotation="90 0 0" width="${SLOT}" height="${HALL_LENGTH}"
              material="color: #ffffff; emissive: #f2f6ff; emissiveIntensity: 0.95; roughness: 1" surface="kind: lens; glow: true"></a-plane>`;
 
 // The hall's far end, on this floor the building's way in and out: a glass wall in dark metal
@@ -176,12 +179,12 @@ export function directoriesHTML() {
 export function hallHTML(ceil) {
   return `
     <a-plane rotation="-90 0 0" position="${HALL_CENTRE.x} 0 ${HALL_CENTRE.z}" width="${r(HALL.maxX - HALL.minX)}" height="${HALL_LENGTH}" surface="kind: linoleum; ${HALL_SPACE}"></a-plane>
-    <a-plane rotation="90 0 0" position="${HALL_CENTRE.x} ${ceil} ${HALL_CENTRE.z}" width="${r(HALL.maxX - HALL.minX)}" height="${HALL_LENGTH}" color="${PAINT}" material="roughness: .95"></a-plane>
+    <a-plane rotation="90 0 0" position="${HALL_CENTRE.x} ${ceil} ${HALL_CENTRE.z}" width="${r(HALL.maxX - HALL.minX - 2 * SLOT)}" height="${HALL_LENGTH}" color="${PAINT}" material="roughness: .95"></a-plane>
     ${sideWall(HALL.minX, ceil)}
     ${sideWall(HALL.maxX, ceil)}
     ${exitWall(ceil)}
     ${CARS.map(entrance).join('')}
     ${callStation(HALL.minX)}${callStation(HALL.maxX)}
-    ${slot(HALL.minX)}${slot(HALL.maxX)}
+    ${slot(HALL.minX, ceil)}${slot(HALL.maxX, ceil)}
     ${directoriesHTML()}`;
 }
