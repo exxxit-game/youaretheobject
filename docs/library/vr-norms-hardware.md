@@ -1,7 +1,7 @@
 # VR norms and hardware
 
 Generated from `docs/library/papers.json` by `node tools/build-library.mjs`. Do not edit by hand.
-102 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
+103 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
 in the library folder's papers\ as `<id>.txt` (a data set: `<dir>/<id>.txt` from the library folder); "text: ocr" marks a scan's
 text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 
@@ -12,6 +12,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **ansi-hfes-100-2007** Human Factors and Ergonomics Society 2007. ANSI/HFES 100-2007 Human Factors Engineering of Computer Workstations · workstation ergonomics, display height, viewing distance · no card
 - **bailenson-2024** Bailenson et al. 2024. Seeing the World Through Digital Prisms: Psychological Implications of Passthrough Video Usage in Mixed Reality · video passthrough, mixed reality, perception, psychological effects · no card
 - **banaszczyk-2024** Banaszczyk et al. 2024. How Accurate is the Positioning in VR? Using Motion Capture and Robotics to Compare Positioning Capabilities of Popular VR Headsets · positioning accuracy, headset tracking, motion capture · no card
+- **boca-1978** Building Officials and Code Administrators International 1978. The BOCA Basic Building Code/1978, seventh edition (archive.org boca-basic-building-code-1978) · building code, exits, stairs, elevators, architecture · no card · text: ocr
 - **bonato-2008** Bonato et al. 2008. Vection change exacerbates simulator sickness in virtual environments · vection, simulator sickness · no card
 - **brown-2022** Brown et al. 2022. The simulator sickness questionnaire, and the erroneous zero baseline assumption · simulator sickness questionnaire, baseline, measurement · no card
 - **carmack-2021-tweet** Carmack 2021. The design focal distance for the Quest/Quest 2 optics is 1.3 meters · Quest optics, focal distance · no card

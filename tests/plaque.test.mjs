@@ -27,14 +27,14 @@ for (const dir of fs.readdirSync(rooms)) {
   }
 }
 // every room door carries the number the plan drawing gives it (docs/art/corridor-plan.svg, plan B),
-// west to east along each wall; the stairs have none
+// west to east along each wall; the stairs have none, the elevator hall has no door
 const svg = fs.readFileSync(path.join(ROOT, 'docs/art/corridor-plan.svg'), 'utf8');
 const drawn = [...svg.slice(svg.indexOf('Б. Вход')).matchAll(/<rect class="(?:room|stairs)" x="(\d+)" y="(\d+)"[^>]*\/>(?:<text class="num"[^>]*>(\d+)<\/text>)?/g)];
 const fromDrawing = (y) => drawn.filter(m => m[2] === y).sort((p, q) => p[1] - q[1]).map(m => m[3] || '-');
 const fromPlan = (wall) => DOORS.filter(d => d.wall === wall).sort((p, q) => p.x - q.x).map(d => d.number || '-');
 assert.deepEqual(fromPlan('north'), fromDrawing('0'), 'north wall numbers as drawn');
 assert.deepEqual(fromPlan('south'), fromDrawing('176'), 'south wall numbers as drawn');
-assert.equal(ROOM1_NUMBER, '101', 'the room facing the stairs is 101');
+assert.equal(ROOM1_NUMBER, '101', 'the room facing the elevator hall is 101');
 // the doors' signs carry them, one per room door (room 101's door is room 01's)
 const plates = [...(corridorHTML + sceneHTML).matchAll(/data-number="(\d+)"/g)].map(m => m[1]).sort();
 assert.deepEqual(plates, DOORS.filter(d => d.number).map(d => d.number).sort(), 'a numbered plaque at every room door');

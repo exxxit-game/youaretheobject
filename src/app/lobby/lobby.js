@@ -22,8 +22,9 @@ import { writeStairsSign } from './stairs-sign.js';
 import { paintExtinguisherLabel, paintGauge } from './extinguisher-label.js';
 import { showHint } from '../hint.js';
 import { leaveButton } from './exit.js';
-import { WALLS, printTurn } from './scene.js';
-import { BOUNDS as AREA, SHEET_HOME, SPOT, HOOK_READ } from './plan.js';
+import { printTurn } from './scene.js';
+import { AREAS, SPACES, SHEET_HOME, SPOT, HOOK_READ } from './plan.js';
+import { areasText } from '../../engine/locomotion-math.js';
 
 export { corridorHTML } from './scene.js';
 
@@ -31,8 +32,12 @@ export { corridorHTML } from './scene.js';
 // the sign over it comes on and plays (opening.js), the player takes the clipboard from
 // the board, it welcomes them and asks the consent, and the player points at door 1. The door opens, the view fades, and the player is at the
 // table (on the chair when seated). See docs/decisions.md, "The arrival".
-// an area { minX, maxX, minZ, maxZ } as room-bounds and locomotion take it
-const bounds = (a) => `minX: ${a.minX}; maxX: ${a.maxX}; minZ: ${a.minZ}; maxZ: ${a.maxZ}`;
+// an area { minX, maxX, minZ, maxZ }, or a list of overlapping ones (the corridor and its elevator
+// hall), as room-bounds and locomotion take it
+const bounds = (area) => {
+  const [a, ...more] = Array.isArray(area) ? area : [area];
+  return `minX: ${a.minX}; maxX: ${a.maxX}; minZ: ${a.minZ}; maxZ: ${a.maxZ}; also: ${areasText(more)}`;
+};
 // The clipboard hangs on the experimenter's board left of door 1, its back 1 cm off the cork
 // (faces at least 5 mm apart, or they flicker) and the peg (scene.js) through its clip, facing
 // the corridor: the only stretch of wall wide enough for it.
@@ -161,20 +166,20 @@ export async function runLobby(room) {
   // first, before anything waits: a press of the VR button while the clipboard is still being
   // hung would otherwise be missed, and every sound would wait for the next one
   onFirstGesture(() => {});
-  const sheet = createSheet(scene, { inside: WALLS });
+  const sheet = createSheet(scene, { inside: SPACES });
   // door 1 answers only once the clipboard says to choose it: before, the ray would mark it as
   // something to press that does nothing (src/engine/laser-beam.js)
   const leaf = $('#door1 .door-leaf');
   pressable(leaf, false);
   const light = lightCorridor(sheet);
-  placePlayer(SPOT, AREA);
+  placePlayer(SPOT, AREAS);
   document.title = LOBBY_T.title;   // the corridor is no room yet; the room names the page once entered
   showHint(LOBBY_T.hint);
-  $('#rig').setAttribute('locomotion', `${bounds(AREA)}; ${comfort()}`);   // the corridor is walked with the thumbsticks too
-  // every room's plaque shows its number from the plan; the stairs' sign its symbol and word
+  $('#rig').setAttribute('locomotion', `${bounds(AREAS)}; ${comfort()}`);   // the corridor is walked with the thumbsticks too
+  // every room's plaque shows its number from the plan; each stair's sign its symbol and word
   for (const el of document.querySelectorAll('.room-plaque')) writePlaque(el.components.panel, { number: el.dataset.number });
-  writeStairsSign($('#plaqueStairs').components.panel, LOBBY_T.stairs);
-  for (const el of document.querySelectorAll('#plaqueStairs, .room-plaque')) el.getObject3D('mesh').material.color.setScalar(WALL_PRINT_LIGHT);
+  for (const el of document.querySelectorAll('.stairs-plaque')) writeStairsSign(el.components.panel, LOBBY_T.stairs);
+  for (const el of document.querySelectorAll('.stairs-plaque, .room-plaque')) el.getObject3D('mesh').material.color.setScalar(WALL_PRINT_LIGHT);
   pinNotices($('#notePoster').components.panel, $('#noteFlyer').components.panel, WALL_PRINT_LIGHT);
   hangPrints(visitsSoFar());
   paintExtinguisherLabel($('#extLabel'));
@@ -209,8 +214,8 @@ export async function runLobby(room) {
   const back = async (early) => {
     light.back();
     door1Shut();
-    $('#rig').setAttribute('locomotion', `${bounds(AREA)}; ${comfort()}`);
-    placePlayer(SPOT, AREA);
+    $('#rig').setAttribute('locomotion', `${bounds(AREAS)}; ${comfort()}`);
+    placePlayer(SPOT, AREAS);
     document.title = LOBBY_T.title;
     await delay(250);
     await $('#cam').components.fader.to(0);

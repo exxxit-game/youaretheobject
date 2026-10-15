@@ -58,9 +58,17 @@ export function arc(origin, dir) {
   return { points, hit: null };
 }
 
-// Whether a head position (x, z) is inside the walkable area { minX, maxX, minZ, maxZ }.
+// The walkable area: one rectangle { minX, maxX, minZ, maxZ }, or a list of them that overlap where
+// one place opens into the next (the corridor and its elevator hall), so moving passes between them.
+const areasOf = (b) => (Array.isArray(b) ? b : [b]);
+// rectangles written "minX maxX minZ maxZ", a comma between them (a component's attribute), and
+// back: areasText(areasFrom(t)) gives the same rectangles
+export const areasFrom = (text) => text.split(',').map((r) => r.trim().split(/\s+/).map(Number))
+  .filter((v) => v.length === 4 && v.every(Number.isFinite)).map(([minX, maxX, minZ, maxZ]) => ({ minX, maxX, minZ, maxZ }));
+export const areasText = (areas) => areas.map((a) => `${a.minX} ${a.maxX} ${a.minZ} ${a.maxZ}`).join(', ');
+// Whether a head position (x, z) is inside the walkable area.
 export function inside(x, z, b) {
-  return x >= b.minX && x <= b.maxX && z >= b.minZ && z <= b.maxZ;
+  return areasOf(b).some((a) => x >= a.minX && x <= a.maxX && z >= a.minZ && z <= a.maxZ);
 }
 
 // The rig after turning by deg around the head (its world x, z), so the head stays where it is.
@@ -76,10 +84,17 @@ export function teleport(rig, head, target) {
 }
 
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+// where a move from the head toward p ends: at p when p is in the area, else at p stopped at the
+// edge of the rectangle the head is in
+export function keep(head, p, b) {
+  if (inside(p[0], p[1], b)) return p;
+  const a = areasOf(b).find((r) => inside(head[0], head[1], r)) || areasOf(b)[0];
+  return [clamp(p[0], a.minX, a.maxX), clamp(p[1], a.minZ, a.maxZ)];
+}
 
 // Where a back step puts the head: MOVE.backStep behind it, stopped at the edge of the area.
 export function backStep(head, yaw, b) {
-  return [clamp(head[0] + Math.sin(yaw) * MOVE.backStep, b.minX, b.maxX), clamp(head[1] + Math.cos(yaw) * MOVE.backStep, b.minZ, b.maxZ)];
+  return keep(head, [head[0] + Math.sin(yaw) * MOVE.backStep, head[1] + Math.cos(yaw) * MOVE.backStep], b);
 }
 
 // Smooth moving, offered beside teleport (Meta: let the player choose). Walking pace, about
@@ -95,7 +110,7 @@ export function slide(head, yaw, x, y, dt, b) {
   if (m < SMOOTH.deadzone) return null;
   const k = SMOOTH.speed * dt / m;
   const fx = -Math.sin(yaw), fz = -Math.cos(yaw), rx = Math.cos(yaw), rz = -Math.sin(yaw);
-  return [clamp(head[0] + (rx * x - fx * y) * k, b.minX, b.maxX), clamp(head[1] + (rz * x - fz * y) * k, b.minZ, b.maxZ)];
+  return keep(head, [head[0] + (rx * x - fx * y) * k, head[1] + (rz * x - fz * y) * k], b);
 }
 
 // The turn smooth turning makes in dt seconds, in degrees (stick right turns right); 0 at rest.
