@@ -24,9 +24,10 @@ PR #16 (the 13 skills he had removed, the Haiku record), stretched his words (a 
 prompt the desktop app is not shown to give and called both models "twice the cost"; I acted on a message of his
 meant for another window (taken back). Plan mode, required by CLAUDE.md since 14.10 20:33, has been used by no
 working window, this one included.
-Not done and why: question 1 (the process audit by the ten circles: Opus 5.5 at max effort, Fable 5.1, both, or
-later) waits for his answer; the useful-later items wait for their step on the road.
-Next: his answer to question 1; then the audit in its own window as he chooses.
+Question 1 answered: his choice of max effort (the board): the process audit by the ten circles ran in its own window on
+Opus 5.5 at max effort, its result saved part by part, merged into room-polish as PR #18.
+Not done and why: the useful-later items wait for their step on the road.
+Next: the audit's outcome and proposals (PR #18, its page) with him, one at a time.
 
 ## 2026-10-14, evening, next window — item 6 done but his merge; our documents compared with experienced practice
 Done:
