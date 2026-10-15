@@ -430,8 +430,9 @@ if (mode === 'loaded') { note({ f: String(event.file_path || '') }); process.exi
 const gitHere = (...a) => { try { return execFileSync('git', a, { cwd: HERE, env: withoutGitVars(), encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim(); } catch { return null; } };
 
 // accepted (tools/hooks/pre-commit; stdin: the staged list): a feature passing that was not, or gone, needs his
-// «Принимаю N» (CLAUDE.md step 5) in 3 hours, N right after it, numbered in HEAD's list (it still holds a dropped
-// feature; so no reorder in the same commit); «стоп», a «не» or «нет», or a longer «Принимаю» takes back all before
+// «Принимаю N» (CLAUDE.md step 5) in 3 hours, a message of the word and numbers only, numbered in HEAD's list (it
+// still holds a dropped feature; so no reorder in the same commit); «не», «нет», «стоп» or another «Принимаю…»
+// message takes back all before
 if (mode === 'accepted') {
   const list = (f) => { try { return JSON.parse(f()).features; } catch { return null; } };
   const now = list(() => input), was = list(() => gitHere('show', `HEAD:${FEATURES}`)), n = was || now || [];
@@ -441,8 +442,9 @@ if (mode === 'accepted') {
     for (const m of fs.readFileSync(LOG, 'utf8').split('\n## ')) {
       const said = m.slice(m.indexOf('\n') + 1), w = said.toLowerCase().match(/[а-яё]+/g) || [];
       if (!(Date.parse(m.split(' ')[0]) > Date.now() - 108e5)) continue;
-      if (w[0] === 'стоп' || w.some((x) => /^(не|нет)$/.test(x)) || (w[0] === 'принимаю' && w.length > 3)) yes.clear();
-      else for (const k of said.match(/^\s*принимаю((?:[\s,]+(?:и\s+)?\d+)+)/i)?.[1].match(/\d+/g) || []) yes.add(n[k - 1]?.id);
+      const pure = said.match(/^\s*принимаю[\s,.!и\d]*$/i);
+      if (w.some((x) => /^(не|нет|стоп)$/.test(x)) || (w[0] === 'принимаю' && !pure)) yes.clear();
+      else for (const k of pure?.[0].match(/\d+/g) || []) yes.add(n[k - 1]?.id);
     }
   } catch { /* no log */ }
   const moved = [...(now || []).filter((n) => n.passes && !was?.some((w) => w.id === n.id && w.passes)), ...(was || []).filter((w) => !now?.some((n) => n.id === w.id))];

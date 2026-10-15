@@ -436,13 +436,17 @@ assert.ok(worstStart < 10000, `on the worst day the start would print ${worstSta
   assert.equal(gate({ a: true, b: true, c: true }), 1, 'two features passed on his «Принимаю» of one of them');
   said([1, 'Принимаю 1 и 2']);
   assert.equal(gate({ a: true, b: true, c: true }), 0, 'his «Принимаю» of two features did not count for both');
+  said([1, 'Принимаю 1'], [0.5, 'Подожди, стоп']);
+  assert.equal(gate({ a: true, b: false, c: true }), 1, 'a «стоп» later in his message did not take back his «Принимаю 1»');
   said([1, 'Принимаю не принимаю 1']);
   assert.equal(gate({ a: true, b: false, c: true }), 1, 'a message that took itself back counted as his acceptance');
   said([1, 'Свет хороший. Принимаю 1']);
   assert.equal(gate({ a: true, b: false, c: true }), 1, 'an acceptance not at the start of his message counted');
   said([1, 'Принимаю 1 за 2 часа']);
   assert.equal(gate({ a: true, b: true, c: true }), 1, 'a number later in his message counted as a feature he accepted');
-  assert.equal(gate({ a: true, b: false, c: true }), 0, 'the number right after «Принимаю» did not count');
+  assert.equal(gate({ a: true, b: false, c: true }), 1, 'a message with more than the word and its numbers counted');
+  said([1, 'Принимаю 1.']);
+  assert.equal(gate({ a: true, b: false, c: true }), 0, 'his «Принимаю 1.» with a full stop did not count');
   // his number names a feature in the committed list, so the features may not change places in the same commit
   assert.equal(raw(JSON.stringify({ features: [{ id: 'b', passes: false }, { id: 'a', passes: true }, { id: 'c', passes: true }] })), 1, 'a feature passed on his number in a commit that reordered the list');
   said([1, 'Принимаю 3']);
