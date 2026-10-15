@@ -125,7 +125,7 @@ for (const [header, why] of [
 assert.deepEqual(agentHeaderProblems('---\nname: x\n---\n'), ['no description']);
 for (const f of fs.readdirSync('.claude/agents')) assert.deepEqual(agentHeaderProblems(fs.readFileSync(path.join('.claude/agents', f), 'utf8')), [], `.claude/agents/${f} loads`);
 
-// the setup around the code (tools/health-setup.mjs): read from the laptop at each session start
+// the setup around the code (tools/health-setup.mjs): read from the laptop when the check runs
 assert.deepEqual(hooksProblems('tools/hooks', 'C:/x', (f) => /pre-(commit|push)$/.test(f)), [], 'the hooks folder git runs has both hooks');
 assert.equal(hooksProblems('C:/main/tools/hooks', 'C:/x', (f) => f.endsWith('pre-commit')).length, 1, 'a hooks folder without pre-push is caught, an absolute setting read as is');
 assert.equal(hooksProblems('', 'C:/x').length, 1, 'no hook setting at all is caught');
@@ -147,7 +147,7 @@ assert.ok(projectSettings.deniedMcpServers.some((s) => s.serverName === 'plugin:
 const pre = (m) => projectSettings.hooks.PreToolUse.find((h) => h.matcher === m).hooks[0];
 assert.equal(pre('Bash|PowerShell').onFailure, 'block', 'the command guard blocks when it fails');
 assert.equal(pre('mcp__.*').onFailure, 'block', 'the MCP guard blocks when it fails');
-assert.notEqual(pre('Write|Edit|MultiEdit|NotebookEdit').onFailure, 'block', 'the edit guard lets a broken guard be mended');
+assert.notEqual(pre('Write|Edit|NotebookEdit').onFailure, 'block', 'the edit guard lets a broken guard be mended');
 // the start waits up to 15 + 10 + 10 s inside (health, CodeRabbit, GitHub's runs); a hook past its timeout is
 // cancelled and its output thrown away, the board's top with it
 assert.ok(projectSettings.hooks.SessionStart[0].hooks[0].timeout >= 45, 'the start hook has time for its own waits');

@@ -2,7 +2,7 @@
 // is: git signs privately and runs its guard hooks, main is protected on GitHub, every memory file
 // is in the memory index, the plugins are the ones the owner decided, and the app's Claude Code is
 // new enough for the hooks. Each of these was wrong once while every test passed: a setting shows
-// only in use, so the health check reads them at every session start.
+// only in use, so the health check reads them when run.
 import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -36,14 +36,13 @@ export function checkGit(root) {
   return out;
 }
 
-// main is the live site: on GitHub it can be neither deleted nor rewritten (the ruleset "main is the
-// live site"); a switch on GitHub leaves no trace in the code
-export const MAIN_RULES = ['deletion', 'non_fast_forward'];
+// main is the live site (its ruleset): a switch on GitHub leaves no trace in the code
+export const MAIN_RULES = ['deletion', 'non_fast_forward', 'pull_request', 'required_status_checks'];
 export function checkMainRules() {
-  const rules = sh('gh', ['api', 'repos/exxxit-game/youaretheobject/rules/branches/main', '--jq', '[.[].type] | join(" ")']);
+  const rules = sh('gh', ['api', 'repos/exxxit-game/youaretheobject/rules/branches/main', '--jq', '[.[] | .type, (.parameters.required_status_checks[]?.context | "check:" + .)] | join(" ")']);
   if (rules === null) return [warning('could not read the rules of main on GitHub (no network, or gh not signed in)')];
-  const missing = MAIN_RULES.filter((r) => !rules.split(' ').includes(r));
-  return [missing.length ? broken(`main on GitHub can be ${missing.join(' and ')}: restore the ruleset "main is the live site"`) : ok('main can be neither deleted nor rewritten on GitHub')];
+  const missing = [...MAIN_RULES, 'check:test'].filter((r) => !rules.split(' ').includes(r));
+  return [missing.length ? broken(`main on GitHub lacks the rules ${missing.join(', ')}: restore the ruleset "main is the live site"`) : ok('main on GitHub: green pull requests only, no deletion, no rewrite')];
 }
 
 // --- my memory: a file the index does not name never loads ----------------------------------

@@ -11,7 +11,6 @@ paths:
   - "tools/usage.mjs"
   - "package.json"
   - "docs/tools.md"
-  - "docs/audit/**"
 ---
 # The owner's decisions on the setup: connectors, plugins, models, GitHub, CodeRabbit, updates
 

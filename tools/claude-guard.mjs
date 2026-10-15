@@ -557,26 +557,24 @@ if (mode === 'prompt') {
 
 if (mode === 'stop') {
   // it reminds once and never holds the same turn again (the hooks reference: check stop_hook_active "to
-  // avoid blocking on a condition that will never resolve"): held again and again it looped, up to 25
-  // tries, and forced empty replies while the owner had asked to stop. The pushed copy is made at the end
-  // of a feature (CLAUDE.md, "Every session" 6), not every turn
+  // avoid blocking on a condition that will never resolve"); held again and again, it looped
   if (event.stop_hook_active === true) process.exit(0);
   const problems = [], unfixable = [];
   const dirty = gitHere('status', '--porcelain');
   if (dirty) problems.push(`work not saved (power is cut daily):\n${dirty}`);
-  // the next window's checkout is made from the main folder's HEAD, room-polish (.claude/settings.json
-  // worktree.baseRef head): work pushed on this branch alone is missing from the next session, and a
-  // written rule to bring it over at the end of a step does not hold when a session ends mid-step
+  // the next window's checkout is made from room-polish (worktree.baseRef head): work left on this branch
+  // alone is missing from the next session
   if (gitHere('rev-parse', '--verify', '-q', 'room-polish') && gitHere('merge-base', '--is-ancestor', 'HEAD', 'room-polish') === null) {
     const branch = gitHere('rev-parse', '--abbrev-ref', 'HEAD');
     // another window's commits on room-polish make the fast-forward fail; both windows write the
     // board's showing and current lines, and a conflict resolved to one side loses the owner's quoted words
     const theirs = gitHere('merge-base', '--is-ancestor', 'room-polish', 'HEAD') === null ? gitHere('rev-list', '--count', 'HEAD..room-polish') : null;
     const first = theirs ? `room-polish has ${theirs} commits of another window: first here run git merge room-polish, keeping both sides of every conflict in docs/board.md (the owner's words), then ` : '';
-    // the branch reaches room-polish through a pull request CodeRabbit reviews (GitHub flow: a branch, a
-    // pull request, a review, a merge); CodeRabbit closes its remarks only from the pull request's own
-    // comments, so a long-lived review window never emptied
-    problems.push(`the main folder (room-polish, where the next window starts) lacks ${gitHere('rev-list', '--count', 'room-polish..HEAD')} commits of this branch: ${first}push ${branch}, open or update its pull request into room-polish, answer CodeRabbit's review, merge it, then in the main folder run git pull --ff-only origin room-polish`);
+    // the branch reaches room-polish through a pull request CodeRabbit reviews (GitHub flow); with HEAD in an
+    // open one of this repository, it waits on the reviewer, no command hurries it, and the app wakes the session
+    let waits = false;
+    try { waits = JSON.parse(execFileSync('gh', ['pr', 'list', '--head', branch, '--base', 'room-polish', '--json', 'headRefOid,isCrossRepository'], { cwd: HERE, encoding: 'utf8', timeout: 10000, windowsHide: true })).some((p) => !p.isCrossRepository && gitHere('merge-base', '--is-ancestor', 'HEAD', p.headRefOid) !== null); } catch { /* GitHub out of reach: remind */ }
+    if (!waits) problems.push(`the main folder (room-polish, where the next window starts) lacks ${gitHere('rev-list', '--count', 'room-polish..HEAD')} commits of this branch: ${first}push ${branch}, open or update its pull request into room-polish, answer CodeRabbit's review, merge it, then in the main folder run git pull --ff-only origin room-polish`);
   }
   // a helper's command left running (tools/leftovers.mjs): seen at every turn's end, not by my memory
   const left = leftoverLine();
