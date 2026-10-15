@@ -22,6 +22,13 @@ Done:
   why each choice among all that exists, my own principles, CodeRabbit set up fully), 23 fragments checked against
   his log by a script.
 - Entries of 14.10 moved to docs/progress-2026-10-14.md (this file passed 300 lines).
+- On his asks to take apart and put back together (the tandem, my own working, the circles): four checks by
+  helpers: his 10 latest artifacts against the repo, the windows from request 15 on, how a model like me works and
+  fails (objekt-files/notes/self-2026-10-15/research.md, Opus 5.5 system card among the sources), my 677 recorded
+  errors by kind (errors.md there). Their verdict, the day counts checked by me: the windows circled; 0 commits to
+  the game since 14.10 17:06; "done" unchecked and facts from memory the largest kinds. docs/tandem.md rewritten as
+  the steps of one feature's cycle with who takes each, at the same size. CodeRabbit's plans read from its pricing
+  page and docs (Essentials 30 $ a month, Team 60 $, the trial's Advanced 90 $): his money choice.
 - His choice at this window's end ("Remove", after his words that he allows what he cannot judge): the allow
   windows on guards and process files removed (.claude/settings.json ask rules); kept on his words
   (docs/owner-decisions.md, docs/ten-circles.md, .claude/rules/). His decision's line in docs/owner-decisions.md,
