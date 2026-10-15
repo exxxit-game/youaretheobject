@@ -125,9 +125,11 @@ export const AREAS = [BOUNDS, HALL_BOUNDS];
 export const SPACES = [WALLS, HALL];
 // The four cars' doors, two on each side wall of the hall, each in the middle of its car's bay
 // (the 1968 plan: two cars stacked along each side of the hall, facing across it); facing: the
-// way the door faces along x
+// way the door faces along x; basement: the one car that also goes down to the basement (the
+// building's basement plan shows one elevator there, in the west column, on the corridor's side)
 export const CARS = [-1, 1].flatMap((side) => [0, 1].map((i) => ({
-  x: side < 0 ? HALL.minX : HALL.maxX, z: round(PLAN.south + PLAN.thick + (i + 0.5) * PLAN.bay), facing: -side
+  x: side < 0 ? HALL.minX : HALL.maxX, z: round(PLAN.south + PLAN.thick + (i + 0.5) * PLAN.bay), facing: -side,
+  basement: side < 0 && i === 0
 })));
 
 // the pieces of a long wall between its openings, [from, to] along x (the south wall's include the

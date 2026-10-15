@@ -229,19 +229,19 @@ export async function runLobby(room) {
 }
 
 // The building's directories (directory.js, hall.js): the main one lists each floor, this one's rooms
-// from the plan and the floors above it closed; the floor's, on each side of the hall, points the
-// rooms and the stairs toward the corridor and the way out toward the glass wall, its arrows turned
-// for the wall it is on (on the east wall the corridor is to the reader's left)
+// from the plan and the floors above it closed; the floor's, read facing the north wall as one comes
+// out of the hall, points the rooms and the stair of each hand: west to the left, east to the right
 function writeDirectories() {
-  const D = LOBBY_T.directory, rooms = DOORS.filter((d) => d.number).map((d) => Number(d.number));
-  const span = D.rooms(Math.min(...rooms), Math.max(...rooms));
+  const D = LOBBY_T.directory, P = D.panel, rooms = DOORS.filter((d) => d.number);
+  const all = rooms.map((d) => Number(d.number));
   writeMainDirectory($('#dirMain').components.panel, { head: D.head, sub: D.sub, floors: [
-    { floor: D.floor(PLAN.floor), lines: [span] },
+    { floor: D.floor(PLAN.floor), lines: [D.rooms(Math.min(...all), Math.max(...all))] },
     { floor: D.floors(PLAN.floor + 1, PLAN.storeys), lines: [D.closed] }
   ] });
-  for (const [id, toCorridor] of [['#dirFloorEast', -1], ['#dirFloorWest', 1]]) {
-    writeFloorDirectory($(id).components.panel, [{ t: D.floor(PLAN.floor) }, { t: span, arrow: toCorridor }, { t: D.stairs, arrow: toCorridor }, { t: D.exit, arrow: -toCorridor }]);
-  }
+  // the rooms of one hand, nearest first, the room facing the hall (101) left out: it is beside the sign
+  const hand = (s) => rooms.filter((d) => Math.sign(d.x - PLAN.entrance) === s).sort((a, b) => Math.abs(a.x - PLAN.entrance) - Math.abs(b.x - PLAN.entrance)).map((d) => d.number).join(', ');
+  writeFloorDirectory($('#dirFloor').components.panel, [{ t: P.floor(PLAN.floor) }, { t: P.rooms(hand(-1)), arrow: -1 }, { t: P.rooms(hand(1)), arrow: 1 },
+    { t: P.stairs, arrow: -1 }, { t: P.stairs, arrow: 1 }]);
 }
 
 const door1Shut = () => { const door = $('#door1'); door.removeAttribute('animation'); door.setAttribute('rotation', '0 0 0'); };

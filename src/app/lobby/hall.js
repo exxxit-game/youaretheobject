@@ -57,8 +57,9 @@ function sideWall(x, ceil) {
 
 // One entrance: the frame's two jambs and head line the opening through the wall's depth (their
 // faces on the wall are the frame's face), the two door panels at the back of it, the sill, and in
-// the strike jamb's return the lantern's two arrows, up over down.
-function entrance({ x, z, facing }) {
+// a jamb's return the lantern: the up arrow, and under it the down arrow only on the car that goes
+// on down to the basement (plan.js): a car whose lowest stop is this floor never goes down from it.
+function entrance({ x, z, facing, basement }) {
   const back = r(x - facing * E.depth);                    // the doors' face, at the back of the returns
   const mid = r(x - facing * E.depth / 2), w = E.opening, jamb = r((w - E.door.w) / 2);
   const jz = (s) => r(z + s * (w / 2 - jamb / 2));
@@ -75,11 +76,11 @@ function entrance({ x, z, facing }) {
     <a-box position="${mid} ${r(E.door.h + (E.top - E.door.h) / 2)} ${z}" width="${E.depth}" height="${r(E.top - E.door.h)}" depth="${r(w - 2 * jamb)}" ${FRAME}></a-box>
     <a-box position="${r(back - facing * 0.015)} ${r(E.door.h / 2)} ${r(z - E.door.w / 4)}" width="0.03" height="${E.door.h}" depth="${r(E.door.w / 2 - 0.002)}" ${FRAME}></a-box>
     <a-box position="${r(back - facing * 0.015)} ${r(E.door.h / 2)} ${r(z + E.door.w / 4)}" width="0.03" height="${E.door.h}" depth="${r(E.door.w / 2 - 0.002)}" ${FRAME}></a-box>
-    <a-box position="${r(x - facing * E.depth / 2)} 0.003 ${z}" width="${E.depth}" height="0.006" depth="${r(E.door.w)}" material="color: #9a9c9e; metalness: .6; roughness: .4"></a-box>${arrow(true, r(E.lantern + 0.04))}${arrow(false, r(E.lantern - 0.04))}`;
+    <a-box position="${r(x - facing * E.depth / 2)} 0.003 ${z}" width="${E.depth}" height="0.006" depth="${r(E.door.w)}" material="color: #9a9c9e; metalness: .6; roughness: .4"></a-box>${arrow(true, r(E.lantern + 0.04))}${basement ? arrow(false, r(E.lantern - 0.04)) : ''}`;
 }
 
 // the call station on the wall between a side's two entrances: a faceplate with an up and a down
-// button (the hall's floor is the building's lowest the cars serve: the photo's floor is an upper one)
+// button, the down one for the car that goes on to the basement (plan.js, CARS)
 function callStation(x) {
   const facing = x === HALL.minX ? 1 : -1, zs = CARS.filter((c) => c.x === x).map((c) => c.z);
   const z = r((zs[0] + zs[1]) / 2), out = r(x + facing * 0.004);
@@ -130,13 +131,15 @@ function exitWall(ceil) {
 }
 
 // The directories (directory.js): the main one by the way in, on the east wall between the last
-// entrance and the glass wall; a floor directory on each side wall between the corridor and the
-// first entrance, where one leaves a car, its arrows turned for the wall it is on (lobby.js writes
-// them). Each in an aluminium frame on the wall: a body, its print on the body's face, a lip round
-// it (as the corridor's cork board, scene.js). Their heights: the main board's from 41 to 74 in, inside
-// the 38 to 85 in a 1969 lobby photo shows (Washington State University, Johnson Hall; our estimate
-// from it), its middle at eye height; the floor directory's middle at 60 in, as the door signs'
-// (brand.js). No glass over the felt: in a headset it would only mirror the light slots.
+// entrance and the glass wall; the floor directory where one comes out of the hall into the
+// corridor and must turn left or right, facing the hall on the corridor's north wall between doors
+// 101 and 102 (the 1979 report puts its frames at a lobby's openings, one at each point where the way
+// divides, its arrows to either side; lobby.js writes them). Each in an aluminium frame on the wall:
+// a body, its print on the body's face, a lip round it (as the corridor's cork board, scene.js). The
+// main board from 41 to 74 in, inside the 38 to 85 in a 1969 lobby photo shows (Washington State
+// University, Johnson Hall; our estimate from it), its middle at eye height; the floor directory's
+// middle at eye height too, its edges clear of the block courses (tests/masonry.test.mjs). No glass
+// over the felt: in a headset it would only mirror the light slots.
 const ALU = 'material="color: #b9bcbf; metalness: .6; roughness: .35"';
 // the two directories' faces (directory.js draws them): the main board 20 x 30 in; a floor
 // directory's panels 2 x 14 in, an eighth of an inch apart (our reading: panels slid into one frame
@@ -145,27 +148,30 @@ export const MAIN = { w: r(20 * IN), h: r(30 * IN) };
 export const PANEL = { w: r(14 * IN), h: r(2 * IN), gap: r(0.125 * IN) };
 const floorDirectorySize = (n) => ({ w: PANEL.w, h: r(n * PANEL.h + (n - 1) * PANEL.gap) });
 const MAIN_FRAME = r(1.375 * IN), FLOOR_FRAME = r(0.5 * IN);
-function framed(id, { x, z, y, w, h, lip, body, facing, bg }) {
-  // facing: the way the print faces along x, out from the wall into the hall
-  const face = r(x + facing * body), lipX = r(x + facing * (body + 0.006));
-  const turn = `rotation="0 ${facing > 0 ? 90 : -90} 0"`, ow = r(w + 2 * lip), oh = r(h + 2 * lip);
+// a framed print on a wall: wall { axis: 'x' (its face at x = at) or 'z' (at z = at), facing: the
+// way the print faces along that axis }, u: its middle along the wall, y: its middle's height
+function framed(id, { axis, at, facing, u, y, w, h, lip, body, bg, onWall = false }) {
+  const pos = (out, along, dy = 0) => (axis === 'x' ? `${r(at + facing * out)} ${r(y + dy)} ${r(u + along)}` : `${r(u + along)} ${r(y + dy)} ${r(at + facing * out)}`);
+  const size = (normal, along, height) => (axis === 'x' ? `width="${r(normal)}" height="${r(height)}" depth="${r(along)}"` : `width="${r(along)}" height="${r(height)}" depth="${r(normal)}"`);
+  const turn = axis === 'x' ? `rotation="0 ${facing > 0 ? 90 : -90} 0"` : `rotation="0 ${facing > 0 ? 0 : 180} 0"`;
+  const ow = w + 2 * lip, oh = h + 2 * lip;
   const bars = [[0, (h + lip) / 2, ow, lip], [0, -(h + lip) / 2, ow, lip], [-(w + lip) / 2, 0, lip, h], [(w + lip) / 2, 0, lip, h]];
   return `
-    <a-box position="${r(x + facing * body / 2)} ${y} ${z}" width="${body}" height="${oh}" depth="${ow}" ${ALU}></a-box>${bars.map(([dz, dy, bw, bh]) => `
-    <a-box position="${lipX} ${r(y + dy)} ${r(z + dz)}" width="0.012" height="${r(bh)}" depth="${r(bw)}" ${ALU}></a-box>`).join('')}
-    <a-entity id="${id}" class="directory" data-dynamic panel="w: ${r(w)}; h: ${r(h)}; px: 1024; bg: ${bg}; decal: true" ${turn} position="${r(face + facing * 0.0005)} ${y} ${z}"></a-entity>`;
+    <a-box ${onWall ? 'class="on-wall" ' : ''}position="${pos(body / 2, 0)}" ${size(body, ow, oh)} ${ALU}></a-box>${bars.map(([du, dy, bw, bh]) => `
+    <a-box position="${pos(body + 0.006, du, dy)}" ${size(0.012, bw, bh)} ${ALU}></a-box>`).join('')}
+    <a-entity id="${id}" class="directory" data-dynamic panel="w: ${r(w)}; h: ${r(h)}; px: 1024; bg: ${bg}; decal: true" ${turn} position="${pos(body + 0.0005, 0)}"></a-entity>`;
 }
+// the floor directory's lines: the floor, then the rooms and the stairs on either hand (texts.ru.js)
+export const FLOOR_LINES = 5;
+// its middle on the north wall: between the frames of doors 101 and 102, and its height
+export const FLOOR_DIRECTORY = { x: 2.25, y: 1.6 };
 export function directoriesHTML() {
   const east = CARS.filter((c) => c.x === HALL.maxX).map((c) => c.z);
   const mainZ = r((Math.max(...east) + E.opening / 2 + HALL.maxZ - MULL) / 2);
-  const floorZ = r((PLAN.south + PLAN.thick + Math.min(...east) - E.opening / 2) / 2);
   const fd = floorDirectorySize(FLOOR_LINES);
-  return framed('dirMain', { x: HALL.maxX, z: mainZ, y: r(57.5 * IN), w: MAIN.w, h: MAIN.h, lip: MAIN_FRAME, body: 0.035, facing: -1, bg: '#141414' }) +
-    [HALL.maxX, HALL.minX].map((x) => framed(x === HALL.maxX ? 'dirFloorEast' : 'dirFloorWest',
-      { x, z: floorZ, y: r(60 * IN), w: fd.w, h: fd.h, lip: FLOOR_FRAME, body: 0.02, facing: x === HALL.maxX ? -1 : 1, bg: '#0c1424' })).join('');
+  return framed('dirMain', { axis: 'x', at: HALL.maxX, facing: -1, u: mainZ, y: r(57.5 * IN), w: MAIN.w, h: MAIN.h, lip: MAIN_FRAME, body: 0.035, bg: '#141414' }) +
+    framed('dirFloor', { axis: 'z', at: PLAN.north, facing: 1, u: FLOOR_DIRECTORY.x, y: FLOOR_DIRECTORY.y, w: fd.w, h: fd.h, lip: FLOOR_FRAME, body: 0.02, bg: '#0c1424', onWall: true });
 }
-// the floor directory's lines: the floor, the rooms, the stairs, the way out (texts.ru.js)
-export const FLOOR_LINES = 4;
 
 export function hallHTML(ceil) {
   return `

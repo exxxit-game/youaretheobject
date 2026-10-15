@@ -52,7 +52,8 @@ export function writeMainDirectory(panel, t) {
 
 // A floor directory at the elevators: a frame of 2 x 14 in panels, white on blue, flat on the wall,
 // one panel a line, an arrow where the way turns (the 1979 report's Appendix F: a 22 x 14 in frame
-// of 2 x 14 in panels, "Blue/White"); the frame as tall as its panels (hall.js).
+// of 2 x 14 in panels, "Blue/White"; its letters "Helvetica Medium Point ... capital and lower case":
+// the game's face at its medium weight); the frame as tall as its panels (hall.js).
 const BLUE = '#1f3a6e', GAP = '#0c1424';
 
 // an arrow pointing left (dir -1) or right (+1), its tip at x, the height of a capital h
@@ -85,9 +86,9 @@ export function writeFloorDirectory(panel, lines) {
     ctx.fillRect(0, Math.round(top), c.width, Math.round(PANEL.h * m));
     ctx.fillStyle = LETTER;
     ctx.letterSpacing = `${0.05 * IN * m}px`;
-    ctx.font = font(m, 1);
+    ctx.font = font(m, 1, 500);
     const room = c.width - 2 * pad - (dir ? cap * 1.5 : 0), wide = ctx.measureText(t).width;
-    if (wide > room) ctx.font = font(m, room / wide);
+    if (wide > room) ctx.font = font(m, room / wide, 500);
     if (dir < 0) { arrow(ctx, pad, mid, cap, -1); ctx.textAlign = 'left'; ctx.fillText(t, pad + cap * 1.5, mid); }
     else if (dir > 0) { arrow(ctx, c.width - pad, mid, cap, 1); ctx.textAlign = 'right'; ctx.fillText(t, c.width - pad - cap * 1.5, mid); }
     else { ctx.textAlign = 'center'; ctx.fillText(t, c.width / 2, mid); }

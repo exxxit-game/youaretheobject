@@ -23,8 +23,10 @@ export const LOBBY_T = {
   hint: { title: 'You are the object.', body: 'Мышь: зажмите и тяните — оглядеться, щелчок — нажать. В шлеме: кнопка VR справа внизу.' },
   // the plaque on each stair's door, at the corridor's ends
   stairs: 'ЛЕСТНИЦА',
-  // the building's directories (directory.js): the main one at the entrance (a heading, then each
-  // floor and what is on it) and the floor's at the elevators (the floor, then where each way leads)
+  // the building's directories (directory.js): the main one at the entrance in changeable capitals (a
+  // heading, then each floor and what is on it); the floor's where one comes out of the elevator hall,
+  // in capital and lower case as the 1979 report's panels (the floor, then the rooms and the stairs on
+  // either hand)
   directory: {
     head: 'УКАЗАТЕЛЬ',
     sub: 'ЛАБОРАТОРИЯ',
@@ -32,8 +34,7 @@ export const LOBBY_T = {
     floors: (a, b) => `${a}–${b} ЭТАЖИ`,
     rooms: (a, b) => `КОМНАТЫ ${a}–${b}`,
     closed: 'ЗАКРЫТО',
-    stairs: 'ЛЕСТНИЦЫ',
-    exit: 'ВЫХОД'
+    panel: { floor: (n) => `${n} этаж`, rooms: (list) => `Комнаты ${list}`, stairs: 'Лестница' }
   },
   // the studio's poster on the board ends the participation (exit.js), in the lab's words:
   // the player is a participant here, not in a game
