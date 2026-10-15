@@ -30,6 +30,4 @@ none of them reads it first (docs/tools.md). All his words: docs/owner-decisions
 - GitHub done properly, releases and all («каждый этот шаг сделаем правильно» 9.10); the live site gets one thing only once polished («оттачиваем одну вещь» 9.10).
 - Install first, the site second («а сайт это уже второй шаг» 9.10); what costs more later is decided now (9.10).
 - I am not the judge of my own work («ты сам себя можешь оправдать» 11.10).
-- Every tool's updates watched, Claude Code first: I tell him a new version is out, we read its changes together and weigh benefit against harm for us (an update may drop an old device or bring early bugs: A-Frame 1.8.0 shipped a lost line); what works is not updated until that weighing says so; each tool re-checked for where and why it could be better («обязательно узнать, что оно вышло и посмотреть, что в том обновлении есть»; «То, что работает, нельзя сразу же обновлять… польза, вред… Разумное разделение» 13.10).
-- Knowledge updated when needed («наши знания нужно обновлять при нужде» 11.10); watching A-Frame, Meta, the headset's browser and Claude Code is mine, monthly, then a page to him («лучше ты будешь за этим следить» 11.10).
 - Everything found gets put in, fixed and improved («нужно всё вносить и исправлять, улучшать» 10.10).
