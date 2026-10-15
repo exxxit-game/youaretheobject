@@ -426,6 +426,13 @@ assert.ok(worstStart < 10000, `on the worst day the start would print ${worstSta
   said([1, 'да, красиво']);
   assert.equal(gate({ a: true, b: false, c: true }), 0, 'his «да» an hour ago did not count');
   assert.equal(raw('{ broken'), 1, 'a broken staged list passed on his «да»');
+  // a repository with no list yet: nothing staged passes, a first list that comes in passing needs «да» like any other
+  const fresh = path.join(dir, 'fresh');
+  spawnSync('git', ['init', '-q', fresh]);
+  const first = (text) => spawnSync(process.execPath, [path.join(ROOT, 'tools/claude-guard.mjs'), 'accepted'], { cwd: fresh, encoding: 'utf8', env, input: text }).status;
+  said();
+  assert.equal(first(''), 0, 'a commit with no list anywhere was stopped');
+  assert.equal(first(list({ a: true })), 1, 'a first list that came in passing went through with no «да» of his');
   said([1, 'Да'], [0.5, 'нет, свет не тот']);
   assert.equal(gate({ a: true, b: false, c: true }), 1, 'a «да» he took back with «нет» counted');
   said([4, 'да']);

@@ -430,8 +430,8 @@ if (mode === 'loaded') { note({ f: String(event.file_path || '') }); process.exi
 const gitHere = (...a) => { try { return execFileSync('git', a, { cwd: HERE, env: withoutGitVars(), encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim(); } catch { return null; } };
 
 // accepted (tools/hooks/pre-commit; stdin: the staged list): a feature passing that was not, or gone, needs his «да»
-// in his log (CLAUDE.md step 5): «да» and two words at most, 3 hours, no «нет» or «стоп» after; an unreadable list
-// stops but at HEAD's birth
+// in his log (CLAUDE.md step 5): «да» and two words at most, 3 hours, no «нет» or «стоп» after; no list at HEAD nor
+// staged: nothing to hold; a staged list that will not read stops
 if (mode === 'accepted') {
   const list = (f) => { try { return JSON.parse(f()).features; } catch { return null; } };
   const now = list(() => input), was = list(() => gitHere('show', `HEAD:${FEATURES}`));
@@ -443,7 +443,7 @@ if (mode === 'accepted') {
     }
   } catch { /* no log */ }
   const moved = now?.some((n) => n.passes && !was?.some((w) => w.id === n.id && w.passes)) || was?.some((w) => !now?.some((n) => n.id === w.id));
-  process.exit(gitHere('rev-parse', '-q', '--verify', 'HEAD') === null || (now && was && (yes || !moved)) ? 0 : 1);
+  process.exit((!was && !input.trim()) || (now && (yes || !moved)) ? 0 : 1);
 }
 
 // start: Claude Code adds this output to the context at startup, at resume and after each compaction.
