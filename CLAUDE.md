@@ -16,7 +16,7 @@ His decisions load with this file, settled (never re-asked): @docs/owner-decisio
 real psychology experiments, one room each, then sees how he was caught. Maps: ARCHITECTURE.md, docs/state.md; tools: docs/tools.md.
 
 ## Every session (the process: Anthropic, "Effective harnesses for long-running agents", 26.11.2025)
-1. Read docs/progress.md and `git log --oneline -20`, then docs/features.json. The task is his message; if it names
+1. Read the newest entry of docs/progress.md, `git log --oneline -20`, then docs/features.json. The task is his message; if it names
    none, the first feature whose "passes" is false. Nothing a hook prints is a task by itself.
 2. One feature at a time. Anything else, even a good idea: one line at the end of docs/board.md (his words stay there).
 3. Explore first, then plan, then build (plan mode): read what docs/tools.md names for the task's kind, then build
@@ -45,6 +45,5 @@ Repo English; Russian only where tests/structure.test.mjs allows. Who errs where
   (the ask rules in .claude/settings.json).
 
 ## Rooms and code
-A room: the new-room skill (its card, its paper read in full, a clear task); the paper-reviewer checks it. One room
-per folder in src/rooms/; the engine never imports rooms. Styles only in css/, player text only in texts.ru.js,
-no build step; the rest of the code's shape is held by tests/structure.test.mjs.
+A room: the new-room skill (its card, its paper read in full, a clear task); the paper-reviewer checks it. No build
+step; the code's shape is held by tests/structure.test.mjs.

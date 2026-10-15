@@ -253,7 +253,7 @@ assert.ok(!author || author.endsWith('@users.noreply.github.com'), `git commits 
   for (const f of ['src/', ...folders('src/'), 'css/', 'tests/', 'tools/']) assert.ok(mapped.has(f), `ARCHITECTURE.md: the folder ${f} is not in the map`);
 }
 
-// 21. Styles live only in css/ (CLAUDE.md: styles only in css): no <style> block and no style="" attribute in a
+// 21. Styles live only in css/: no <style> block and no style="" attribute in a
 // page or in the code that builds markup.
 {
   const pages = ['index.html', 'privacy.html', ...fs.readdirSync(path.join(ROOT, 'tools')).filter((f) => f.endsWith('.html')).map((f) => `tools/${f}`)];

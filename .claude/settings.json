@@ -1,6 +1,7 @@
 {
   "worktree": { "baseRef": "head" },
   "enabledPlugins": {
+    "coderabbit@claude-plugins-official": false,
     "data@inline": false, "data@synced": false,
     "marketing@inline": false, "marketing@synced": false,
     "design@inline": false, "design@synced": false,
