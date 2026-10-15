@@ -24,10 +24,9 @@ docs search, the hz-quest-verify-first skill), the W3C WebXR spec. The page read
 - One narrow fact: quick-research, one question a run. A wide question: deep-research in the background.
 - A whole system (GitHub, Supabase, the app): one general helper per system, in parallel.
 - A paper: docs/library.md, its card in docs/cards, its text in objekt-files/papers; searching: Consensus, PubMed,
-  the reference lookup; a PDF: PDF Tools; a page a fetch cannot read: the browser pane; Reddit (closed to both):
-  its RSS through curl with a user agent, one request every 45 s (docs/research/ai-and-vr-4.md); a page nothing
-  opens: its exact link to him.
-- What we have and do not use, each with its reason: objekt-files/notes/others-2026-10-15/inventory-2026-10-15.md.
+  the reference lookup; a PDF: PDF Tools; a page a fetch cannot read: the browser pane; Reddit: its RSS by
+  curl with a user agent, a request per 45 s (docs/research/ai-and-vr-4.md); a page nothing opens: its link to him.
+- What we have and do not use, with each reason: objekt-files/notes/others-2026-10-15/inventory-2026-10-15.md.
 - A new page before he sees it: the fact-checker, two runs that do not see each other; edits from their findings
   checked by me against them.
 - Building anything: a short script file in node, never long mixed shell lines; a command judged by its exit code,

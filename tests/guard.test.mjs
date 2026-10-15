@@ -297,44 +297,6 @@ assert.equal(ask('Bash', 'grep -rn "git commit --no-verify" docs/'), 0, 'the hoo
   fs.rmSync(dir, { recursive: true, force: true });
 }
 
-// CLAUDE.md's imports read as Claude Code reads them (code.claude.com/docs/en/memory): every name has a file
-// behind it. "@docs/tandem.md." kept the tandem out of every window: the dot is caught
-{
-  const md = path.join(ROOT, 'CLAUDE.md');
-  const gone = imports(md).filter((f) => !fs.existsSync(f));
-  assert.deepEqual(gone, [], `CLAUDE.md imports a name with no file behind it, which loads nothing: ${gone.join(', ')}`);
-  assert.ok(imports(md).some((f) => f.endsWith(path.join('docs', 'tandem.md'))), 'CLAUDE.md no longer imports docs/tandem.md');
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'imports-'));
-  fs.writeFileSync(path.join(dir, 'CLAUDE.md'), 'Who errs: @docs/tandem.md. More.\nCode: `@not/this.md`, a@mail.com\n```\n@nor/this.md\n```\n');
-  assert.deepEqual(imports(path.join(dir, 'CLAUDE.md')).map((f) => path.relative(dir, f).replace(/\\/g, '/')), ['docs/tandem.md.'], 'an import is not read as Claude Code reads it');
-  fs.rmSync(dir, { recursive: true, force: true });
-}
-
-// The thermometer and his measure, from the record Claude Code's InstructionsLoaded hook writes: a file
-// CLAUDE.md names that did not load, or loaded before the copy was brought up, is told to him once a
-// window and to me at each message; his measure comes at a window's first message only. A home of its own.
-{
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'loads-'));
-  const env = { ...process.env, HOME: dir, USERPROFILE: dir };
-  const run = (m, event) => spawnSync(process.execPath, ['tools/claude-guard.mjs', m], { cwd: ROOT, encoding: 'utf8', env, input: JSON.stringify({ cwd: ROOT, ...event }) });
-  const out = (s, prompt = 'hi') => { try { return JSON.parse(run('prompt', { session_id: s, prompt }).stdout); } catch { return {}; } };
-  const all = [path.join(ROOT, 'CLAUDE.md'), ...imports(path.join(ROOT, 'CLAUDE.md'))];
-  const load = (s, files) => files.forEach((f) => run('loaded', { session_id: s, file_path: f, load_reason: 'session_start' }));
-  assert.match(out('M').systemMessage || '', /^За 7 дней ты принял вещей из списка: \d+\. Вчера коммитов: в игру \d+, в процесс \d+\./, 'his measure was not shown at the first message');
-  assert.doesNotMatch(out('M').systemMessage || '', /За 7 дней/, 'his measure came again in the same window');
-  load('L', all.filter((f) => !f.endsWith('tandem.md')));
-  const told = out('L');
-  assert.match(told.systemMessage || '', /не загрузилось: docs\/tandem\.md/, 'a file CLAUDE.md names that did not load was not told to him');
-  assert.match(told.hookSpecificOutput?.additionalContext || '', /Not loaded: docs\/tandem\.md/, 'a file that did not load was not told to me');
-  assert.doesNotMatch(out('L').systemMessage || '', /загрузилось/, 'he was told twice in one window');
-  load('K', all);
-  assert.doesNotMatch(JSON.stringify(out('K')), /Not loaded|загрузил/, 'a window with every file loaded was warned');
-  load('C', all);
-  fs.appendFileSync(path.join(dir, 'Documents', 'objekt-files', 'notes', 'instructions-loaded.jsonl'), `${JSON.stringify({ t: Date.now() + 1000, s: 'C', caughtUp: true })}\n`);
-  assert.match(out('C').systemMessage || '', /загрузились до обновления копии/, 'files loaded before the copy was brought up were not told to him');
-  fs.rmSync(dir, { recursive: true, force: true });
-}
-
 // The headset tools restart nothing while the owner wears the headset: the power service's dump
 // says mounted with no override of ours (tools/headset.mjs). Dumps as the headset printed them.
 const dump = (state, virtual) => `Virtual proximity state: ${virtual}\nisAutosleepDisabled: false\nState: ${state}\n`;
@@ -372,5 +334,44 @@ assert.ok(start.stdout.length < 10000, `the start hook prints ${start.stdout.len
 // (GitHub's runner sees no CI line; a start that fit here went over there twice)
 const worstStart = start.stdout.length + 2 * (EXTRA_LINE + 2);
 assert.ok(worstStart < 10000, `on the worst day the start would print ${worstStart} characters: over 10,000 Claude Code keeps only a preview`);
+
+// CLAUDE.md's imports read as Claude Code reads them (code.claude.com/docs/en/memory): every name has a file
+// behind it. "@docs/tandem.md." kept the tandem out of every window: the dot is caught. Last, so the older
+// guards above see their own mistakes first (tools/prove-guards.mjs)
+{
+  const md = path.join(ROOT, 'CLAUDE.md');
+  const gone = imports(md).filter((f) => !fs.existsSync(f));
+  assert.deepEqual(gone, [], `CLAUDE.md imports a name with no file behind it, which loads nothing: ${gone.join(', ')}`);
+  assert.ok(imports(md).some((f) => f.endsWith(path.join('docs', 'tandem.md'))), 'CLAUDE.md no longer imports docs/tandem.md');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'imports-'));
+  fs.writeFileSync(path.join(dir, 'CLAUDE.md'), 'Who errs: @docs/tandem.md. More.\nCode: `@not/this.md`, a@mail.com\n```\n@nor/this.md\n```\n');
+  assert.deepEqual(imports(path.join(dir, 'CLAUDE.md')).map((f) => path.relative(dir, f).replace(/\\/g, '/')), ['docs/tandem.md.'], 'an import is not read as Claude Code reads it');
+  fs.rmSync(dir, { recursive: true, force: true });
+}
+
+// The thermometer and his measure, from the record Claude Code's InstructionsLoaded hook writes: a file
+// CLAUDE.md names that did not load, or loaded before the copy was brought up, is told to him once a
+// window and to me at each message; his measure comes at a window's first message only. A home of its own.
+{
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'loads-'));
+  const env = { ...process.env, HOME: dir, USERPROFILE: dir };
+  const run = (m, event) => spawnSync(process.execPath, ['tools/claude-guard.mjs', m], { cwd: ROOT, encoding: 'utf8', env, input: JSON.stringify({ cwd: ROOT, ...event }) });
+  const out = (s, prompt = 'hi') => { try { return JSON.parse(run('prompt', { session_id: s, prompt }).stdout); } catch { return {}; } };
+  const all = [path.join(ROOT, 'CLAUDE.md'), ...imports(path.join(ROOT, 'CLAUDE.md'))];
+  const load = (s, files) => files.forEach((f) => run('loaded', { session_id: s, file_path: f, load_reason: 'session_start' }));
+  assert.match(out('M').systemMessage || '', /^За 7 дней ты принял вещей из списка: \d+\. Вчера коммитов: в игру \d+, в процесс \d+\./, 'his measure was not shown at the first message');
+  assert.doesNotMatch(out('M').systemMessage || '', /За 7 дней/, 'his measure came again in the same window');
+  load('L', all.filter((f) => !f.endsWith('tandem.md')));
+  const told = out('L');
+  assert.match(told.systemMessage || '', /не загрузилось: docs\/tandem\.md/, 'a file CLAUDE.md names that did not load was not told to him');
+  assert.match(told.hookSpecificOutput?.additionalContext || '', /Not loaded: docs\/tandem\.md/, 'a file that did not load was not told to me');
+  assert.doesNotMatch(out('L').systemMessage || '', /загрузилось/, 'he was told twice in one window');
+  load('K', all);
+  assert.doesNotMatch(JSON.stringify(out('K')), /Not loaded|загрузил/, 'a window with every file loaded was warned');
+  load('C', all);
+  fs.appendFileSync(path.join(dir, 'Documents', 'objekt-files', 'notes', 'instructions-loaded.jsonl'), `${JSON.stringify({ t: Date.now() + 1000, s: 'C', caughtUp: true })}\n`);
+  assert.match(out('C').systemMessage || '', /загрузились до обновления копии/, 'files loaded before the copy was brought up were not told to him');
+  fs.rmSync(dir, { recursive: true, force: true });
+}
 
 console.log(`guard: ok (${refused.length} refused, ${allowed.length} allowed, the hook wired, the headset's wearer seen, his messages logged and only his, his decisions imported by CLAUDE.md, every import found, the current feature shown at start, his measure and what did not load told at his first message, nothing to do first, commands left running named)`);

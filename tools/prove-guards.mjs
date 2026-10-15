@@ -121,6 +121,7 @@ const CASES = [
   ['claude-guard pre', 'data: read only', 'a write called from a read on the live database', () => {}, () => askGuard('pre', { tool_name: 'mcp__db__execute_sql', tool_input: { query: "select public.submit_run('{}'::jsonb)" } }), 'REFUSED'],
   ['settings deny', 'main only on the owner\'s word', 'files may be pushed to GitHub past the push hook', () => swap('.claude/settings.json', '"mcp__*__push_files",', ''), test('health.test.mjs'), 'mcp__*__push_files'],
   ['claude-guard start', 'the owner\'s decisions', 'a session starts without his decisions in front of it', () => fs.rmSync(at('docs/owner-decisions.md')), test('guard.test.mjs'), 'does not show the owner\'s decisions'],
+  ['claude-guard prompt', 'the tandem', 'an import that loads nothing', () => swap('CLAUDE.md', '@docs/tandem.md', '@docs/tandem.md.'), test('guard.test.mjs'), 'no file behind it'],
   ['review gate', 'the owner\'s automatic stop', 'VR started in the headset with no practice review', () => {},
     () => headsetTool(['tools/quest-look.mjs', 'vr'], `${dir}-reviews.jsonl`), 'waits for the practice reviewer'],
   ['review gate', 'the owner\'s automatic stop', 'my own VR look after a change to a file the review did not name',
