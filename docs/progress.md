@@ -55,7 +55,9 @@ and missed docs/mistakes.md; a shell heredoc ate backslashes twice before I wrot
 four files outside the allowed list (caught by the structure test).
 Next (his confirmation 15.10; the tandem by points and the plan choice done here): the next window, opened by me
 from room-polish: 1) the cleanup he confirmed (the thermometer: the InstructionsLoaded record and the prompt hook's
-not-loaded lines; the end-of-turn reminders; process audits as work), each with its tests and prover cases; 2) the
+not-loaded lines; the end-of-turn reminders; process audits as work), each with its tests and prover cases, and
+the laptop health check (tools/health.mjs and health-setup.mjs, 31 892 characters; no hook or start runs it, only
+its own tests: my choice, told to him); 2) the
 floor directory (docs/features.json, number 3) through the table's chain to his accept word. Later, each at its
 step: CodeRabbit's rules for docs, the stack study's verdicts, his ten circles and 21.10 date (his), GitHub's
 switches by his clicks. The list as it stood before his confirmation, kept for its reasons:
