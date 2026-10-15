@@ -1,7 +1,7 @@
 # methods, ethics, law
 
 Generated from `docs/library/papers.json` by `node tools/build-library.mjs`. Do not edit by hand.
-111 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
+116 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
 in the library folder's papers\ as `<id>.txt` (a data set: `<dir>/<id>.txt` from the library folder); "text: ocr" marks a scan's
 text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 
@@ -11,6 +11,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **anthropic-2025-opus45card** Anthropic 2025. System Card: Claude Opus 4.5 · AI model behaviour, sycophancy, honesty evaluation · no card
 - **anthropic-2025-teams** Anthropic 2025. How Anthropic teams use Claude Code · AI coding agents, Claude Code, process · no card
 - **anthropic-2026-opus46card** Anthropic 2026. System Card: Claude Opus 4.6 · AI model behaviour, overly agentic, misrepresenting work completion · no card
+- **anthropic-2026-opus55card** Anthropic 2026. System Card: Claude Opus 5.5 · model limitations, hallucination, sycophancy, prompt injection · no card
 - **anwyl-irvine-2021** Anwyl-Irvine et al. 2021. Realistic precision and accuracy of online experiment platforms, web browsers, and devices · online experiments, timing precision, browsers, devices · no card
 - **apa-ethics-code-2017** American Psychological Association 2017. Ethical Principles of Psychologists and Code of Conduct (2002, amended 2010 and 2016) · research ethics, deception, debriefing, informed consent · no card
 - **aust-2013** Aust et al. 2013. Seriousness checks are useful to improve data validity in online research · seriousness check, data quality, online research · no card
@@ -61,6 +62,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **huang-2024** Huang et al. 2024. Large Language Models Cannot Self-Correct Reasoning Yet · AI model behaviour, self-correction, external feedback · no card
 - **huber-2020** Huber & Gajos 2020. Conducting online virtual environment experiments with uncompensated, unsupervised samples · online experiments, virtual reality, unsupervised samples, replication · no card
 - **jorgensen-2004** Jorgensen 2004. Marrying HCI/Usability and Computer Games: A Preliminary Look · usability, HCI and games · no card
+- **kalai-2025** Kalai et al. 2025. Why Language Models Hallucinate · hallucination, guessing over abstaining · no card
 - **kennedy-1993** Kennedy et al. 1993. Simulator Sickness Questionnaire: An Enhanced Method for Quantifying Simulator Sickness · simulator sickness questionnaire, SSQ, measurement · no card · text: ocr
 - **kim-2019** Kim et al. 2019. Preventing careless responding in online surveys with a mirror image (in Korean) · careless responding, mirror image, online surveys, self-awareness · no card
 - **kirwan-2020** Kirwan et al. 2020. Repetition of computer security warnings results in differential repetition suppression effects as revealed with functional MRI · warning fatigue, security warnings, habituation · no card
@@ -68,6 +70,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **koe-2020** koe et al. 2020. Zero to Monero: Second Edition (v2.0.0) · Monero, Pedersen commitments, range proofs, cryptography · no card
 - **lakens-2022** Lakens 2022. Sample Size Justification · sample size justification, statistical power · no card
 - **leith-2026** Leith, D. J. 2026. The Quality of Claude AI-authored Python Tests Is Not Weaker Than Human-authored Tests · LLM-written tests, test quality, mutation testing · no card
+- **liu-2023** Liu et al. 2023. Lost in the Middle: How Language Models Use Long Contexts · long context, position of information · no card
 - **lumsden-2016** Lumsden et al. 2016. The effects of gamelike features and test location on cognitive test performance and participant enjoyment · gamelike features, test location, enjoyment, cognitive tests · no card
 - **madary-2016** Madary & Metzinger 2016. Real Virtuality: A Code of Ethical Conduct. Recommendations for Good Scientific Practice and the Consumers of VR-Technology · VR ethics, code of conduct · no card
 - **mcduff-2026** McDuff et al. 2026. Battling the Bots and Defending Against Fraudulent Responses in an International Community-Engaged Web-Based Survey With People Living... · online surveys, bots, fraudulent responses, data integrity · no card
@@ -95,12 +98,14 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **salouhou-2026** Salouhou et al. 2026. From Players to Participants: Citizen Science and Video Games to Understand Cognition · citizen science, video games, cognition · no card
 - **schafer-2019** Schäfer & Schwarz 2019. The Meaningfulness of Effect Sizes in Psychological Research: Differences Between Sub-Disciplines and the Impact of Potential Biases · effect sizes, publication bias · no card
 - **scheel-2021** Scheel et al. 2021. An Excess of Positive Results: Comparing the Standard Psychology Literature With Registered Reports · registered reports, positive results, publication bias · no card
+- **sharma-2023** Sharma et al. 2023. Towards Understanding Sycophancy in Language Models · sycophancy, user pressure · no card
 - **simonsohn-2015-supplement** Simonsohn 2015. Supplementary materials for "Small Telescopes: Detectability and the Evaluation of Replication Results" · small telescopes, replication evaluation, sample size · no card · supplement of Simonsohn 2015 (the main paper is not in the library)
 - **steed-2016** Steed et al. 2016. An 'In the Wild' Experiment on Presence and Embodiment using Consumer Virtual Reality Equipment · in-the-wild VR experiment, presence, embodiment, consumer headsets · no card
 - **steed-2021** Steed et al. 2021. Some Lessons Learned Running Virtual Reality Experiments Out of the Laboratory · VR experiments out of the lab, remote studies · no card
 - **tran-2024** Tran et al. 2024. A Survey On Measuring Presence in Mixed Reality · presence measurement, mixed reality, survey · no card
 - **uittenhove-2023** Uittenhove et al. 2023. From Lab-Testing to Web-Testing in Cognitive Research: Who You Test is More Important than how You Test · web testing, lab testing, sample differences · no card
 - **ukds-2025** UK Data Service 2025. Introduction to anonymisation techniques for social sciences research data (slides) · anonymisation, indirect identifiers, research data sharing · no card
+- **vaccaro-2024** Vaccaro et al. 2024. When combinations of humans and AI are useful: A systematic review and meta-analysis · human-AI teams, complementarity, meta-analysis · no card
 - **van-den-bussche-2026** Van den Bussche et al. 2026. Citizen Science in Psychology: Challenges, Opportunities and Recommendations · citizen science in psychology, recommendations · no card
 - **van-zelderen-2026** van Zelderen et al. 2026. Creating common virtual ground: Protocols to democratize open VR research · open VR research, protocols, reporting standard · no card · text: ocr
 - **vrprotocols-checklist-v0.62** vrprotocols.org 2026. Project Checklist VR/XR Open Science Framework v0.62 · VR open science, checklist, reporting · no card · supplement of van-zelderen-2026

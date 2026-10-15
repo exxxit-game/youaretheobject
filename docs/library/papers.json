@@ -8656,6 +8656,94 @@
    "text": "ok",
    "status": "no card",
    "source": "https://doi.org/10.1093/ehjdh/ztag125"
+  },
+  {
+   "id": "anthropic-2026-opus55card",
+   "authors": "Anthropic",
+   "year": "2026",
+   "title": "System Card: Claude Opus 5.5",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "model limitations",
+    "hallucination",
+    "sycophancy",
+    "prompt injection"
+   ],
+   "type": "report",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://www-cdn.anthropic.com/fc1b44717c85dc068bc6ba5024219938094694bd/Claude%20Opus%205.5%20System%20Card.pdf"
+  },
+  {
+   "id": "kalai-2025",
+   "authors": "Kalai, A. T., Nachum, O., Vempala, S. S., Zhang, E.",
+   "year": "2025",
+   "title": "Why Language Models Hallucinate",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "hallucination",
+    "guessing over abstaining"
+   ],
+   "type": "preprint",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://arxiv.org/abs/2509.04664"
+  },
+  {
+   "id": "liu-2023",
+   "authors": "Liu, N. F., Lin, K., Hewitt, J., Paranjape, A., Bevilacqua, M., Petroni, F., Liang, P.",
+   "year": "2023",
+   "title": "Lost in the Middle: How Language Models Use Long Contexts",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "long context",
+    "position of information"
+   ],
+   "type": "article",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://arxiv.org/abs/2307.03172"
+  },
+  {
+   "id": "sharma-2023",
+   "authors": "Sharma, M., Tong, M., Korbak, T., et al.",
+   "year": "2023",
+   "title": "Towards Understanding Sycophancy in Language Models",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "sycophancy",
+    "user pressure"
+   ],
+   "type": "conference paper",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://arxiv.org/abs/2310.13548"
+  },
+  {
+   "id": "vaccaro-2024",
+   "authors": "Vaccaro, M., Almaatouq, A., Malone, T.",
+   "year": "2024",
+   "title": "When combinations of humans and AI are useful: A systematic review and meta-analysis",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "human-AI teams",
+    "complementarity",
+    "meta-analysis"
+   ],
+   "type": "article",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://doi.org/10.1038/s41562-024-02024-1"
   }
  ]
 }
