@@ -42,9 +42,12 @@ this audit: what it finds goes to him as proposals, each replacing something old
   corrected, none refuted). The frame stands on current sources (Anthropic's harness article of 26.11.2025, Claude
   Code's docs); the machine guards for what cannot be undone hold; most other parts are held by text.
 - Parts that do not do what they say: the tandem import (never loaded), the health check "at every start" (runs at no
-  start), the board's top at start (gone since 14.10), plan mode (used by 1 of 4 windows after its rule), the report
-  word caps (exceeded by 309 of 371 reports), the size limit (text moved into docs/decisions.md, which it does not
-  count).
+  start), the board's top at start (gone since 14.10), plan mode, the report word caps (exceeded by 309 of 371
+  reports), the size limit (text moved into docs/decisions.md, which it does not count).
+- Plan mode, counted: the rule ("plan mode" in CLAUDE.md step 3) came in with 3f211e7 (14.10 20:33 local). Four
+  windows started after it: fd501efc, 4b946be3, 8da4a312 and a6865f9b. fd501efc launched on main's CLAUDE.md of 07.10,
+  which has no such rule, so 3 windows had it in their instructions; 1 of those 3 entered plan mode (a6865f9b, this
+  audit). The window that wrote the rule, d6f476ea, made its next six-file change without plan mode.
 - The permission lock: 70 prompts in 8.7 hours, 69 allowed; 3 shell writes passed it unprompted.
 - The axe: seven rebuild pages in five days, 107 prescriptions, 86 applied, 24 later undone or replaced, four freezes
   promised and none held; errors per 100 of his messages stayed between 29.5 and 36.0 a day from 9.10 to 14.10
