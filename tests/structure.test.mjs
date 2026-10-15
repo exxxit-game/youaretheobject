@@ -50,12 +50,12 @@ for (const f of code) {
     /^tools\/measure\.mjs$/                                                  // the owner's steps in his headset during a measure, in his language
   ];
   const skip = /^(\.git|node_modules|vendor)$|\.(mp3|wav|woff2|jpe?g|png|pdf|ico|webp)$/;
-  // the sessions' own checkouts live inside the main folder (.claude/worktrees): each is a whole
-  // other copy, checked by its own run, and read from the main folder it failed every test there
-  const worktrees = path.join(ROOT, '.claude', 'worktrees');
-  const tree = (dir) => fs.readdirSync(dir, { withFileTypes: true }).filter((e) => !skip.test(e.name) && path.join(dir, e.name) !== worktrees)
-    .flatMap((e) => (e.isDirectory() ? tree(path.join(dir, e.name)) : [path.join(dir, e.name)]));
-  const cyr = tree(ROOT).map(rel).filter((f) => !RUSSIAN.some((r) => r.test(f)) && /[\u0400-\u04FF]/.test(fs.readFileSync(path.join(ROOT, f), 'utf8')));
+  // the repository's files: what git keeps or would keep. A file git ignores is no part of it: the sessions'
+  // own checkouts (.claude/worktrees), and the app's local permissions (.claude/settings.local.json), whose
+  // allowed commands may carry Russian text. -z keeps file names unquoted
+  const files = execFileSync('git', ['ls-files', '-z', '--cached', '--others', '--exclude-standard'], { cwd: ROOT, encoding: 'utf8' })
+    .split('\0').filter((f) => f && !f.split('/').some((p) => skip.test(p)) && fs.existsSync(path.join(ROOT, f)));
+  const cyr = files.filter((f) => !RUSSIAN.some((r) => r.test(f)) && /[\u0400-\u04FF]/.test(fs.readFileSync(path.join(ROOT, f), 'utf8')));
   assert.deepEqual(cyr, [], `Russian outside the files allowed to hold it: ${cyr.join(', ')}`);
 }
 

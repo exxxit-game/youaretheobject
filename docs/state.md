@@ -42,7 +42,7 @@
 - Voice: ElevenLabs key in ~/.elevenlabs-key.txt; Daniel, eleven_v3; `tools/make-voice.mjs`, `tools/check-voice.mjs`.
 
 ## Skills and tools, and when to use them
-- docs/tools.md, loaded with CLAUDE.md in every session. Other installed skills idle.
+- docs/tools.md: named in CLAUDE.md (not imported, so not loaded by itself), read at a task's start. Everything available, used or not, with its recorded reason: the inventory of 15.10 (objekt-files/notes/others-2026-10-15/inventory-2026-10-15.md).
 
 ## Decisions with the owner
 One line each: for every window in `docs/owner-decisions.md` (loaded at every start), for one theme in `.claude/rules/` (game, measures, data, setup; loaded when a file of that theme is read or edited); all his words in `docs/owner-decisions-history.md` (read for a task).

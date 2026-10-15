@@ -191,7 +191,7 @@ kept while it serves, changed by facts, with one line to him.
 - The shown average of "you and other players" is recomputed only in batches of at least 10 new players («да» 12.10).
 - Room 101 keeps the chosen answer's place and its 40 trials as 40 marks, without times, with the next change of the database («да» 12.10).
 - The database's remaining doors closed: the chat's Supabase connector read only, an explicit deny on the tables, the IP-hash key changed daily; his «encryption later» stays his.
-- Connectors off: Notion, Jam, Adobe, Figma, the GitHub connector, Claude in Chrome, computer use, Minutes, privacy-legal; kept: Claude Docs, the browser pane, Consensus, PubMed, reference lookup, PDF Tools, Dropbox, one Supabase; the superpowers plugin off («да» 10.10).
+- Connectors off: Notion, Jam, Adobe, Figma, the GitHub connector, Claude in Chrome, computer use, Minutes, privacy-legal; kept: Claude Docs, the browser pane, Consensus, PubMed, reference lookup, PDF Tools, Dropbox (not connected on 15.10; Google Drive is the papers' copy, .claude/rules/setup.md), one Supabase; the superpowers plugin off («да» 10.10).
 - Plugins for every project: CodeRabbit and the TypeScript language server («ставь» 9.10); main protected on GitHub («Да» 9.10).
 - main held by the simple guard against my slips, the forms chasing a deliberate bypass taken off (my choice after his no to a second account).
 - The seven things the studio lacks, each on its shelf (https://claude.ai/artifact/J1VB6ay99JRuS9Zd6niJhg).
