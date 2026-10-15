@@ -141,6 +141,7 @@ const allowed = cases([
   'gh pr create --base main --head room-polish --title x --body y',
   'gh api repos/exxxit-game/youaretheobject/pulls/9/comments',
   "gh api graphql -f query='query { viewer { login } }'",
+  "gh api graphql -f query='mutation($b:String!){x(body:$b){id}}' -f b='@coderabbitai fixed in 1ab8043'",
   'grep -n node tests/smoke.mjs',
   'sed -n 1,40p tests/smoke.mjs',
   'git log --oneline -- tests/smoke.mjs',

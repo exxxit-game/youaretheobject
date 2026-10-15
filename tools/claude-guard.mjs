@@ -274,9 +274,8 @@ function judge(words, stdin, ps, here = false) {
     // through the REST paths or the GraphQL mutations (a query given as -f query=...). It catches a slip in the
     // forms we use; other spellings of a deliberate merge are not chased (docs/research/restrictions.md)
     if ((pr >= 0 && g[pr + 1] === 'merge') || (g[0] === 'api' && g.some((x) => /(^|\/)(merges|pulls\/\d+\/merge)$/.test(x) || /\b(mergePullRequest|enablePullRequestAutoMerge)\b/.test(x)))) return WHY.merge;
-    // a GraphQL body the guard cannot read: a field read from a file or stdin (-F query=@file, gh's
-    // "@" form) or the whole request from --input; our own calls give the query inline
-    if (g[0] === 'api' && g.includes('graphql') && (a.some((x) => /^[\w-]+=@/.test(x)) || a.includes('--input'))) return WHY.graphqlFile;
+    // a GraphQL body read from a file or stdin (-F x=@file; -f is raw text: gh api --help) or --input
+    if (g[0] === 'api' && g.includes('graphql') && (/(^| )(-F ?|--field[ =])[\w-]+=@/.test(a.join(' ')) || a.includes('--input'))) return WHY.graphqlFile;
     // the session under review does not close the remarks on its own work: it answers, and the
     // reviewer closes what it sees fixed in its next review
     if (g[0] === 'api' && a.some((x) => /\b(resolveReviewThread|minimizeComment)\b/.test(x))) return WHY.resolve;
