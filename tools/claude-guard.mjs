@@ -429,20 +429,20 @@ if (mode === 'loaded') { note({ f: String(event.file_path || '') }); process.exi
 
 const gitHere = (...a) => { try { return execFileSync('git', a, { cwd: HERE, env: withoutGitVars(), encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim(); } catch { return null; } };
 
-// accepted (tools/hooks/pre-commit; stdin: the staged list): a feature passing that was not, or gone, needs his «да»
-// in his log (CLAUDE.md step 5) bound to it by the prompt hook (its id in the entry's heading): «да» and two words at
-// most, 3 hours; a «нет», «стоп» or longer «да» after it takes back every «да» before; no list at HEAD nor staged:
-// nothing to hold; a staged list that will not read stops
+// accepted (tools/hooks/pre-commit; stdin: the staged list): a feature passing that was not, or gone, needs his
+// «Принимаю N» in his log (CLAUDE.md step 5), N its number in the list, as his «Утверждаю N» names a text: the word
+// first, two words more at most, 3 hours; a «нет», «не», «стоп» or a longer «Принимаю» after it takes back every one
+// before; no list at HEAD nor staged: nothing to hold; a staged list that will not read stops
 if (mode === 'accepted') {
   const list = (f) => { try { return JSON.parse(f()).features; } catch { return null; } };
-  const now = list(() => input), was = list(() => gitHere('show', `HEAD:${FEATURES}`));
+  const now = list(() => input), was = list(() => gitHere('show', `HEAD:${FEATURES}`)), n = was || now || [];
   const yes = new Set();
   try {
     for (const m of fs.readFileSync(LOG, 'utf8').split('\n## ')) {
-      const [t, , about] = m.split('\n')[0].split(' '), w = m.toLowerCase().match(/[а-яё]+/g) || [];
-      if (!(Date.parse(t) > Date.now() - 108e5)) continue;
-      if (/^(нет|стоп)$/.test(w[0]) || (w[0] === 'да' && w.length > 3)) yes.clear();
-      else if (about && w[0] === 'да') yes.add(about);
+      const said = m.slice(m.indexOf('\n') + 1), w = said.toLowerCase().match(/[а-яё]+/g) || [];
+      if (!(Date.parse(m.split(' ')[0]) > Date.now() - 108e5)) continue;
+      if (/^(нет|не|стоп)$/.test(w[0]) || (w[0] === 'принимаю' && w.length > 3)) yes.clear();
+      else if (w[0] === 'принимаю') for (const k of said.match(/\d+/g) || []) yes.add(n[k - 1]?.id);
     }
   } catch { /* no log */ }
   const moved = [...(now || []).filter((n) => n.passes && !was?.some((w) => w.id === n.id && w.passes)), ...(was || []).filter((w) => !now?.some((n) => n.id === w.id))];
@@ -529,28 +529,10 @@ if (mode === 'subagent-start' || mode === 'subagent-stop') {
 // outside the public repository, so no request is lost to a compaction (the request auditor
 // reads it). It never blocks the message. Then what the machine, not my memory, tells him and me.
 if (mode === 'prompt') {
-  // his «да» is bound to the feature my question «Принимаешь `id`?» named, the one question that ended my last turn
-  // (its closing text, or the ask of the app's box), when he sent it after it (one queued while I worked has its
-  // enqueue before it)
-  const yesTo = (own) => {
-    try {
-      if ((own.toLowerCase().match(/[а-яё]+/g) || [])[0] !== 'да') return '';
-      let q = { t: '', s: '' }, sent = '';
-      for (const l of fs.readFileSync(event.transcript_path, 'utf8').split('\n')) {
-        let e = {};
-        try { e = JSON.parse(l); } catch { /* a line still being written */ }
-        const p = e.type === 'assistant' && e.message.content.find((b) => b.type === 'text' || b.type === 'tool_use');
-        if (p) q = { t: e.timestamp, s: p.type === 'text' ? (e.message.stop_reason === 'end_turn' ? p.text : '') : /wrap_up$/.test(p.name) ? String(p.input.ask) : '' };
-        if (e.operation === 'enqueue') sent = e.timestamp;
-      }
-      const asked = q.s.match(/^(?:(?!принимаешь `)[^])*принимаешь `([a-z0-9-]+)`\?\s*$/i);
-      return asked && sent > q.t ? ` ${asked[1]}` : '';
-    } catch { return ''; }
-  };
   try {
     fs.mkdirSync(path.dirname(LOG), { recursive: true });
     const own = ownText(event.prompt || '');
-    if (own) fs.appendFileSync(LOG, `\n## ${new Date().toISOString()} ${event.session_id || ''}${yesTo(own)}\n${own.replace(/^## /gm, ' ## ')}\n`);
+    if (own) fs.appendFileSync(LOG, `\n## ${new Date().toISOString()} ${event.session_id || ''}\n${own.replace(/^## /gm, ' ## ')}\n`);
   } catch { /* a failed log must not stop his message */ }
   let mine = [];
   try { mine = fs.readFileSync(LOADS, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l)).filter((l) => l.s === (event.session_id || '')); } catch { /* none yet */ }

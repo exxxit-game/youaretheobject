@@ -11,12 +11,13 @@ CLAUDE.md loaded without its three imports; room-polish merged at the start (no 
 read by hand. Plan mode; the plan checked by two fact-checker runs (4 wrong, 7 holes, several claims wider than
 their evidence, all fixed in the plan), approved by him.
 Done:
-- The gate binds his yes to a feature: the prompt hook writes the id named by the one accept question (its form in
-  CLAUDE.md step 5) that ended my last turn (closing text, or the ask of the app's box) into the entry's heading,
-  when he sent it after that question (his enqueue later than it); the commit's gate needs a bound short yes for
-  every feature turned to passing or dropped; a no, a stop or a longer yes empties the set. His log keeps his own
-  text without the app's notes in front. Paid by the architecture-auditor helper (my choice); process size
-  177 898, the limit brought down to it.
+- The gate binds his acceptance to a feature by his own words: the accept word and the feature's number in the list
+  (CLAUDE.md step 5), as his approval of a text names its number; the commit's gate needs it, short, for every
+  feature turned to passing or dropped; a no, a stop or a longer message opening with the word empties the set.
+  First built as the prompt hook reading the transcript for my closing question (CodeRabbit found a hole in it on
+  #21); replaced the same day on his words that a plain yes is too vague and a number should sign it, so the
+  transcript reading is gone. His log keeps his own text without the app's notes in front. Paid by the
+  architecture-auditor helper (my choice); the limit brought down with the size.
 - The board: his words of this window (the allow windows, the tandem where one side is zero, the window's branch,
   why each choice among all that exists, my own principles, CodeRabbit set up fully), 23 fragments checked against
   his log by a script.
