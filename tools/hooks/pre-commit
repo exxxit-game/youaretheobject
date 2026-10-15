@@ -11,7 +11,7 @@ stop() { echo "STOP  the commit check fails: $1; nothing was committed"; exit 1;
 # read before git's own variables go: for "commit -a" GIT_INDEX_FILE names what is being committed
 staged=$(git diff --cached --name-only --diff-filter=ACMR -- '*.js' '*.mjs')
 node tools/secrets.mjs --staged > /dev/null 2>&1 || stop "something private is staged or git signs with another address (node tools/secrets.mjs --staged)"
-node tools/claude-guard.mjs accepted < /dev/null || stop "a feature turned to passing with no yes of his in his log in 3 hours: show it to him and ask"
+git show :docs/features.json 2>/dev/null | node tools/claude-guard.mjs accepted || stop "features.json: a pass, a drop or a parse error with no yes of his in 3 hours"
 # git sets GIT_DIR and GIT_INDEX_FILE for a hook: unset, no test's git can reach into this repository
 unset GIT_DIR GIT_INDEX_FILE GIT_WORK_TREE GIT_PREFIX GIT_EDITOR
 while IFS= read -r f; do

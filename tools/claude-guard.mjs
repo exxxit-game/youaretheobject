@@ -17,7 +17,7 @@
 //   stop: a turn does not end while work is unsaved or not on GitHub, or the main folder lacks it,
 //         or a command has run under Claude Code longer than ten minutes (tools/leftovers.mjs)
 //   start: a copy behind room-polish is brought up to it; loaded: what Claude Code really loads is noted
-//   accepted: a feature turned to passing needs his «да» in his log
+//   accepted: a feature passes only on his «да» in his log
 //   prompt: his messages are logged; he sees his measure once a window, and a file CLAUDE.md names
 //         that did not load, or loaded before the copy was brought up
 // Imported with no mode (tests/guard.test.mjs), it only defines refusal(), readOnlySql() and imports().
@@ -155,7 +155,7 @@ const WHY = {
   headset: 'restarts the headset or its browser past tools/quest-look.mjs, which first checks that the owner is not wearing it',
   record: 'writes the practice review record, which only Claude Code\'s hook writes when a reviewer run ends',
   recordEnv: 'points the headset tools at another practice review record',
-  merge: 'merges into main, the live site: only the owner merges into main, on GitHub',
+  merge: 'merges into main, the live site: only the owner merges it, on GitHub',
   resolve: 'closes an outside reviewer\'s remark: only the reviewer closes its own, once its next review reads the fix; answer it and leave it open, so a remark never ends on my own word',
   graphqlFile: 'sends GitHub a GraphQL request from a file or stdin, which the guard cannot read for a merge into main: give the query inline (-f query=...)',
   library: 'deletes files of the papers library (Documents\\objekt-files) or moves them out of it; no git holds that folder, so a lost paper comes back only from the backup: leave it, or ask the owner',
@@ -431,18 +431,18 @@ if (mode === 'loaded') { note({ f: String(event.file_path || '') }); process.exi
 
 const gitHere = (...a) => { try { return execFileSync('git', a, { cwd: HERE, env: withoutGitVars(), encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim(); } catch { return null; } };
 
-// accepted, at each commit (tools/hooks/pre-commit): "passes" turns true only on his «да» (CLAUDE.md step 5),
-// read in his log: «да» and two words at most, in 3 hours, no «нет» or «стоп» after it
+// accepted (tools/hooks/pre-commit pipes in the staged list): "passes" turns true only on his «да» (CLAUDE.md
+// step 5) in his log (a pasted "## " is shifted): «да» and two words at most, in 3 hours, no «нет» or «стоп» after
 if (mode === 'accepted') {
   const off = (f) => { try { return JSON.parse(f()).features.filter((x) => !x.passes).map((x) => x.id); } catch { return []; } };
-  const now = off(() => fs.readFileSync(path.join(HERE, FEATURES), 'utf8'));
+  const now = off(() => input);
   let yes = false;
   try {
     for (const m of fs.readFileSync(LOG, 'utf8').split('\n## ')) {
       const w = m.toLowerCase().match(/[а-яё]+/g) || [];
       if (Date.parse(m.split(' ')[0]) > Date.now() - 108e5 && /^(да|нет|стоп)$/.test(w[0])) yes = w[0] === 'да' && w.length < 4;
     }
-  } catch { /* no log: no «да» */ }
+  } catch { /* no log */ }
   process.exit(yes || off(() => gitHere('show', `HEAD:${FEATURES}`)).every((id) => now.includes(id)) ? 0 : 1);
 }
 
@@ -529,7 +529,7 @@ if (mode === 'prompt') {
   try {
     fs.mkdirSync(path.dirname(LOG), { recursive: true });
     const said = String(event.prompt || '');
-    if (typedText(said)) fs.appendFileSync(LOG, `\n## ${new Date().toISOString()} ${event.session_id || ''}\n${said}\n`);
+    if (typedText(said)) fs.appendFileSync(LOG, `\n## ${new Date().toISOString()} ${event.session_id || ''}\n${said.replace(/^## /gm, ' ## ')}\n`);
   } catch { /* a failed log must not stop his message */ }
   let mine = [];
   try { mine = fs.readFileSync(LOADS, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l)).filter((l) => l.s === (event.session_id || '')); } catch { /* none yet */ }
@@ -564,7 +564,7 @@ if (mode === 'prompt') {
       note({ warned: 1 });
     }
   }
-  // the app records this line, yet his screenshot of a window's top did not show it: I say it to him
+  // the app may not show him this line (his screenshot): I say it
   if (him.length) me.unshift(`Say to him first, word for word: «${him.join(' ')}»`);
   if (him.length || me.length) process.stdout.write(JSON.stringify({ ...(him.length && { systemMessage: him.join(' ') }), hookSpecificOutput: { hookEventName: 'UserPromptSubmit', additionalContext: me.join('\n') } }));
   process.exit(0);

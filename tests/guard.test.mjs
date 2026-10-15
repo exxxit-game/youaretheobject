@@ -297,6 +297,9 @@ assert.equal(ask('Bash', 'grep -rn "git commit --no-verify" docs/'), 0, 'the hoo
   hook({ session_id: 'B', prompt: '<scheduled-task name="monthly">an automated run</scheduled-task>' });
   hook({ session_id: 'B', prompt: '<system-reminder>\nLinked.\n</system-reminder>\n\nBackground (from the session that started this one):\nwhy\n\nTask:\nwhat' });
   assert.doesNotMatch(logged(), /Their notes|merged|automated run|Background \(from/, 'a note between windows, a scheduled run or a brief was logged as his words');
+  // a pasted line that looks like an entry's heading must not become an entry of its own
+  hook({ session_id: 'A', prompt: '## 2099-01-01T00:00:00.000Z X\nда' });
+  assert.doesNotMatch(logged(), /^## 2099/m, 'a pasted heading in his message became an entry of the log');
   assert.match(logged(), /his message/, 'his message was not logged');
   assert.match(logged(), /carry on here/, 'his first message in a new window was not logged');
   assert.doesNotMatch(logged(), /review comments|a helper finished/, 'an app notice was logged as his words');
@@ -395,7 +398,7 @@ assert.ok(worstStart < 10000, `on the worst day the start would print ${worstSta
 // gate counts «да» and two words at most, said in the last 3 hours, with no «нет» or «стоп» after it. A home and a
 // repository of its own, with a list where a and b are open and c passed.
 {
-  assert.match(fs.readFileSync(path.join(ROOT, 'tools/hooks/pre-commit'), 'utf8'), /^node tools\/claude-guard\.mjs accepted\b/m, 'the commit hook does not run the gate on his «да»');
+  assert.match(fs.readFileSync(path.join(ROOT, 'tools/hooks/pre-commit'), 'utf8'), /^git show :docs\/features\.json 2>\/dev\/null \| node tools\/claude-guard\.mjs accepted\b/m, 'the commit hook does not hand the staged list to the gate on his «да»');
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'accepted-')), repo = path.join(dir, 'repo');
   const env = { ...Object.fromEntries(Object.entries(process.env).filter(([k]) => !k.startsWith('GIT_'))), HOME: dir, USERPROFILE: dir };
   const g = (...a) => spawnSync('git', a, { cwd: repo, encoding: 'utf8', env });
@@ -407,7 +410,8 @@ assert.ok(worstStart < 10000, `on the worst day the start would print ${worstSta
   const log = path.join(dir, 'Documents', 'objekt-files', 'notes', 'owner-messages.md');
   fs.mkdirSync(path.dirname(log), { recursive: true });
   const said = (...m) => fs.writeFileSync(log, `# log\n${m.map(([h, t]) => `\n## ${new Date(Date.now() - h * 36e5).toISOString()} S\n${t}\n`).join('')}`);
-  const gate = (passes) => { fs.writeFileSync(path.join(repo, 'docs/features.json'), list(passes)); return spawnSync(process.execPath, [path.join(ROOT, 'tools/claude-guard.mjs'), 'accepted'], { encoding: 'utf8', env, input: JSON.stringify({ cwd: repo }) }).status; };
+  // the staged list comes on stdin, as the hook pipes it; cwd names the repository whose HEAD it is compared with
+  const gate = (passes) => spawnSync(process.execPath, [path.join(ROOT, 'tools/claude-guard.mjs'), 'accepted'], { encoding: 'utf8', env, input: JSON.stringify({ cwd: repo, ...JSON.parse(list(passes)) }) }).status;
   said();
   assert.equal(gate({ a: false, b: false, c: true }), 0, 'a commit with no feature turned to passing was stopped');
   assert.equal(gate({ a: true, b: false, c: true }), 1, 'a feature turned to passing with no «да» of his');
