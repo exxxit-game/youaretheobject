@@ -9,14 +9,11 @@
     "adobe-for-creativity@inline": false, "adobe-for-creativity@synced": false,
     "figma@inline": false, "figma@synced": false,
     "meta-vr@inline": false, "meta-vr@synced": false,
-    "hookify@claude-plugins-official": false, "hookify@inline": false,
-    "github@claude-plugins-official": false, "github@inline": false,
     "privacy-legal@synced": false, "privacy-legal@inline": false
   },
   "deniedMcpServers": [
     { "serverName": "plugin:research-desk:reference-lookup" },
-    { "serverName": "reference-lookup" },
-    { "serverName": "plugin:meta-vr:metavr" }
+    { "serverName": "reference-lookup" }
   ],
   "permissions": {
     "ask": [

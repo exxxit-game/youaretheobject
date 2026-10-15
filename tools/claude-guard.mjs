@@ -395,8 +395,7 @@ export const readOnlySql = (raw) => {
 
 // GitHub's own tests on room-polish (the smoke test runs only there): ten red runs in a row went
 // unseen while work went on, so the start says a red last run (gh run list --json: one run or none)
-// the start's lines after the board, each cut to EXTRA_LINE characters, the health check to
-// HEALTH_SHOWN problems: so the start's length on the worst day is known (tests/guard.test.mjs)
+// each start line cut to EXTRA_LINE characters, so the start's worst-day length is known (tests/guard.test.mjs)
 export const HEALTH_SHOWN = 5, EXTRA_LINE = 350;
 const clip = (line) => (line.length > EXTRA_LINE ? `${line.slice(0, EXTRA_LINE - 1)}…` : line);
 // conclusions that need a look (GitHub's run conclusions): a failure, a run that timed out, never
