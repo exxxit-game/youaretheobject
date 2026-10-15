@@ -14,8 +14,7 @@ paths:
 # The owner's decisions on the game: the corridor, the rooms, the film, light, art, voice, controls
 
 Settled like every line of docs/owner-decisions.md (never re-asked, never argued against; a change only from him).
-Claude Code loads this file when a file of the paths above is read or edited; a task of this theme that touches
-none of them reads it first (docs/tools.md). All his words: docs/owner-decisions-history.md and its part 2.
+Claude Code loads this file when a file of the paths above is read or edited.
 
 - Three texts accepted as written, word for word in the history file: the manifesto, the game and Store page, the corridor's welcome (with the corridor's texts, board item 7) («Да» 10.10); where his «почти готовый текст» goes: his choice.
 - The corridor is the reference every room is built on, finished before anything else («доделать эталонный коридор, на который мы опираемся» 9.10); its order «Подпись, печать, лаборатории, картины… указатель… свет» (8.10), visuals first, texts after (9.10).

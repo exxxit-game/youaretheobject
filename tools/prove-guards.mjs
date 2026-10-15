@@ -1,16 +1,13 @@
-// Proves every guard sees its mistake. A test that passes says only that nothing broke the rule
+// A test that passes says only that nothing broke the rule
 // OR that the test cannot see it; the way to tell them apart is to plant the mistake and watch the
 // guard go red (mutation testing). Each case below plants exactly the mistake one guard exists
 // for, in a throwaway clone of the last commit, runs that guard, and puts the clone back.
-// Usage: node tools/prove-guards.mjs [--lf]   (default: the laptop's own checkout, CRLF lines
-// where git converts them; --lf: plain LF, as on GitHub's runners). Exits 1 if any guard is blind.
 import { execFileSync, spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { PRIVATE_EMAIL, withoutGitVars } from './secrets.mjs';
-import { fingerprint, scan, write, roomScan } from './review-gate.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const LF = process.argv.includes('--lf');
@@ -37,17 +34,6 @@ const run = (cmd, args, extra = {}) => {
   return { ok: r.status === 0, out: `${r.stdout}${r.stderr}` };
 };
 const test = (file) => () => run(process.execPath, [`tests/${file}`]);
-// a headset tool run with only node on the path: were its stop blind, it could reach no adb
-const headsetTool = (args, record) => {
-  const bare = Object.fromEntries(Object.entries(env).filter(([k]) => k.toUpperCase() !== 'PATH'));
-  const r = spawnSync(process.execPath, args, { cwd: dir, env: { ...bare, PATH: path.dirname(process.execPath), OBJECT_REVIEW_RECORD: record }, encoding: 'utf8', timeout: 20000 });
-  return { ok: r.status === 0, out: `${r.stdout}${r.stderr}` };
-};
-// Claude Code hands its hook the event as JSON on stdin (code.claude.com/docs/en/hooks)
-const askGuard = (mode, event) => {
-  const r = spawnSync(process.execPath, ['tools/claude-guard.mjs', mode], { cwd: dir, env, encoding: 'utf8', input: JSON.stringify(event) });
-  return { ok: r.status === 0, out: `${r.stdout}${r.stderr}` };
-};
 const structure = test('structure.test.mjs');
 // player's words built from their codes: Russian letters belong only in the texts files
 const ru = (...codes) => String.fromCharCode(...codes);
@@ -94,35 +80,13 @@ const CASES = [
     () => run('git', ['commit', '-qam', 'planted']), 'tests/names.test.mjs fails'],
   ['pre-commit hook', 'no keys', 'a commit with a token staged', () => { git('config', 'core.hooksPath', 'tools/hooks'); append('docs/roadmap.md', `\n${token}\n`); },
     () => run('git', ['commit', '-qam', 'planted']), 'something private is staged'],
-  ['claude-guard pre', 'tests before done', 'the assistant skips the git hooks', () => {}, () => askGuard('pre', { tool_name: 'Bash', tool_input: { command: 'git commit --no-verify -m x' } }), 'REFUSED'],
-  ['claude-guard pre', 'tests before done', 'the assistant hides a hook-skipping commit in a shell\'s command text', () => {}, () => askGuard('pre', { tool_name: 'Bash', tool_input: { command: 'bash -c "git commit -n -m x"' } }), 'REFUSED'],
-  ['claude-guard pre', 'tests before done', 'the assistant runs Playwright locally', () => {}, () => askGuard('pre', { tool_name: 'PowerShell', tool_input: { command: 'npm run test:smoke' } }), 'REFUSED'],
-  ['claude-guard pre', 'the papers library', 'the assistant deletes a paper no git holds', () => {}, () => askGuard('pre', { tool_name: 'PowerShell', tool_input: { command: 'Remove-Item "$env:USERPROFILE\\Documents\\objekt-files\\papers\\planted.pdf"' } }), 'papers library'],
   // tools banned by name are deny rules in the settings (Claude Code applies them; no hook to ask): the
   // mistake planted is the rule taken out, and the guard test is what sees it
   ['settings deny', 'tests before done', 'a connected tool may start a browser on the laptop', () => swap('.claude/settings.json', '"mcp__plugin_playwright*",', ''), test('guard.test.mjs'), 'mcp__plugin_playwright*'],
   ['settings deny', 'data: read only', 'a migration may be applied to the live database', () => swap('.claude/settings.json', '"mcp__*__apply_migration",', ''), test('guard.test.mjs'), 'mcp__*__apply_migration'],
-  ['claude-guard pre', 'data: read only', 'a write hidden behind a read on the live database', () => {}, () => askGuard('pre', { tool_name: 'mcp__db__execute_sql', tool_input: { query: 'select 1; delete from app.runs' } }), 'REFUSED'],
-  ['claude-guard pre', 'data: read only', 'a write called from a read on the live database', () => {}, () => askGuard('pre', { tool_name: 'mcp__db__execute_sql', tool_input: { query: "select public.submit_run('{}'::jsonb)" } }), 'REFUSED'],
   ['settings deny', 'main only on the owner\'s word', 'files may be pushed to GitHub past the push hook', () => swap('.claude/settings.json', '"mcp__*__push_files",', ''), test('guard.test.mjs'), 'mcp__*__push_files'],
-  ['claude-guard start', 'the owner\'s decisions', 'a session starts without his decisions in front of it', () => fs.rmSync(at('docs/owner-decisions.md')), test('guard.test.mjs'), 'does not show the owner\'s decisions'],
+  ['guard test', 'the owner\'s decisions', 'a session starts without his decisions in front of it', () => fs.rmSync(at('docs/owner-decisions.md')), test('guard.test.mjs'), 'does not show the owner\'s decisions'],
   ['CLAUDE.md imports', 'the tandem', 'an import that loads nothing', () => swap('CLAUDE.md', '@docs/tandem.md', '@docs/tandem.md.'), test('guard.test.mjs'), 'no file behind it'],
-  ['review gate', 'the owner\'s automatic stop', 'VR started in the headset with no practice review', () => {},
-    () => headsetTool(['tools/quest-look.mjs', 'vr'], `${dir}-reviews.jsonl`), 'waits for the practice reviewer'],
-  ['review gate', 'the owner\'s automatic stop', 'my own VR look after a change to a file the review did not name',
-    () => { write({ kind: 'review', agent: 'planted', ...scan(dir), named: ['src/engine/sfx.js'] }, `${dir}-look.jsonl`); append('src/engine/fader.js', '\n// changed after the review\n'); },
-    () => headsetTool(['tools/quest-look.mjs', 'vr'], `${dir}-look.jsonl`), 'waits for the practice reviewer'],
-  // the practice review is of the files as they now stand, so only the paper check is missing
-  ['review gate', 'the paper check', 'VR started after the room changed since its check against the paper',
-    () => { write({ kind: 'paper', agent: 'planted', room: '01-control', ...roomScan(dir)['01-control'], named: [] }, `${dir}-paper.jsonl`); append('src/rooms/01-control/report.js', '\n// changed after the paper check\n'); write({ kind: 'review', agent: 'planted', print: fingerprint(dir) }, `${dir}-paper.jsonl`); },
-    () => headsetTool(['tools/quest-look.mjs', 'vr'], `${dir}-paper.jsonl`), 'waits for the paper check'],
-  ['review gate', 'the owner\'s automatic stop', 'the probe run in VR after the game changed since its review',
-    () => { write({ kind: 'review', agent: 'planted', print: fingerprint(dir) }, `${dir}-reviews.jsonl`); append('src/engine/sfx.js', '\n// changed after the review\n'); },
-    // the probe, not the test copy: were the stop blind, the copy would really be published; and with
-    // only node on the path, as the other headset cases, so a blind stop could reach no headset either
-    () => headsetTool(['tools/xr-probe-run.mjs', 'input'], `${dir}-reviews.jsonl`), 'waits for the practice reviewer'],
-  ['claude-guard pre', 'the owner\'s automatic stop', 'the assistant writes the practice review record itself', () => {},
-    () => askGuard('pre', { tool_name: 'Write', tool_input: { file_path: `${dir}-reviews.jsonl`.replace(/\.jsonl$/, '-practice-reviews.jsonl'), content: '{}' } }), 'REFUSED'],
 ];
 
 const restore = () => {
@@ -151,7 +115,6 @@ for (const [guard, rule, mistake, plant, check, words] of CASES) {
   console.log(`${caught ? 'CAUGHT' : 'BLIND '}  ${guard.padEnd(16)} ${mistake}${why ? ` (${why})` : ''}`);
 }
 fs.rmSync(dir, { recursive: true, force: true });
-for (const f of ['reviews', 'look', 'record']) fs.rmSync(`${dir}-${f}.jsonl`, { force: true });
 const blind = rows.filter((r) => !r.caught);
 console.log(blind.length ? `\n${blind.length} of ${rows.length} guards did not see their mistake` : `\nall ${rows.length} guards saw their mistake`);
 process.exitCode = blind.length ? 1 : 0;

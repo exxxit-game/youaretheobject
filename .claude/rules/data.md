@@ -10,8 +10,7 @@ paths:
 # The owner's decisions on data, science, money, the stores and the testers
 
 Settled like every line of docs/owner-decisions.md (never re-asked, never argued against; a change only from him).
-Claude Code loads this file when a file of the paths above is read or edited; a task of this theme that touches
-none of them reads it first (docs/tools.md). All his words: docs/owner-decisions-history.md and its part 2.
+Claude Code loads this file when a file of the paths above is read or edited.
 
 - What the game keeps: first the player's profile stays on his headset, only anonymous numbers go to the server; later, on a separate consent, his data goes if he wants to help science («по отдельному согласию игрока» 10.10); science as in the Ethics line.
 - Bots: a hashed IP kept 10 minutes («Отпечаток IP на 10 минут»).

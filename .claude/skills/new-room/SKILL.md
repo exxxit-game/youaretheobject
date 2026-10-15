@@ -6,12 +6,12 @@ description: Build or substantially change a room of Object (a re-created psycho
 # New room: steps in order
 
 The owner cannot read code or papers, so every step leaves proof a machine can
-check. Do not tell the owner "done" before step 10.
+check.
 
 1. **Card, then the paper in full.** Start from the experiment's card (`docs/catalog.md`, `docs/cards/`): its
    quotes are already checked against the paper text. Download the original (and the main replication) into
    `C:\Users\admin\Documents\objekt-files\papers\` as PDF and `pdftotext` .txt. Read the
-   method and results completely (CLAUDE.md: the paper read in full). If the participant's time is
+   method and results completely. If the participant's time is
    over about 10 min or there is no task/tension, stop and tell the owner.
    Write a 3-line entry in `docs/decisions.md` first.
 2. **Owner decisions.** Everything the headset cannot copy (money, typing, paper
@@ -25,16 +25,8 @@ check. Do not tell the owner "done" before step 10.
    page in each comment, frozen; a test pins every value to the paper. Then pure
    `schedule.js` / `report.js` with tests. Break a value on purpose once: the test
    must go red.
-5. **Room** by the room contract (`docs/rooms.md`): it stands behind its corridor door, so its markup
-   is only its inside, in its own metres (`sceneHTML`, `DOORWAY`), and `room.js` gives `ENTRY`,
-   `mount(root)` and `enter(withRecording)`; the app holds the scene, the player, the corridor, the door
-   and the arrival (`src/app/lab.js`). From the shared parts only:
-   `src/app/consent.js`, `src/app/session.js`, the clipboard `src/engine/ui/sheet.js`,
-   `src/engine/ui/choice.js`, `src/engine/ui/scale.js`, voice, sound, `writePlaque` (the
-   room's number only: the experiment's name waits for the reveal). Every part of the scene
-   follows `docs/building-standards.md` (we recreate: the standard first, then the build); its
-   door opening and flat wall things sit on the block module (`tests/masonry.test.mjs`).
-   A new look (an object, a picture, a sign) goes to the owner as pictures before it goes in. Widgets go
+5. **Room** by the room contract and its shared parts (`docs/rooms.md`). Every part of the scene
+   follows `docs/building-standards.md`. A new look (an object, a picture, a sign) goes to the owner as pictures before it goes in. Widgets go
    under the text (`panel.write` returns where it ends). Answer options: equal size;
    random order where order could bias.
 6. **Words and voice.** `texts.ru.js` only; formal "вы". Record with
@@ -43,14 +35,11 @@ check. Do not tell the owner "done" before step 10.
 7. **Tests.** `npm test` green (structure rules included). Update `tests/smoke.mjs`
    and `tools/quest-check.mjs` for the room's flow.
 8. **Independent review.** The `paper-reviewer` agent on the room; verify its main claims in the
-   paper yourself and fix. The headset and the test copy wait for its run on the room as it then
-   stands (`tools/review-gate.mjs`, requirePaper).
-9. **See it.** First the `practice-reviewer` agent (the headset waits for it: `tools/review-gate.mjs`).
-   Then a browser pass at `?speed=20` with screenshots of every new screen
+   paper yourself and fix.
+9. **See it.** First the `practice-reviewer` agent. Then a browser pass at `?speed=20` with screenshots of every new screen
    and a comparison with the room's approved shots (`docs/rooms/NN-shots/`); in the
    headset `node tools/quest-look.mjs` (enter VR, frames, timing of each step, frame rate,
-   `levels` for its sounds) and `node tools/quest-check.mjs` (all PASS); CodeRabbit reviews the pull
-   request into room-polish, its findings fixed or shown wrong before the merge.
+   `levels` for its sounds) and `node tools/quest-check.mjs` (all PASS).
 10. **Lessons.** A mistake that broke the room gets a test that catches it
     and a row in `docs/mistakes.md`; nothing else is added. Only now report, with a frame
     from the headset, saying what ran and what was seen.

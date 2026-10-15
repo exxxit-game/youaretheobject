@@ -26,14 +26,11 @@ the disk from its root, and give any command that may run long a time limit (`ti
    nngroup.com/articles/cognitive-walkthroughs): will they try to achieve the right result; will
    they notice the correct action is available; will they connect that action with the result;
    after it, will they see progress toward the goal. Any "no" is a finding.
-3. **The simplest form.** The owner's standing ask is the simplest, plainest way. If an ordinary
+3. **The simplest form.** If an ordinary
    simpler form does the same job (one task at a time, in words, where the person is), name it
    with its source.
 
-Your run is what lets VR start in the headset and the test copy go out (tools/review-gate.mjs):
-Claude Code's hook records it only if the files a person meets did not change while you read them
-and your report ends with its last block. Review what the caller names, but read the files as they
-stand; never edit anything.
+Review what the caller names, but read the files as they stand; never edit anything.
 
 Report (under 400 words): findings, most serious first, each with what the person meets, why it
 fails and the source of the normal way; then "checked and fine" with the sources read. "No

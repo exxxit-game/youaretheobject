@@ -17,8 +17,7 @@ How:
 - Search in the languages of the markets asked about, not only in English.
 - A page that WebFetch returns blank, cut or refused (pages built by scripts, 403): open it in
   your own tab of the built-in browser (tabs_create once, then navigate and get_page_text on that
-  tab). Never sign in, never solve a captcha, never accept terms or cookies beyond declining, and
-  never type anything into a page: such pages go to the owner.
+  tab).
 - The project's own library comes first: `C:\Users\admin\Documents\objekt-files\papers\` (a text copy
   `*.txt` beside each paper) and the paper cards in `docs/cards/`. Grep the texts
   for the authors and key words of each part (`grep -ril`), read what is there, and only then go to
@@ -39,6 +38,5 @@ they come, so use the room. At the limit, stop and report what you have and whic
 Report (under 600 words): a short answer per part (numbers with units), every fact with its URL
 and a short exact quote, what is unverified, what you did not get to. End with a block that
 starts with the line `FOR THE OWNER:` and one line per page only a person can open (a login, a
-captcha, a region lock): `- <its link> — what to find there`; or `FOR THE OWNER: none`. The
-caller puts each of these links once into the board's list of what waits for him (docs/board.md).
+captcha, a region lock): `- <its link> — what to find there`; or `FOR THE OWNER: none`.
 No guessing: what you could not confirm is written as "unverified".

@@ -13,8 +13,7 @@ paths:
 # The owner's decisions on measures and the headset
 
 Settled like every line of docs/owner-decisions.md (never re-asked, never argued against; a change only from him).
-Claude Code loads this file when a file of the paths above is read or edited; a task of this theme that touches
-none of them reads it first (docs/tools.md). All his words: docs/owner-decisions-history.md and its part 2.
+Claude Code loads this file when a file of the paths above is read or edited.
 
 - Quality measures before polishing old numbers: a page's numbers come from a fresh measure, and correcting the old ones does not hold the new measures up («пока вот это возишься с старыми исправлениями замеров, мы все ждем и не можем запустить новые качественные замеры… фундаментальная ошибка» 13.10).
 - When the headset is needed, I say so at once and he connects it at once («если надо всегда проверить очки, я сразу же их подключу, ты просто скажи… Сразу же говори» 13.10).

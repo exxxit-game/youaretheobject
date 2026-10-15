@@ -14,7 +14,7 @@ const rel = (f) => path.relative(ROOT, f).replaceAll('\\', '/');
 const lines = (f) => fs.readFileSync(f, 'utf8').split('\n').length;
 const code = walk(path.join(ROOT, 'src')).filter(f => f.endsWith('.js'));
 
-// 1. No code file grows past 300 lines (CLAUDE.md: files about 300 lines).
+// 1. No code file grows past 300 lines.
 const long = code.filter(f => lines(f) > 300).map(f => `${rel(f)} (${lines(f)})`);
 assert.deepEqual(long, [], `files over 300 lines: ${long.join(', ')}`);
 // and no doc either, so every doc can be read whole in one go: a longer one is split into parts
@@ -169,7 +169,7 @@ for (const f of facing) {
   assert.ok(!cut, `${rel(f)} cuts a word short: ${cut?.[0]}`);
 }
 
-// 16. No history in code comments (CLAUDE.md: comments say why): no dates, and no note of who asked or chose
+// 16. No history in code comments: no dates, and no note of who asked or chose
 // (a comment says why, never who or when). The pattern is built from parts so it does not match itself.
 // Possessive forms that name who decided, and a bare day and month, slipped past the first, narrower
 // pattern into the game's comments, so they are caught too.

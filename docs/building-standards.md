@@ -1,7 +1,7 @@
 # Building standards for the lab (walk this before building or changing any scene part)
 
 Every room and the corridor are a US university building of the late 1970s, built to trade
-standards (CLAUDE.md: we recreate). Values in inches and metres; sources below the table. A number
+standards. Values in inches and metres; sources below the table. A number
 marked "ours" is the game's rounding, with the reason.
 
 | Part | Standard | In the game |

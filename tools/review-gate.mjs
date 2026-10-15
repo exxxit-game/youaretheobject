@@ -3,17 +3,14 @@
 // has seen the files a person meets: the game and the headset probe, as the local server serves
 // them (PUBLIC, tests/static-server.mjs). A check built from a first idea wasted his headset run
 // (docs/mistakes.md); a rule in text was not enough to stop the next one.
-// The record is kept outside the repository and written only by Claude Code's own hook when a
-// reviewer run ends (tools/claude-guard.mjs, subagent-start and subagent-stop): the review counts
-// only if the files did not change while it read them and its report reached its last block. The
-// same guard refuses the assistant's own writes to the record (tests/review-gate.test.mjs).
+// The record is written only by Claude Code's hook (tools/claude-guard.mjs, subagent-stop).
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { PUBLIC, isPublic } from '../tests/static-server.mjs';
 
-export const RECORD = process.env.OBJECT_REVIEW_RECORD
+const RECORD = process.env.OBJECT_REVIEW_RECORD
   || path.join(os.homedir(), 'Documents', 'objekt-files', 'notes', 'practice-reviews.jsonl');
 export const REVIEWER = 'practice-reviewer';
 // the last block every reviewer report ends with: a run cut short has not reported
@@ -46,8 +43,7 @@ export const fingerprint = (root) => scan(root).print;
 
 // The check against the paper (.claude/agents/paper-reviewer.md), room by room: the headset and the
 // test copy also wait until each room was checked against its paper as its folder now stands, since
-// an unchecked room in the headset costs the owner his time (docs/owner-decisions.md: a ban only where
-// a mistake cannot be undone or costs him time). A run counts for the rooms its last line lists.
+// an unchecked room in the headset costs the owner his time. A run counts for the rooms its last line lists.
 export const PAPER_REVIEWER = 'paper-reviewer';
 export const PAPER_END = 'ROOMS CHECKED:';
 const ROOMS = 'src/rooms';
@@ -130,7 +126,6 @@ export const paperOf = (root, room, { look = false } = {}, record = RECORD) => {
   return entries(record).filter((e) => e.kind === 'paper' && e.room === room && (e.print === now.print || (look && fixes(e, now)))).pop() || null;
 };
 
-// Called with requireReview by the headset tools and the test copy; no flag skips it
 export function requirePaper(root, action, { look = false } = {}) {
   const missing = Object.keys(roomScan(root)).filter((room) => !paperOf(root, room, { look }));
   if (!missing.length) return;
@@ -139,7 +134,7 @@ export function requirePaper(root, action, { look = false } = {}) {
 }
 
 // Called by a tool before it starts VR in the headset or publishes the test copy; no flag skips it.
-// look: the assistant's own look (tools/quest-look.mjs vr), which a fix of the review's findings
+// look: the assistant's own look, which a fix of the review's findings
 // does not stop; anything else needs a review of exactly the current files.
 export function requireReview(root, action, { look = false } = {}) {
   if (look ? lookOf(root) : reviewOf(root)) return;
