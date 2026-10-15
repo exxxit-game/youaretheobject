@@ -1,4 +1,4 @@
-# Where things are (the work itself: docs/board.md, shown at every start)
+# Where things are (the work itself: docs/features.json and docs/board.md)
 
 ## Where things are
 - Repo `exxxit-game/youaretheobject` (folder `C:\Users\admin\Documents\GitHub\objekt`). Site:
@@ -24,7 +24,7 @@
   `node tools/check-cards.mjs`; catalog generated: `docs/catalog.md` (`node tools/build-catalog.mjs`);
   search coverage: `docs/library/coverage.md`; research notes: `docs/research/README.md`; ideas: `objekt-files/notes/archive/docs/ideas/`; headset abilities:
   `docs/headset-capabilities.md`; owner page: https://claude.ai/artifact/Srhwjio7Ukp4FBDQAHpZB2
-- THE WORK is the one-page board `docs/board.md` (shown at every start; his yes is the only measure of progress).
+- THE WORK is the feature list `docs/features.json` (the start names the current one; his accept word is the only measure of progress) and the board `docs/board.md` (his words, what waits).
   Every owner message is logged on the laptop by the prompt hook. The big plan (archive and strategy, read only
   when a step needs it): https://claude.ai/code/artifact/71113d16-57ad-42ce-9905-87ff87dfdbd7
   Every critical problem still open on 10.10 (money, law, data, headset, process, records), whose step each is and
