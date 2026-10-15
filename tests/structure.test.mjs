@@ -313,7 +313,8 @@ assert.ok(!author || author.endsWith('@users.noreply.github.com'), `git commits 
 // 25. Every helper in .claude/agents stops at a turn limit the machine holds and runs on the session's model, the
 // strongest (docs/decisions.md: "Every helper stops at a turn limit", "The search helpers stay on the session's model")
 for (const f of fs.readdirSync(path.join(ROOT, '.claude/agents')).filter((x) => x.endsWith('.md'))) {
-  const text = fs.readFileSync(path.join(ROOT, '.claude/agents', f), 'utf8');
+  // the fields Claude Code reads are in the opening frontmatter only, never in the instructions below it
+  const text = fs.readFileSync(path.join(ROOT, '.claude/agents', f), 'utf8').replace(/\r\n/g, '\n').match(/^---\n([\s\S]*?)\n---\n/)?.[1] ?? '';
   const turns = Number(text.match(/^maxTurns:\s*(\d+)\s*$/m)?.[1]);
   assert.ok(turns >= 40 && turns <= 300, `.claude/agents/${f} has no turn limit (maxTurns) or an odd one`);
   assert.ok(!/^model:/m.test(text), `.claude/agents/${f} sets its own model: every helper runs on the session's model`);
