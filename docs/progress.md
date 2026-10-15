@@ -35,6 +35,12 @@ in a node one-liner (nothing changed); the plan's first draft (the 9 claims abov
 brief said the step-1 window had shown a warning (none until 10:18); the step-1 window dropped the 3-second wait,
 called two pages identical and counted 8 rebuilds (all named to him there); the main window answered CodeRabbit
 "Fixed in d128967" 38 s before the commit reached GitHub, and its note said CodeRabbit had none of our rules.
+Measured at his question whether four windows did the one task (15.10, his local day): 0 commits to the game, 62 to
+the process (git, tools/board.mjs's split); 3 of 12 features passing, as the day before; his 117 typed messages in
+the four windows; of the tandem's four rows one built. What caught my errors was outside eyes: two fact-checkers (9
+claims wider than their evidence), CodeRabbit (4 real holes in the gate, fixed in 848ab71 and 8f9ee1f), ChatGPT's
+analysis brought by an experienced person he knows (a privacy promise the code breaks, confirmed in
+src/rooms/01-control/room.js:198). Its conclusion, the audit's and the premortem's agree: the tools outrun the game.
 Next: the PR's review and merge, the main folder pulled; then the map of every part he asked for (the anthill: each
 part's job for the one goal, what holds it, why it was chosen, what is open), from his artifacts, the board, the
 audit and outside experience; then rows 2 and 4, Qwen Coder, the letter to Anthropic, in the order he picks on it.
