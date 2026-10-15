@@ -4,6 +4,36 @@ Read at the start of every session, with `git log --oneline -20` and docs/featur
 session"). Newest entry on top. Each entry: done, not done and why, next. Anything outside the feature at hand goes
 to the end of docs/board.md, one line each.
 
+## 2026-10-15, night to morning — the process audited by the ten circles (Opus 5.5 at max effort, a workflow)
+A session started by the setup window, on his question on the board (did we get out of the circles) and his choice of
+max effort; in this window he chose a workflow for the audit. Plan mode used for the plan.
+Done:
+- The record counted by scripts (29 windows, his messages in both places a transcript keeps them, 1,048 commits) and
+  judged by 36 helpers at max effort: the 7 windows after the revision read whole, every error challenged by a second
+  helper, a control on two windows of 13.10 by the same method, a blind relabelling of 52 old errors (kappa 0.64);
+  273 process parts traced against sources opened on 15.10, each group checked by a second helper; the seven earlier
+  rebuild pages traced against git; a completeness critic and two blind fact-checks on the page. Evidence:
+  objekt-files/notes/audit-ten-circles-2026-10-15/ (00 to 03, data, scripts, circles, control, walls, page);
+  summary: docs/research/process-audit-2026-10-15.md.
+- Findings: not out of the circles (45.8 confirmed errors per 100 of his messages after his approval, 32.8 before, by
+  one method; not lower, "higher" not established, p = 0.059); text-held rules hardly held, machine-held ones did; the
+  same axe: 7 rebuilds, 107 prescriptions, the error rate unchanged; errors caused by our own guards fell only after
+  the one cure that mostly removed rules and guards.
+- A page for him: https://claude.ai/artifact/S41gdKsuAaYDS8WmwrAc9x (the critic found ten kinds of problem in the
+  draft, fact-check runs found 12 and 6 wrong claims; all fixed before publishing), with seven proposals, each
+  correcting or removing something, and his own recorded words on the order of process and game, without a question.
+- His words of this window on the board (the task as he put it, the million players, the many earlier pages, his
+  question on Ultracode and my answer).
+Errors of mine in this window: three answers repeated in English after the next-step box; asked him for the slider's
+"last item, max" without checking (the sixth notch is Ultracode), then took back my correct reading of his screenshot
+and sent him to click a "switch" that is not one; the plan's size-limit history without its first value; a node
+one-liner that ate a regex's backslashes; commits made after the structure test alone, not the whole npm test (the
+whole chain is red on the laptop at the library test, a missing record that PRs #16 and #17 add; the 12 tests after it
+were run one by one, all green); the page draft stated a "main cause", two proposals against his settled decisions
+and his yes to question 5 widened, all caught by the critic and the fact-checks before he saw it.
+Not done and why: nothing in the process is changed: the seven proposals wait for his permission one by one.
+Next: his answers on the page; then, one at a time, what he allows.
+
 ## 2026-10-14 night to 2026-10-15 — the app's insides re-checked with him (setup task, his words on the board)
 Done (each with npm test green; the work in PR #16):
 - PR #15 (the previous window) reviewed by CodeRabbit, its four remarks fixed (69828f4), merged by fast-forward on
