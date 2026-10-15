@@ -21,8 +21,20 @@ export const LOBBY_T = {
   menuHint: 'Меню и выход из комнаты — кнопка с тремя чёрточками на левом контроллере (на компьютере Esc).',
   // the computer player's line in the corridor (src/app/hint.js)
   hint: { title: 'You are the object.', body: 'Мышь: зажмите и тяните — оглядеться, щелчок — нажать. В шлеме: кнопка VR справа внизу.' },
-  // the plaque by the stairs the player came up, in the middle of the corridor
+  // the plaque on each stair's door, at the corridor's ends
   stairs: 'ЛЕСТНИЦА',
+  // the building's directories (directory.js): the main one at the entrance (a heading, then each
+  // floor and what is on it) and the floor's at the elevators (the floor, then where each way leads)
+  directory: {
+    head: 'УКАЗАТЕЛЬ',
+    sub: 'ЛАБОРАТОРИЯ',
+    floor: (n) => `${n} ЭТАЖ`,
+    floors: (a, b) => `${a}–${b} ЭТАЖИ`,
+    rooms: (a, b) => `КОМНАТЫ ${a}–${b}`,
+    closed: 'ЗАКРЫТО',
+    stairs: 'ЛЕСТНИЦЫ',
+    exit: 'ВЫХОД'
+  },
   // the studio's poster on the board ends the participation (exit.js), in the lab's words:
   // the player is a participant here, not in a game
   exit: {

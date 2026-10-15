@@ -27,6 +27,7 @@ export const PLAN = {
   // the hall: as wide as its bay less a wall's thickness (its walls on the 0.2 m module), two bays deep
   hall: { w: 3.0, deep: 6.4 },
   floor: 1,                     // the hundreds of every room number on this floor
+  storeys: 13,                  // the building's floors above ground, as the 1968 building's
   // the experimenter's board left of room 101 (its edges on the block joints), and the
   // extinguisher opposite it
   // the clipboard hangs by its ring on a peg (hook: its height, peg: its radius), placed so the

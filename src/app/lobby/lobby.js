@@ -19,11 +19,12 @@ import { SOUNDS } from './sound-list.js';
 import { signOn, signAnswer, visitsSoFar } from './opening.js';
 import { pinNotices } from './board.js';
 import { writeStairsSign } from './stairs-sign.js';
+import { writeMainDirectory, writeFloorDirectory } from './directory.js';
 import { paintExtinguisherLabel, paintGauge } from './extinguisher-label.js';
 import { showHint } from '../hint.js';
 import { leaveButton } from './exit.js';
 import { printTurn } from './scene.js';
-import { AREAS, SPACES, SHEET_HOME, SPOT, HOOK_READ } from './plan.js';
+import { AREAS, SPACES, SHEET_HOME, SPOT, HOOK_READ, DOORS, PLAN } from './plan.js';
 import { areasText } from '../../engine/locomotion-math.js';
 
 export { corridorHTML } from './scene.js';
@@ -179,7 +180,8 @@ export async function runLobby(room) {
   // every room's plaque shows its number from the plan; each stair's sign its symbol and word
   for (const el of document.querySelectorAll('.room-plaque')) writePlaque(el.components.panel, { number: el.dataset.number });
   for (const el of document.querySelectorAll('.stairs-plaque')) writeStairsSign(el.components.panel, LOBBY_T.stairs);
-  for (const el of document.querySelectorAll('.stairs-plaque, .room-plaque')) el.getObject3D('mesh').material.color.setScalar(WALL_PRINT_LIGHT);
+  writeDirectories();
+  for (const el of document.querySelectorAll('.stairs-plaque, .room-plaque, .directory')) el.getObject3D('mesh').material.color.setScalar(WALL_PRINT_LIGHT);
   pinNotices($('#notePoster').components.panel, $('#noteFlyer').components.panel, WALL_PRINT_LIGHT);
   hangPrints(visitsSoFar());
   paintExtinguisherLabel($('#extLabel'));
@@ -224,6 +226,22 @@ export async function runLobby(room) {
     await throughDoor({ sheet, leaf, light, room, exitOff });
   };
   return { withRecording, back };
+}
+
+// The building's directories (directory.js, hall.js): the main one lists each floor, this one's rooms
+// from the plan and the floors above it closed; the floor's, on each side of the hall, points the
+// rooms and the stairs toward the corridor and the way out toward the glass wall, its arrows turned
+// for the wall it is on (on the east wall the corridor is to the reader's left)
+function writeDirectories() {
+  const D = LOBBY_T.directory, rooms = DOORS.filter((d) => d.number).map((d) => Number(d.number));
+  const span = D.rooms(Math.min(...rooms), Math.max(...rooms));
+  writeMainDirectory($('#dirMain').components.panel, { head: D.head, sub: D.sub, floors: [
+    { floor: D.floor(PLAN.floor), lines: [span] },
+    { floor: D.floors(PLAN.floor + 1, PLAN.storeys), lines: [D.closed] }
+  ] });
+  for (const [id, toCorridor] of [['#dirFloorEast', -1], ['#dirFloorWest', 1]]) {
+    writeFloorDirectory($(id).components.panel, [{ t: D.floor(PLAN.floor) }, { t: span, arrow: toCorridor }, { t: D.stairs, arrow: toCorridor }, { t: D.exit, arrow: -toCorridor }]);
+  }
 }
 
 const door1Shut = () => { const door = $('#door1'); door.removeAttribute('animation'); door.setAttribute('rotation', '0 0 0'); };

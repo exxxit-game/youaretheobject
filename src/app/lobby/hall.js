@@ -6,7 +6,7 @@
 // opening's whole depth, the doors dark at its back, two panels; the up and down lantern arrows in
 // the strike jamb's return near its top; the call station on the wall between two entrances.
 // What the photo cannot give (sizes, heights) is named where it is set.
-import { HALL, HALL_CENTRE, HALL_LENGTH, CARS } from './plan.js';
+import { HALL, HALL_CENTRE, HALL_LENGTH, CARS, PLAN } from './plan.js';
 
 const r = (v) => +v.toFixed(4);
 const IN = 0.0254;
@@ -129,6 +129,44 @@ function exitWall(ceil) {
     ${leaf(x0 + MULL)}${leaf(mid + MULL / 2)}`;
 }
 
+// The directories (directory.js): the main one by the way in, on the east wall between the last
+// entrance and the glass wall; a floor directory on each side wall between the corridor and the
+// first entrance, where one leaves a car, its arrows turned for the wall it is on (lobby.js writes
+// them). Each in an aluminium frame on the wall: a body, its print on the body's face, a lip round
+// it (as the corridor's cork board, scene.js). Their heights: the main board's from 41 to 74 in, inside
+// the 38 to 85 in a 1969 lobby photo shows (Washington State University, Johnson Hall; our estimate
+// from it), its middle at eye height; the floor directory's middle at 60 in, as the door signs'
+// (brand.js). No glass over the felt: in a headset it would only mirror the light slots.
+const ALU = 'material="color: #b9bcbf; metalness: .6; roughness: .35"';
+// the two directories' faces (directory.js draws them): the main board 20 x 30 in; a floor
+// directory's panels 2 x 14 in, an eighth of an inch apart (our reading: panels slid into one frame
+// meet with a seam), the frame as tall as its panels
+export const MAIN = { w: r(20 * IN), h: r(30 * IN) };
+export const PANEL = { w: r(14 * IN), h: r(2 * IN), gap: r(0.125 * IN) };
+const floorDirectorySize = (n) => ({ w: PANEL.w, h: r(n * PANEL.h + (n - 1) * PANEL.gap) });
+const MAIN_FRAME = r(1.375 * IN), FLOOR_FRAME = r(0.5 * IN);
+function framed(id, { x, z, y, w, h, lip, body, facing, bg }) {
+  // facing: the way the print faces along x, out from the wall into the hall
+  const face = r(x + facing * body), lipX = r(x + facing * (body + 0.006));
+  const turn = `rotation="0 ${facing > 0 ? 90 : -90} 0"`, ow = r(w + 2 * lip), oh = r(h + 2 * lip);
+  const bars = [[0, (h + lip) / 2, ow, lip], [0, -(h + lip) / 2, ow, lip], [-(w + lip) / 2, 0, lip, h], [(w + lip) / 2, 0, lip, h]];
+  return `
+    <a-box position="${r(x + facing * body / 2)} ${y} ${z}" width="${body}" height="${oh}" depth="${ow}" ${ALU}></a-box>${bars.map(([dz, dy, bw, bh]) => `
+    <a-box position="${lipX} ${r(y + dy)} ${r(z + dz)}" width="0.012" height="${r(bh)}" depth="${r(bw)}" ${ALU}></a-box>`).join('')}
+    <a-entity id="${id}" class="directory" data-dynamic panel="w: ${r(w)}; h: ${r(h)}; px: 1024; bg: ${bg}; decal: true" ${turn} position="${r(face + facing * 0.0005)} ${y} ${z}"></a-entity>`;
+}
+export function directoriesHTML() {
+  const east = CARS.filter((c) => c.x === HALL.maxX).map((c) => c.z);
+  const mainZ = r((Math.max(...east) + E.opening / 2 + HALL.maxZ - MULL) / 2);
+  const floorZ = r((PLAN.south + PLAN.thick + Math.min(...east) - E.opening / 2) / 2);
+  const fd = floorDirectorySize(FLOOR_LINES);
+  return framed('dirMain', { x: HALL.maxX, z: mainZ, y: r(57.5 * IN), w: MAIN.w, h: MAIN.h, lip: MAIN_FRAME, body: 0.035, facing: -1, bg: '#141414' }) +
+    [HALL.maxX, HALL.minX].map((x) => framed(x === HALL.maxX ? 'dirFloorEast' : 'dirFloorWest',
+      { x, z: floorZ, y: r(60 * IN), w: fd.w, h: fd.h, lip: FLOOR_FRAME, body: 0.02, facing: x === HALL.maxX ? -1 : 1, bg: '#0c1424' })).join('');
+}
+// the floor directory's lines: the floor, the rooms, the stairs, the way out (texts.ru.js)
+export const FLOOR_LINES = 4;
+
 export function hallHTML(ceil) {
   return `
     <a-plane rotation="-90 0 0" position="${HALL_CENTRE.x} 0 ${HALL_CENTRE.z}" width="${r(HALL.maxX - HALL.minX)}" height="${HALL_LENGTH}" surface="kind: linoleum; ${HALL_SPACE}"></a-plane>
@@ -138,5 +176,6 @@ export function hallHTML(ceil) {
     ${exitWall(ceil)}
     ${CARS.map(entrance).join('')}
     ${callStation(HALL.minX)}${callStation(HALL.maxX)}
-    ${slot(HALL.minX)}${slot(HALL.maxX)}`;
+    ${slot(HALL.minX)}${slot(HALL.maxX)}
+    ${directoriesHTML()}`;
 }
