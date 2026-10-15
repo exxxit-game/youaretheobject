@@ -310,6 +310,14 @@ assert.ok(!author || author.endsWith('@users.noreply.github.com'), `git commits 
     .map((l) => l.split('|')[1].trim());
   assert.deepEqual(undecided, [], `abilities of the headset with no decision in the game (docs/headset-capabilities.md): ${undecided.join('; ')}`);
 }
+// 25. Every helper in .claude/agents stops at a turn limit the machine holds and runs on the session's model, the
+// strongest (docs/decisions.md: "Every helper stops at a turn limit", "The search helpers stay on the session's model")
+for (const f of fs.readdirSync(path.join(ROOT, '.claude/agents')).filter((x) => x.endsWith('.md'))) {
+  const text = fs.readFileSync(path.join(ROOT, '.claude/agents', f), 'utf8');
+  const turns = Number(text.match(/^maxTurns:\s*(\d+)\s*$/m)?.[1]);
+  assert.ok(turns >= 40 && turns <= 300, `.claude/agents/${f} has no turn limit (maxTurns) or an odd one`);
+  assert.ok(!/^model:/m.test(text), `.claude/agents/${f} sets its own model: every helper runs on the session's model`);
+}
 // 24. The rules and guards that steer the agent stay as they are or shrink, never grow. Last in this file:
 // tools/prove-guards.mjs plants each guard's mistake into a counted file, and the limit firing first
 // would hide which guard saw it. A long rules file gets lost ("Bloated CLAUDE.md files cause Claude to

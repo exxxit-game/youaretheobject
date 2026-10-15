@@ -60,13 +60,6 @@
     ]
   },
   "hooks": {
-    "InstructionsLoaded": [
-      {
-        "hooks": [
-          { "type": "command", "command": "node \"${CLAUDE_PROJECT_DIR}/tools/claude-guard.mjs\" loaded", "timeout": 10 }
-        ]
-      }
-    ],
     "SessionStart": [
       {
         "hooks": [
@@ -114,13 +107,6 @@
         "matcher": "practice-reviewer|paper-reviewer",
         "hooks": [
           { "type": "command", "command": "node \"${CLAUDE_PROJECT_DIR}/tools/claude-guard.mjs\" subagent-stop", "timeout": 60 }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          { "type": "command", "command": "node \"${CLAUDE_PROJECT_DIR}/tools/claude-guard.mjs\" stop", "timeout": 180 }
         ]
       }
     ]

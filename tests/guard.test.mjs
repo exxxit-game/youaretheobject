@@ -13,7 +13,6 @@ import { fileURLToPath } from 'node:url';
 import { refusal, ciLine, EXTRA_LINE, imports } from '../tools/claude-guard.mjs';
 import { onHead } from '../tools/headset.mjs';
 import { split } from '../tools/board.mjs';
-import { leftovers, LIMIT_MS } from '../tools/leftovers.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PS = 'PowerShell';
@@ -216,65 +215,20 @@ assert.equal(ask('Bash', 'git commit -n -m x'), 2, 'the hook let a hook-skipping
 assert.equal(ask(PS, 'npm run test:smoke'), 2, 'the hook let the smoke test run in PowerShell');
 assert.equal(ask('Bash', 'grep -rn "git commit --no-verify" docs/'), 0, 'the hook refused a search');
 
-// Helpers' commands left running (tools/leftovers.mjs): the tree as measured on the laptop, a
-// command past its tool's time limit moved to the background under the session's bash, beside what
-// is no command: the session's console host, an MCP server it keeps, the desktop app's own servers,
-// and a process whose parent id was reused by the session after it began
+// the locks hold when a guard breaks: a hook that crashes or times out lets its action through unless onFailure
+// is block (Claude Code's hooks reference, 'Block the action when a hook fails'); the Write|Edit guard does not
+// block, so a broken guard can still be mended. Tools banned by name alone are deny rules, which take them out of
+// the assistant's tools (its permissions reference, "Tool name wildcards"): a browser on the laptop, writes to the
+// live database, writes to GitHub past the push hook
 {
-  const T = 1791731000000, min = 60000;
-  const snap = 'source /c/Users/admin/.claude/shell-snapshots/snapshot-bash-1.sh && eval';
-  const tree = [
-    { pid: 9492, ppid: 6600, name: 'claude.exe', start: T - 600 * min, cmd: String.raw`"C:\Program Files\WindowsApps\Claude_2\app\Claude.exe"` },
-    { pid: 5864, ppid: 9492, name: 'claude.exe', start: T, cmd: String.raw`C:\Users\admin\AppData\Roaming\Claude\claude-code\2.1.295\d2e2\claude.exe --output-format stream-json` },
-    { pid: 4100, ppid: 5864, name: 'conhost.exe', start: T, cmd: String.raw`\??\C:\WINDOWS\system32\conhost.exe 0x4` },
-    { pid: 3916, ppid: 5864, name: 'bash.exe', start: T + 2 * min, cmd: String.raw`"C:\Program Files\Git\bin\bash.exe" -c "${snap} 'find / -name camera.md'"` },
-    { pid: 5912, ppid: 3916, name: 'bash.exe', start: T + 2 * min, cmd: `bash.exe -c "${snap} 'find / -name camera.md'"` },
-    { pid: 980, ppid: 5912, name: 'find.exe', start: T + 2 * min, cmd: 'find / -name camera.md' },
-    // a tool shell whose command names an MCP server is still a command
-    { pid: 3000, ppid: 5864, name: 'bash.exe', start: T + 2 * min, cmd: `bash.exe -c "${snap} 'grep -rn mcp /c'"` },
-    { pid: 3001, ppid: 3000, name: 'grep.exe', start: T + 2 * min, cmd: 'grep -rn mcp /c' },
-    { pid: 7000, ppid: 5864, name: 'cmd.exe', start: T, cmd: 'cmd.exe /d /s /c npx -y some-mcp-server' },
-    { pid: 7001, ppid: 7000, name: 'node.exe', start: T, cmd: 'node some-mcp-server' },
-    { pid: 10676, ppid: 9492, name: 'cmd.exe', start: T - 500 * min, cmd: 'cmd.exe /C npx.cmd -y metavr mcp server' },
-    { pid: 8000, ppid: 9492, name: 'node.exe', start: T - 60 * min, cmd: 'node tools/serve.mjs' },
-    { pid: 6000, ppid: 5864, name: 'node.exe', start: T - 30 * min, cmd: 'node older-than-its-parent-id' },
-  ];
-  const named = (now) => leftovers(tree, now).map((p) => p.pid).sort((a, b) => a - b);
-  assert.deepEqual(named(T + 2 * min + LIMIT_MS - min), [], 'a command younger than the limit was named as left running');
-  assert.deepEqual(named(T + 2 * min + LIMIT_MS + min), [980, 3001], 'a command left running under the session was not named, or something else was: its shells, the console host, a server, the app\'s own processes, a reused parent id');
-  // the hook itself, given the list: the turn does not end while it runs
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'leftovers-'));
-  fs.writeFileSync(path.join(dir, 'list.json'), JSON.stringify(tree.map((p) => ({ ...p, start: p.start - T + Date.now() - LIMIT_MS - 3 * min }))));
-  const hook = spawnSync(process.execPath, ['tools/claude-guard.mjs', 'stop'], { cwd: ROOT, encoding: 'utf8', env: { ...process.env, OBJECT_PROCESS_LIST: path.join(dir, 'list.json') }, input: JSON.stringify({ cwd: ROOT, stop_hook_active: false }) });
-  const told = (() => { try { return JSON.parse(hook.stdout).hookSpecificOutput?.additionalContext || ''; } catch { return ''; } })();
-  assert.ok(hook.status === 0 && /longer than 10 minutes[\s\S]*980 find\.exe, \d+ min$/m.test(told), `the stop hook let the turn end with a command left running:\n${hook.stdout}${hook.stderr}`);
-  assert.ok(!hook.stdout.includes('camera.md'), 'the stop hook printed a command line, which can hold a key');
-  fs.rmSync(dir, { recursive: true, force: true });
-}
-
-// The stop hook reminds once: unsaved work holds the turn the first time, and with stop_hook_active the
-// turn ends, so it never loops; commits not yet on GitHub hold nothing (the copy is pushed at the end of
-// a feature). A repository of the test's own, one commit ahead of its own origin.
-{
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'stop-'));
-  const repo = path.join(dir, 'work'), origin = path.join(dir, 'origin.git');
-  const git = (...a) => spawnSync('git', a, { cwd: repo, encoding: 'utf8', env: { ...process.env, GIT_DIR: undefined } });
-  fs.mkdirSync(repo);
-  spawnSync('git', ['init', '-q', '--bare', origin]);
-  git('init', '-q'); git('config', 'user.email', 't@t'); git('config', 'user.name', 't'); git('config', 'core.hooksPath', '/dev/null');
-  fs.writeFileSync(path.join(repo, 'a.txt'), 'a\n'); git('add', '.'); git('commit', '-qm', 'a');
-  git('remote', 'add', 'origin', origin); git('push', '-q', '-u', 'origin', 'HEAD');
-  fs.writeFileSync(path.join(repo, 'a.txt'), 'b\n'); git('commit', '-qam', 'b');
-  fs.writeFileSync(path.join(dir, 'none.json'), '[]');
-  const ask = (again, reachable, more = {}) => spawnSync(process.execPath, [path.join(ROOT, 'tools/claude-guard.mjs'), 'stop'], { cwd: repo, encoding: 'utf8',
-    env: { ...process.env, OBJECT_PROCESS_LIST: path.join(dir, 'none.json'), OBJECT_GITHUB_REACHABLE: reachable ? '1' : '0', ...more }, input: JSON.stringify({ cwd: repo, stop_hook_active: again }) });
-  const said = (r) => { try { return JSON.parse(r.stdout); } catch { return {}; } };
-  assert.ok(!said(ask(false, true)).hookSpecificOutput, 'a commit not yet on GitHub held the turn: the copy is pushed at the end of a feature');
-  fs.writeFileSync(path.join(repo, 'a.txt'), 'c\n');
-  assert.match(said(ask(false, true)).hookSpecificOutput?.additionalContext || '', /work not saved/, 'unsaved work was let go at the first stop: a commit is always possible');
-  const second = ask(true, true);
-  assert.ok(second.status === 0 && second.stdout.trim() === '', `the second stop held the turn again, which loops:\n${second.stdout}`);
-  fs.rmSync(dir, { recursive: true, force: true });
+  const settings = JSON.parse(fs.readFileSync(path.join(ROOT, '.claude/settings.json'), 'utf8'));
+  const pre = (m) => settings.hooks.PreToolUse.find((h) => h.matcher === m).hooks[0];
+  assert.equal(pre('Bash|PowerShell').onFailure, 'block', 'the command guard lets its action through when it fails');
+  assert.equal(pre('mcp__.*').onFailure, 'block', 'the MCP guard lets its action through when it fails');
+  assert.notEqual(pre('Write|Edit|NotebookEdit').onFailure, 'block', 'a broken edit guard could not be mended');
+  for (const rule of ['mcp__plugin_playwright*', 'mcp__plugin_chrome-devtools*', 'mcp__*__apply_migration', 'mcp__*__deploy_edge_function', 'mcp__*__reset_branch', 'mcp__*__merge_branch', 'mcp__*__push_files', 'mcp__*__create_or_update_file', 'mcp__*__merge_pull_request']) {
+    assert.ok(settings.permissions.deny.includes(rule), `the deny rule ${rule} is gone from .claude/settings.json`);
+  }
 }
 
 // Every message the owner types is logged word for word, and nothing else is: the app's notices
@@ -334,8 +288,14 @@ assert.ok(!firstOpen || start.stdout.includes(`Current feature (docs/features.js
 assert.ok(!/first thing|before other work|say so to the owner first|tell the owner what is broken/i.test(start.stdout), 'the start tells the session what to do first again');
 // his brake: yesterday's commits split by what they touched, a commit touching both counted in both
 assert.deepEqual(split('@@a\nsrc/x.js\n\n@@b\ntools/y.mjs\ndocs/z.md\n\n@@c\nsrc/a.js\ntests/b.mjs\n\n@@d\nREADME.md'), { game: 2, process: 2 }, 'commits to the game and to the process counted wrong');
-// the ten circles he approved arrive once, with CLAUDE.md, at every start and after every compaction, as
-// he chose; the start never prints them, and his first message names them if they did not load
+// his brake once a window: a new session's start hands it to him and to me to say first; a compaction does not
+const told = JSON.parse(start.stdout);
+assert.match(told.systemMessage || '', /^За 7 дней ты принял вещей из списка: \d+\. Вчера коммитов: в игру \d+, в процесс \d+\.$/, 'his measure was not shown at a new window');
+assert.match(told.hookSpecificOutput?.additionalContext || '', /^Say to him first, word for word: «За 7 дней/, 'his measure was not handed to me to say to him first');
+const compacted = spawnSync(process.execPath, ['tools/claude-guard.mjs', 'start'], { cwd: ROOT, encoding: 'utf8', input: JSON.stringify({ source: 'compact', cwd: ROOT }) });
+assert.doesNotMatch(compacted.stdout, /За 7 дней/, 'his measure came again after a compaction');
+// our words he approved arrive once, with CLAUDE.md, at every start and after every compaction, as he chose;
+// the start never prints them
 const circles = fs.readFileSync(path.join(ROOT, 'docs/ten-circles.md'), 'utf8').trim();
 assert.ok(/^Our words[^\n]*@docs\/ten-circles\.md/m.test(fs.readFileSync(path.join(ROOT, 'CLAUDE.md'), 'utf8')), 'CLAUDE.md no longer imports our words he approved');
 assert.ok(!start.stdout.includes(circles), 'the start prints the ten circles again: a second copy beside CLAUDE.md');
@@ -356,42 +316,6 @@ assert.ok(worstStart < 10000, `on the worst day the start would print ${worstSta
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'imports-'));
   fs.writeFileSync(path.join(dir, 'CLAUDE.md'), 'Who errs: @docs/tandem.md. More.\nCode: `@not/this.md`, ``@nor/this.md``, a@mail.com\n```\n@nor/that.md\n```\n  ~~~\n  @nor/indented.md\n  ~~~\n');
   assert.deepEqual(imports(path.join(dir, 'CLAUDE.md')).map((f) => path.relative(dir, f).replace(/\\/g, '/')), ['docs/tandem.md.'], 'an import is not read as Claude Code reads it');
-  fs.rmSync(dir, { recursive: true, force: true });
-}
-
-// The thermometer and his measure, from the record Claude Code's InstructionsLoaded hook writes: a file
-// CLAUDE.md names that did not load, or loaded before the copy was brought up, is told to him once a
-// window and to me at each message; his measure comes at a window's first message only. A home of its own.
-{
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'loads-'));
-  const env = { ...process.env, HOME: dir, USERPROFILE: dir };
-  const run = (m, event) => spawnSync(process.execPath, ['tools/claude-guard.mjs', m], { cwd: ROOT, encoding: 'utf8', env, input: JSON.stringify({ cwd: ROOT, ...event }) });
-  const out = (s, prompt = 'hi') => { try { return JSON.parse(run('prompt', { session_id: s, prompt }).stdout); } catch { return {}; } };
-  const all = [path.join(ROOT, 'CLAUDE.md'), ...imports(path.join(ROOT, 'CLAUDE.md'))];
-  const load = (s, files) => files.forEach((f) => run('loaded', { session_id: s, file_path: f, load_reason: 'session_start' }));
-  assert.match(out('M').systemMessage || '', /^За 7 дней ты принял вещей из списка: \d+\. Вчера коммитов: в игру \d+, в процесс \d+\./, 'his measure was not shown at the first message');
-  assert.doesNotMatch(out('M').systemMessage || '', /За 7 дней/, 'his measure came again in the same window');
-  // the app may not show him the hook's line, so it comes to me to say first, word for word
-  assert.match(out('N').hookSpecificOutput?.additionalContext || '', /^Say to him first, word for word: «За 7 дней ты принял вещей из списка: \d+\./, 'his measure was not handed to me to say to him');
-  load('L', all.filter((f) => !f.endsWith('tandem.md')));
-  const told = out('L');
-  assert.match(told.systemMessage || '', /не загрузилось: docs\/tandem\.md/, 'a file CLAUDE.md names that did not load was not told to him');
-  assert.match(told.hookSpecificOutput?.additionalContext || '', /Not loaded: docs\/tandem\.md/, 'a file that did not load was not told to me');
-  // a window another window opens gets the same old copy again: the files are read again, no new window
-  assert.doesNotMatch(told.systemMessage || '', /новое окно/, 'he was sent to open a new window');
-  assert.doesNotMatch(out('L').systemMessage || '', /загрузилось/, 'he was told twice in one window');
-  load('K', all);
-  assert.doesNotMatch(JSON.stringify(out('K')), /Not loaded|загрузил/, 'a window with every file loaded was warned');
-  load('C', all);
-  fs.appendFileSync(path.join(dir, 'Documents', 'objekt-files', 'notes', 'instructions-loaded.jsonl'), `${JSON.stringify({ t: Date.now() + 1000, s: 'C', caughtUp: true })}\n`);
-  assert.match(out('C').systemMessage || '', /загрузились до обновления копии/, 'files loaded before the copy was brought up were not told to him');
-  // two catch-ups: a load between them predates the copy now in use, so the latest one counts
-  const log = path.join(dir, 'Documents', 'objekt-files', 'notes', 'instructions-loaded.jsonl');
-  for (const [t, more] of [[1000, null], [2000, { caughtUp: true }], [3000, null], [4000, { caughtUp: true }]]) {
-    if (more) fs.appendFileSync(log, `${JSON.stringify({ t, s: 'D', ...more })}\n`);
-    else for (const f of all) fs.appendFileSync(log, `${JSON.stringify({ t, s: 'D', f })}\n`);
-  }
-  assert.match(out('D').systemMessage || '', /загрузились до обновления копии/, 'a load between two catch-ups passed as current');
   fs.rmSync(dir, { recursive: true, force: true });
 }
 
@@ -478,4 +402,4 @@ assert.ok(worstStart < 10000, `on the worst day the start would print ${worstSta
   fs.rmSync(dir, { recursive: true, force: true });
 }
 
-console.log(`guard: ok (${refused.length} refused, ${allowed.length} allowed, the hook wired, the headset's wearer seen, his messages logged and only his, his decisions imported by CLAUDE.md, every import found, the current feature shown at start, his measure and what did not load handed to me for him at his first message, a feature passing only on his «Принимаю N» in his log, nothing to do first, commands left running named)`);
+console.log(`guard: ok (${refused.length} refused, ${allowed.length} allowed, the hook wired, the headset's wearer seen, his messages logged and only his, his decisions imported by CLAUDE.md, every import found, the locks shut when a guard breaks, the current feature and his measure shown at a new window's start, a feature passing only on his «Принимаю N» in his log, nothing to do first)`);

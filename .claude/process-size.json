@@ -1,6 +1,6 @@
 {
   "why": "The rules and guards that steer the agent stay as they are or shrink, never grow: a cut held by text alone grew back within days, twice. tests/structure.test.mjs adds up the characters of what is listed in count (line ends as LF) and fails over limit, or when a cut leaves more than slack under it, so the limit comes down with every cut. '@CLAUDE.md' means the files CLAUDE.md imports; a name ending in / means every file under it.",
-  "limit": 176026,
+  "limit": 130006,
   "slack": 1000,
   "count": [
     "CLAUDE.md",
@@ -13,10 +13,7 @@
     "tools/claude-guard.mjs",
     "tools/review-gate.mjs",
     "tools/prove-guards.mjs",
-    "tools/health.mjs",
-    "tools/health-setup.mjs",
     "tools/board.mjs",
-    "tools/leftovers.mjs",
     "tools/hooks/"
   ]
 }

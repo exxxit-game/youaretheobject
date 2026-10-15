@@ -4,8 +4,7 @@
 - Repo `exxxit-game/youaretheobject` (folder `C:\Users\admin\Documents\GitHub\objekt`). Site:
   https://youaretheobject.com (registered 7.10.2026 at Namecheap to 7.10.2027; a spare, youaretheobject.top, bought by him 14.10, to 13.10.2027, pointed nowhere yet) (GitHub Pages from `main`; `main` is an OLD package; since 12.10, his yes, main takes changes only by a pull request with the test check green, no bypass: ruleset 24770045, the test check pinned to GitHub Actions). The Supabase connector since 13.10: the custom «Supabase чтение», https://mcp.supabase.com/mcp?project_ref=rkvdwzlymmewsxjysgma&read_only=true (one project, a read-only Postgres user); the full one removed. Read 13.10 through it: current_user supabase_read_only_user, transaction_read_only on, no INSERT or DELETE on app.runs, no CREATE in public or app, rolbypassrls true (it reads every row). My GitHub access since 12.10: one fine-grained key he made (this repo and object-preview; contents, pull requests, workflows write; actions, statuses read; no administration, no deployments; expires in 90 days), git through gh; the old logins removed. Work: `room-polish`.
   Each session: one visible thing for him plus internal work (the board). Each session works in its own worktree, made from the main
-  folder's HEAD (`.claude/settings.json` worktree.baseRef head; the default was old main); no turn ends until
-  the main folder (room-polish) holds the session branch (stop hook). At a step's end the session branch goes into room-polish through a pull request CodeRabbit reviews (trial to 23.10), then the main folder pulls; main only on his word.
+  folder's HEAD (`.claude/settings.json` worktree.baseRef head; the default was old main). At a step's end the session branch goes into room-polish through a pull request CodeRabbit reviews (trial to 23.10), then the main folder pulls; main only on his word.
 - Room 01 = illusion of control (Alloy & Abramson 1979), `src/rooms/01-control/`: SET ASIDE 08.10 as a lab
   room (16–20 min of waiting, owner found it unbearably boring). Playtest `?playtest=1`, speed `?speed=N`.
 - Migrations 0009 (date only, random key, consent version, room 01 JSON Schema, keyed IP limit) and 0010 (known consent
@@ -52,8 +51,7 @@ One line each: for every window in `docs/owner-decisions.md` (loaded at every st
   with a test; `tests/structure.test.mjs` (sizes, imports, no Russian outside texts, this file ≤ 80 lines).
 - Machine stops: tools/hooks (no commit while the quick tests fail, no push without the secret check, main only on
   his word); Claude Code hooks, `tools/claude-guard.mjs` (state at start and after compaction, owner messages
-  logged, no skipping hooks, no browser on the laptop, the live DB read only, no GitHub connector writes, no
-  turn ends unsaved or unpushed); every guard seen red by `tools/prove-guards.mjs` on GitHub on room-polish (main gets it with its next update).
+  logged, no skipping hooks, no browser on the laptop, the live DB read only, no GitHub connector writes); every guard seen red by `tools/prove-guards.mjs` on GitHub on room-polish (main gets it with its next update).
 
 ## Lessons (do not repeat)
 - Read the full paper before recommending or designing (summaries overstated effects twice).

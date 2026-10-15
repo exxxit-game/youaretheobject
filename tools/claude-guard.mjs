@@ -1,9 +1,6 @@
 // Guards on the assistant itself, run by Claude Code (.claude/settings.json), not by its memory:
 // a rule written as text is skipped under load, a hook is not. Exit 2 stops the action and tells
-// the assistant why (code.claude.com/docs/en/hooks: PreToolUse exit 2 blocks the tool call). The Stop
-// hook keeps the turn going with additionalContext, the hooks reference's way for a hook "working as
-// designed" (shown as Stop hook feedback, not as an error); Claude Code ends the turn anyway after 8
-// continuations in a row with no tool call between them.
+// the assistant why (code.claude.com/docs/en/hooks: PreToolUse exit 2 blocks the tool call).
 // Bans only where a mistake cannot be undone or costs the owner time; judgments by word lists were
 // taken out with the process review (docs/owner-decisions.md): they held words, not
 // claims, and stopped correct work more often than wrong.
@@ -14,10 +11,8 @@
 //   subagent-start, subagent-stop: a practice reviewer's run, and a paper reviewer's run room by room,
 //         is recorded for the owner's automatic stop before VR in the headset and the test copy
 //         (tools/review-gate.mjs)
-//   stop: a turn does not end while work is unsaved or not on GitHub, or the main folder lacks it,
-//         or a command has run under Claude Code longer than ten minutes (tools/leftovers.mjs)
-//   start: a copy behind room-polish is brought up to it; loaded: what Claude Code really loads is noted
-//   prompt: his messages are logged; his measure and what did not load go to me to say to him
+//   start: a copy behind room-polish is brought up to it; a new window's start gives his measure to him and me
+//   prompt: his messages are logged
 // Imported with no mode (tests/guard.test.mjs), it only defines refusal(), readOnlySql() and imports().
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
@@ -28,7 +23,6 @@ import { withoutGitVars } from './secrets.mjs';
 import { ownText } from './owner-links.mjs';
 import { scan, named, entries, write, lastReport, REVIEWER, REPORT_END, PAPER_REVIEWER, PAPER_END, roomScan, checkedRooms, endsWithBlock } from './review-gate.mjs';
 import { split } from './board.mjs';
-import { leftoverLine } from './leftovers.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const FEATURES = 'docs/features.json';
@@ -420,13 +414,7 @@ if (mode === 'pre') {
   process.exit(0);
 }
 
-// loaded: what Claude Code really loads (its InstructionsLoaded hook), written down as it happens
-// (Gregory, Game Engine Architecture, 10.1.4) and read back at his next message
-const LOADS = path.join(os.homedir(), 'Documents', 'objekt-files', 'notes', 'instructions-loaded.jsonl');
-const LOG = path.join(path.dirname(LOADS), 'owner-messages.md');
-const note = (o) => { try { fs.mkdirSync(path.dirname(LOADS), { recursive: true }); fs.appendFileSync(LOADS, `${JSON.stringify({ t: Date.now(), s: event.session_id || '', ...o })}\n`); } catch { /* named as not loaded */ } };
-if (mode === 'loaded') { note({ f: String(event.file_path || '') }); process.exit(0); }
-
+const LOG = path.join(os.homedir(), 'Documents', 'objekt-files', 'notes', 'owner-messages.md');
 const gitHere = (...a) => { try { return execFileSync('git', a, { cwd: HERE, env: withoutGitVars(), encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim(); } catch { return null; } };
 
 // accepted (tools/hooks/pre-commit; stdin: the staged list): a feature passing that was not, or gone, needs his
@@ -460,8 +448,7 @@ if (mode === 'start') {
     const behind = gitHere('rev-list', '--count', 'HEAD..room-polish');
     const own = gitHere('rev-list', '--count', 'room-polish..HEAD');
     if (own === '0' && gitHere('status', '--porcelain') === '' && gitHere('merge', '--ff-only', 'room-polish') !== null) {
-      note({ caughtUp: true });
-      out.push(`This window's copy (${branch}) was ${behind} commits behind room-polish and is now brought up to it: what loaded before is named at his first message.`);
+      out.push(`This window's copy (${branch}) was ${behind} commits behind room-polish and is now brought up to it: CLAUDE.md and the files it imports loaded before that; read them again now.`);
     } else {
       out.push(`WARNING: this checkout (${branch}) lacks ${behind} commits of room-polish and has work of its own or unsaved changes: merge room-polish before anything else, then read CLAUDE.md and every file it imports again.`);
     }
@@ -477,7 +464,22 @@ if (mode === 'start') {
     const red = ciLine(runs[0]);
     if (red) out.push(clip(red));
   } catch { /* GitHub out of reach: nothing to say */ }
-  process.stdout.write(`${out.join('\n\n')}\n`);
+  // his brake, once a window: a new session (source startup or fork), never a resume or a compaction, so no
+  // record of ours is needed; the app may not show him the hook's line, so it comes to me to say first too
+  let him = null;
+  if (event.source === 'startup' || event.source === 'fork') {
+    const day = (k) => { const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - k); return d.toISOString(); };
+    const { game, process: proc } = split(gitHere('log', '--all', '--no-merges', `--since=${day(1)}`, `--until=${day(0)}`, '--name-only', '--pretty=format:@@%h') || '');
+    const at = (r) => { try { return JSON.parse(gitHere('show', `${r}:${FEATURES}`)).features; } catch { return null; } };
+    let took = 0;
+    for (const c of (gitHere('log', '--since=7.days', '--format=%H', '--', FEATURES) || '').split('\n').filter(Boolean)) {
+      const was = at(`${c}^`) || [];
+      took += (at(c) || []).filter((f) => f.passes && was.some((w) => w.id === f.id && w.passes === false)).length;
+    }
+    him = `За 7 дней ты принял вещей из списка: ${took}. Вчера коммитов: в игру ${game}, в процесс ${proc}.`;
+    out.unshift(`Say to him first, word for word: «${him}»`);
+  }
+  process.stdout.write(JSON.stringify({ ...(him && { systemMessage: him }), hookSpecificOutput: { hookEventName: 'SessionStart', additionalContext: out.join('\n\n') } }));
   process.exit(0);
 }
 
@@ -528,82 +530,12 @@ if (mode === 'subagent-start' || mode === 'subagent-stop') {
 
 // prompt: every message the owner sends is appended, word for word, to a log on the laptop,
 // outside the public repository, so no request is lost to a compaction (the request auditor
-// reads it). It never blocks the message. Then what the machine, not my memory, tells him and me.
+// reads it). It never blocks the message.
 if (mode === 'prompt') {
   try {
     fs.mkdirSync(path.dirname(LOG), { recursive: true });
     const own = ownText(event.prompt || '');
     if (own) fs.appendFileSync(LOG, `\n## ${new Date().toISOString()} ${event.session_id || ''}\n${own.replace(/^## /gm, ' ## ')}\n`);
   } catch { /* a failed log must not stop his message */ }
-  let mine = [];
-  try { mine = fs.readFileSync(LOADS, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l)).filter((l) => l.s === (event.session_id || '')); } catch { /* none yet */ }
-  const him = [], me = [];
-  // his brake, once a window; accepted: turned true in 7 days
-  if (!mine.some((l) => l.measure)) {
-    const day = (k) => { const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - k); return d.toISOString(); };
-    const { game, process: proc } = split(gitHere('log', '--all', '--no-merges', `--since=${day(1)}`, `--until=${day(0)}`, '--name-only', '--pretty=format:@@%h') || '');
-    const at = (r) => { try { return JSON.parse(gitHere('show', `${r}:${FEATURES}`)).features; } catch { return null; } };
-    let took = 0;
-    for (const c of (gitHere('log', '--since=7.days', '--format=%H', '--', FEATURES) || '').split('\n').filter(Boolean)) {
-      const was = at(`${c}^`) || [];
-      took += (at(c) || []).filter((f) => f.passes && was.some((w) => w.id === f.id && w.passes === false)).length;
-    }
-    him.push(`За 7 дней ты принял вещей из списка: ${took}. Вчера коммитов: в игру ${game}, в процесс ${proc}.`);
-    note({ measure: 1 });
-  }
-  // the thermometer: what really loaded against what CLAUDE.md names, after the latest catch-up
-  const loads = mine.filter((l) => l.f);
-  if (!loads.length) me.push('No instruction load recorded yet (InstructionsLoaded).');
-  else {
-    const key = (f) => f.replace(/\\/g, '/').toLowerCase(), up = Math.max(0, ...mine.filter((l) => l.caughtUp).map((l) => l.t));
-    const last = (f) => Math.max(-1, ...loads.filter((l) => key(l.f) === key(f)).map((l) => l.t));
-    const md = path.join(HERE, 'CLAUDE.md'), want = [md, ...imports(md)];
-    const names = (l) => l.map((f) => path.relative(HERE, f).replace(/\\/g, '/')).join(', ');
-    const gone = want.filter((f) => last(f) < 0), old = want.filter((f) => last(f) >= 0 && last(f) < up);
-    if (gone.length) me.push(`Not loaded: ${names(gone)}; read each now.`);
-    if (old.length) me.push(`Loaded before the copy was brought up: ${names(old)}; read each again now.`);
-    if ((gone.length || old.length) && !mine.some((l) => l.warned)) {
-      him.push(gone.length ? `Это окно открылось без части правил (не загрузилось: ${names(gone)}).`
-        : `Правила этого окна загрузились до обновления копии (${names(old)}).`);
-      note({ warned: 1 });
-    }
-  }
-  if (him.length) me.unshift(`Say to him first, word for word: «${him.join(' ')}»`);
-  if (him.length || me.length) process.stdout.write(JSON.stringify({ ...(him.length && { systemMessage: him.join(' ') }), hookSpecificOutput: { hookEventName: 'UserPromptSubmit', additionalContext: me.join('\n') } }));
-  process.exit(0);
-}
-
-if (mode === 'stop') {
-  // it reminds once and never holds the same turn again (the hooks reference: check stop_hook_active "to
-  // avoid blocking on a condition that will never resolve"); held again and again, it looped
-  if (event.stop_hook_active === true) process.exit(0);
-  const problems = [], unfixable = [];
-  const dirty = gitHere('status', '--porcelain');
-  if (dirty) problems.push(`work not saved (power is cut daily):\n${dirty}`);
-  // the next window's checkout is made from room-polish (worktree.baseRef head): work left on this branch
-  // alone is missing from the next session
-  if (gitHere('rev-parse', '--verify', '-q', 'room-polish') && gitHere('merge-base', '--is-ancestor', 'HEAD', 'room-polish') === null) {
-    const branch = gitHere('rev-parse', '--abbrev-ref', 'HEAD');
-    // another window's commits on room-polish make the fast-forward fail; both windows write the
-    // board's showing and current lines, and a conflict resolved to one side loses the owner's quoted words
-    const theirs = gitHere('merge-base', '--is-ancestor', 'room-polish', 'HEAD') === null ? gitHere('rev-list', '--count', 'HEAD..room-polish') : null;
-    const first = theirs ? `room-polish has ${theirs} commits of another window: first here run git merge room-polish, keeping both sides of every conflict in docs/board.md (the owner's words), then ` : '';
-    // the branch reaches room-polish through a pull request CodeRabbit reviews (GitHub flow); with HEAD in an
-    // open one of this repository, it waits on the reviewer, no command hurries it, and the app wakes the session
-    let waits = false;
-    try { waits = JSON.parse(execFileSync('gh', ['pr', 'list', '--head', branch, '--base', 'room-polish', '--json', 'headRefOid,isCrossRepository'], { cwd: HERE, encoding: 'utf8', timeout: 10000, windowsHide: true })).some((p) => !p.isCrossRepository && gitHere('merge-base', '--is-ancestor', 'HEAD', p.headRefOid) !== null); } catch { /* GitHub out of reach: remind */ }
-    if (!waits) problems.push(`the main folder (room-polish, where the next window starts) lacks ${gitHere('rev-list', '--count', 'room-polish..HEAD')} commits of this branch: ${first}push ${branch}, open or update its pull request into room-polish, answer CodeRabbit's review, merge it, then in the main folder run git pull --ff-only origin room-polish`);
-  }
-  // a helper's command left running (tools/leftovers.mjs): seen at every turn's end, not by my memory
-  const left = leftoverLine();
-  if (left) (/could not list the processes/.test(left) ? unfixable : problems).push(left);
-  // npm test is not run here: it runs before "done" and on GitHub, and the commit hook's quick check
-  // before every commit; running the whole suite again cost 12-56 s a turn
-  if (problems.length) {
-    const why = `NOT DONE. Before this turn ends:\n- ${[...problems, ...unfixable].join('\n- ')}`;
-    process.stdout.write(JSON.stringify({ hookSpecificOutput: { hookEventName: 'Stop', additionalContext: why } }));
-    process.exit(0);
-  }
-  if (unfixable.length) process.stdout.write(JSON.stringify({ systemMessage: `The turn ends with what no command fixes now:\n- ${unfixable.join('\n- ')}` }));
   process.exit(0);
 }

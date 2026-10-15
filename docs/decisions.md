@@ -152,7 +152,7 @@ Consequence: no transparent surface and no observation room behind it; raising t
 ## Every helper stops at a turn limit the machine holds
 Each agent in .claude/agents sets maxTurns (Claude Code's subagent field: at the limit it stops and returns its output marked partial): deep-research 200, quick-research 40, fact-checker, practice-reviewer and paper-reviewer 150, request-auditor 80.
 Why: the owner's worry that a search runs for hours (11.10); the limits were prose only. The numbers sit above the longest runs measured on 11.10 (deep-research 138 turns, fact-checker 107, request-auditor 31, quick-research 16) and above deep-research's own budget of 60 searches and 80 page reads.
-Consequence: a run cut at its limit comes back partial and says so; one hung command is not a turn and is still the leftover guard's (tools/leftovers.mjs, 10 minutes). tests/health.test.mjs holds that every agent has a limit.
+Consequence: a run cut at its limit comes back partial and says so. tests/structure.test.mjs holds that every agent has a limit.
 
 ## The headset and the test copy also wait for each room's check against its paper
 VR in the headset (`tools/quest-look.mjs` vr) and the test copy (`tools/publish-preview.mjs`) refuse until the paper reviewer checked each room in `src/rooms/` as its folder now stands (`requirePaper` in `tools/review-gate.mjs`); its report's last line lists the rooms it checked, and Claude Code's subagent hooks record the run room by room, as they record the practice review. The own look in the headset goes after a fix of only the files its report named. The headset probe shows no room and does not wait.
@@ -162,14 +162,14 @@ Consequence: a room changed since its paper check stops the headset until the pa
 ## The search helpers stay on the session's model
 No helper in .claude/agents sets its own model, so each runs on the session's model (Opus 5.5).
 Why: the measure of 12.10 (https://claude.ai/artifact/REVKLNJQavWbus8Fk1S6ZB): the same four questions on Sonnet 5.5 and Opus 5.5, one run each; the three narrow ones came out equally right, but on the wide one each model missed a source the other found (Opus: the bHaptics vest on an audio cable; Sonnet: Web Serial in Chrome 148 on Android), and Sonnet costs half per token. He first chose Sonnet for the two search helpers, then, told of the wide question, «вернуть Opus» (12.10).
-Consequence: tests/health.test.mjs fails if any helper sets a model.
+Consequence: tests/structure.test.mjs fails if any helper sets a model.
 
 ## Moved from his decisions (14.10)
 My advice that stood in his decision files as his; he approved moving it («Утверждено» 14.10, the list of 36 lines in
 the chat: his choices of meaning, ethics, money and feel stayed his; widened lines kept only his words). Mine now:
 kept while it serves, changed by facts, with one line to him.
 - The permanent prompt put in points, one of three forms I drafted; the text and his pick («Вариант В») stay his.
-- The process frozen: it changes only on a health-check finding or his word, and a change replaces something («согласен» 10.10).
+- The process frozen: it changes only on his word, and a change replaces something («согласен» 10.10).
 - The process review: a ban only where a mistake cannot be undone or costs him time; a complaint is no reason for a new guard; his «Убирать, что не надо» stays his.
 - Each stage of the process has its list of what must be known and checked before it (my widening of his «поэтапно»).
 - His part in code is clicks, keys he creates by steps, and his yes (my sentence of 12.10).
