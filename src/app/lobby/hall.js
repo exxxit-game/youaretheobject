@@ -95,14 +95,47 @@ const slot = (x) => `
     <a-plane position="${r(x + (x === HALL.minX ? 1 : -1) * 0.06)} ${r(2.5 - 0.004)} ${HALL_CENTRE.z}" rotation="90 0 0" width="0.1" height="${r(HALL_LENGTH - 0.2)}"
              material="color: #ffffff; emissive: #f2f6ff; emissiveIntensity: 0.95; roughness: 1" surface="kind: lens; glow: true"></a-plane>`;
 
+// The hall's far end, on this floor the building's way in and out: a glass wall in dark metal
+// framing with a pair of swinging doors, as the entrance of University Hall on the same campus was
+// photographed on 3 May 1965 (UIC record 427827, docs/research/vr/12-whole-building.md): dark mullions,
+// a glass wall from floor to ceiling, a swinging door beside the revolving one. The revolving door is
+// left out: the wall is 3.0 m, and an exit door must swing (The BOCA Basic Building Code/1978, 613.1:
+// "Revolving doors shall not be used as exitway doors"). Each leaf 3'0" x 7'0", as the corridor's doors
+// (door.js); the framing 2 in, our reading of the photo; the glass dark, as glass looks from a lit
+// room at night, a push bar across each leaf at the knobs' height (door.js). Opaque, so it merges
+// with the rest of the hall into a few draw calls (merge-static.js).
+const LEAF_W = 0.914, LEAF_H = 2.134, MULL = 0.05, PUSH = 1.024;
+const GLASS = 'color="#0d1114" material="roughness: .12; metalness: 0"';
+function exitWall(ceil) {
+  const z = HALL.maxZ, mid = HALL_CENTRE.x, pair = 2 * LEAF_W + 3 * MULL;
+  const x0 = r(mid - pair / 2), x1 = r(mid + pair / 2), head = r(LEAF_H + MULL);
+  const bar = (x, w) => `<a-box position="${r(x)} ${r(ceil / 2)} ${r(z - MULL / 2)}" width="${r(w)}" height="${ceil}" depth="${MULL}" ${FRAME}></a-box>`;
+  const rail = (x, w, y, h) => `<a-box position="${r(x)} ${r(y)} ${r(z - MULL / 2)}" width="${r(w)}" height="${r(h)}" depth="${MULL}" ${FRAME}></a-box>`;
+  const pane = (xa, xb, ya, yb, dz = 0) => `<a-plane rotation="0 180 0" position="${r((xa + xb) / 2)} ${r((ya + yb) / 2)} ${r(z - MULL / 2 - dz)}" width="${r(xb - xa)}" height="${r(yb - ya)}" ${GLASS}></a-plane>`;
+  const leaf = (xa) => {
+    const xb = xa + LEAF_W, s = 0.06;   // a narrow stile, 2 3/8 in: our reading of the photo's doors
+    return `
+    <a-box position="${r(xa + s / 2)} ${r(LEAF_H / 2)} ${r(z - MULL / 2)}" width="${s}" height="${LEAF_H}" depth="0.045" ${FRAME}></a-box>
+    <a-box position="${r(xb - s / 2)} ${r(LEAF_H / 2)} ${r(z - MULL / 2)}" width="${s}" height="${LEAF_H}" depth="0.045" ${FRAME}></a-box>
+    <a-box position="${r((xa + xb) / 2)} ${r(LEAF_H - s / 2)} ${r(z - MULL / 2)}" width="${r(LEAF_W - 2 * s)}" height="${s}" depth="0.045" ${FRAME}></a-box>
+    <a-box position="${r((xa + xb) / 2)} 0.1 ${r(z - MULL / 2)}" width="${r(LEAF_W - 2 * s)}" height="0.2" depth="0.045" ${FRAME}></a-box>
+    ${pane(xa + s, xb - s, 0.2, LEAF_H - s, 0.004)}
+    <a-box position="${r((xa + xb) / 2)} ${PUSH} ${r(z - MULL - 0.04)}" width="${r(LEAF_W - 2 * s - 0.04)}" height="0.03" depth="0.02" material="color: #cfd2d5; metalness: .5; roughness: .35"></a-box>`;
+  };
+  return `
+    ${bar(HALL.minX + MULL / 2, MULL)}${bar(x0 + MULL / 2, MULL)}${bar(mid, MULL)}${bar(x1 - MULL / 2, MULL)}${bar(HALL.maxX - MULL / 2, MULL)}
+    ${rail(mid, x1 - x0, head - MULL / 2, MULL)}${rail(mid, HALL.maxX - HALL.minX, MULL / 2, MULL)}${rail(mid, HALL.maxX - HALL.minX, ceil - MULL / 2, MULL)}
+    ${pane(HALL.minX + MULL, x0, MULL, ceil - MULL)}${pane(x1, HALL.maxX - MULL, MULL, ceil - MULL)}${pane(x0 + MULL, x1 - MULL, head, ceil - MULL)}
+    ${leaf(x0 + MULL)}${leaf(mid + MULL / 2)}`;
+}
+
 export function hallHTML(ceil) {
   return `
     <a-plane rotation="-90 0 0" position="${HALL_CENTRE.x} 0 ${HALL_CENTRE.z}" width="${r(HALL.maxX - HALL.minX)}" height="${HALL_LENGTH}" surface="kind: linoleum; ${HALL_SPACE}"></a-plane>
     <a-plane rotation="90 0 0" position="${HALL_CENTRE.x} ${ceil} ${HALL_CENTRE.z}" width="${r(HALL.maxX - HALL.minX)}" height="${HALL_LENGTH}" color="${PAINT}" material="roughness: .95"></a-plane>
     ${sideWall(HALL.minX, ceil)}
     ${sideWall(HALL.maxX, ceil)}
-    <a-plane rotation="0 180 0" position="${HALL_CENTRE.x} ${r(ceil / 2)} ${HALL.maxZ}" width="${r(HALL.maxX - HALL.minX)}" height="${ceil}" color="${PAINT}" material="roughness: .9"></a-plane>
-    <a-box position="${HALL_CENTRE.x} 0.051 ${r(HALL.maxZ - 0.0025)}" width="${r(HALL.maxX - HALL.minX)}" height="0.102" depth="0.005" color="${BASE}"></a-box>
+    ${exitWall(ceil)}
     ${CARS.map(entrance).join('')}
     ${callStation(HALL.minX)}${callStation(HALL.maxX)}
     ${slot(HALL.minX)}${slot(HALL.maxX)}`;
