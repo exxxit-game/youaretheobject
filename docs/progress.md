@@ -4,6 +4,30 @@ Read at the start of every session, with `git log --oneline -20` and docs/featur
 session"). Newest entry on top. Each entry: done, not done and why, next. Anything outside the feature at hand goes
 to the end of docs/board.md, one line each.
 
+## 2026-10-15, morning — the tandem, step 1: the thermometer, his measure by machine, the tandem loaded
+On his words after the audit (the split of the work between him, me, us both and the other tools; he cannot keep
+up with watching everything; he is asked to permit what he does not understand), after his five pages of 14-15.10
+(seven files, two pairs the same). Plan mode, his approval of the plan.
+Done:
+- tools/claude-guard.mjs: mode `loaded` for Claude Code's InstructionsLoaded hook records each instruction file that
+  really loads; at each of his messages the prompt hook compares the record with CLAUDE.md and its imports, read as
+  Claude Code reads them (imports()); a file that did not load, or loaded before the copy was brought up, is told to
+  him once a window and to me each message. His measure (features turned to passing in 7 days; yesterday's commits
+  to the game and to the process) is shown to him by the machine at a window's first message. Removed: the start's
+  text check of the imports (a broken import passed it), the board-top code and its test, HEALTH_SHOWN.
+- CLAUDE.md: the tandem import without its trailing period (the same line as PR #16). docs/tandem.md: who takes what
+  and what holds it. .claude/settings.json: the InstructionsLoaded hook. Tests for all of it.
+- Process size 177,964 of 178,338 (was 178,289).
+Checked: tests/guard.test.mjs and tests/structure.test.mjs green; imports() names "docs/tandem.md." on room-polish's
+CLAUDE.md as a name with no file behind it, and nothing on this branch; npm test stops at tests/library.test.mjs
+(di-febo-2026, a record PRs #16 and #17 add), the 12 tests after it green one by one.
+Not checked: that InstructionsLoaded fires in the app (its 2.1.295 program names the event, the docs list it); the
+hooks act from the main folder only after the merge and the pull, so the first real window after that is the test.
+Errors of mine: the guard first came out 3,766 characters longer, over the size limit; a comment with a date and
+"his decision" in it, caught by the structure test.
+Next: an independent premortem of the plan (running); CodeRabbit's review; merge; then the floor directory with the
+tandem; the next rows only after measuring.
+
 ## 2026-10-15, night to morning — the process audited by the ten circles (Opus 5.5 at max effort, a workflow)
 A session started by the setup window, on his question on the board (did we get out of the circles) and his choice of
 max effort; in this window he chose a workflow for the audit. Plan mode used for the plan.

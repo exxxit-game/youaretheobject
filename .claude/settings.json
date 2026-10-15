@@ -66,6 +66,13 @@
     ]
   },
   "hooks": {
+    "InstructionsLoaded": [
+      {
+        "hooks": [
+          { "type": "command", "command": "node \"${CLAUDE_PROJECT_DIR}/tools/claude-guard.mjs\" loaded", "timeout": 10 }
+        ]
+      }
+    ],
     "SessionStart": [
       {
         "hooks": [

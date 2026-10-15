@@ -16,9 +16,10 @@
 //         (tools/review-gate.mjs)
 //   stop: a turn does not end while work is unsaved or not on GitHub, or the main folder lacks it,
 //         or a command has run under Claude Code longer than ten minutes (tools/leftovers.mjs)
-//   start, prompt: the top of the board comes back at start and after every compaction, with
-//         yesterday's commits to the game and to the process (his brake); every owner message is logged
-// Imported with no mode (tests/guard.test.mjs), it only defines refusal() and readOnlySql().
+//   start: a copy behind room-polish is brought up to it; loaded: what Claude Code really loads is noted
+//   prompt: his messages are logged; he sees his measure once a window, and a file CLAUDE.md names
+//         that did not load, or loaded before the copy was brought up
+// Imported with no mode (tests/guard.test.mjs), it only defines refusal(), readOnlySql() and imports().
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -31,8 +32,6 @@ import { split } from './board.mjs';
 import { leftoverLine } from './leftovers.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const DECISIONS = 'docs/owner-decisions.md';
-const CIRCLES = 'docs/ten-circles.md';
 const FEATURES = 'docs/features.json';
 const mode = process.argv[2];
 const input = mode ? await new Promise((done) => {
@@ -47,6 +46,15 @@ const stop = (why) => { process.stderr.write(`${why}\n`); process.exit(2); };
 const HERE = (() => {
   try { return execFileSync('git', ['rev-parse', '--show-toplevel'], { cwd: event.cwd || ROOT, env: withoutGitVars(), encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim(); } catch { return ROOT; }
 })();
+
+// What Claude Code loads with a memory file (code.claude.com/docs/en/memory, "Import additional files"):
+// @path outside code, ending at the first space no backslash escapes, relative to its file, 4 hops deep
+export function imports(file, hops = 4) {
+  let t = '';
+  try { t = fs.readFileSync(file, 'utf8').replace(/^(`{3,}|~{3,})[^]*?^\1/gm, '').replace(/`[^`\n]*`/g, ''); } catch { return []; }
+  const found = [...t.matchAll(/(?:^|\s)@((?:\\ |\S)+)/g)].map((m) => path.resolve(path.dirname(file), m[1].replace(/\\ /g, ' ')));
+  return hops > 1 ? found.flatMap((f) => [f, ...imports(f, hops - 1)]) : found;
+}
 
 // A command line read the way the shell reads it (POSIX sh; PowerShell where it differs: backtick
 // escapes, '' inside single quotes, @'...'@ here-strings): the simple commands it runs, split on
@@ -393,11 +401,9 @@ export const readOnlySql = (raw) => {
     && !SQL_WRITE_CALLS.test(q);
 };
 
-// GitHub's own tests on room-polish (the smoke test runs only there): ten red runs in a row went
-// unseen while work went on, so the start says a red last run (gh run list --json: one run or none)
-// the start's lines after the board, each cut to EXTRA_LINE characters, the health check to
-// HEALTH_SHOWN problems: so the start's length on the worst day is known (tests/guard.test.mjs)
-export const HEALTH_SHOWN = 5, EXTRA_LINE = 350;
+// GitHub's tests on room-polish: ten red runs in a row went unseen, so the start names a red last run
+// a start line is cut to EXTRA_LINE characters, so the start's length on the worst day is known
+export const EXTRA_LINE = 350;
 const clip = (line) => (line.length > EXTRA_LINE ? `${line.slice(0, EXTRA_LINE - 1)}…` : line);
 // conclusions that need a look (GitHub's run conclusions): a failure, a run that timed out, never
 // started or waits for an approval; a success, a skip or a cancel is quiet
@@ -415,48 +421,32 @@ if (mode === 'pre') {
   process.exit(0);
 }
 
+// loaded: what Claude Code really loads (its InstructionsLoaded hook), written down as it happens
+// (Gregory, Game Engine Architecture, 10.1.4) and read back at his next message
+const LOADS = path.join(os.homedir(), 'Documents', 'objekt-files', 'notes', 'instructions-loaded.jsonl');
+const note = (o) => { try { fs.mkdirSync(path.dirname(LOADS), { recursive: true }); fs.appendFileSync(LOADS, `${JSON.stringify({ t: Date.now(), s: event.session_id || '', ...o })}\n`); } catch { /* named as not loaded */ } };
+if (mode === 'loaded') { note({ f: String(event.file_path || '') }); process.exit(0); }
+
 const gitHere = (...a) => { try { return execFileSync('git', a, { cwd: HERE, env: withoutGitVars(), encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim(); } catch { return null; } };
 
-// start: at startup, resume and after every compaction Claude Code adds this output to the
-// context, so the state and the queue come back without anyone remembering to read them, and a
-// checkout made from the old live branch is named before work starts on it.
+// start: Claude Code adds this output to the context at startup, at resume and after each compaction.
 if (mode === 'start') {
   const out = [`Session ${event.source || 'start'}. The process: CLAUDE.md, "Every session" (docs/progress.md, the git log, ${FEATURES}). The task is his message; nothing printed here is a task by itself.`];
   const branch = gitHere('rev-parse', '--abbrev-ref', 'HEAD');
-  // the desktop app can open a window in a reused worktree whose copy is old, without the process the
-  // window must follow; settings and hooks come from the main checkout, but CLAUDE.md and
-  // .claude/rules load from this copy (code.claude.com/docs/en/worktrees, "What worktrees share with the
-  // main checkout"), so a copy with no work of its own is brought up to room-polish first, before
-  // anything below is read from it and before any work
+  // the app can reuse an old worktree; hooks come from the main checkout, but CLAUDE.md and .claude/rules
+  // from this copy (code.claude.com/docs/en/worktrees), so a copy with no work of its own is brought up first
   if (gitHere('rev-parse', '--verify', '-q', 'room-polish') && gitHere('merge-base', '--is-ancestor', 'room-polish', 'HEAD') === null) {
     const behind = gitHere('rev-list', '--count', 'HEAD..room-polish');
     const own = gitHere('rev-list', '--count', 'room-polish..HEAD');
     if (own === '0' && gitHere('status', '--porcelain') === '' && gitHere('merge', '--ff-only', 'room-polish') !== null) {
-      out.push(`This window's copy (${branch}) was ${behind} commits behind room-polish and is now brought up to it. CLAUDE.md, the files it imports and .claude/rules may have loaded from the old copy: read CLAUDE.md and every file it imports again before anything else.`);
+      note({ caughtUp: true });
+      out.push(`This window's copy (${branch}) was ${behind} commits behind room-polish and is now brought up to it: what loaded before is named at his first message.`);
     } else {
       out.push(`WARNING: this checkout (${branch}) lacks ${behind} commits of room-polish and has work of its own or unsaved changes: merge room-polish before anything else, then read CLAUDE.md and every file it imports again.`);
     }
   }
-  // his brake: yesterday's commits to the game and to the process, counted by git, not by me
-  const day = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}T00:00`;
-  const today = new Date(), yesterday = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1);
-  const log = gitHere('log', '--all', '--no-merges', `--since=${day(yesterday)}`, `--until=${day(today)}`, '--name-only', '--pretty=format:@@%h');
-  if (log !== null) {
-    const { game, process: proc } = split(log);
-    out.push(`Yesterday's commits: ${game} touched the game, ${proc} the process.${proc > game ? ' The process took more than the game: tell the owner.' : ''}`);
-  }
-  // the circles and the settled decisions come with CLAUDE.md (loaded at every start and after every compaction):
-  // printed here only when the import is gone; a missing file is named either way
-  let claudeMd = '';
-  try { claudeMd = fs.readFileSync(path.join(HERE, 'CLAUDE.md'), 'utf8'); } catch { /* checked below */ }
-  for (const [file, what] of [[CIRCLES, 'the ten circles he approved are'], [DECISIONS, "the owner's decisions are"]]) {
-    if (claudeMd.includes(`@${file}`) && fs.existsSync(path.join(HERE, file))) continue;
-    try { out.push(fs.readFileSync(path.join(HERE, file), 'utf8').trim()); } catch { out.push(`WARNING: ${file} is missing here: ${what} not in front of this session.`); }
-  }
-  // the one feature to work on: the first whose "passes" is false (Anthropic's harness for long-running
-  // agents: "choose the highest-priority feature that's not yet done"). The board's errors, the health
-  // check's chores and the reviewer's remarks are not printed: printed here, each became the window's
-  // first task before his message, and the window went to the process instead of the thing
+  // the one feature to work on (Anthropic's harness: "choose the highest-priority feature that's not yet
+  // done"); no chore is printed: each printed here became the window's first task before his message
   try {
     const next = JSON.parse(fs.readFileSync(path.join(HERE, FEATURES), 'utf8')).features.find((f) => !f.passes);
     out.push(next ? `Current feature (${FEATURES}): ${next.id}: ${next.what}` : `Every feature in ${FEATURES} passes.`);
@@ -517,7 +507,7 @@ if (mode === 'subagent-start' || mode === 'subagent-stop') {
 
 // prompt: every message the owner sends is appended, word for word, to a log on the laptop,
 // outside the public repository, so no request is lost to a compaction (the request auditor
-// reads it). It never blocks the message.
+// reads it). It never blocks the message. Then what the machine, not my memory, tells him and me.
 if (mode === 'prompt') {
   try {
     const log = path.join(os.homedir(), 'Documents', 'objekt-files', 'notes', 'owner-messages.md');
@@ -527,6 +517,41 @@ if (mode === 'prompt') {
     const said = String(event.prompt || '');
     if (typedText(said)) fs.appendFileSync(log, `\n## ${new Date().toISOString()} ${event.session_id || ''}\n${said}\n`);
   } catch { /* a failed log must not stop his message */ }
+  let mine = [];
+  try { mine = fs.readFileSync(LOADS, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l)).filter((l) => l.s === (event.session_id || '')); } catch { /* none yet */ }
+  const him = [], me = [];
+  // his brake, said by the machine once a window; accepted: turned true in 7 days
+  if (!mine.some((l) => l.measure)) {
+    const day = (k) => { const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - k); return d.toISOString(); };
+    const { game, process: proc } = split(gitHere('log', '--all', '--no-merges', `--since=${day(1)}`, `--until=${day(0)}`, '--name-only', '--pretty=format:@@%h') || '');
+    const at = (r) => { try { return JSON.parse(gitHere('show', `${r}:${FEATURES}`)).features; } catch { return null; } };
+    let took = 0;
+    for (const c of (gitHere('log', '--since=7.days', '--format=%H', '--', FEATURES) || '').split('\n').filter(Boolean)) {
+      const was = at(`${c}^`) || [];
+      took += (at(c) || []).filter((f) => f.passes && was.some((w) => w.id === f.id && w.passes === false)).length;
+    }
+    him.push(`За 7 дней ты принял вещей из списка: ${took}. Вчера коммитов: в игру ${game}, в процесс ${proc}.`);
+    me.push(`Shown to him: ${took} accepted in 7 days; yesterday ${game} game commits, ${proc} process.`);
+    note({ measure: 1 });
+  }
+  // the thermometer: what really loaded against what CLAUDE.md names (its text passed "@docs/tandem.md.")
+  const loads = mine.filter((l) => l.f);
+  if (!loads.length) me.push('No instruction load recorded yet (InstructionsLoaded).');
+  else {
+    const key = (f) => f.replace(/\\/g, '/').toLowerCase(), up = mine.find((l) => l.caughtUp)?.t ?? 0;
+    const last = (f) => Math.max(-1, ...loads.filter((l) => key(l.f) === key(f)).map((l) => l.t));
+    const md = path.join(HERE, 'CLAUDE.md'), want = [md, ...imports(md)];
+    const names = (l) => l.map((f) => path.relative(HERE, f).replace(/\\/g, '/')).join(', ');
+    const gone = want.filter((f) => last(f) < 0), old = want.filter((f) => last(f) >= 0 && last(f) < up);
+    if (gone.length) me.push(`Not loaded: ${names(gone)}; read each now.`);
+    if (old.length) me.push(`Loaded before the copy was brought up: ${names(old)}; read each again now.`);
+    if ((gone.length || old.length) && !mine.some((l) => l.warned)) {
+      him.push(gone.length ? `Это окно открылось без части правил (не загрузилось: ${names(gone)}). Оно работает вслепую: открой новое окно.`
+        : `Правила этого окна загрузились до обновления копии (${names(old)}). Оно работает по старым: открой новое окно.`);
+      note({ warned: 1 });
+    }
+  }
+  if (him.length || me.length) process.stdout.write(JSON.stringify({ ...(him.length && { systemMessage: him.join(' ') }), hookSpecificOutput: { hookEventName: 'UserPromptSubmit', additionalContext: me.join('\n') } }));
   process.exit(0);
 }
 

@@ -10,9 +10,9 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { refusal, ciLine, HEALTH_SHOWN, EXTRA_LINE } from '../tools/claude-guard.mjs';
+import { refusal, ciLine, EXTRA_LINE, imports } from '../tools/claude-guard.mjs';
 import { onHead } from '../tools/headset.mjs';
-import { BOARD, SHOWS, UNTIL, WAITS, top, split } from '../tools/board.mjs';
+import { split } from '../tools/board.mjs';
 import { leftovers, LIMIT_MS } from '../tools/leftovers.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -297,6 +297,44 @@ assert.equal(ask('Bash', 'grep -rn "git commit --no-verify" docs/'), 0, 'the hoo
   fs.rmSync(dir, { recursive: true, force: true });
 }
 
+// CLAUDE.md's imports read as Claude Code reads them (code.claude.com/docs/en/memory): every name has a file
+// behind it. "@docs/tandem.md." kept the tandem out of every window: the dot is caught
+{
+  const md = path.join(ROOT, 'CLAUDE.md');
+  const gone = imports(md).filter((f) => !fs.existsSync(f));
+  assert.deepEqual(gone, [], `CLAUDE.md imports a name with no file behind it, which loads nothing: ${gone.join(', ')}`);
+  assert.ok(imports(md).some((f) => f.endsWith(path.join('docs', 'tandem.md'))), 'CLAUDE.md no longer imports docs/tandem.md');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'imports-'));
+  fs.writeFileSync(path.join(dir, 'CLAUDE.md'), 'Who errs: @docs/tandem.md. More.\nCode: `@not/this.md`, a@mail.com\n```\n@nor/this.md\n```\n');
+  assert.deepEqual(imports(path.join(dir, 'CLAUDE.md')).map((f) => path.relative(dir, f).replace(/\\/g, '/')), ['docs/tandem.md.'], 'an import is not read as Claude Code reads it');
+  fs.rmSync(dir, { recursive: true, force: true });
+}
+
+// The thermometer and his measure, from the record Claude Code's InstructionsLoaded hook writes: a file
+// CLAUDE.md names that did not load, or loaded before the copy was brought up, is told to him once a
+// window and to me at each message; his measure comes at a window's first message only. A home of its own.
+{
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'loads-'));
+  const env = { ...process.env, HOME: dir, USERPROFILE: dir };
+  const run = (m, event) => spawnSync(process.execPath, ['tools/claude-guard.mjs', m], { cwd: ROOT, encoding: 'utf8', env, input: JSON.stringify({ cwd: ROOT, ...event }) });
+  const out = (s, prompt = 'hi') => { try { return JSON.parse(run('prompt', { session_id: s, prompt }).stdout); } catch { return {}; } };
+  const all = [path.join(ROOT, 'CLAUDE.md'), ...imports(path.join(ROOT, 'CLAUDE.md'))];
+  const load = (s, files) => files.forEach((f) => run('loaded', { session_id: s, file_path: f, load_reason: 'session_start' }));
+  assert.match(out('M').systemMessage || '', /^За 7 дней ты принял вещей из списка: \d+\. Вчера коммитов: в игру \d+, в процесс \d+\./, 'his measure was not shown at the first message');
+  assert.doesNotMatch(out('M').systemMessage || '', /За 7 дней/, 'his measure came again in the same window');
+  load('L', all.filter((f) => !f.endsWith('tandem.md')));
+  const told = out('L');
+  assert.match(told.systemMessage || '', /не загрузилось: docs\/tandem\.md/, 'a file CLAUDE.md names that did not load was not told to him');
+  assert.match(told.hookSpecificOutput?.additionalContext || '', /Not loaded: docs\/tandem\.md/, 'a file that did not load was not told to me');
+  assert.doesNotMatch(out('L').systemMessage || '', /загрузилось/, 'he was told twice in one window');
+  load('K', all);
+  assert.doesNotMatch(JSON.stringify(out('K')), /Not loaded|загрузил/, 'a window with every file loaded was warned');
+  load('C', all);
+  fs.appendFileSync(path.join(dir, 'Documents', 'objekt-files', 'notes', 'instructions-loaded.jsonl'), `${JSON.stringify({ t: Date.now() + 1000, s: 'C', caughtUp: true })}\n`);
+  assert.match(out('C').systemMessage || '', /загрузились до обновления копии/, 'files loaded before the copy was brought up were not told to him');
+  fs.rmSync(dir, { recursive: true, force: true });
+}
+
 // The headset tools restart nothing while the owner wears the headset: the power service's dump
 // says mounted with no override of ours (tools/headset.mjs). Dumps as the headset printed them.
 const dump = (state, virtual) => `Virtual proximity state: ${virtual}\nisAutosleepDisabled: false\nState: ${state}\n`;
@@ -305,10 +343,8 @@ assert.ok(!onHead(dump('HEADSET_MOUNTED', 'CLOSE')), 'our own "worn on" override
 assert.ok(!onHead(dump('HEADSET_UNMOUNTED', 'DISABLED')) && !onHead(dump('STANDBY', 'DISABLED')), 'off the head is free to restart');
 
 // docs/owner-decisions.md reaches every session at its start and after each compaction: CLAUDE.md imports
-// it (Claude Code loads CLAUDE.md then, whole); the start hook shows the board. A session that does not
-// see it asks him again what he settled
+// it (Claude Code loads CLAUDE.md then, whole). A session that does not see it asks him again what he settled
 const start = spawnSync(process.execPath, ['tools/claude-guard.mjs', 'start'], { cwd: ROOT, encoding: 'utf8', input: JSON.stringify({ source: 'startup', cwd: ROOT }) });
-const boardTop = fs.readFileSync(path.join(ROOT, BOARD), 'utf8').split(/\r?\n/)[0];
 const decisions = path.join(ROOT, 'docs/owner-decisions.md');
 assert.ok(/^His decisions load with this file[^\n]*@docs\/owner-decisions\.md/m.test(fs.readFileSync(path.join(ROOT, 'CLAUDE.md'), 'utf8')),
   'CLAUDE.md no longer imports docs/owner-decisions.md: his decisions are not in front of the session');
@@ -324,22 +360,10 @@ assert.ok(fs.existsSync(decisions) && /^- The rules read at start shortened/m.te
 const firstOpen = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/features.json'), 'utf8')).features.find((f) => !f.passes);
 assert.ok(!firstOpen || start.stdout.includes(`Current feature (docs/features.json): ${firstOpen.id}`), `the start does not name the current feature:\n${start.stdout.slice(-600)}`);
 assert.ok(!/first thing|before other work|say so to the owner first|tell the owner what is broken/i.test(start.stdout), 'the start tells the session what to do first again');
-
-// The top of the board at start: the head and the work now, what waits for him, the newest rows of
-// the showings (new rows go on top); the rest of the board is read from the file
-const board = (rows) => `# Board\n\nintro\n\n## Now\n- now\n\n${UNTIL}\n1. far\n\n${WAITS}\n1. a link\n\n${SHOWS}\n| a | b | c |\n|---|---|---|\n${rows.map((w) => `| ${w} | thing | pending |`).join('\n')}\n\n## Later\n- waits\n`;
-const shown = top(board(['11.10', '10.10', '9.10', '8.10', '7.10', '6.10']));
-assert.ok(shown.includes('- now') && shown.includes('1. a link') && shown.includes('| 7.10 |'), 'the top lost the work now, his asks or the newest showings');
-assert.ok(!shown.includes('far') && !shown.includes('| 6.10 |') && !shown.includes('waits'), 'the top shows the whole board again');
-// an older row reading like a newer one stays out: rows count by place
-assert.equal((top(board(['11.10', '10.10', '9.10', '8.10', '7.10', '11.10'])).match(/\| 11\.10 \|/g) || []).length, 1, 'a repeated older row came back into the top');
-// a note after the date still makes it a row of the showings: such rows once all passed the count
-assert.ok(!top(board(['11.10 (new window)', '10.10', '9.10 (same window)', '8.10', '7.10', '6.10 (same window)'])).includes('| 6.10 '), 'a row with a note after its date got past the count');
 // his brake: yesterday's commits split by what they touched, a commit touching both counted in both
 assert.deepEqual(split('@@a\nsrc/x.js\n\n@@b\ntools/y.mjs\ndocs/z.md\n\n@@c\nsrc/a.js\ntests/b.mjs\n\n@@d\nREADME.md'), { game: 2, process: 2 }, 'commits to the game and to the process counted wrong');
-assert.ok(/Yesterday's commits: \d+ touched the game, \d+ the process/.test(start.stdout), 'the start lost his brake line');
 // the ten circles he approved arrive once, with CLAUDE.md, at every start and after every compaction, as
-// he chose; the start prints them only when that import is gone
+// he chose; the start never prints them, and his first message names them if they did not load
 const circles = fs.readFileSync(path.join(ROOT, 'docs/ten-circles.md'), 'utf8').trim();
 assert.ok(/^The ten circles[^\n]*@docs\/ten-circles\.md/m.test(fs.readFileSync(path.join(ROOT, 'CLAUDE.md'), 'utf8')), 'CLAUDE.md no longer imports the ten circles he approved');
 assert.ok(!start.stdout.includes(circles), 'the start prints the ten circles again: a second copy beside CLAUDE.md');
@@ -349,4 +373,4 @@ assert.ok(start.stdout.length < 10000, `the start hook prints ${start.stdout.len
 const worstStart = start.stdout.length + 2 * (EXTRA_LINE + 2);
 assert.ok(worstStart < 10000, `on the worst day the start would print ${worstStart} characters: over 10,000 Claude Code keeps only a preview`);
 
-console.log(`guard: ok (${refused.length} refused, ${allowed.length} allowed, the hook wired, the headset's wearer seen, his messages logged and only his, his decisions imported by CLAUDE.md, the current feature and his brake shown at start, nothing to do first, commands left running named)`);
+console.log(`guard: ok (${refused.length} refused, ${allowed.length} allowed, the hook wired, the headset's wearer seen, his messages logged and only his, his decisions imported by CLAUDE.md, every import found, the current feature shown at start, his measure and what did not load told at his first message, nothing to do first, commands left running named)`);
