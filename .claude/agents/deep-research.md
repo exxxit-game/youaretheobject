@@ -29,8 +29,8 @@ How:
   biomedical and medical psychology), then read the full text: PMC's get_full_text_article, an
   open PDF through PDF_Tools (fetch_pdf_from_url, read_pdf_content) when WebFetch returns a PDF as
   binary, or `pdftotext` on a saved copy. An abstract is never the source of a number.
-- Write each finding to the output file AS SOON AS you have it (append), with its URL, its date and a short
-  exact quote, so a stop loses nothing.
+- Append each finding to the output file as soon as you have it: URL, date, whether it fits what we run
+  now, a short exact quote; a stop loses nothing.
 
 Limits: about 45 minutes, at most 60 searches and 80 page reads (each paper or page opened counts
 once). The point of the limit is a report that arrives, not a short one: findings are written as

@@ -18,8 +18,8 @@ Limits (hard):
 - A fact in a paper: find it with the paper tools (Consensus, OpenAlex lookup) and read the full
   text (PMC full text, PDF_Tools for an open PDF); a page WebFetch returns blank or refused: open it
   in your own tab of the built-in browser (tabs_create, navigate, get_page_text).
-- Write each finding to the output file the caller named AS SOON AS you find it (append), with
-  its source URL and date, so nothing is lost if you are stopped.
+- Append each finding to the output file the caller named at once: its URL, date and
+  whether it fits what we run now, so a stop loses nothing.
 - A site behind a captcha, a login, a paywall or a bot check: do not try to get round it; note it
   and move on. The owner opens such pages himself and wants to be asked.
 - End every report with a block that starts with the line `FOR THE OWNER:` and then one line per
