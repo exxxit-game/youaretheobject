@@ -2,8 +2,6 @@
 // OR that the test cannot see it; the way to tell them apart is to plant the mistake and watch the
 // guard go red (mutation testing). Each case below plants exactly the mistake one guard exists
 // for, in a throwaway clone of the last commit, runs that guard, and puts the clone back.
-// Usage: node tools/prove-guards.mjs [--lf]   (default: the laptop's own checkout, CRLF lines
-// where git converts them; --lf: plain LF, as on GitHub's runners). Exits 1 if any guard is blind.
 import { execFileSync, spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';

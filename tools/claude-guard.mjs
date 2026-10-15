@@ -154,9 +154,10 @@ const RECORD = /practice-reviews|OBJECT_REVIEW_RECORD/i;
 const NO_VERIFY = /^--no-veri(f|fy)?$/;
 const hooksAt = (v = '') => v.replace(/\\/g, '/').replace(/^\.\//, '').replace(/\/+$/, '').toLowerCase() === 'tools/hooks';
 const playwright = (a) => a.some((v) => /^(@playwright\/test|playwright)(@\S*)?$/.test(v));
-// code handed to an interpreter that writes the record
+// code handed to an interpreter that writes the record, or calls review-gate.mjs's write(); naming
+// the gate's file while writing another file writes no record
 const WRITE_CALL = /\b(?:writeFile|appendFile|createWriteStream|copyFile|cpSync|rename|unlink|truncate|rm|remove|write_text|write_bytes)\w*\s*\(|(?<!std(?:out|err)\.)\bwrite(?:Sync)?\s*\(|\bopen(?:Sync)?\s*\([^)]*['"][wa+]/;
-const writesRecord = (code) => (/practice-reviews|OBJECT_REVIEW_RECORD/i.test(code) && WRITE_CALL.test(code) ? WHY.record : null);
+const writesRecord = (c) => ((/practice-reviews|OBJECT_REVIEW_RECORD/i.test(c) && WRITE_CALL.test(c)) || (/review-gate/.test(c) && /\bwrite\s*\(/.test(c)) ? WHY.record : null);
 // programs that run another command given after their own options (option: the ones taking a value)
 const WRAPPERS = { env: /^-[uCS]$/, sudo: /^-[ugCDhpRrTt]$/, nohup: null, time: null, command: null, builtin: null, exec: /^-a$/, nice: /^-n$/, timeout: /^-[sk]$/, stdbuf: null, xargs: /^-[IiLlnPdEsa]$/ };
 const KEYWORDS = new Set(['if', 'then', 'else', 'elif', 'fi', 'do', 'done', 'while', 'until', '!', 'case', 'esac']);

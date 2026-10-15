@@ -93,6 +93,7 @@ const refused = cases([
   `cat <<'EOF' > ${record}\n{}\nEOF`,
   ['Get-Content x | Out-File $HOME\\Documents\\objekt-files\\notes\\practice-reviews.jsonl', PS],
   'env OBJECT_REVIEW_RECORD=/tmp/x.jsonl node tools/quest-look.mjs vr',
+  "node -e \"import('./tools/review-gate.mjs').then((m) => m.write({ kind: 'review' }))\"",
   'export OBJECT_REVIEW_RECORD=/tmp/x.jsonl',
   // main merged on GitHub: only the owner merges into main
   'gh pr merge 9 --merge',
