@@ -5,6 +5,35 @@ The newest entry is read at the start of every session, with `git log --oneline 
 feature at hand goes to the end of docs/board.md, one line each.
 Entries of 14.10 and before: docs/progress-2026-10-14.md.
 
+## 2026-10-15, night — the counted process files one by one
+A window opened by «Старые проблемы по одной» (step 3 of its brief); his order here: the process files, then the floor
+directory, then every other link one by one (the board's end).
+Done:
+- His measure came to me at this window's start; his screenshot shows no line from the machine, only my repeat
+  (row 69: the desktop checked, the phone not).
+- His «Утверждаю»: the monthly update check gone, the scheduled task and two setup lines (58631a0); he reminds me.
+- Four read-only helpers reviewed every counted file (notes: the shared notes folder, review-*.md). The guard refused
+  47 real calls since 09.10: 2 right, 2 arguable, 38 false, 5 from a removed mode.
+- Cuts, one change a commit, each with its expected effect: the prover's 9 cases that only repeated the tests
+  (62b5848); stale comments in the gate, prover and hooks (4ab897c); two false-stop kinds of the guard, a raw -f
+  "@" field (c780fea) and one-liners naming review-gate (1c93161); the guard's stale text and dead code (052bc1c);
+  the helpers and the skill (10d299b); CLAUDE.md, the tools page, settings (c889c07); stale CLAUDE.md citations
+  (016ab5c). On his «Да»: the guard's SQL check, after the connector was read as supabase_read_only_user with no
+  write grants (7a25902); database changes stay a file he pastes and runs. His «Утверждаю 1 2 3»: three stale lines
+  of his rules (e52f656). Process size 129 981 to 116 872.
+- His doc: rows 21, 39, 40, 42, 43, 52 closed with their commits; 69 and 74 noted as checked.
+Kept on purpose: the start's feature line (a machine bringing it beats a text telling me to fetch it); imports() not
+moved into the test (text moved where the limit does not count, row 22); the library guard's wide path match
+(narrowing adds code); systemMessage until the phone is checked; the deny rules as the spare lock.
+Checked: npm test green after every commit; tools/prove-guards.mjs CRLF and LF: 39 of 39 after the first cut, 37 of
+37 at e52f656.
+Not checked: the hooks act only after the merge and the main folder's pull; the start without its first line.
+Errors of mine: a node one-liner of mine was stopped by the guard's false rule (fixed in 1c93161); a script of mine
+failed on CRLF lines in docs/tools.md (nothing written there; redone).
+For him later: "never advised against" in his decisions (row 34); the circles' header said twice; rare setup lines
+out of what loads, by his principle of this window.
+Next: the pull request, CodeRabbit, the merge, the main folder pulled; the floor directory (features.json number 3).
+
 ## 2026-10-15, late evening — old problems one by one: the one list, the cleanup, four cuts
 A window opened by the evening window (its brief: one list of the old problems from the analyses already made, the
 cleanup he confirmed, then each counted file, then the floor directory).
