@@ -419,6 +419,8 @@ assert.ok(worstStart < 10000, `on the worst day the start would print ${worstSta
   assert.equal(gate({ a: false, c: true }), 1, 'a feature left the list with no «да» of his');
   assert.equal(raw(JSON.stringify({ cwd: repo })), 1, 'a staged list with no features in it passed');
   assert.equal(gate({ a: false, b: false }), 1, 'a passing feature left the list with no «да» of his');
+  assert.equal(gate({ a: false, b: false, c: true, d: true }), 1, 'a new feature came in passing with no «да» of his');
+  assert.equal(gate({ a: false, b: false, c: false }), 0, 'a passing feature turned back to open was stopped');
   // a list naming another folder is still compared with this repository's HEAD
   assert.equal(raw(JSON.stringify({ cwd: os.tmpdir(), ...JSON.parse(list({ a: true, b: false, c: true })) })), 1, 'a staged list chose the repository it is compared with');
   said([1, 'да, красиво']);

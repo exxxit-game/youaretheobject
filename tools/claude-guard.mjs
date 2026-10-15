@@ -429,9 +429,9 @@ if (mode === 'loaded') { note({ f: String(event.file_path || '') }); process.exi
 
 const gitHere = (...a) => { try { return execFileSync('git', a, { cwd: HERE, env: withoutGitVars(), encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim(); } catch { return null; } };
 
-// accepted (tools/hooks/pre-commit; stdin the staged list, never an event naming a folder): a feature passing or
-// gone needs his «да» in his log (CLAUDE.md step 5; a pasted "## " shifted): «да» and two words at most, 3 hours,
-// no «нет» or «стоп» after; an unreadable list stops but at HEAD's birth
+// accepted (tools/hooks/pre-commit; stdin: the staged list): a feature passing that was not, or gone, needs his «да»
+// in his log (CLAUDE.md step 5): «да» and two words at most, 3 hours, no «нет» or «стоп» after; an unreadable list
+// stops but at HEAD's birth
 if (mode === 'accepted') {
   const list = (f) => { try { return JSON.parse(f()).features; } catch { return null; } };
   const now = list(() => input), was = list(() => gitHere('show', `HEAD:${FEATURES}`));
@@ -442,7 +442,7 @@ if (mode === 'accepted') {
       if (Date.parse(m.split(' ')[0]) > Date.now() - 108e5 && /^(да|нет|стоп)$/.test(w[0])) yes = w[0] === 'да' && w.length < 4;
     }
   } catch { /* no log */ }
-  const moved = was?.some((w) => !now?.some((n) => n.id === w.id && (w.passes || !n.passes)));
+  const moved = now?.some((n) => n.passes && !was?.some((w) => w.id === n.id && w.passes)) || was?.some((w) => !now?.some((n) => n.id === w.id));
   process.exit(gitHere('rev-parse', '-q', '--verify', 'HEAD') === null || (now && was && (yes || !moved)) ? 0 : 1);
 }
 
@@ -534,7 +534,7 @@ if (mode === 'prompt') {
   let mine = [];
   try { mine = fs.readFileSync(LOADS, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l)).filter((l) => l.s === (event.session_id || '')); } catch { /* none yet */ }
   const him = [], me = [];
-  // his brake, said by the machine once a window; accepted: turned true in 7 days
+  // his brake, once a window; accepted: turned true in 7 days
   if (!mine.some((l) => l.measure)) {
     const day = (k) => { const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - k); return d.toISOString(); };
     const { game, process: proc } = split(gitHere('log', '--all', '--no-merges', `--since=${day(1)}`, `--until=${day(0)}`, '--name-only', '--pretty=format:@@%h') || '');
