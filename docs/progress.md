@@ -21,6 +21,10 @@ Done:
   why each choice among all that exists, my own principles, CodeRabbit set up fully), 23 fragments checked against
   his log by a script.
 - Entries of 14.10 moved to docs/progress-2026-10-14.md (this file passed 300 lines).
+- His choice at this window's end ("Remove", after his words that he allows what he cannot judge): the allow
+  windows on guards and process files removed (.claude/settings.json ask rules); kept on his words
+  (docs/owner-decisions.md, docs/ten-circles.md, .claude/rules/). His decision's line in docs/owner-decisions.md,
+  CLAUDE.md's line made true, the whole record off the repository (owner-decisions-history-2.md).
 Checked: npm test green; tools/prove-guards.mjs: all 52 guards saw their mistake; a real commit through the hook
 in a temporary clone (an unbound yes and one bound to another feature stopped, one bound to it passed); the prompt
 hook on a copy of the previous window's 11.6 MB transcript (nothing bound as it is, my closing question bound, his
@@ -37,8 +41,8 @@ and missed docs/mistakes.md; a shell heredoc ate backslashes twice before I wrot
 four files outside the allowed list (caught by the structure test).
 Next (his words on the board, 15.10: CodeRabbit set up fully now, not window after window): 1) CodeRabbit set up
 fully from docs.coderabbit.ai read in that window, its plan and price first (90 $ a month is too much for him now:
-2-3 plans with what each gives and costs, as plain options); 2) his answer on the allow windows
-(asked at this window's end); 3) a copy cut from main brought up by the machine itself; then the hand-over's order
+2-3 plans with what each gives and costs, as plain options); 2) the allow windows: done at this
+window's end, by his choice; 3) a copy cut from main brought up by the machine itself; then the hand-over's order
 (GitHub by his clicks, his 21.10 date, the map with his questions: why each choice among all that exists, the part
 "me" from Anthropic's sources and our own record).
 

@@ -530,8 +530,8 @@ if (mode === 'subagent-start' || mode === 'subagent-stop') {
 // reads it). It never blocks the message. Then what the machine, not my memory, tells him and me.
 if (mode === 'prompt') {
   // his «да» is bound to the feature my question «Принимаешь `id`?» named, the one question that ended my last turn
-  // (its closing text, or the ask of the app's box), when he sent it after that question: a message queued while I
-  // worked has its enqueue before it. CodeRabbit on #20: a «да» to anything let any feature pass
+  // (its closing text, or the ask of the app's box), when he sent it after it (one queued while I worked has its
+  // enqueue before it)
   const yesTo = (own) => {
     try {
       if ((own.toLowerCase().match(/[а-яё]+/g) || [])[0] !== 'да') return '';

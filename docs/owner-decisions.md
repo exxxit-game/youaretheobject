@@ -15,6 +15,7 @@ once written here as his is in docs/decisions.md, "Moved from his decisions" (hi
 - Remove what is not needed («Убирать, что не надо» 11.10).
 - What matters is kept by checks the machine runs by itself, stage by stage, not by memory («поэтапно» 10.10); a claim about our setup is read from the thing itself, about Quest from Meta's docs; nothing red reaches GitHub («чтобы ты не по памяти отвечал» 10.10).
 - He never takes, edits or pastes pieces of code: what can go wrong in code is not handed to him («если я должен брать куски кода, там что-то исправлять, вставлять… ты перекидываешь на меня те вещи, где я могу ошибиться» 12.10); a whole file copied, pasted and run as it is (Supabase's SQL editor) is fine («Скопировал, вставил, run, вот там все супер» 12.10).
+- No «разрешить» windows on guards: the tests, the size limit and CodeRabbit hold them («Я, конечно же, тебе всегда это разрешу. А у меня что, есть выход?»; «Убрать» 15.10).
 - We are our own studio of two, a human and an AI: each takes the tasks done best by them, and where one cannot, the other covers it fully; what is needed is paid for, connected, installed and set up; the research is how to set up this studio, not how others work («мы теперь сами с тобой себе студия… Там, где один не может, там полностью ему помогает второй» 13.10).
 
 ## The goal

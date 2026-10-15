@@ -41,8 +41,8 @@ Repo English; Russian only where tests/structure.test.mjs allows. Who errs where
 - main is the live site: the GitHub ruleset; a push to main only on his word. Work on a branch; commit often.
 - No key, token or his email in the repo (tools/secrets.mjs). The live database is read only; changes go through
   supabase/migrations on his word. Never restart the headset while he wears it (tools/headset.mjs refuses).
-- The process changes only through his «разрешить» (the ask rules in .claude/settings.json) and only shrinks in size
-  (.claude/process-size.json).
+- The process only shrinks (.claude/process-size.json); his decisions and the circles change only by his «утверждаю»
+  (the ask rules in .claude/settings.json).
 
 ## Rooms and code
 A room: the new-room skill (its card, its paper read in full, a clear task); the paper-reviewer checks it. One room

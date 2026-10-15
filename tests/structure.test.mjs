@@ -318,7 +318,7 @@ assert.ok(!author || author.endsWith('@users.noreply.github.com'), `git commits 
 // Cosmogram's hooks went from 53 to 12 and back to 15 in two days, this project's decisions file from
 // 13.2 to 33.8 KB in three. A cap on lines of one file was kept by longer lines and by moving the text
 // to its imports, so the whole is counted in characters. What is counted and the limit live in
-// .claude/process-size.json, which changes only through the ask rules of .claude/settings.json; after a
+// .claude/process-size.json, which changes only in a pull request CodeRabbit reviews; after a
 // cut the limit comes down with it, so the room freed is not filled again
 {
   const size = JSON.parse(fs.readFileSync(path.join(ROOT, '.claude/process-size.json'), 'utf8'));
