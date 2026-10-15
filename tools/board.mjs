@@ -1,5 +1,5 @@
-// Yesterday's commits by what they touched, for his brake line at a window's first message
-// (tools/claude-guard.mjs, prompt): when the process takes more commits than the game, he sees it first
+// Yesterday's commits by what they touched, for his brake line at a new window's start
+// (tools/claude-guard.mjs, start): when the process takes more commits than the game, he sees it first
 export const GAME = /^(src\/|css\/|index\.html$|assets\/|vendor\/)/;
 export const PROCESS = /^(tools\/|tests\/|docs\/|\.claude\/|\.github\/|CLAUDE\.md$|package\.json$)/;
 export function split(log) {
