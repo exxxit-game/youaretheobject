@@ -543,8 +543,8 @@ if (mode === 'prompt') {
         if (p) q = { t: e.timestamp, s: p.type === 'text' ? (e.message.stop_reason === 'end_turn' ? p.text : '') : /wrap_up$/.test(p.name) ? String(p.input.ask) : '' };
         if (e.operation === 'enqueue') sent = e.timestamp;
       }
-      const asked = [...q.s.matchAll(/принимаешь `([a-z0-9-]+)`\?/gi)];
-      return asked.length === 1 && sent > q.t ? ` ${asked[0][1]}` : '';
+      const asked = q.s.match(/^(?:(?!принимаешь `)[^])*принимаешь `([a-z0-9-]+)`\?\s*$/i);
+      return asked && sent > q.t ? ` ${asked[1]}` : '';
     } catch { return ''; }
   };
   try {

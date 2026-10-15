@@ -323,6 +323,8 @@ assert.equal(ask('Bash', 'grep -rn "git commit --no-verify" docs/'), 0, 'the hoo
   assert.equal(bound([said('tool_use', text('Принимаешь `a`?')), sent()]), '', 'a «да» was bound to a line I wrote mid-work');
   assert.equal(bound([sent('2026-10-15T10:00:00.000Z'), asked]), '', 'a «да» he sent before the question existed was bound to it');
   assert.equal(bound([said('end_turn', text('Принимаешь `a`? Принимаешь `b`?')), sent()]), '', 'a «да» was bound to one of two questions');
+  assert.equal(bound([said('end_turn', text('Принимаешь `a`? И ещё: сохранить?')), sent()]), '', 'a «да» to a later question was bound to the feature asked before it');
+  assert.equal(bound([said('end_turn', text('Указатель этажей.\nПринимаешь `a`?\n')), sent()]), 'a', 'the question at the end, before a line break, was not bound');
   assert.equal(bound([said('tool_use', box('Сливать #20?', 'Принимаешь `a`?')), sent()]), '', "a «да» was bound to a feature named outside the box's question");
   assert.equal(bound([asked, said('tool_use', { type: 'tool_use', name: 'Bash', input: { command: 'echo Принимаешь `a`?' } }), sent()]), '', 'a «да» was bound past a tool call after the question');
   assert.equal(bound([said('end_turn', text('a готова, тесты прошли. Сохранить?')), sent()]), '', 'a «да» was bound to a feature only mentioned');
