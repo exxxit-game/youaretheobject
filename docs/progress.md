@@ -3,6 +3,43 @@
 Read at the start of every session, with `git log --oneline -20` and docs/features.json (CLAUDE.md, "Every
 session"). Newest entry on top. Each entry: done, not done and why, next. Anything outside the feature at hand goes
 to the end of docs/board.md, one line each.
+Entries of 14.10 and before: docs/progress-2026-10-14.md.
+
+## 2026-10-15, evening — his yes bound to the feature my question named (the hand-over's item 0)
+A window he opened himself ("carry on"). The app cut its copy from main (its record: sourceBranch "main"), so
+CLAUDE.md loaded without its three imports; room-polish merged at the start (no file differs from it), the three
+read by hand. Plan mode; the plan checked by two fact-checker runs (4 wrong, 7 holes, several claims wider than
+their evidence, all fixed in the plan), approved by him.
+Done:
+- The gate binds his yes to a feature: the prompt hook writes the id named by the one accept question (its form in
+  CLAUDE.md step 5) that ended my last turn (closing text, or the ask of the app's box) into the entry's heading,
+  when he sent it after that question (his enqueue later than it); the commit's gate needs a bound short yes for
+  every feature turned to passing or dropped; a no, a stop or a longer yes empties the set. His log keeps his own
+  text without the app's notes in front. Paid by the architecture-auditor helper (my choice); process size
+  177 898, the limit brought down to it.
+- The board: his words of this window (the allow windows, the tandem where one side is zero, the window's branch,
+  why each choice among all that exists, my own principles, CodeRabbit set up fully), 23 fragments checked against
+  his log by a script.
+- Entries of 14.10 moved to docs/progress-2026-10-14.md (this file passed 300 lines).
+Checked: npm test green; tools/prove-guards.mjs: all 52 guards saw their mistake; a real commit through the hook
+in a temporary clone (an unbound yes and one bound to another feature stopped, one bound to it passed); the prompt
+hook on a copy of the previous window's 11.6 MB transcript (nothing bound as it is, my closing question bound, his
+text alone logged, under half a second).
+Not checked: everything acts only after the merge and the main folder's pull; whether a click on the box's button
+writes an enqueue (if not, he types his yes); the first real yes (the floor directory).
+Found: why the window opened without its rules: the app's base branch main; the start hook takes main's 4 commits
+(they change no file against room-polish) for the window's own work and only warns; the old CLAUDE.md loads first.
+CodeRabbit: a note pasted by him from an earlier window says the free plan after 23.10; his screenshot of its
+billing page shows the Advanced plan and an estimated invoice of 90 $. Not reconciled.
+Errors of mine: I gave him a technical choice (the cut); I named each allow window to him, which tells him nothing
+(his words: zero knowledge of it); the plan's first draft bound any mention of a feature, counted 2 023 for 1 991
+and missed docs/mistakes.md; a shell heredoc ate backslashes twice before I wrote the draft as a file; Russian in
+four files outside the allowed list (caught by the structure test).
+Next (his words on the board, 15.10: CodeRabbit set up fully now, not window after window): 1) CodeRabbit set up
+fully from docs.coderabbit.ai read in that window, its plan and price first; 2) his answer on the allow windows
+(asked at this window's end); 3) a copy cut from main brought up by the machine itself; then the hand-over's order
+(GitHub by his clicks, his 21.10 date, the map with his questions: why each choice among all that exists, the part
+"me" from Anthropic's sources and our own record).
 
 ## 2026-10-15, day — the tandem, step 2, row 1: a feature passes only on his yes in his log
 A window started by the step-1 window (its brief: rows 1-4, one at a time, in plan mode). Plan mode for row 1, the
@@ -160,126 +197,3 @@ Google, Namecheap and Meta, his word on the board) and a look at its spend cap; 
 SSL, old keys, sign-ups; the average in batches; questions 3-4; the guard on shell writes. (Question 2 settled: no
 switch exists, only Delete; he deleted the 13 Anthropic skills, checked with the skills list; docs and skill-creator
 stay.) 2) His order (the board): a try at the game next.
-
-## 2026-10-14, evening, next window — item 6 done but his merge; our documents compared with experienced practice
-Done:
-- 6b) PR #10 closed with a comment placing each of its 19 unresolved remarks (17 CodeRabbit had verified fixed, the
-  loading screen moved to the board, the integers already there) and answering its two outside-diff remarks. The
-  `reviewed` robot removed from room-polish by PR #13 (merged as c48820b once CodeRabbit confirmed both its remarks
-  fixed); its copy on main goes by PR #14, which waits for his merge.
-- The push guard let nothing from a branch made from main leave the laptop; fixed in #13: a slow test is skipped
-  only when the pushed commit itself has none.
-- room-polish locked on GitHub by his hand: ruleset "room-polish keeps its history" (no deletion, no force push, no
-  bypass), read back with gh.
-- His words on things that change (versions, time) on the board; CodeRabbit's open remark on the loading screen too.
-- Our 14 main documents compared with how experienced people keep theirs, a page for him:
-  https://claude.ai/artifact/CC3VLWFAifPk3THwKCvGGf (two fact-checks found 20 problems each, all fixed). Evidence:
-  docs/research/docs-practice-classic.md, docs/research/docs-practice-agents.md; IFScale and Xiong re-read in their
-  own text; Cherny's advice to delete CLAUDE.md, skills and hooks every six months read in YC's transcript once he
-  widened the browser pane (docs/research/cherny-yc-2026.md).
-- Six Reddit threads he saved read, and the article they point to: Anthropic's rules of context for Claude 5 models
-  (docs/research/context-claude-5.md); added to the page as its most important part.
-- Anthropic's prompt audit run on our instruction files (docs/research/prompt-audit-2026-10-14.md): six of my own
-  places fixed on his yes; his lines one at a time, each by his answer (outcome in that file); the circles now arrive
-  once, with CLAUDE.md; a monthly scheduled task in the desktop app (monthly-updates-check) watches A-Frame, three.js,
-  Claude Code, the Quest Browser and Meta's tools and writes him a page, updating nothing; the old separate Claude
-  Code copy (npm, 2.1.268) removed on his word, the app's own copy updates itself.
-Errors of mine, found and fixed the same day: #13 merged before a remark CodeRabbit posted three minutes earlier was
-read (fixed in #15); an audit finding (the prompt's variant letter) raised without reading the archive, where it was
-settled; a too-wide claim in the closing comment on PR #10 (corrected there);
-the page's first draft quoted my English retelling as his words, called work in a pull request done and counted
-lines as mentions.
-Not done and why: PR #14 and the `reviewed` branch's removal wait for him; ten documents (state, engine, rooms, roadmap, tools, testing, baseline, building standards, VR checklist,
-methodology) are not compared yet; items 7 to 10 of the wall's plan not started.
-Done after: his merge of #14 (the robot gone from main); the branches `reviewed` and my two merged ones deleted on GitHub
-on his yes.
-Next, in order: 0) PR #15 (this window's work, branch claude/docs-audit): CodeRabbit's review answered, findings fixed
-or shown wrong, then merged into room-polish and the main folder pulled. 1) his task for the next window, commands and
-skills (his words on the board's last line). About 88 skills load into every
-window (36 Meta's, about half for Unity, Android, React Native and Portal, not our WebXR game; 23 Anthropic's, many for
-office work; 7 research; 3 CodeRabbit; about 17 built in; 1 ours). One plain page for him: what a command and a skill
-are, which few he would use himself, which I use and when, which are noise; then his choice group by group (plugins are
-his setup decisions), with Claude Code's docs (`/skill-doctor`, skill overrides) as the source. 2) The first page of
-the monthly update check (scheduled task monthly-updates-check) read with him. 3) The page's list: the A-Frame version
-in one place,
-full dates in new records, a status and date on each decision record; with his permission, a guard on "passes" and
-omitClaudeMd for the fact-checker and the practice-reviewer; options on the old versions of his words in the public
-history.
-
-## 14.10, late night — item 6 half done; this window archived on his word
-Done: 6a) a window's work now reaches room-polish through a pull request CodeRabbit reviews (6f8edb0: CLAUDE.md
-step 6, the Stop hook's reminder, .coderabbit.yaml base branch room-polish, tests on each pull request into
-room-polish); this window's own commits still went in the old way, the new way starts with the next window's work.
-The guard prover removes a stale git lock before its reset (58d505b): one GitHub run had gone red on it.
-Not done: 6b) close PR #10 with a comment, and stop the `reviewed` robot (it runs from main: its workflow disabled by
-his click in GitHub's Actions, or removed by a pull request to main he merges); 7) the live site serves only the
-game: a small pull request to main with only that change, merged by him; 8) screenshots compared against his
-approved ones; 9) his request: everything in one place for me and a fast search, from what the market has
-(connectors beyond Anthropic's store), judged by our own experience; 10) at the end, CLAUDE.md and the rules
-given to him in plain Russian on one page, for him to check that the meaning is his.
-Why the window stopped: two confusions in a row (Russian words twice in this log, the size limit hit three times
-in an hour); circle 8 of the ten says a new window. This window had also loaded the rules of an old copy.
-Next: 6b, then 7, 8, 9, 10, in that order.
-
-## 14.10, night — the wall's plan, items 1 to 5 done
-Done (each with npm test green, on GitHub): 1) his decisions split (469b825): 24 lines of my advice and my additions
-to 11 of his moved to docs/decisions.md, "Moved from his decisions"; 2) no copying between disks (bc19c5e);
-3) 26 branches deleted on GitHub (left: main, room-polish, reviewed, claude/end-pictures-look), 4 abandoned
-worktrees and 28 local branches removed (his permission in the chat); 4) the history of the process moved to
-objekt-files/notes/archive (15254cb; 51 files, checked byte for byte; the board down to 6,500 characters; the
-cards and research stay, the code names them as sources); 5) a task starts in plan mode, docs/tools.md names
-what to read first by the task's kind: Gregory's book (4th ed., objekt-files/books), A-Frame 1.8.0, three.js r184,
-Meta's docs (3f211e7, his point of 14.10: the light starts from the engine book).
-Not done: unused helpers (request-auditor, architecture-auditor) left in place: removing them costs him windows.
-Next, in order: 6) why CodeRabbit's resolve did not take effect, found in its docs
-(docs.coderabbit.ai/guides/commands): "`@coderabbitai resolve` is not supported in inline or review-thread
-replies"; only a top-level PR comment resolves, and it resolves all its comments at once. The `reviewed` robot
-waits for 0 open remarks, so it could never move. Still open for real on PR #10: the loading screen
-(src/app/stage.js, game work), the Stop hook's output (tools/claude-guard.mjs, its answer awaited), the counts as
-integers (supabase/schemas, a migration on his word), the tandem (fixed in aa9e38b, its check awaited). Then: short
-pull requests into room-polish, each reviewed by CodeRabbit (its base branches set to room-polish), PR #10 and the
-robot retired; 7) the live site serves only the game: a small pull
-request to main with only that change, merged by him; 8) screenshots compared against his approved ones; then his
-request of 14.10: everything in one place for me and a fast search, from what the market has (connectors beyond
-Anthropic's store), judged by our own experience.
-
-## 14.10, evening — the whole wall approved
-Done:
-- A window that opens on an old copy brings it up to room-polish itself (092caed); the rules it already read stay old.
-- The rules and guards are held by one limit in characters that only comes down (.claude/process-size.json, e3c4b15).
-- His zero technical knowledge stands at the top of CLAUDE.md's "The owner and me", in his words (aa9e38b).
-- CodeRabbit: five new remarks answered on PR #10; two fixed (c4eac99). 17 remarks it verified still show open:
-  its resolve does not take effect on GitHub, so the `reviewed` robot is stuck.
-- The wall: every part of the setup, what holds it, where everything lies, verified world knowledge, one plan:
-  https://claude.ai/artifact/Ld81yG7m4n57KNn5SBwsVs (two blind checks found 20 and 22 problems, all fixed). His
-  approval of the wall as a whole (his word in the chat of 14.10).
-Not done: the plan below.
-Next, in this order, one pass: 1) his decisions split (the list shown to him first: his choices of meaning, ethics,
-money stay his; my technical advice to my log; widened lines keep only his words); 2) no more copying between disks;
-3) merged branches and abandoned worktrees removed; 4) the repository keeps the game and the minimum the process needs,
-the knowledge (cards, research, audits, the history of his words) moves to objekt-files on Google Drive, the board
-to an archive; 5) rules and agents cut, docs/tools.md rewritten from 14.10's facts (which tool when), the limit
-lowered; 6) CodeRabbit's closing fixed and short pull requests in place of the `reviewed` robot; 7) the live site
-serves only the game; 8) screenshots compared against his approved ones. His hands, step by step when he says:
-two-factor sign-in on Supabase, GitHub, Google, Claude; a lock on room-polish on GitHub; Supabase's spare key and
-sign-up.
-
-## 14.10 — the process replaced by a published standard
-Done:
-- The revision of 8–14.10 (23 windows, 467 errors, 20 reports, two independent checks; all in
-  objekt-files/notes/revision-2026-10-14, the page https://claude.ai/artifact/GNUkHZf5MjEj2Ym5SeMuzA): the circles came
-  from the process itself, the one part invented instead of recreated; checks made on a stand-in, and every error
-  answered with a new rule that caused the next errors.
-- His answers: yes to all six questions of the page; the check date 21.10 (three of his yes to things he saw).
-- The process is now Anthropic's harness for long-running agents: CLAUDE.md's session loop, docs/features.json,
-  this file. The session start prints the ten circles, his commit line and the current feature, nothing else to
-  do first. The Stop hook reminds once. A commit is no longer stopped by the papers-library check. Process files
-  change only through his permission (Claude Code asks him).
-- Six lines of his decisions that were my advice are marked suspended to 21.10 (his yes to question 3).
-Feature:
-- smoke-test-after-leaving: the fix is in abd73cb; GitHub's run on room-polish is green
-  (https://github.com/exxxit-game/youaretheobject/actions/runs/38577626182); "passes" waits for his yes to that link.
-- The backup to drive F copied (robocopy: 94.75 MB, 0 failed).
-- His yes to the green run (his yes in the chat of 14.10, the revision window): smoke-test-after-leaving passes; his first yes toward 21.10.
-Next: the next feature of docs/features.json (corridor-floor-directory: two forms to him as pictures); on 21.10, count his yes to things he saw.
-
