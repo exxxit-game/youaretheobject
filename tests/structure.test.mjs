@@ -286,7 +286,8 @@ assert.ok(!author || author.endsWith('@users.noreply.github.com'), `git commits 
     'SET_PROXIMITY_CLOSE', 'DURATION_MS', 'HZDB_MQST_PIN', 'SESSION_ID',   // Meta's and metavr's names, quoted in docs/research/long-measure.md
     'PROJECT_CLAUDE',   // the file IWSDK's agent tooling generates, quoted in docs/research/ai-and-vr.md
     'NEEDS_WORK', 'CONSTITUTION_VERSION', 'RATIFICATION_DATE', 'LAST_AMENDED_DATE',   // Anthropic's harness and GitHub Spec Kit's names, quoted in docs/research/docs-practice-agents.md
-    'JSAI2024_2F4GS503'];   // a J-STAGE paper's id, quoted in docs/research/ai-and-vr-2.md
+    'JSAI2024_2F4GS503',   // a J-STAGE paper's id, quoted in docs/research/ai-and-vr-2.md
+    'OBJECT_LIVE'];   // the push hook's old word for main, now held by GitHub's rule, quoted in docs/research/restrictions*.md
   const ours = new Set([...walk(path.join(ROOT, 'src')), ...walk(path.join(ROOT, 'tools')), ...walk(path.join(ROOT, 'tests')), path.join(ROOT, 'index.html')]
     .filter((f) => /\.(m?js|html)$/.test(f)).flatMap((f) => fs.readFileSync(f, 'utf8').match(/\b[A-Za-z_][A-Za-z0-9_]*\b/g) || []));
   const docsToCheck = [path.join(ROOT, 'CLAUDE.md'), path.join(ROOT, 'ARCHITECTURE.md'), ...walk(path.join(ROOT, 'docs'))]

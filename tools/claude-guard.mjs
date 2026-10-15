@@ -17,6 +17,7 @@
 //   stop: a turn does not end while work is unsaved or not on GitHub, or the main folder lacks it,
 //         or a command has run under Claude Code longer than ten minutes (tools/leftovers.mjs)
 //   start: a copy behind room-polish is brought up to it; loaded: what Claude Code really loads is noted
+//   accepted: a feature turned to passing needs his «да» in his log
 //   prompt: his messages are logged; he sees his measure once a window, and a file CLAUDE.md names
 //         that did not load, or loaded before the copy was brought up
 // Imported with no mode (tests/guard.test.mjs), it only defines refusal(), readOnlySql() and imports().
@@ -154,7 +155,7 @@ const WHY = {
   headset: 'restarts the headset or its browser past tools/quest-look.mjs, which first checks that the owner is not wearing it',
   record: 'writes the practice review record, which only Claude Code\'s hook writes when a reviewer run ends',
   recordEnv: 'points the headset tools at another practice review record',
-  merge: 'merges into main, the live site, on GitHub, past the push guard: main changes only by a push with the owner\'s word (OBJECT_LIVE=owner-said-yes)',
+  merge: 'merges into main, the live site: only the owner merges into main, on GitHub',
   resolve: 'closes an outside reviewer\'s remark: only the reviewer closes its own, once its next review reads the fix; answer it and leave it open, so a remark never ends on my own word',
   graphqlFile: 'sends GitHub a GraphQL request from a file or stdin, which the guard cannot read for a merge into main: give the query inline (-f query=...)',
   library: 'deletes files of the papers library (Documents\\objekt-files) or moves them out of it; no git holds that folder, so a lost paper comes back only from the backup: leave it, or ask the owner',
@@ -271,7 +272,7 @@ function judge(words, stdin, ps, here = false) {
   if (p === 'cmd') { const c = a.findIndex((x) => /^\/[ck]$/i.test(x)); if (c >= 0) return refusal(a.slice(c + 1).join(' '), false, here); }
   if (p === 'invoke-expression' || p === 'iex') return refusal(a.join(' '), true, here);
   if (p === 'git') return git(a);
-  // a merge on GitHub skips the push guard; gh's own options may stand before or between its command
+  // a merge on GitHub is the owner's own; gh's own options may stand before or between its command
   // words (gh pr -R owner/repo merge), so they are set aside before the words are read
   if (p === 'gh') {
     const g = [];
@@ -424,10 +425,26 @@ if (mode === 'pre') {
 // loaded: what Claude Code really loads (its InstructionsLoaded hook), written down as it happens
 // (Gregory, Game Engine Architecture, 10.1.4) and read back at his next message
 const LOADS = path.join(os.homedir(), 'Documents', 'objekt-files', 'notes', 'instructions-loaded.jsonl');
+const LOG = path.join(path.dirname(LOADS), 'owner-messages.md');
 const note = (o) => { try { fs.mkdirSync(path.dirname(LOADS), { recursive: true }); fs.appendFileSync(LOADS, `${JSON.stringify({ t: Date.now(), s: event.session_id || '', ...o })}\n`); } catch { /* named as not loaded */ } };
 if (mode === 'loaded') { note({ f: String(event.file_path || '') }); process.exit(0); }
 
 const gitHere = (...a) => { try { return execFileSync('git', a, { cwd: HERE, env: withoutGitVars(), encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim(); } catch { return null; } };
+
+// accepted, at each commit (tools/hooks/pre-commit): "passes" turns true only on his «да» (CLAUDE.md step 5),
+// read in his log: «да» and two words at most, in 3 hours, no «нет» or «стоп» after it
+if (mode === 'accepted') {
+  const off = (f) => { try { return JSON.parse(f()).features.filter((x) => !x.passes).map((x) => x.id); } catch { return []; } };
+  const now = off(() => fs.readFileSync(path.join(HERE, FEATURES), 'utf8'));
+  let yes = false;
+  try {
+    for (const m of fs.readFileSync(LOG, 'utf8').split('\n## ')) {
+      const w = m.toLowerCase().match(/[а-яё]+/g) || [];
+      if (Date.parse(m.split(' ')[0]) > Date.now() - 108e5 && /^(да|нет|стоп)$/.test(w[0])) yes = w[0] === 'да' && w.length < 4;
+    }
+  } catch { /* no log: no «да» */ }
+  process.exit(yes || off(() => gitHere('show', `HEAD:${FEATURES}`)).every((id) => now.includes(id)) ? 0 : 1);
+}
 
 // start: Claude Code adds this output to the context at startup, at resume and after each compaction.
 if (mode === 'start') {
@@ -510,12 +527,9 @@ if (mode === 'subagent-start' || mode === 'subagent-stop') {
 // reads it). It never blocks the message. Then what the machine, not my memory, tells him and me.
 if (mode === 'prompt') {
   try {
-    const log = path.join(os.homedir(), 'Documents', 'objekt-files', 'notes', 'owner-messages.md');
-    fs.mkdirSync(path.dirname(log), { recursive: true });
-    // turns the app delivers that he did not type (helpers' reports, background notices, reminders,
-    // the pull request watcher, the artifact view): logged as his, they read as typed by him
+    fs.mkdirSync(path.dirname(LOG), { recursive: true });
     const said = String(event.prompt || '');
-    if (typedText(said)) fs.appendFileSync(log, `\n## ${new Date().toISOString()} ${event.session_id || ''}\n${said}\n`);
+    if (typedText(said)) fs.appendFileSync(LOG, `\n## ${new Date().toISOString()} ${event.session_id || ''}\n${said}\n`);
   } catch { /* a failed log must not stop his message */ }
   let mine = [];
   try { mine = fs.readFileSync(LOADS, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l)).filter((l) => l.s === (event.session_id || '')); } catch { /* none yet */ }
@@ -531,7 +545,6 @@ if (mode === 'prompt') {
       took += (at(c) || []).filter((f) => f.passes && was.some((w) => w.id === f.id && w.passes === false)).length;
     }
     him.push(`За 7 дней ты принял вещей из списка: ${took}. Вчера коммитов: в игру ${game}, в процесс ${proc}.`);
-    me.push(`Shown to him: ${took} accepted in 7 days; yesterday ${game} game commits, ${proc} process.`);
     note({ measure: 1 });
   }
   // the thermometer: what really loaded against what CLAUDE.md names, after the latest catch-up
@@ -546,11 +559,13 @@ if (mode === 'prompt') {
     if (gone.length) me.push(`Not loaded: ${names(gone)}; read each now.`);
     if (old.length) me.push(`Loaded before the copy was brought up: ${names(old)}; read each again now.`);
     if ((gone.length || old.length) && !mine.some((l) => l.warned)) {
-      him.push(gone.length ? `Это окно открылось без части правил (не загрузилось: ${names(gone)}). Оно работает вслепую: открой новое окно.`
-        : `Правила этого окна загрузились до обновления копии (${names(old)}). Оно работает по старым: открой новое окно.`);
+      him.push(gone.length ? `Это окно открылось без части правил (не загрузилось: ${names(gone)}).`
+        : `Правила этого окна загрузились до обновления копии (${names(old)}).`);
       note({ warned: 1 });
     }
   }
+  // the app records this line, yet his screenshot of a window's top did not show it: I say it to him
+  if (him.length) me.unshift(`Say to him first, word for word: «${him.join(' ')}»`);
   if (him.length || me.length) process.stdout.write(JSON.stringify({ ...(him.length && { systemMessage: him.join(' ') }), hookSpecificOutput: { hookEventName: 'UserPromptSubmit', additionalContext: me.join('\n') } }));
   process.exit(0);
 }

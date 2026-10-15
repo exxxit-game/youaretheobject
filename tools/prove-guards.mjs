@@ -107,8 +107,6 @@ const CASES = [
     () => run('git', ['commit', '-qam', 'planted']), 'tests/names.test.mjs fails'],
   ['pre-commit hook', 'no keys', 'a commit with a token staged', () => { git('config', 'core.hooksPath', 'tools/hooks'); append('docs/roadmap.md', `\n${token}\n`); },
     () => run('git', ['commit', '-qam', 'planted']), 'something private is staged'],
-  ['pre-push hook', 'main only on the owner\'s word', 'a push to main without his word', () => { git('config', 'core.hooksPath', 'tools/hooks'); git('init', '-q', '--bare', at('.planted-remote')); },
-    () => run('git', ['push', '-q', at('.planted-remote'), 'HEAD:refs/heads/main'], { OBJECT_LIVE: '' }), 'main is the live site'],
   ['claude-guard pre', 'tests before done', 'the assistant skips the git hooks', () => {}, () => askGuard('pre', { tool_name: 'Bash', tool_input: { command: 'git commit --no-verify -m x' } }), 'REFUSED'],
   ['claude-guard pre', 'tests before done', 'the assistant hides a hook-skipping commit in a shell\'s command text', () => {}, () => askGuard('pre', { tool_name: 'Bash', tool_input: { command: 'bash -c "git commit -n -m x"' } }), 'REFUSED'],
   ['claude-guard pre', 'tests before done', 'the assistant runs Playwright locally', () => {}, () => askGuard('pre', { tool_name: 'PowerShell', tool_input: { command: 'npm run test:smoke' } }), 'REFUSED'],

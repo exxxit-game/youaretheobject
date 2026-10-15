@@ -58,23 +58,21 @@ const checked = publisher.indexOf("check('HEAD', dir)"), pushed = publisher.inde
 assert.ok(checked > 0 && pushed > checked, 'tools/publish-preview.mjs must run check() on its copy before the push');
 
 // the hooks: no commit past the quick check (a staged secret, a script that does not parse, a quick
-// test failing; the whole suite runs on GitHub); a push to main (the live site) stops without
-// OBJECT_LIVE=owner-said-yes, a deletion too. Run where a shell is (GitHub's machines always; Git Bash here).
+// test failing; the whole suite runs on GitHub); before a push, the secret check. Main, the live site, is held by
+// its GitHub rule (a pull request with the test green, no bypass), not by a hook. Run where a shell is (GitHub's
+// machines always; Git Bash here).
 const hook = (name) => fileURLToPath(new URL(`../tools/hooks/${name}`, import.meta.url));
 const commitHook = fs.readFileSync(hook('pre-commit'), 'utf8');
 assert.ok(/node tools\/secrets\.mjs --staged/.test(commitHook) && /node --check/.test(commitHook) && /package\.json/.test(commitHook),
   'the pre-commit hook must check the staged changes for secrets, parse the staged scripts and run the quick tests');
-const push = (line, env = {}) => spawnSync('sh', [hook('pre-push')], { input: line + '\n', env: { ...process.env, OBJECT_LIVE: '', ...env }, encoding: 'utf8' });
-const [one, zero] = ['1'.repeat(40), '0'.repeat(40)];
-const probe = push(`refs/heads/main ${one} refs/heads/main ${one}`);
+const pushHook = fs.readFileSync(hook('pre-push'), 'utf8');
+assert.ok(/node tools\/secrets\.mjs "\$local_sha --not --remotes=origin"/.test(pushHook), 'the pre-push hook must check every pushed commit for secrets');
+const probe = spawnSync('sh', [hook('pre-push')], { input: `refs/heads/x ${'0'.repeat(40)} refs/heads/x ${'1'.repeat(40)}\n`, encoding: 'utf8' });
 if (probe.error) console.log('(no shell here: the hooks are run on GitHub)');
-else {
-  assert.equal(probe.status, 1, 'a push to main without the owner\'s word must stop');
-  assert.equal(push(`refs/heads/main ${zero} refs/heads/main ${one}`).status, 1, 'deleting main must stop');
-}
+else assert.equal(probe.status, 0, `the pre-push hook stopped deleting a branch, which carries nothing to check:\n${probe.stdout}`);
 
 assert.equal(fs.readFileSync(path.join(decoy, '.git', 'config'), 'utf8'), decoyConfig, 'a GIT_DIR from a hook reached a repository this test did not make');
 delete process.env.GIT_DIR;
 clean(decoy);
 
-console.log('secrets ok: a token and a foreign address are stopped in any folder; the test copy is checked before its push; main and broken tests are guarded');
+console.log('secrets ok: a token and a foreign address are stopped in any folder; the test copy is checked before its push; broken tests are guarded');

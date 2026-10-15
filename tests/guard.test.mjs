@@ -96,7 +96,7 @@ const refused = cases([
   "node -e \"import('./tools/review-gate.mjs').then((m) => m.write({ kind: 'review' }))\"",
   'env OBJECT_REVIEW_RECORD=/tmp/x.jsonl node tools/quest-look.mjs vr',
   'export OBJECT_REVIEW_RECORD=/tmp/x.jsonl',
-  // main merged on GitHub, past the push guard
+  // main merged on GitHub: only the owner merges into main
   'gh pr merge 9 --merge',
   'gh pr merge --squash --auto',
   'gh pr -R exxxit-game/youaretheobject merge 9',
@@ -291,6 +291,12 @@ assert.equal(ask('Bash', 'grep -rn "git commit --no-verify" docs/'), 0, 'the hoo
   hook({ session_id: 'B', prompt: '<system-reminder>\nYou are operating in a git worktree.\n</system-reminder>\n\n' });
   // a new window's first message: the app's worktree note, then what he typed
   hook({ session_id: 'B', prompt: '<system-reminder>\nYou are operating in a git worktree.\n</system-reminder>\n\ncarry on here' });
+  // notes between windows, a scheduled run and the brief one window gives another: a yes in them is not his
+  hook({ session_id: 'B', prompt: '<system-reminder>\nLinked sessions now.\n</system-reminder>\n\n<side-sessions-event>Да. Their notes are above.</side-sessions-event>' });
+  hook({ session_id: 'B', prompt: '<cross-session-message from="local_x">Да, merged</cross-session-message>' });
+  hook({ session_id: 'B', prompt: '<scheduled-task name="monthly">an automated run</scheduled-task>' });
+  hook({ session_id: 'B', prompt: '<system-reminder>\nLinked.\n</system-reminder>\n\nBackground (from the session that started this one):\nwhy\n\nTask:\nwhat' });
+  assert.doesNotMatch(logged(), /Their notes|merged|automated run|Background \(from/, 'a note between windows, a scheduled run or a brief was logged as his words');
   assert.match(logged(), /his message/, 'his message was not logged');
   assert.match(logged(), /carry on here/, 'his first message in a new window was not logged');
   assert.doesNotMatch(logged(), /review comments|a helper finished/, 'an app notice was logged as his words');
@@ -361,10 +367,14 @@ assert.ok(worstStart < 10000, `on the worst day the start would print ${worstSta
   const load = (s, files) => files.forEach((f) => run('loaded', { session_id: s, file_path: f, load_reason: 'session_start' }));
   assert.match(out('M').systemMessage || '', /^За 7 дней ты принял вещей из списка: \d+\. Вчера коммитов: в игру \d+, в процесс \d+\./, 'his measure was not shown at the first message');
   assert.doesNotMatch(out('M').systemMessage || '', /За 7 дней/, 'his measure came again in the same window');
+  // the app may not show him the hook's line, so it comes to me to say first, word for word
+  assert.match(out('N').hookSpecificOutput?.additionalContext || '', /^Say to him first, word for word: «За 7 дней ты принял вещей из списка: \d+\./, 'his measure was not handed to me to say to him');
   load('L', all.filter((f) => !f.endsWith('tandem.md')));
   const told = out('L');
   assert.match(told.systemMessage || '', /не загрузилось: docs\/tandem\.md/, 'a file CLAUDE.md names that did not load was not told to him');
   assert.match(told.hookSpecificOutput?.additionalContext || '', /Not loaded: docs\/tandem\.md/, 'a file that did not load was not told to me');
+  // a window another window opens gets the same old copy again: the files are read again, no new window
+  assert.doesNotMatch(told.systemMessage || '', /новое окно/, 'he was sent to open a new window');
   assert.doesNotMatch(out('L').systemMessage || '', /загрузилось/, 'he was told twice in one window');
   load('K', all);
   assert.doesNotMatch(JSON.stringify(out('K')), /Not loaded|загрузил/, 'a window with every file loaded was warned');
@@ -381,4 +391,36 @@ assert.ok(worstStart < 10000, `on the worst day the start would print ${worstSta
   fs.rmSync(dir, { recursive: true, force: true });
 }
 
-console.log(`guard: ok (${refused.length} refused, ${allowed.length} allowed, the hook wired, the headset's wearer seen, his messages logged and only his, his decisions imported by CLAUDE.md, every import found, the current feature shown at start, his measure and what did not load told at his first message, nothing to do first, commands left running named)`);
+// A feature turns to passing only on his «да» in his log (CLAUDE.md step 5): the commit hook runs the gate, and the
+// gate counts «да» and two words at most, said in the last 3 hours, with no «нет» or «стоп» after it. A home and a
+// repository of its own, with a list where a and b are open and c passed.
+{
+  assert.match(fs.readFileSync(path.join(ROOT, 'tools/hooks/pre-commit'), 'utf8'), /^node tools\/claude-guard\.mjs accepted\b/m, 'the commit hook does not run the gate on his «да»');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'accepted-')), repo = path.join(dir, 'repo');
+  const env = { ...Object.fromEntries(Object.entries(process.env).filter(([k]) => !k.startsWith('GIT_'))), HOME: dir, USERPROFILE: dir };
+  const g = (...a) => spawnSync('git', a, { cwd: repo, encoding: 'utf8', env });
+  const list = (passes) => JSON.stringify({ features: Object.entries(passes).map(([id, p]) => ({ id, passes: p })) }, null, 1);
+  fs.mkdirSync(path.join(repo, 'docs'), { recursive: true });
+  spawnSync('git', ['init', '-q', repo]);
+  fs.writeFileSync(path.join(repo, 'docs/features.json'), list({ a: false, b: false, c: true }));
+  g('add', '.'); g('-c', 'user.name=t', '-c', 'user.email=t@t', 'commit', '-qm', 'list');
+  const log = path.join(dir, 'Documents', 'objekt-files', 'notes', 'owner-messages.md');
+  fs.mkdirSync(path.dirname(log), { recursive: true });
+  const said = (...m) => fs.writeFileSync(log, `# log\n${m.map(([h, t]) => `\n## ${new Date(Date.now() - h * 36e5).toISOString()} S\n${t}\n`).join('')}`);
+  const gate = (passes) => { fs.writeFileSync(path.join(repo, 'docs/features.json'), list(passes)); return spawnSync(process.execPath, [path.join(ROOT, 'tools/claude-guard.mjs'), 'accepted'], { encoding: 'utf8', env, input: JSON.stringify({ cwd: repo }) }).status; };
+  said();
+  assert.equal(gate({ a: false, b: false, c: true }), 0, 'a commit with no feature turned to passing was stopped');
+  assert.equal(gate({ a: true, b: false, c: true }), 1, 'a feature turned to passing with no «да» of his');
+  assert.equal(gate({ a: false, c: true }), 1, 'a feature left the list with no «да» of his');
+  said([1, 'да, красиво']);
+  assert.equal(gate({ a: true, b: false, c: true }), 0, 'his «да» an hour ago did not count');
+  said([1, 'Да'], [0.5, 'нет, свет не тот']);
+  assert.equal(gate({ a: true, b: false, c: true }), 1, 'a «да» he took back with «нет» counted');
+  said([4, 'да']);
+  assert.equal(gate({ a: true, b: false, c: true }), 1, 'a «да» four hours old counted');
+  said([0.2, 'Да ну, это совсем не то, что я хотел']);
+  assert.equal(gate({ a: true, b: false, c: true }), 1, 'a long message opening with «Да» counted as his yes');
+  fs.rmSync(dir, { recursive: true, force: true });
+}
+
+console.log(`guard: ok (${refused.length} refused, ${allowed.length} allowed, the hook wired, the headset's wearer seen, his messages logged and only his, his decisions imported by CLAUDE.md, every import found, the current feature shown at start, his measure and what did not load handed to me for him at his first message, a feature passing only on his «да» in his log, nothing to do first, commands left running named)`);

@@ -1,13 +1,7 @@
 #!/bin/sh
-# Before any push: the live site (main) changes only on the owner's word, and nothing private
-# leaves this laptop (tools/secrets.mjs). Set once per clone: git config core.hooksPath tools/hooks
-# A push to main (new commit, force push, deletion) needs OBJECT_LIVE=owner-said-yes before the
-# command, typed only after his word in the chat.
+# Before any push nothing private leaves this laptop (tools/secrets.mjs); main is held by its GitHub rule.
+# Set once per clone: git config core.hooksPath tools/hooks
 while read local_ref local_sha remote_ref remote_sha; do
-  if [ "$remote_ref" = "refs/heads/main" ] && [ "$OBJECT_LIVE" != "owner-said-yes" ]; then
-    echo "STOP  main is the live site: it changes only on the owner's word (OBJECT_LIVE=owner-said-yes git push ...)"
-    exit 1
-  fi
   case "$local_sha" in 0000000000000000000000000000000000000000) continue ;; esac
   node tools/secrets.mjs "$local_sha --not --remotes=origin" || exit 1
   git cat-file -e "$local_sha:tests/structure.test.mjs" 2>/dev/null && slow=1
