@@ -5,6 +5,25 @@ The newest entry is read at the start of every session, with `git log --oneline 
 feature at hand goes to the end of docs/board.md, one line each.
 Entries of 14.10 and before: docs/progress-2026-10-14.md; the earlier ones of 15.10: docs/progress-2026-10-15.md.
 
+## 2026-10-16, night — the floor directory: period photos; the whole building comes first
+Same window, after #23; his choice: the two forms are built in a new window.
+Done:
+- Period photos with him and three helpers, each image looked at (docs/research/vr/10-floor-directory.md, 1a):
+  form A in our years: WSU Johnson Hall 1969, Pepperdine 1965, Chattanooga 1970-74, Fort Worth 1976, Portland
+  courthouse (survey of April 1983); form B: a 1959 catalog, a Tampa lobby (record not identified). Shown to him as
+  one page: https://claude.ai/artifact/JjV8FUgjbXgaLJr9KR9Kbc.
+- An August 1979 government report on a hospital's signs: the main directory at the entrance has changeable
+  letters (form A); floor directories at the elevators and stairs are frames of inserted panels (form B). So the
+  form follows the board's place in the building, not a pick between two.
+- His point (16.10, in English): see the whole building first; we put the stairs in the middle, and where they lead
+  is unclear. True: nothing decides where they lead, there are no elevators, and the one stair stands in the middle.
+Errors of mine: search words given to him before I tried the searches myself (DPLA opens to me); the Tampa image
+numbers taken for record numbers, so three source links pointed at other photos, and the 1970 board was wrongly
+called unverified (CodeRabbit on #24; corrected).
+Next (a new window, his choice): the whole building from a real university building of the period (outside photos,
+plans, stairs, elevators, entrance) and the fire rules of the time, shown to him as pictures with options; then the
+directories in their places (the main one at the entrance, a floor one at the stairs and elevators); feature 3.
+
 ## 2026-10-15, night — the counted process files one by one
 A window opened by "Old problems one by one" (step 3 of its brief); his order here: the process files, then the floor
 directory, then every other link one by one (the board's end).
@@ -30,18 +49,14 @@ Checked: npm test green after every commit; tools/prove-guards.mjs CRLF and LF: 
 - PR #23: CodeRabbit's two findings: the record rule narrowed, not dropped (ea41abd, it agreed); assets/ shown never
   to have existed (it withdrew). The app's auto-mode classifier refused my fast-forward push to room-polish ("CI
   Bypass"), so he merged with the button (15a7615); the main folder pulled.
-- The floor directory: 8 period photos with him and two helpers (form A: WSU Johnson Hall 1969, Pepperdine 1965,
-  Chattanooga 1970-74, Tampa banks, Portland courthouse about 1980-84; form B: a 1959 catalog, a Tampa bank 1960),
-  shown to him as one page, https://claude.ai/artifact/JjV8FUgjbXgaLJr9KR9Kbc; the research note (b5384a5).
 Not checked: the start without its first line (the next window's start shows it).
 Errors of mine: a node one-liner of mine was stopped by the guard's false rule (fixed in 1c93161); a script of mine
 failed on CRLF lines in docs/tools.md (nothing written there; redone); the allow rule for a push to room-polish
 removed as unused (c889c07), then my push refused (whether the two are linked: not checked); the LoC link held back
-"for the end" instead of given to him at once; the 1970 Tampa board's link in the research note was wrong (marked).
+"for the end" instead of given to him at once.
 For him later: "never advised against" in his decisions (row 34); the circles' header said twice; rare setup lines
 out of what loads, by his principle of this window.
-Next (his choice: a new window): the two forms of the floor directory by the stairs, south wall right of the door,
-from the photos; pictures of both to him; his pick in the headset; his accept word for feature 3.
+Next: the floor directory (the entry above).
 
 ## 2026-10-15, late evening — old problems one by one: the one list, the cleanup, four cuts
 A window opened by the evening window (its brief: one list of the old problems from the analyses already made, the
