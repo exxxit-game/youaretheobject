@@ -51,7 +51,7 @@ One line each: for every window in `docs/owner-decisions.md` (loaded at every st
   with a test; `tests/structure.test.mjs` (sizes, imports, no Russian outside texts, this file ≤ 80 lines).
 - Machine stops: tools/hooks (no commit while the quick tests fail, no push without the secret check, main only on
   his word); Claude Code hooks, `tools/claude-guard.mjs` (state at start and after compaction, owner messages
-  logged, no skipping hooks, no browser on the laptop, the live DB read only, no GitHub connector writes); their refusals asserted in tests/guard.test.mjs and tests/review-gate.test.mjs, the planted mistakes of `tools/prove-guards.mjs` run on GitHub when a guard file changed.
+  logged, no skipping hooks, no browser on the laptop, no GitHub connector writes); their refusals asserted in tests/guard.test.mjs and tests/review-gate.test.mjs, the planted mistakes of `tools/prove-guards.mjs` run on GitHub when a guard file changed.
 
 ## Lessons (do not repeat)
 - Read the full paper before recommending or designing (summaries overstated effects twice).

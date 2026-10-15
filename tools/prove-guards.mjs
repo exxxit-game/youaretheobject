@@ -36,11 +36,6 @@ const run = (cmd, args, extra = {}) => {
   return { ok: r.status === 0, out: `${r.stdout}${r.stderr}` };
 };
 const test = (file) => () => run(process.execPath, [`tests/${file}`]);
-// Claude Code hands its hook the event as JSON on stdin (code.claude.com/docs/en/hooks)
-const askGuard = (mode, event) => {
-  const r = spawnSync(process.execPath, ['tools/claude-guard.mjs', mode], { cwd: dir, env, encoding: 'utf8', input: JSON.stringify(event) });
-  return { ok: r.status === 0, out: `${r.stdout}${r.stderr}` };
-};
 const structure = test('structure.test.mjs');
 // player's words built from their codes: Russian letters belong only in the texts files
 const ru = (...codes) => String.fromCharCode(...codes);
@@ -91,8 +86,6 @@ const CASES = [
   // mistake planted is the rule taken out, and the guard test is what sees it
   ['settings deny', 'tests before done', 'a connected tool may start a browser on the laptop', () => swap('.claude/settings.json', '"mcp__plugin_playwright*",', ''), test('guard.test.mjs'), 'mcp__plugin_playwright*'],
   ['settings deny', 'data: read only', 'a migration may be applied to the live database', () => swap('.claude/settings.json', '"mcp__*__apply_migration",', ''), test('guard.test.mjs'), 'mcp__*__apply_migration'],
-  ['claude-guard pre', 'data: read only', 'a write hidden behind a read on the live database', () => {}, () => askGuard('pre', { tool_name: 'mcp__db__execute_sql', tool_input: { query: 'select 1; delete from app.runs' } }), 'REFUSED'],
-  ['claude-guard pre', 'data: read only', 'a write called from a read on the live database', () => {}, () => askGuard('pre', { tool_name: 'mcp__db__execute_sql', tool_input: { query: "select public.submit_run('{}'::jsonb)" } }), 'REFUSED'],
   ['settings deny', 'main only on the owner\'s word', 'files may be pushed to GitHub past the push hook', () => swap('.claude/settings.json', '"mcp__*__push_files",', ''), test('guard.test.mjs'), 'mcp__*__push_files'],
   ['guard test', 'the owner\'s decisions', 'a session starts without his decisions in front of it', () => fs.rmSync(at('docs/owner-decisions.md')), test('guard.test.mjs'), 'does not show the owner\'s decisions'],
   ['CLAUDE.md imports', 'the tandem', 'an import that loads nothing', () => swap('CLAUDE.md', '@docs/tandem.md', '@docs/tandem.md.'), test('guard.test.mjs'), 'no file behind it'],

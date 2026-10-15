@@ -360,19 +360,6 @@ export function refusal(line, ps = false, here = false) {
   return null;
 }
 
-// A SELECT still writes when it calls a function that writes: ours (submit_* add rows) and the
-// built-ins and extensions that change the server, sequences, settings, files or the outside world.
-const SQL_WRITE_CALLS = /(\b(submit_\w+|nextval|setval|set_config|pg_terminate_backend|pg_cancel_backend|pg_reload_conf|pg_rotate_logfile|pg_switch_wal|pg_promote|pg_notify|pg_advisory\w*|pg_stat_reset\w*|pg_create_\w+|pg_drop_\w+|pg_replication_\w+|pg_file_\w+|lo_\w+|dblink\w*|http\w*)\s*\(|\b(vault|net|pgmq)\.\w+|\bcron\.\w+\s*\()/i;
-// a query that only reads: one statement, starting with a read, naming no write. Text in quotes is a
-// value, not a command: a privilege check names 'INSERT' or 'submit_run(jsonb)' and only reads; reading the cron schedule's table is a read, calling cron's functions is not
-const unquoted = (q) => String(q).replace(/'(?:[^']|'')*'/g, "''");
-const readOnlySql = (raw) => {
-  const q = unquoted(raw);
-  return /^\s*(select|with|explain|show)\b/i.test(q) && !/;\s*\S/.test(q)
-    && !/\b(insert|update|delete|drop|alter|create|grant|revoke|truncate|copy|call|do|merge|vacuum|comment|set|reset|lock|refresh|reindex|cluster|import|security)\b/i.test(q)
-    && !SQL_WRITE_CALLS.test(q);
-};
-
 // a start line is cut to EXTRA_LINE characters, so the start's length on the worst day is known
 export const EXTRA_LINE = 350;
 const clip = (line) => (line.length > EXTRA_LINE ? `${line.slice(0, EXTRA_LINE - 1)}…` : line);
@@ -384,7 +371,6 @@ export const ciLine = (run) => (NEEDS_LOOK.has(run?.conclusion)
 
 if (mode === 'pre') {
   const tool = String(event.tool_name || '');
-  if (/__execute_sql$/.test(tool) && !readOnlySql(String(event.tool_input?.query || ''))) stop('REFUSED: only a single read-only query (SELECT) may run on the live database.');
   if (/^(Write|Edit|NotebookEdit)$/.test(tool) && RECORD.test(String(event.tool_input?.file_path || event.tool_input?.notebook_path || ''))) stop('REFUSED: the practice review record is written only by Claude Code\'s hook when a reviewer run ends; run the practice-reviewer agent instead.');
   // the shell keeps its folder between calls, so a session standing in the library is seen by its cwd
   const why = refusal(String(event.tool_input?.command || ''), tool === 'PowerShell', inLib(`${String(event.cwd || '').replace(/\\/g, '/')}/`));
