@@ -1,6 +1,6 @@
 # CLAUDE.md — Object
 
-The owner's permanent prompt: his long text of 11.10 put in points, variant B of the revision's shelf 1, his choice («Вариант В» 11.10); his own words as he pasted them are in docs/owner-decisions-history.md.
+The owner's permanent prompt: his long text of 11.10 put in points, variant B of the revision's shelf 1, his choice («Вариант В» 11.10).
 > Продолжаем. Что делать:
 > 1. Бери нужные инструменты, нужную документацию и готовые уроки (что брать когда: docs/tools.md).
 > 2. Сверяйся с процессом (этот файл и доска docs/board.md) и с тем, как ты по нему идёшь.
@@ -13,13 +13,13 @@ Our words, approved by him word for word («Утверждаю» 14.10 and 15.10
 His decisions load with this file, settled (never re-asked): @docs/owner-decisions.md
 
 "You are the object" (the name is never translated): a browser VR game (WebXR, A-Frame as vendored in vendor/) for Meta Quest; the player is the subject of
-real psychology experiments, one room each, then sees how he was caught. Maps: ARCHITECTURE.md, docs/state.md; tools: docs/tools.md.
+real psychology experiments, one room each, then sees how he was caught. Maps: ARCHITECTURE.md, docs/state.md.
 
 ## Every session (the process: Anthropic, "Effective harnesses for long-running agents", 26.11.2025)
 1. Read the newest entry of docs/progress.md, `git log --oneline -20`, then docs/features.json. The task is his message; if it names
    none, the first feature whose "passes" is false. Nothing a hook prints is a task by itself.
-2. One feature at a time. Anything else, even a good idea: one line at the end of docs/board.md (his words stay there).
-3. Explore first, then plan, then build (plan mode): read what docs/tools.md names for the task's kind, then build
+2. One feature at a time.
+3. Explore first, then plan, then build: read what docs/tools.md names for the task's kind, then build
    from what exists (the book, standards, Meta/W3C XR guidelines, papers, shipped games, real photos), named in a WHY
    comment; our own only where nothing exists. A fact the player sees has its source in docs/sources.md.
 4. Verify as a person would: `npm test`; the smoke test on GitHub; what he will see, looked at by me first in the
@@ -34,8 +34,8 @@ real psychology experiments, one room each, then sees how he was caught. Maps: A
 ## The owner and me
 He has zero technical knowledge («ноль знаний в языках программирования, в супабейсе, в гитхабах, в доменах… весь наш
 процесс» 14.10): every technical choice is mine, with its source, never written as his; he is asked about what he
-sees, values and money; a hard question with consequences reaches him as plain options (best, worst, current).
-Repo English; Russian only where tests/structure.test.mjs allows. Who errs where and who catches it: @docs/tandem.md
+sees, values and money.
+Repo English; Russian only where tests/structure.test.mjs allows. Who does what: @docs/tandem.md
 
 ## Cannot be undone (held by machines, not by this text)
 - main is the live site: the GitHub ruleset; a push to main only on his word. Work on a branch; commit often.

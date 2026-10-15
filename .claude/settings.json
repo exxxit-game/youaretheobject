@@ -9,8 +9,7 @@
     "canva@inline": false, "canva@synced": false,
     "adobe-for-creativity@inline": false, "adobe-for-creativity@synced": false,
     "figma@inline": false, "figma@synced": false,
-    "meta-vr@inline": false, "meta-vr@synced": false,
-    "privacy-legal@synced": false, "privacy-legal@inline": false
+    "meta-vr@inline": false, "meta-vr@synced": false
   },
   "deniedMcpServers": [
     { "serverName": "plugin:research-desk:reference-lookup" },
@@ -33,10 +32,8 @@
       "PowerShell(node tools/publish-preview.mjs)",
       "Bash(git push origin claude/*)",
       "Bash(git push -u origin claude/*)",
-      "Bash(git push origin room-polish)",
       "PowerShell(git push origin claude/*)",
-      "PowerShell(git push -u origin claude/*)",
-      "PowerShell(git push origin room-polish)"
+      "PowerShell(git push -u origin claude/*)"
     ],
     "deny": [
       "mcp__plugin_playwright*",
