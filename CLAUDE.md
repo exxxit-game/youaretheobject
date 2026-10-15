@@ -9,7 +9,7 @@ The owner's permanent prompt: his long text of 11.10 put in points, variant B of
 > 5. Если тебе что-то мешает выполнить процесс или не хватает знаний, сообщи мне об этом.
 > 6. При нужде пользуйся интернетом, обновляй документацию, инструменты и наши знания.
 
-The ten circles and our words, approved by him word for word («Утверждаю» 14.10): @docs/ten-circles.md
+Our words, approved by him word for word («Утверждаю» 14.10 and 15.10): @docs/ten-circles.md
 His decisions load with this file, settled (never re-asked): @docs/owner-decisions.md
 
 "You are the object" (the name is never translated): a browser VR game (WebXR, A-Frame as vendored in vendor/) for Meta Quest; the player is the subject of

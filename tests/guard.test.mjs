@@ -337,7 +337,7 @@ assert.deepEqual(split('@@a\nsrc/x.js\n\n@@b\ntools/y.mjs\ndocs/z.md\n\n@@c\nsrc
 // the ten circles he approved arrive once, with CLAUDE.md, at every start and after every compaction, as
 // he chose; the start never prints them, and his first message names them if they did not load
 const circles = fs.readFileSync(path.join(ROOT, 'docs/ten-circles.md'), 'utf8').trim();
-assert.ok(/^The ten circles[^\n]*@docs\/ten-circles\.md/m.test(fs.readFileSync(path.join(ROOT, 'CLAUDE.md'), 'utf8')), 'CLAUDE.md no longer imports the ten circles he approved');
+assert.ok(/^Our words[^\n]*@docs\/ten-circles\.md/m.test(fs.readFileSync(path.join(ROOT, 'CLAUDE.md'), 'utf8')), 'CLAUDE.md no longer imports our words he approved');
 assert.ok(!start.stdout.includes(circles), 'the start prints the ten circles again: a second copy beside CLAUDE.md');
 assert.ok(start.stdout.length < 10000, `the start hook prints ${start.stdout.length} characters: over 10,000 Claude Code keeps only a preview`);
 // and on the worst day, not only on this machine: the red-CI line and the branch warning at their longest
