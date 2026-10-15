@@ -26,14 +26,16 @@ this audit: what it finds goes to him as proposals, each replacing something old
   revision found 33), so before and after are compared by one method. A blind relabelling of 52 old errors agreed on
   the primary circle in 68% (Cohen's kappa 0.64): totals compare better than circles.
 - Errors per 100 of his messages, confirmed by the second helper: 32.8 before (control), 45.8 after (127 in 277);
-  per hour 5.6 and 9.0. By window after: 47.9, 55.4, 35.0, 32.3 in the four long ones.
+  per hour 5.6 and 9.0. By window after: 47.9, 55.4, 35.0, 32.3 in the four long ones. Not lower; "higher" is not
+  established (exact test of the two rates: p = 0.059, two-sided; each side is one day).
 - In 4 of the 7 windows after his approval the circles did not load at start (stale worktree copies; one loaded the
-  CLAUDE.md of 07.10). Those windows: 48.5 per 100; the three where they loaded: 39.2. Both above the control.
+  CLAUDE.md of 07.10); in 3 of them I read the circles in by tool within minutes. No clear difference between the two
+  kinds of window is shown.
 - After the rule that bans "done" words, 48 uses reached him, 31 without proof; the unproven ones fell window by window
   from 18 to 0.
-- Answer: not out of the circles. Circles 2 and 5 (claims without proof, numbers from memory) dominate the windows
-  after, which were audits and pages about the process; circle 10, the only one fully held by a machine, had no
-  occasion; circle 7, partly held by the size limit, fell.
+- Answer: not out of the circles. Circles 2 and 5 (claims without proof, numbers from memory) are the largest after,
+  in windows that were audits and pages about the process; with 0 to 8 errors a circle in the control, no per-circle
+  direction is established; circle 10, the only one fully held by a machine, had no occasion.
 
 ## Part 2: the walls and stones (note 02-walls.md; walls/axe-chain.md)
 - 273 parts in six groups, each traced against sources opened on 15.10 and checked by a second helper (128 rows
@@ -45,7 +47,18 @@ this audit: what it finds goes to him as proposals, each replacing something old
   count).
 - The permission lock: 70 prompts in 8.7 hours, 69 allowed; 3 shell writes passed it unprompted.
 - The axe: seven rebuild pages in five days, 107 prescriptions, 86 applied, 24 later undone or replaced, four freezes
-  promised and none held; errors per 100 of his messages stayed between 29.5 and 36.0 a day. The one cure made mostly
-  of removals (11.10, +159 -519 lines) was followed by fewer errors (42.6 to 28.8 per 100 within a day) and fewer
-  errors caused by our own guards (8.1 to 2.6); people systematically overlook subtractive changes (Adams et al.,
-  Nature 592:258-261, 2021).
+  promised and none held; errors per 100 of his messages stayed between 29.5 and 36.0 a day from 9.10 to 14.10
+  morning. Totals fell after two cures, both from a peak; errors caused by our own guards fell only after the cure
+  of 11.10 that mostly removed rules and guards (+159 -519 lines: 8.1 to 2.6 per 100) and rose after the next (2.5 to
+  7.7); people systematically overlook subtractive changes (Adams et al., Nature 592:258-261, 2021).
+
+## Part 3: the synthesis and the proposals (note 03-synthesis.md; the completeness critic: critic.md)
+- A completeness critic read the evidence and the page draft and found ten kinds of problem, among them a "main cause"
+  the notes did not support, two proposals that reopened the owner's settled decisions, and per-circle comparisons
+  across two methods; all were corrected before the page reached him, and four proposals were withdrawn. Two
+  fact-check runs that did not see each other checked the page; their findings were fixed and checked against them.
+- Seven proposals remain, each correcting or removing something, none adding: the records made true, plan mode by the source's condition, the unobeyed report caps removed,
+  the duplicate main check in the pre-push hook removed, reviewers started without the builder's context, the size
+  limit counting every steering file, and the "always allow" rules made during the audit removed. Nothing is changed
+  before his answer, one proposal at a time.
+- Not checked: windows after the audit; the audit is one hand too (every helper is the same model).
