@@ -9,6 +9,7 @@ of the process moved to objekt-files/notes/archive:
 - `docs/research/cherny-yc-2026.md`: Boris Cherny at YC Startup School 2026, read in YC's transcript.
 - `docs/research/context-claude-5.md`: Anthropic's rules of context for Claude 5 models, and six Reddit threads beside them.
 - `docs/research/prompt-audit-2026-10-14.md`: Anthropic's prompt audit run on our instruction files, findings and proposals.
+- `docs/research/process-audit-2026-10-15.md`: the process audited by the ten circles, part by part, its evidence on the laptop.
 - `docs/research/data-purchases.md`: purchases and data, for paid rooms.
 - `docs/research/forums-rooms.md`: running psychology experiments in VR and in the browser, what practitioners write.
 - `docs/research/measure-with-person.md`: measuring with a person in the headset, what Meta's docs have the tester do.
