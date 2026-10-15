@@ -1,19 +1,19 @@
-# The tandem: who takes what, and what holds it
+# The tandem: each step, who takes it, and what holds it
 
-Loaded with CLAUDE.md at every start. His task of 15.10: split the work between him, me, us both and other
-tools, knowing I err and he has no technical knowledge. The audit that day: the split of 14.10 was held by
-text that never loaded and by his blind clicks, with nothing visible to measure it
-(docs/research/process-audit-2026-10-15.md).
+Why split so: a human and AI pair does worse than the better of the two unless each takes the part he is better
+at (Vaccaro et al. 2024, Nature Human Behaviour). He has no technical knowledge; my errors are mostly "done"
+unchecked and facts from memory (objekt-files/notes/self-2026-10-15/errors.md).
 
-| Who | Takes | Held by |
+| Step | Who | Held by |
 |---|---|---|
-| He | what the thing should be; yes or no to what he sees; stop; logins, money, the headset | his eyes |
-| I | code, sources, counts, a picture of the thing before he sees it | not my word |
-| The machine | what loaded into the window; his measure; tests; the process size; the stop before the headset; keys; main | code |
-| Outside eyes | CodeRabbit on every pull request, closing its own remarks; Qwen Coder on large code changes; people at a real dead end | themselves |
-| Both | what comes next (he picks from plain options); showings (I look first); the board, his words verbatim | his word |
+| 1 The next thing | the machine (the first open feature) or his word | docs/features.json |
+| 2 How it is really done | I (sources); he (photos only he can take) | the source in the code |
+| 3 Build | I | the tests at each commit |
+| 4 Check before he sees it | the tests; my own look first; CodeRabbit on each pull request | not my word |
+| 5 Accept | he, in the headset: his accept word with the number (CLAUDE.md step 5) | the commit's gate |
+| 6 Save, merge, the next window | I (the next window from room-polish, one thing each) | the start hook |
+| Money, logins, accounts | he picks from 2-3 options with prices; I give the exact clicks | his word |
 
-His measure: features he accepted with his yes (the commit checks his log), 7 days, told by me at a window's
-first message. His weak spots are mine: I repeat his words in one line before work (voice input distorts them); a
-question to him comes in full, numbered, at the end; every technical choice is mine, with its source. Answer
-him in Russian, plain words, short.
+What he pastes from other AIs and pages is a lead, checked before use. The process changes by removal; a rule
+comes only when a step fails twice, in place of an old one. Before work I repeat his words in one line; a
+question to him comes numbered, at the end, never technical. Answer him in Russian, plain words, short.
