@@ -25,7 +25,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { withoutGitVars } from './secrets.mjs';
-import { typedText } from './owner-links.mjs';
+import { ownText } from './owner-links.mjs';
 import { scan, named, entries, write, lastReport, REVIEWER, REPORT_END, PAPER_REVIEWER, PAPER_END, roomScan, checkedRooms, endsWithBlock } from './review-gate.mjs';
 import { split } from './board.mjs';
 import { leftoverLine } from './leftovers.mjs';
@@ -430,20 +430,23 @@ if (mode === 'loaded') { note({ f: String(event.file_path || '') }); process.exi
 const gitHere = (...a) => { try { return execFileSync('git', a, { cwd: HERE, env: withoutGitVars(), encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim(); } catch { return null; } };
 
 // accepted (tools/hooks/pre-commit; stdin: the staged list): a feature passing that was not, or gone, needs his «да»
-// in his log (CLAUDE.md step 5): «да» and two words at most, 3 hours, no «нет» or «стоп» after; no list at HEAD nor
-// staged: nothing to hold; a staged list that will not read stops
+// in his log (CLAUDE.md step 5) bound to it by the prompt hook (its id in the entry's heading): «да» and two words at
+// most, 3 hours; a «нет», «стоп» or longer «да» after it takes back every «да» before; no list at HEAD nor staged:
+// nothing to hold; a staged list that will not read stops
 if (mode === 'accepted') {
   const list = (f) => { try { return JSON.parse(f()).features; } catch { return null; } };
   const now = list(() => input), was = list(() => gitHere('show', `HEAD:${FEATURES}`));
-  let yes = false;
+  const yes = new Set();
   try {
     for (const m of fs.readFileSync(LOG, 'utf8').split('\n## ')) {
-      const w = m.toLowerCase().match(/[а-яё]+/g) || [];
-      if (Date.parse(m.split(' ')[0]) > Date.now() - 108e5 && /^(да|нет|стоп)$/.test(w[0])) yes = w[0] === 'да' && w.length < 4;
+      const [t, , about] = m.split('\n')[0].split(' '), w = m.toLowerCase().match(/[а-яё]+/g) || [];
+      if (!(Date.parse(t) > Date.now() - 108e5)) continue;
+      if (/^(нет|стоп)$/.test(w[0]) || (w[0] === 'да' && w.length > 3)) yes.clear();
+      else if (about && w[0] === 'да') yes.add(about);
     }
   } catch { /* no log */ }
-  const moved = now?.some((n) => n.passes && !was?.some((w) => w.id === n.id && w.passes)) || was?.some((w) => !now?.some((n) => n.id === w.id));
-  process.exit((!was && !input.trim()) || (now && (yes || !moved)) ? 0 : 1);
+  const moved = [...(now || []).filter((n) => n.passes && !was?.some((w) => w.id === n.id && w.passes)), ...(was || []).filter((w) => !now?.some((n) => n.id === w.id))];
+  process.exit((!was && !input.trim()) || (now && moved.every((f) => yes.has(f.id))) ? 0 : 1);
 }
 
 // start: Claude Code adds this output to the context at startup, at resume and after each compaction.
@@ -526,10 +529,28 @@ if (mode === 'subagent-start' || mode === 'subagent-stop') {
 // outside the public repository, so no request is lost to a compaction (the request auditor
 // reads it). It never blocks the message. Then what the machine, not my memory, tells him and me.
 if (mode === 'prompt') {
+  // his «да» is bound to the feature my question «Принимаешь `id`?» named, the one question that ended my last turn
+  // (its closing text, or the ask of the app's box), when he sent it after that question: a message queued while I
+  // worked has its enqueue before it. CodeRabbit on #20: a «да» to anything let any feature pass
+  const yesTo = (own) => {
+    try {
+      if ((own.toLowerCase().match(/[а-яё]+/g) || [])[0] !== 'да') return '';
+      let q = { t: '', s: '' }, sent = '';
+      for (const l of fs.readFileSync(event.transcript_path, 'utf8').split('\n')) {
+        let e = {};
+        try { e = JSON.parse(l); } catch { /* a line still being written */ }
+        const p = e.type === 'assistant' && e.message.content.find((b) => b.type === 'text' || b.type === 'tool_use');
+        if (p) q = { t: e.timestamp, s: p.type === 'text' ? (e.message.stop_reason === 'end_turn' ? p.text : '') : /wrap_up$/.test(p.name) ? String(p.input.ask) : '' };
+        if (e.operation === 'enqueue') sent = e.timestamp;
+      }
+      const asked = [...q.s.matchAll(/принимаешь `([a-z0-9-]+)`\?/gi)];
+      return asked.length === 1 && sent > q.t ? ` ${asked[0][1]}` : '';
+    } catch { return ''; }
+  };
   try {
     fs.mkdirSync(path.dirname(LOG), { recursive: true });
-    const said = String(event.prompt || '');
-    if (typedText(said)) fs.appendFileSync(LOG, `\n## ${new Date().toISOString()} ${event.session_id || ''}\n${said.replace(/^## /gm, ' ## ')}\n`);
+    const own = ownText(event.prompt || '');
+    if (own) fs.appendFileSync(LOG, `\n## ${new Date().toISOString()} ${event.session_id || ''}${yesTo(own)}\n${own.replace(/^## /gm, ' ## ')}\n`);
   } catch { /* a failed log must not stop his message */ }
   let mine = [];
   try { mine = fs.readFileSync(LOADS, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l)).filter((l) => l.s === (event.session_id || '')); } catch { /* none yet */ }

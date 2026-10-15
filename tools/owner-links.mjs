@@ -2,13 +2,15 @@
 // background notices, the pull request watcher's events, the artifact view). The prompt hook logs
 // only what he typed (tools/claude-guard.mjs); a notice logged as his reads as typed by him. The first
 // message of a new window comes with the app's note about the worktree before his text (his first word
-// there was once read as that note): leading notes are cut, and what is left is his.
+// there was once read as that note): leading notes are cut, and what is left is his, logged alone (with the notes
+// in front, his yes was not the entry's first word).
 // Pages only he can open, left by research, go once into the board's list of what waits for him: a stop hook
 // that made them reach him in every turn sent the same link again and again (the process review).
 // Notes between windows, scheduled runs and the brief a window gets from the window that opened it are not
 // his either: logged, a yes among them would count as his acceptance of a feature (tools/claude-guard.mjs accepted)
 const NOTICE = /^\s*(<(task-notification|system-reminder|agent-message|artifact-view-context|ci-monitor-event|side-sessions-event|cross-session-message|scheduled-task)\b|Background \(from the session that started this one\):)/;
-export function typedText(text) {
-  const own = String(text).replace(/^(\s*<system-reminder>[\s\S]*?<\/system-reminder>)+/, '');
-  return own.trim() !== '' && !NOTICE.test(own);
+// his own text, or '' for a notice
+export function ownText(text) {
+  const own = String(text).replace(/^(\s*<system-reminder>[\s\S]*?<\/system-reminder>)+/, '').trim();
+  return own && !NOTICE.test(own) ? own : '';
 }

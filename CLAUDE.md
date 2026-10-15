@@ -25,8 +25,8 @@ real psychology experiments, one room each, then sees how he was caught. Maps: A
 4. Verify as a person would: `npm test`; the smoke test on GitHub; what he will see, looked at by me first in the
    headset or on the stand (tools/quest-look.mjs, tools/stand-measure.mjs; they refuse until the practice-reviewer
    and, for a room, the paper-reviewer have run: tools/review-gate.mjs).
-5. "passes" turns true only after those checks and his «да» to what he saw; nothing else in the file changes. An
-   error is fixed in the thing itself, never with a new rule.
+5. "passes" turns true only after those checks and his «да» to what he saw, asked last as «Принимаешь `<id>`?»;
+   nothing else in the file changes. An error is fixed in the thing itself, never with a new rule.
 6. End: a commit, a dated entry in docs/progress.md (done / not done and why / next); the branch reaches room-polish
    through a pull request CodeRabbit reviews (its findings fixed, or shown wrong by a test or doc it accepts), merged,
    then the main folder pulled.

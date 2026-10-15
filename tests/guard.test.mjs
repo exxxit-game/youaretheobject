@@ -302,7 +302,31 @@ assert.equal(ask('Bash', 'grep -rn "git commit --no-verify" docs/'), 0, 'the hoo
   assert.doesNotMatch(logged(), /^## 2099/m, 'a pasted heading in his message became an entry of the log');
   assert.match(logged(), /his message/, 'his message was not logged');
   assert.match(logged(), /carry on here/, 'his first message in a new window was not logged');
+  assert.doesNotMatch(logged(), /operating in a git worktree/, "the app's note before his words was logged as his: his «да» is no longer the first word");
   assert.doesNotMatch(logged(), /review comments|a helper finished/, 'an app notice was logged as his words');
+  // his «да» is bound to the feature my question «Принимаешь `id`?» named, the one question ending my last turn, when
+  // he sent it after the question: the transcript's lines as Claude Code writes them (one block a line)
+  const tr = path.join(dir, 'transcript.jsonl');
+  const said = (stop, block, t = '2026-10-15T10:00:01.000Z') => JSON.stringify({ type: 'assistant', timestamp: t, message: { stop_reason: stop, content: [block] } });
+  const text = (s) => ({ type: 'text', text: s });
+  const box = (ask, recap = 'done') => ({ type: 'tool_use', name: 'mcp__ccd_turn__wrap_up', input: { recap, ask } });
+  const sent = (t = '2026-10-15T10:00:09.000Z') => JSON.stringify({ type: 'queue-operation', operation: 'enqueue', timestamp: t, content: 'да' });
+  const bound = (lines, prompt = 'да') => {
+    fs.writeFileSync(tr, `${lines.join('\n')}\n`);
+    hook({ session_id: 'Y', transcript_path: tr, prompt });
+    return (logged().match(/^## .*$/gm) || []).pop().split(' ')[3] || '';
+  };
+  const asked = said('end_turn', text('Указатель этажей у лестницы. Принимаешь `a`?'));
+  assert.equal(bound([asked, sent()]), 'a', 'his «да» to my closing question was not bound to its feature');
+  assert.equal(bound([said('tool_use', box('Принимаешь `a`?')), sent()]), 'a', "his «да» to the question in the app's box was not bound");
+  assert.equal(bound([asked, sent()], '<system-reminder>\nLinked.\n</system-reminder>\n\nДа'), 'a', "his «да» after the app's note was not bound");
+  assert.equal(bound([said('tool_use', text('Принимаешь `a`?')), sent()]), '', 'a «да» was bound to a line I wrote mid-work');
+  assert.equal(bound([sent('2026-10-15T10:00:00.000Z'), asked]), '', 'a «да» he sent before the question existed was bound to it');
+  assert.equal(bound([said('end_turn', text('Принимаешь `a`? Принимаешь `b`?')), sent()]), '', 'a «да» was bound to one of two questions');
+  assert.equal(bound([said('tool_use', box('Сливать #20?', 'Принимаешь `a`?')), sent()]), '', "a «да» was bound to a feature named outside the box's question");
+  assert.equal(bound([asked, said('tool_use', { type: 'tool_use', name: 'Bash', input: { command: 'echo Принимаешь `a`?' } }), sent()]), '', 'a «да» was bound past a tool call after the question');
+  assert.equal(bound([said('end_turn', text('a готова, тесты прошли. Сохранить?')), sent()]), '', 'a «да» was bound to a feature only mentioned');
+  assert.equal(bound([asked, sent()], 'нет'), '', 'a «нет» was bound as a yes');
   fs.rmSync(dir, { recursive: true, force: true });
 }
 
@@ -395,8 +419,9 @@ assert.ok(worstStart < 10000, `on the worst day the start would print ${worstSta
 }
 
 // A feature turns to passing only on his «да» in his log (CLAUDE.md step 5): the commit hook runs the gate, and the
-// gate counts «да» and two words at most, said in the last 3 hours, with no «нет» or «стоп» after it. A home and a
-// repository of its own, with a list where a and b are open and c passed.
+// gate counts «да» and two words at most, bound to that feature (its id in the entry's heading), said in the last
+// 3 hours, with no «нет», «стоп» or longer «да» after it. A home and a repository of its own, with a list where a and
+// b are open and c passed.
 {
   assert.match(fs.readFileSync(path.join(ROOT, 'tools/hooks/pre-commit'), 'utf8'), /^git show :docs\/features\.json 2>\/dev\/null \| node tools\/claude-guard\.mjs accepted\b/m, 'the commit hook does not hand the staged list to the gate on his «да»');
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'accepted-')), repo = path.join(dir, 'repo');
@@ -409,7 +434,7 @@ assert.ok(worstStart < 10000, `on the worst day the start would print ${worstSta
   g('add', '.'); g('-c', 'user.name=t', '-c', 'user.email=t@t', 'commit', '-qm', 'list');
   const log = path.join(dir, 'Documents', 'objekt-files', 'notes', 'owner-messages.md');
   fs.mkdirSync(path.dirname(log), { recursive: true });
-  const said = (...m) => fs.writeFileSync(log, `# log\n${m.map(([h, t]) => `\n## ${new Date(Date.now() - h * 36e5).toISOString()} S\n${t}\n`).join('')}`);
+  const said = (...m) => fs.writeFileSync(log, `# log\n${m.map(([h, t, about]) => `\n## ${new Date(Date.now() - h * 36e5).toISOString()} S${about ? ` ${about}` : ''}\n${t}\n`).join('')}`);
   // the staged list comes on stdin, as the hook pipes it, run in the repository's own folder as git runs a hook
   const raw = (text) => spawnSync(process.execPath, [path.join(ROOT, 'tools/claude-guard.mjs'), 'accepted'], { cwd: repo, encoding: 'utf8', env, input: text }).status;
   const gate = (passes) => raw(list(passes));
@@ -424,7 +449,19 @@ assert.ok(worstStart < 10000, `on the worst day the start would print ${worstSta
   // a list naming another folder is still compared with this repository's HEAD
   assert.equal(raw(JSON.stringify({ cwd: os.tmpdir(), ...JSON.parse(list({ a: true, b: false, c: true })) })), 1, 'a staged list chose the repository it is compared with');
   said([1, 'да, красиво']);
-  assert.equal(gate({ a: true, b: false, c: true }), 0, 'his «да» an hour ago did not count');
+  assert.equal(gate({ a: true, b: false, c: true }), 1, 'a «да» bound to no feature let one pass (CodeRabbit on #20)');
+  said([1, 'да', 'b']);
+  assert.equal(gate({ a: true, b: false, c: true }), 1, 'a «да» to another feature let this one pass');
+  said([1, 'да, красиво', 'a']);
+  assert.equal(gate({ a: true, b: false, c: true }), 0, 'his «да» to this feature an hour ago did not count');
+  assert.equal(gate({ a: true, b: true, c: true }), 1, 'two features passed on a «да» to one of them');
+  said([1, 'да', 'c']);
+  assert.equal(gate({ a: false, b: false }), 0, 'a feature he agreed to drop was stopped');
+  said([1, 'да', 'a'], [0.5, 'да, давай']);
+  assert.equal(gate({ a: true, b: false, c: true }), 0, 'a short «да» to something else took back his «да» to this feature');
+  said([1, 'да', 'a'], [0.5, 'да, но свет надо поменять везде']);
+  assert.equal(gate({ a: true, b: false, c: true }), 1, 'a «да» he qualified after it still counted');
+  said([1, 'да', 'a']);
   assert.equal(raw('{ broken'), 1, 'a broken staged list passed on his «да»');
   // a repository with no list yet: nothing staged passes, a first list that comes in passing needs «да» like any other
   const fresh = path.join(dir, 'fresh');
@@ -433,11 +470,11 @@ assert.ok(worstStart < 10000, `on the worst day the start would print ${worstSta
   said();
   assert.equal(first(''), 0, 'a commit with no list anywhere was stopped');
   assert.equal(first(list({ a: true })), 1, 'a first list that came in passing went through with no «да» of his');
-  said([1, 'Да'], [0.5, 'нет, свет не тот']);
+  said([1, 'Да', 'a'], [0.5, 'нет, свет не тот']);
   assert.equal(gate({ a: true, b: false, c: true }), 1, 'a «да» he took back with «нет» counted');
-  said([4, 'да']);
+  said([4, 'да', 'a']);
   assert.equal(gate({ a: true, b: false, c: true }), 1, 'a «да» four hours old counted');
-  said([0.2, 'Да ну, это совсем не то, что я хотел']);
+  said([0.2, 'Да ну, это совсем не то, что я хотел', 'a']);
   assert.equal(gate({ a: true, b: false, c: true }), 1, 'a long message opening with «Да» counted as his yes');
   fs.rmSync(dir, { recursive: true, force: true });
 }
