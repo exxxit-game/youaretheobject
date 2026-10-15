@@ -17,10 +17,14 @@ the corridor, where it leads is unclear, and there are no elevators. Found 16.10
   opening on to it", 25 Jan 1968 (422707, d3bz61d6h: doors on one side, fluted concrete on the other, surface-mounted
   fluorescent strips); "View of stairway", 28 May 1968 (422669, d37p8tj7c); scissor stairway 25 Apr 1968 (422679);
   office doorways 22 Feb 1968 (422699). Plans (current, UIC Environmental Health and Safety evacuation drawings, one a
-  floor, https://ehso.uic.edu/fire-safety/building-specific-emergency-action-plans/, opened): a corridor with offices on
-  both sides; in the middle an elevator lobby open to the corridor with four elevators (two facing two); one stair on
-  each side of it; floor 1 has rooms 101-153 and the way out under an overhang beside the elevator core; floor 5 about
-  37 offices. That the 1968 core is unchanged: consistent with the 1968 photos, not proven.
+  floor, https://ehso.uic.edu/fire-safety/building-specific-emergency-action-plans/, PDFs of 2023, opened): two wings,
+  each a corridor with offices on both sides, offset; in the middle a north-south elevator hall joining the two wings'
+  corridors, four elevators (marked E, not in the legend; read as elevators, as the 1968 lobby photo shows), two facing
+  two; one scissor stair beside it on each side, about three offices long, the west one north of its corridor, the east
+  one south of its; on floor 1 each stair has its own door straight outside, and the way in is under an overhang at the
+  east end; floor 5 has 37 numbered rooms. Measured on the floor-5 drawing (no scale printed; door swings taken as 3 ft):
+  each elevator with its shaft about one office module, about 3 m; the hall one module wide; the core three modules
+  along the corridor and two deep. That the 1968 core is unchanged: consistent with the 1968 photos, not proven.
 - **University Hall (UH), same campus**, 601 S. Morgan St., first named the Staff and Administrative Offices Building:
   SOM drawings of 2 July 1962 (sheet A-12, section: OFFICE | CORRIDOR | ELEV. LOBBY | CORRIDOR | OFFICE, "25 FLOORS @
   11'-6""), built 1963-65, 28 floors; photos of 1965 labelled on the print (a 2nd-floor entrance beside an elevator, 5/3/65;
@@ -35,7 +39,8 @@ the corridor, where it leads is unclear, and there are no elevators. Found 16.10
 
 https://archive.org/details/boca-basic-building-code-1978 (text: objekt-files/papers/boca-1978.txt). Offices and
 "testing and research laboratories" are use group B (204.1).
-- 609.2: "not less than two (2) approved independent exitways serving every story".
+- 609.2: "not less than two (2) approved independent exitways serving every story" (an exitway is any protected way
+  out, 607.1: on upper floors the stairs, on the entrance floor an outside door counts).
 - 607.3: "as remote from each other as practicable, and shall be arranged to provide direct access in separate
   directions from any point in the area served".
 - 610.2: "The length of a dead end corridor shall not be more than twenty (20) feet" (6.1 m).
@@ -43,8 +48,10 @@ https://archive.org/details/boca-basic-building-code-1978 (text: objekt-files/pa
   one serves the fire department, car at least 4'3" x 6'8" for an ambulance cot; 315.7: if elevators give access, one
   meets the handicapped rules (25 sq ft car, 32 in door).
 - 618.2-618.3: in a use group B building over six stories or 75 ft, at least one exit stair is a smokeproof enclosure,
-  reached through a vestibule or balcony 72 in deep.
-- 611.3, 611.5: a stair may discharge into a sprinklered lobby; not more than half the stairs through one passageway.
+  reached through a vestibule or balcony 72 in deep; in a high-rise with sprinklers throughout it "may be omitted, but
+  required stairways shall be pressurized" (431.3.1, item 7).
+- 607.2.1: "All exitways shall discharge directly at a public way or at a yard, court or open space"; 611.3, 611.5: a
+  stair may discharge into a sprinklered lobby; not more than half the stairs through one passageway.
 - 616.11: "A sign shall be provided at each landing in all interior stairways more than three (3) stories in height
   designating the floor level above the floor of discharge" (the stair sign, see 10-floor-directory.md, 3).
 - NFPA 101-1973 (helper's reading of the scanned book's search, OCR, not opened by me): two exits a floor (13-2411),
@@ -53,6 +60,14 @@ https://archive.org/details/boca-basic-building-code-1978 (text: objekt-files/pa
 ## 3. Our floor against them
 
 src/app/lobby/plan.js: one stair, in the middle of the south wall (x 0.7), the end walls 7.3 m from it on both sides; no
-elevator. So: one exit where two are required (609.2), and two dead ends of 7.3 m where 6.1 m is the limit (610.2).
-Shown to the owner 16.10 as three plans of our floor: A, as SEO (the elevator hall where the stair is now, a stair on each
-side of it, dead ends 4.1 m, 7 rooms); B, stairs at both ends (dead ends 0.9 m, 7 rooms); C, as now.
+elevator. So one exit where two are required (609.2); 610.2's dead-end limit is written for corridors serving more than
+one exitway, so with one stair it is the count that fails.
+Three plans of our floor were described to him in words on 16.10 (the page with them was still being fact-checked): A,
+modelled on SEO (the elevator hall where the stair is now, a stair on each side of it, 7 rooms); B, stairs at both ends;
+C, as now. He chose A ("Yes, A"). Then an error of mine: the elevators were drawn a third of their size. To scale (section
+1: a car with its shaft about one 3.2 m bay, the core three bays along the corridor and two deep) the core takes the
+middle three bays of the south wall and the stairs move to the next bays out: A1, the same length, 5 rooms, dead ends
+0.9 m; A2, one bay longer at each end (21.0 m), 9 rooms, dead ends 4.1 m (stair door centre to end wall). He chose
+"A1, 5 rooms". Ours differs
+from SEO: one straight corridor, so both stairs on the same side as the hall; each stair one bay wide; on floor 1 each
+stair gets its own door straight outside, as in SEO (607.2.1, 611.5), and one stair a 72 in vestibule (618.3).
