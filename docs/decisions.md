@@ -132,7 +132,7 @@ Consequence: a thing lying on a decal is a layer up (`decal="layer: 2"`: two equ
 ## The owner's automatic stop before the headset and the test copy
 VR in the headset (`tools/quest-look.mjs` vr, `tools/xr-probe-run.mjs`) and the test copy (`tools/publish-preview.mjs`) refuse until a practice reviewer has seen exactly the files a person meets (`tools/review-gate.mjs`).
 Why: a check built from a first idea wasted his headset run, and a rule in text did not stop the next one; a stop that does was proposed in the assistant's words («автоматический стоп, который не даст начать проверку в очках без его разбора») and the owner said «Давай.» (9.10 13:34). The record is written by Claude Code's own SubagentStart and SubagentStop hooks, never by the assistant, and counts only if the files did not change while the reviewer read them.
-Consequence: every change to the game or the probe needs a fresh practice review before the owner meets it; no flag skips it (`tests/review-gate.test.mjs`, seen red in `tools/prove-guards.mjs`).
+Consequence: every change to the game or the probe needs a fresh practice review before the owner meets it; no flag skips it (`tests/review-gate.test.mjs`).
 
 ## The same picture on both end walls, one upside down
 Each end wall carries Arcimboldo's Vegetable Gardener (about 1590, public domain) as it hangs in its museum in Cremona, at its own width in a gilded frame after the museum's (the owner's pick from its photo): the right way up (a face) at one end, upside down (a bowl of vegetables) at the other, swapping ends with each visit, with no caption (src/app/lobby/scene.js).
@@ -157,7 +157,7 @@ Consequence: a run cut at its limit comes back partial and says so. tests/struct
 ## The headset and the test copy also wait for each room's check against its paper
 VR in the headset (`tools/quest-look.mjs` vr) and the test copy (`tools/publish-preview.mjs`) refuse until the paper reviewer checked each room in `src/rooms/` as its folder now stands (`requirePaper` in `tools/review-gate.mjs`); its report's last line lists the rooms it checked, and Claude Code's subagent hooks record the run room by room, as they record the practice review. The own look in the headset goes after a fix of only the files its report named. The headset probe shows no room and does not wait.
 Why: the owner's «Сделать сейчас» (12.10) to the divergences page, card 5: «тестовая копия и очки ждут сверки со статьёй после последней правки комнаты — как сейчас ждут проверки перед очками»; a ban, by his rule, where a mistake costs him time: an unchecked room in the headset. Room 101 had changed 7 times since 11.10 with no paper check. It replaces the recipe's words «then run it again on the fixes» (`.claude/skills/new-room/SKILL.md`, step 8).
-Consequence: a room changed since its paper check stops the headset until the paper reviewer runs on it (`tests/review-gate.test.mjs`, seen red in `tools/prove-guards.mjs`).
+Consequence: a room changed since its paper check stops the headset until the paper reviewer runs on it (`tests/review-gate.test.mjs`).
 
 ## The search helpers stay on the session's model
 No helper in .claude/agents sets its own model, so each runs on the session's model (Opus 5.5).
