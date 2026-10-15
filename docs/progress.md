@@ -14,7 +14,8 @@ Done:
   Claude Code reads them (imports()); a file that did not load, or loaded before the copy was brought up, is told to
   him once a window and to me each message. His measure (features turned to passing in 7 days; yesterday's commits
   to the game and to the process) is shown to him by the machine at a window's first message. Removed: the start's
-  text check of the imports (a broken import passed it), the board-top code and its test, HEALTH_SHOWN.
+  text check of the imports (a broken import passed it), the board-top code and its test, the health check's
+  line limit.
 - CLAUDE.md: the tandem import without its trailing period (the same line as PR #16). docs/tandem.md: who takes what
   and what holds it. .claude/settings.json: the InstructionsLoaded hook. Tests for all of it.
 - Process size 177,964 of 178,338 (was 178,289).
