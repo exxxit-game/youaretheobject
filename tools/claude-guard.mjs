@@ -434,8 +434,8 @@ const gitHere = (...a) => { try { return execFileSync('git', a, { cwd: HERE, env
 // accepted (tools/hooks/pre-commit pipes in the staged list): "passes" turns true only on his «да» (CLAUDE.md
 // step 5) in his log (a pasted "## " is shifted): «да» and two words at most, in 3 hours, no «нет» or «стоп» after
 if (mode === 'accepted') {
-  const off = (f) => { try { return JSON.parse(f()).features.filter((x) => !x.passes).map((x) => x.id); } catch { return []; } };
-  const now = off(() => input);
+  const off = (f) => { try { return JSON.parse(f()).features.filter((x) => !x.passes).map((x) => x.id); } catch { return null; } };
+  const now = off(() => input), was = off(() => gitHere('show', `HEAD:${FEATURES}`));
   let yes = false;
   try {
     for (const m of fs.readFileSync(LOG, 'utf8').split('\n## ')) {
@@ -443,7 +443,8 @@ if (mode === 'accepted') {
       if (Date.parse(m.split(' ')[0]) > Date.now() - 108e5 && /^(да|нет|стоп)$/.test(w[0])) yes = w[0] === 'да' && w.length < 4;
     }
   } catch { /* no log */ }
-  process.exit(yes || off(() => gitHere('show', `HEAD:${FEATURES}`)).every((id) => now.includes(id)) ? 0 : 1);
+  // none at HEAD: a first commit; a broken list stops even on «да»
+  process.exit(!was || (now && (yes || was.every((id) => now.includes(id)))) ? 0 : 1);
 }
 
 // start: Claude Code adds this output to the context at startup, at resume and after each compaction.
@@ -564,7 +565,6 @@ if (mode === 'prompt') {
       note({ warned: 1 });
     }
   }
-  // the app may not show him this line (his screenshot): I say it
   if (him.length) me.unshift(`Say to him first, word for word: «${him.join(' ')}»`);
   if (him.length || me.length) process.stdout.write(JSON.stringify({ ...(him.length && { systemMessage: him.join(' ') }), hookSpecificOutput: { hookEventName: 'UserPromptSubmit', additionalContext: me.join('\n') } }));
   process.exit(0);

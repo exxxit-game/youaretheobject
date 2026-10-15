@@ -416,8 +416,11 @@ assert.ok(worstStart < 10000, `on the worst day the start would print ${worstSta
   assert.equal(gate({ a: false, b: false, c: true }), 0, 'a commit with no feature turned to passing was stopped');
   assert.equal(gate({ a: true, b: false, c: true }), 1, 'a feature turned to passing with no «да» of his');
   assert.equal(gate({ a: false, c: true }), 1, 'a feature left the list with no «да» of his');
+  const raw = (text) => spawnSync(process.execPath, [path.join(ROOT, 'tools/claude-guard.mjs'), 'accepted'], { encoding: 'utf8', env, input: text }).status;
+  assert.equal(raw(JSON.stringify({ cwd: repo })), 1, 'a staged list with no features in it passed');
   said([1, 'да, красиво']);
   assert.equal(gate({ a: true, b: false, c: true }), 0, 'his «да» an hour ago did not count');
+  assert.equal(raw('{ broken'), 1, 'a broken staged list passed on his «да»');
   said([1, 'Да'], [0.5, 'нет, свет не тот']);
   assert.equal(gate({ a: true, b: false, c: true }), 1, 'a «да» he took back with «нет» counted');
   said([4, 'да']);
