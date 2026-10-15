@@ -51,7 +51,7 @@ const HERE = (() => {
 // @path outside code, ending at the first space no backslash escapes, relative to its file, 4 hops deep
 export function imports(file, hops = 4) {
   let t = '';
-  try { t = fs.readFileSync(file, 'utf8').replace(/^(`{3,}|~{3,})[^]*?^\1/gm, '').replace(/(`+)(?!`)[^]*?[^`]\1(?!`)/g, ''); } catch { return []; }
+  try { t = fs.readFileSync(file, 'utf8').replace(/^ {0,3}(`{3,}|~{3,})[^]*?^ {0,3}\1/gm, '').replace(/(`+)(?!`)[^]*?[^`]\1(?!`)/g, ''); } catch { return []; }
   const found = [...t.matchAll(/(?:^|\s)@((?:\\ |\S)+)/g)].map((m) => path.resolve(path.dirname(file), m[1].replace(/\\ /g, ' ')));
   return hops > 1 ? found.flatMap((f) => [f, ...imports(f, hops - 1)]) : found;
 }

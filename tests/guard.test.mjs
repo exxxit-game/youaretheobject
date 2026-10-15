@@ -344,7 +344,7 @@ assert.ok(worstStart < 10000, `on the worst day the start would print ${worstSta
   assert.deepEqual(gone, [], `CLAUDE.md imports a name with no file behind it, which loads nothing: ${gone.join(', ')}`);
   assert.ok(imports(md).some((f) => f.endsWith(path.join('docs', 'tandem.md'))), 'CLAUDE.md no longer imports docs/tandem.md');
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'imports-'));
-  fs.writeFileSync(path.join(dir, 'CLAUDE.md'), 'Who errs: @docs/tandem.md. More.\nCode: `@not/this.md`, ``@nor/this.md``, a@mail.com\n```\n@nor/that.md\n```\n');
+  fs.writeFileSync(path.join(dir, 'CLAUDE.md'), 'Who errs: @docs/tandem.md. More.\nCode: `@not/this.md`, ``@nor/this.md``, a@mail.com\n```\n@nor/that.md\n```\n  ~~~\n  @nor/indented.md\n  ~~~\n');
   assert.deepEqual(imports(path.join(dir, 'CLAUDE.md')).map((f) => path.relative(dir, f).replace(/\\/g, '/')), ['docs/tandem.md.'], 'an import is not read as Claude Code reads it');
   fs.rmSync(dir, { recursive: true, force: true });
 }
