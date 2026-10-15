@@ -71,3 +71,8 @@ middle three bays of the south wall and the stairs move to the next bays out: A1
 "A1, 5 rooms". Ours differs
 from SEO: one straight corridor, so both stairs on the same side as the hall; each stair one bay wide; on floor 1 each
 stair gets its own door straight outside, as in SEO (607.2.1, 611.5), and one stair a 72 in vestibule (618.3).
+The way in differs too: ours is at the hall's far end, a glass wall with a pair of swinging doors after University
+Hall's 1965 entrance (UIC record 427827); in SEO it is at the east end under an overhang, reached along a corridor. One
+of SEO's four cars also serves the basement (its 2023 basement plan shows one elevator there): ours has the down lantern
+on that car only. The directories: the main one at the hall's far end; the floor directory where one comes out of the
+hall into the corridor (the 1979 report's place for its panel frames, a lobby's opening), found by the practice review.
