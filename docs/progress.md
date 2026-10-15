@@ -42,7 +42,9 @@ claims wider than their evidence), CodeRabbit (six holes in the gate and one unc
 analysis brought by an experienced person he knows (a privacy promise the code breaks, confirmed in
 src/rooms/01-control/room.js:198). Its conclusion, the audit's and the premortem's agree: the tools outrun the game.
 Next (his order of 15.10; the four windows reconciled, the husk left out:
-objekt-files/notes/tandem-2026-10-15/next-window-2026-10-15.md): a new window he opens himself; 1) GitHub's security
+objekt-files/notes/tandem-2026-10-15/next-window-2026-10-15.md): a new window he opens himself; 0) first, by his word
+on the board (merge #20 now, bind his yes to the feature first in the new window), bind his yes to the feature asked
+about: CodeRabbit's open major remark on #20, merged with it open on that word; 1) GitHub's security
 switches by his clicks, then Supabase's two-factor sign-in and Spend Cap; 2) his 21.10 check date as plain options;
 3) CodeRabbit's rules for docs; 4) the map, the anthill, with the cut candidates; 5) ChatGPT with Codex as the
 outside reviewer once he buys it (Qwen paused); 6) the game: the privacy page's promise, then the floor directory.
