@@ -4,6 +4,41 @@ Read at the start of every session, with `git log --oneline -20` and docs/featur
 session"). Newest entry on top. Each entry: done, not done and why, next. Anything outside the feature at hand goes
 to the end of docs/board.md, one line each.
 
+## 2026-10-15, day — the tandem, step 2, row 1: a feature passes only on his yes in his log
+A window started by the step-1 window (its brief: rows 1-4, one at a time, in plan mode). Plan mode for row 1, the
+plan checked by two fact-checker runs (9 claims wider than their evidence, all fixed) and approved by him; his typed
+word permitting the audit's proposal 4.
+Done:
+- His words of 15.10 on the board, each quote checked word for word against his log by a script (bf796cb, 68ac1fa,
+  8799ba7, 01b4bc4): Qwen and DeepSeek, CodeRabbit and GitHub at full strength, the million players and every
+  headset, the garden parable, the law of 82 and 28, normalization of deviance, the anthill, a reason for each
+  choice, the support robot, a letter to Anthropic, Qwen Coder on the doubtful places.
+- Row 1 (3acd715): tools/claude-guard.mjs mode `accepted`, run by tools/hooks/pre-commit, stops a commit that turns
+  a feature to passing (or drops it) with no yes of his in his log in 3 hours; the prompt hook hands me his lines
+  to say first; the not-loaded line no longer says to open a new window; his log no longer takes notes between
+  windows, scheduled runs or a window's brief as his; the pre-push main check gone (main held by its GitHub rule,
+  read today), its prover case, tests and docs made true; CLAUDE.md step 5 without the test-or-tool clause.
+- The 3-second wait of step 1's plan: not added. This window's loads were recorded 3.7 s before the first check.
+Checked: npm test green; tools/prove-guards.mjs: all 52 guards saw their mistake; a real commit through the hook in
+a temporary clone: a flip with no yes stopped, the same with his yes a moment old passed; process size
+178 337 of 178 338.
+Found: this window was cut from 69828f4 (its opener's base), loaded CLAUDE.md with the dotted import, and the
+thermometer named it right (tandem.md not loaded; the rest loaded before the catch-up). The machine's line to him is
+in the transcript (09:41:38) but not on his screenshot of the window's top (parts folded there): whether it reached
+him is not checked. The step-1 window's line (10:18:27) named three files as not loaded that had loaded before the
+hook existed. His log held 61 notes between windows, 4 briefs and 1 scheduled run as his.
+Not checked: everything above acts only after the merge and the main folder's pull; whether the app shows a hook's
+line in a window he opens himself; the first real yes (the floor directory).
+Errors of mine: I asked him twice whether he saw the machine's line, which the records answer; told him "the line
+did not reach you" and "the screen's code comes from the internet", both wider than the evidence; a quoting slip
+in a node one-liner (nothing changed); the plan's first draft (the 9 claims above). Errors of others named here: the
+brief said the step-1 window had shown a warning (none until 10:18); the step-1 window dropped the 3-second wait,
+called two pages identical and counted 8 rebuilds (all named to him there); the main window answered CodeRabbit
+"Fixed in d128967" 38 s before the commit reached GitHub, and its note said CodeRabbit had none of our rules.
+Next: the PR's review and merge, the main folder pulled; then the map of every part he asked for (the anthill: each
+part's job for the one goal, what holds it, why it was chosen, what is open), from his artifacts, the board, the
+audit and outside experience; then rows 2 and 4, Qwen Coder, the letter to Anthropic, in the order he picks on it.
+
 ## 2026-10-15, morning — the tandem, step 1: the thermometer, his measure by machine, the tandem loaded
 On his words after the audit (the split of the work between him, me, us both and the other tools; he cannot keep
 up with watching everything; he is asked to permit what he does not understand), after his five pages of 14-15.10
