@@ -13,7 +13,6 @@ paths:
 ---
 # The owner's decisions on the setup: connectors, plugins, models, GitHub, CodeRabbit, updates
 
-Settled like every line of docs/owner-decisions.md (never re-asked, never argued against; a change only from him).
 Claude Code loads this file when a file of the paths above is read or edited.
 
 - Two empty PATH entries in Windows stay («Вообще не хочу туда лезть» 10.10).
