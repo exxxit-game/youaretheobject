@@ -5,6 +5,26 @@ The newest entry is read at the start of every session, with `git log --oneline 
 feature at hand goes to the end of docs/board.md, one line each.
 Entries of 14.10 and before: docs/progress-2026-10-14.md; the earlier ones of 15.10: docs/progress-2026-10-15.md.
 
+## 2026-10-16, evening — the delivery chain published; Codex's review checked and its first fixes
+Same window (his «do it here» to the proposed next window), on a new branch from room-polish 3084b40.
+Done:
+- The delivery chain document rewritten from both fact-checks and the real weights research, checked again by two
+  narrow runs, published as his doc: https://claude.ai/code/artifact/61184b9b-cbd5-41be-82ad-54088c45a30e (docs/state.md
+  names it as the map each window checks the delivery against). Added after: his decision of 12.10 that paid rooms'
+  files come from our own server after a purchase check, so mirrors serve the free floor only (my omission).
+- Codex (ChatGPT, read-only, on his laptop) reviewed the whole project at 834510f: 24 findings. Three fact-check runs
+  checked each against the current code (side notes codex-review-2026-10-16.md): 18 hold, 4 in part, 1 mostly fixed,
+  1 fixed by his text 5. None reaches a player today: the live main never calls the database.
+- Fixed now, one commit each: 23 (three docs that said what the code no longer does), 12 (sleep and browser restart
+  refuse a headset on his head, in tools/headset.mjs itself, held by tests/guard.test.mjs), 15 (the long measure exits
+  non-zero unless it succeeded), 21 (the test copy checks its own commit's run and is marked unchecked otherwise),
+  20 (.claude/settings.local.json in the repository's .gitignore).
+Errors of mine: a git checkout that wiped my own uncommitted edit while testing the guard (redone at once); the
+paid-rooms server missing from the delivery document until I read his data decisions.
+Not done: the data fixes (his choice: the next window); the rest of Codex's findings (board line of 16.10).
+Next: the data fixes as on the board (game code first; the migration file checked before he runs it), then his
+reading of the delivery document and his choice in its section 9.
+
 ## 2026-10-16, day — what the four windows forgot, then the delivery chain
 A window opened by the one of feature 3 to finish the 26 forgotten items (side notes: forgotten-all-2026-10-16.md), detached
 from it the same day (the windows woke each other up the chain).
