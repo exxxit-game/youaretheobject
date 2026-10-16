@@ -46,14 +46,6 @@ export function battery() {
 }
 // Worn: the proximity sensor is overridden so the headset stays awake on a table; off gives it back.
 export const worn = (on) => adb('shell', 'am', 'broadcast', '-a', `com.oculus.vrpowermanager.${on ? 'prox_close' : 'automation_disable'}`);
-// Sleep and a browser restart act only on a headset proven off a person's head (headState below), here in the
-// one place every tool reaches the headset through, so no tool can put to sleep or restart a headset he wears.
-// Returns whether it slept.
-export function sleepNow() {
-  if (!takenOff()) return false;
-  worn(false); adb('shell', 'input', 'keyevent', 'KEYCODE_SLEEP');
-  return true;
-}
 // On a person's head: the power service reads the headset as mounted with no override of ours
 // (`dumpsys vrpowermanager`: "Virtual proximity state: DISABLED"; our "worn on" reads CLOSE).
 // Restarting the browser or the headset then throws the owner out of what he is doing, so those
@@ -70,13 +62,29 @@ export const onHead = (powerDump) => headState(powerDump) === true;
 export const offHead = (powerDump) => headState(powerDump) === false;
 export const wornByPerson = () => onHead(adb('shell', 'dumpsys', 'vrpowermanager'));
 export const takenOff = () => offHead(adb('shell', 'dumpsys', 'vrpowermanager'));
-// The browser restarted, the game page opened again: a browser that has lost its link to the VR
-// system answers every request to enter VR with NotSupportedError, whatever the page asks for.
-export function restartBrowser(url) {
-  if (!takenOff()) throw new Error('the headset is on his head, or its state did not read: the browser is not restarted');
-  adb('shell', 'am', 'force-stop', 'com.oculus.browser');
-  adb('shell', 'am', 'start', '-a', 'android.intent.action.VIEW', '-d', url, 'com.oculus.browser');
+// Sleep and a browser restart act only on a headset proven off a person's head (headState above), here in the
+// one place every tool reaches the headset through, so no tool can put to sleep or restart a headset he wears.
+// Built on any adb runner, so tests drive them with the power dumps the headset printed.
+export function headsetActions(run) {
+  const off = () => offHead(run('shell', 'dumpsys', 'vrpowermanager'));
+  return {
+    // returns whether it slept
+    sleepNow() {
+      if (!off()) return false;
+      run('shell', 'am', 'broadcast', '-a', 'com.oculus.vrpowermanager.automation_disable');
+      run('shell', 'input', 'keyevent', 'KEYCODE_SLEEP');
+      return true;
+    },
+    // a browser that has lost its link to the VR system answers every request to enter VR with
+    // NotSupportedError, whatever the page asks for: restarted, the game page opened again
+    restartBrowser(url) {
+      if (!off()) throw new Error('the headset is on his head, or its state did not read: the browser is not restarted');
+      run('shell', 'am', 'force-stop', 'com.oculus.browser');
+      run('shell', 'am', 'start', '-a', 'android.intent.action.VIEW', '-d', url, 'com.oculus.browser');
+    }
+  };
 }
+export const { sleepNow, restartBrowser } = headsetActions(adb);
 export function openUrl(url) {
   adb('shell', 'input', 'keyevent', 'KEYCODE_WAKEUP');
   adb('shell', 'am', 'start', '-a', 'android.intent.action.VIEW', '-d', url, 'com.oculus.browser');

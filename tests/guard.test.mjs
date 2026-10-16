@@ -11,7 +11,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { refusal, ciLine, EXTRA_LINE, imports } from '../tools/claude-guard.mjs';
-import { onHead, offHead } from '../tools/headset.mjs';
+import { onHead, offHead, headsetActions } from '../tools/headset.mjs';
 import { split } from '../tools/board.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -272,10 +272,18 @@ assert.ok(!onHead(dump('HEADSET_UNMOUNTED', 'DISABLED')) && !onHead(dump('STANDB
 assert.ok(offHead(dump('HEADSET_UNMOUNTED', 'DISABLED')) && offHead(dump('STANDBY', 'DISABLED')) && !offHead(dump('HEADSET_MOUNTED', 'DISABLED')), 'off the head is free to restart');
 // a dump the tools cannot read is neither: no VR on it, and no restart or sleep either
 for (const odd of ['', 'Service not found', dump('HEADSET_MOUNTED', 'UNKNOWN'), 'Virtual proximity state: DISABLED' + String.fromCharCode(10)]) assert.ok(!onHead(odd) && !offHead(odd), `an unread dump acts: ${JSON.stringify(odd)}`);
-// the check sits in the shared actions themselves, so a tool that calls them cannot skip it
-const headsetTool = fs.readFileSync(path.join(ROOT, 'tools', 'headset.mjs'), 'utf8');
-assert.match(headsetTool, /export function sleepNow\(\) \{\s*if \(!takenOff\(\)\) return false;/, 'sleepNow does not first check that the headset is off his head');
-assert.match(headsetTool, /export function restartBrowser\(url\) \{\s*if \(!takenOff\(\)\) throw/, 'restartBrowser does not first check that the headset is off his head');
+// the check sits in the shared actions themselves, so a tool that calls them cannot skip it: driven here with
+// those dumps, a headset on his head or unread is neither put to sleep nor restarted, one off his head is
+for (const [powerDump, free] of [[dump('HEADSET_MOUNTED', 'DISABLED'), false], ['Service not found', false],
+  [dump('HEADSET_UNMOUNTED', 'DISABLED'), true], [dump('STANDBY', 'DISABLED'), true], [dump('HEADSET_MOUNTED', 'CLOSE'), true]]) {
+  const sent = [];
+  const h = headsetActions((...a) => { sent.push(a.join(' ')); return a.includes('vrpowermanager') ? powerDump : ''; });
+  assert.equal(h.sleepNow(), free, `sleep ${free ? 'refused' : 'allowed'} for ${JSON.stringify(powerDump)}`);
+  assert.equal(sent.some((c) => c.includes('KEYCODE_SLEEP')), free, `the sleep key ${free ? 'not ' : ''}sent for ${JSON.stringify(powerDump)}`);
+  if (free) h.restartBrowser('https://example.test/');
+  else assert.throws(() => h.restartBrowser('https://example.test/'), /not restarted/);
+  assert.equal(sent.some((c) => c.includes('force-stop')), free, `the browser ${free ? 'not ' : ''}restarted for ${JSON.stringify(powerDump)}`);
+}
 
 // docs/owner-decisions.md reaches every session at its start and after each compaction: CLAUDE.md imports
 // it (Claude Code loads CLAUDE.md then, whole). A session that does not see it asks him again what he settled
