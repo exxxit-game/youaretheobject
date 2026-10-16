@@ -1,4 +1,4 @@
-import { readStick, arc, inside, snapTurn, teleport, backStep, slide, smoothTurnDeg, vignetteLevel, MOVE, VIGNETTE } from './locomotion-math.js';
+import { readStick, arc, inside, snapTurn, teleport, backStep, slide, smoothTurnDeg, vignetteLevel, areasFrom, MOVE, VIGNETTE } from './locomotion-math.js';
 import { createVignette } from './vignette.js';
 
 // Moving with the thumbsticks in VR, the way Meta's locomotion guidance sets as the default: a
@@ -10,7 +10,9 @@ import { createVignette } from './vignette.js';
 // locomotion-math.js. Put on the camera rig; the hands are its laser-controls children. After a
 // move the rig emits 'player-moved' (a clipboard in front of the player follows) and recenter
 // keeps the new place.
-// <a-entity id="rig" locomotion="minX: -3.1; maxX: 2.7; minZ: 2.1; maxZ: 3.35; move: teleport; turn: snap">
+// The walkable area: the rectangle minX..maxZ, and in also more rectangles that overlap it where
+// one place opens into the next ("minX maxX minZ maxZ", comma between them; locomotion-math.js).
+// <a-entity id="rig" locomotion="minX: -3.1; maxX: 2.7; minZ: 2.1; maxZ: 3.35; also: -0.5 1.9 2.1 9.9; move: teleport; turn: snap">
 const CANCELLED = '#8a8a8a';   // an arc that lands nowhere
 // A frame longer than this (the session was hidden, a stall) moves smoothly no further than this
 // would: a jump is what smooth moving is chosen to avoid. Our choice: about three frames at 72 Hz.
@@ -20,6 +22,7 @@ AFRAME.registerComponent('locomotion', {
   schema: {
     minX: { default: -1 }, maxX: { default: 1 },
     minZ: { default: -1 }, maxZ: { default: 1 },
+    also: { default: '' },
     color: { default: '#f0c96a' },  // the pointing rays' colour
     move: { default: 'teleport', oneOf: ['teleport', 'smooth'] },
     turn: { default: 'snap', oneOf: ['snap', 'smooth'] },
@@ -62,6 +65,11 @@ AFRAME.registerComponent('locomotion', {
   // .play and .pause: "Add event listeners", "Remove event listeners"): its pause takes off only its events map
   // and tick, so listeners added once in init kept turning and stepping the player under the game's menu (lab.js).
   // A-Frame pauses a component before removing it, so remove needs no copy of this.
+  update() {
+    const d = this.data;
+    this.areas = [{ minX: d.minX, maxX: d.maxX, minZ: d.minZ, maxZ: d.maxZ }, ...areasFrom(d.also)];
+  },
+
   play() {
     for (const h of this.hands) {
       h.addEventListener('thumbstickmoved', this.onStick);
@@ -104,7 +112,7 @@ AFRAME.registerComponent('locomotion', {
       return;
     }
     if (this.aimHand) return;
-    if (action === 'back') { if (teleports) this.go(teleport(this.rig(), this.head(), backStep(this.head(), this.headYaw(), this.data))); return; }
+    if (action === 'back') { if (teleports) this.go(teleport(this.rig(), this.head(), backStep(this.head(), this.headYaw(), this.areas))); return; }
     if (this.data.turn === 'snap') this.go(snapTurn(this.rig(), this.head(), action === 'turn-left' ? MOVE.snapDeg : -MOVE.snapDeg));
   },
 
@@ -124,7 +132,7 @@ AFRAME.registerComponent('locomotion', {
     if (dt && this.el.sceneEl.is('vr-mode')) {
       const s = Math.min(dt, MAX_STEP_MS) / 1000;
       if (this.data.move === 'smooth') {
-        const head = this.head(), to = slide(head, this.headYaw(), this.slideStick[0], this.slideStick[1], s, this.data);
+        const head = this.head(), to = slide(head, this.headYaw(), this.slideStick[0], this.slideStick[1], s, this.areas);
         if (to) { speed = Math.hypot(to[0] - head[0], to[1] - head[1]) / s; this.place(teleport(this.rig(), head, to)); }
       }
       const deg = this.data.turn === 'smooth' && !this.aimHand ? smoothTurnDeg(this.turnX, s) : 0;
@@ -150,7 +158,7 @@ AFRAME.registerComponent('locomotion', {
     for (let i = 0; i < n; i++) pos.setXYZ(i, ...points[i]);
     pos.needsUpdate = true;
     this.line.geometry.setDrawRange(0, n);
-    this.target = hit && inside(hit[0], hit[2], this.data) ? [hit[0], hit[2]] : null;
+    this.target = hit && inside(hit[0], hit[2], this.areas) ? [hit[0], hit[2]] : null;
     this.line.material.color.set(this.target ? this.data.color : CANCELLED);
     this.line.visible = true;
     this.ring.visible = !!this.target;

@@ -12,6 +12,7 @@ import { jointOrigin, CEILING } from '../../engine/tile-math.js';
 import { SIGN, SIGN_PANEL } from '../brand.js';
 import { SIGN_AT, SIGN_BOX } from './sign.js';
 import { extinguisher } from './extinguisher.js';
+import { hallHTML } from './hall.js';
 
 export { WALLS } from './plan.js';
 
@@ -65,8 +66,8 @@ function endWall(x, facing) {
 function doors() {
   return DOORS.filter((d) => d.kind !== 'room1').map((d) => {
     const { z, out } = FACE[d.wall];
-    // its sign on the leaf (brand.js): a room's number, written by the lobby, or the stairs'
-    const attrs = d.kind === 'stairs' ? `id="plaqueStairs" class="door-sign" ${SIGN_PANEL}` : `class="door-sign room-plaque" data-number="${d.number}" ${SIGN_PANEL}`;
+    // its sign on the leaf (brand.js): a room's number, written by the lobby, or a stair's
+    const attrs = d.kind === 'stairs' ? `class="door-sign stairs-plaque" ${SIGN_PANEL}` : `class="door-sign room-plaque" data-number="${d.number}" ${SIGN_PANEL}`;
     return doorHTML({ x: d.x, room: r(z - out * PLAN.thick), corridor: z, latch: toEntrance(d.x) * out, sign: { attrs, y: SIGN.y } });
   }).join('');
 }
@@ -189,8 +190,10 @@ export const corridorHTML = `
     ${longWall('south')}
     ${endWall(PLAN.from, 1)}
     ${endWall(PLAN.to, -1)}
-    <!-- the closed doors: rooms to come and the stairs the player came up -->
+    <!-- the closed doors: rooms to come and the two stairs -->
     ${doors()}
+    <!-- the elevator hall behind the middle of the south wall (hall.js) -->
+    ${hallHTML(CEIL)}
     <!-- 2 × 4 ft fluorescent troffers, each filling two cells of the ceiling grid: a painted
          steel door frame and a prismatic lens (docs/building-standards.md, S20) -->
     ${TROFFERS.map(troffer).join('')}
@@ -202,7 +205,7 @@ export const corridorHTML = `
          top middle of each tilted sheet -->
     <a-sphere position="${pinAt(NOTES.poster)} ${r(ON_CORK + PIN)}" radius="${PIN}" color="#9b2a22"></a-sphere>
     <a-sphere position="${pinAt(NOTES.flyer)} ${r(ON_CORK + PIN)}" radius="${PIN}" color="#2a4a8b"></a-sphere>
-    <!-- a 2.5 gal water extinguisher on its wall bracket, opposite the board (S22, S23) -->
+    <!-- a 2.5 gal water extinguisher on its wall bracket, opposite the board's west half (S22, S23) -->
     ${extinguisher(PLAN.extinguisher, PLAN.south)}
     <!-- the light box over room 101's door (like the "in session" boxes over lab doors): surface
          mounted, its back on the wall, as wide as the frame head it stands on (1.0224 m, door.js),

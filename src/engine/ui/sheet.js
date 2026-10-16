@@ -19,9 +19,12 @@ const HARDBOARD_HOVER = '#6e5038'; // the hanging clipboard brightens under the 
 // the clip: nickel-plated steel with a soft sheen, mirroring the room round it (reflect-env)
 const METAL = 'color: #d4d7d9; metalness: 0.5; roughness: 0.45';
 
-// inside: the wall faces of the space { minX, maxX, minZ, maxZ }; the sheet is never read
-// beyond them (sheet-math.js, readingPose).
+// inside: the wall faces of the space { minX, maxX, minZ, maxZ }, or a list of the spaces that open
+// into each other (the corridor and its elevator hall); the sheet is never read beyond the faces of
+// the space the head is in (sheet-math.js, readingPose).
 export function createSheet(scene, { inside = null } = {}) {
+  const spaces = inside && (Array.isArray(inside) ? inside : [inside]);
+  const spaceAt = ([x, , z]) => spaces && (spaces.find((s) => x >= s.minX && x <= s.maxX && z >= s.minZ && z <= s.maxZ) || spaces[0]);
   const el = document.createElement('a-entity');
   el.classList.add('sheet');
   el.setAttribute('visible', false);
@@ -65,7 +68,7 @@ export function createSheet(scene, { inside = null } = {}) {
     cam.getWorldPosition(head);
     cam.getWorldQuaternion(q);
     const yaw = new THREE.Euler().setFromQuaternion(q, 'YXZ').y;
-    return readingPose(head.toArray(), yaw, home, inside, BOARD_REACH);
+    return readingPose(head.toArray(), yaw, home, spaceAt(head.toArray()), BOARD_REACH);
   }
 
   function eyes() {
@@ -94,9 +97,10 @@ export function createSheet(scene, { inside = null } = {}) {
   function glideTo(pos, rotation, step) {
     const o = el.object3D;
     o.rotation.reorder('YXZ');
-    // every corner of the board stays off the walls all the way (inside: the space's walls)
-    const room = inside && { from: { pitch: o.rotation.x, yaw: o.rotation.y }, to: { pitch: rotation[0], yaw: rotation[1] }, board: BOARD_REACH, inside };
-    const { ctrl, ms } = glidePath(o.position.toArray(), pos, home.away, eyes(), room);
+    // every corner of the board stays off the walls all the way (the walls of the space the head is in)
+    const head = eyes(), space = spaceAt(head);
+    const room = space && { from: { pitch: o.rotation.x, yaw: o.rotation.y }, to: { pitch: rotation[0], yaw: rotation[1] }, board: BOARD_REACH, inside: space };
+    const { ctrl, ms } = glidePath(o.position.toArray(), pos, home.away, head, room);
     return el.components.glide.go({ to: pos, ctrl, rotation, ms, step });
   }
 

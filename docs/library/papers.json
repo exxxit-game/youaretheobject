@@ -1144,6 +1144,25 @@
    "source": "https://doi.org/10.3758/s13428-011-0132-6"
   },
   {
+   "id": "boca-1978",
+   "authors": "Building Officials and Code Administrators International",
+   "year": "1978",
+   "title": "The BOCA Basic Building Code/1978, seventh edition (archive.org boca-basic-building-code-1978)",
+   "sections": [
+    "vr-norms-hardware"
+   ],
+   "tags": [
+    "building code",
+    "exits",
+    "stairs",
+    "elevators",
+    "architecture"
+   ],
+   "type": "standard",
+   "text": "ocr",
+   "status": "no card"
+  },
+  {
    "id": "bode-2014",
    "authors": "Bode, Kemloh Wagoum & Codling",
    "year": "2014",

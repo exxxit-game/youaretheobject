@@ -2,7 +2,7 @@
 // centre and balance the field, equal cuts on opposite sides, no edge tile under half a tile.
 import assert from 'node:assert/strict';
 import { jointOrigin, endCut, bondOrigin, CEILING as GRID, GRID as GRIDDED } from '../src/engine/tile-math.js';
-import { CENTRE, LENGTH, WIDTH } from '../src/app/lobby/plan.js';
+import { CENTRE, LENGTH, WIDTH, HALL, HALL_CENTRE, HALL_LENGTH } from '../src/app/lobby/plan.js';
 import { sceneHTML } from '../src/rooms/01-control/scene.js';
 import { corridorHTML } from '../src/app/lobby/scene.js';
 
@@ -13,6 +13,7 @@ const cases = [
   [0, 3.2, FLOOR], [0, 3.2, CEILING],                  // room 01
   [CENTRE.x, LENGTH, FLOOR], [CENTRE.x, LENGTH, CEILING], // corridor, along
   [CENTRE.z, WIDTH, FLOOR], [CENTRE.z, WIDTH, CEILING],   // corridor, across
+  [HALL_CENTRE.x, HALL.maxX - HALL.minX, FLOOR], [HALL_CENTRE.z, HALL_LENGTH, FLOOR],   // the elevator hall's floor
   [1.0, 2.7, 0.3], [-4, 5.0, 0.6]
 ];
 for (const [centre, length, tile] of cases) {
@@ -46,8 +47,10 @@ const gridded = [...(sceneHTML + corridorHTML).matchAll(/surface="([^"]*)"/g)].m
   .filter((v) => Object.hasOwn(GRIDDED, (v.match(/kind:\s*(\w+)/) || [])[1]));
 assert.ok(gridded.length > 10, `${gridded.length} gridded surfaces found`);
 for (const v of gridded) assert.match(v, /space:\s*[-\d.]+\s+[-\d.]+\s+[\d.]*[1-9][\d.]*\s+[\d.]*[1-9][\d.]*/, `a gridded surface without its space: ${v}`);
-// and the space of its own room: room 01's booth round the origin, the corridor's from its plan
+// and the space of its own room: room 01's booth round the origin, the corridor's and its elevator
+// hall's from the plan
 const spaceOf = (html) => [...html.matchAll(/surface="([^"]*)"/g)].map((m) => m[1]).filter((v) => gridded.includes(v)).map((v) => v.match(/space:\s*([^;]+)/)[1].trim());
 assert.ok(spaceOf(sceneHTML).every((s) => s === '0 0 3.2 3.2'), 'a surface of room 01 laid from another space');
-assert.ok(spaceOf(corridorHTML).every((s) => s === `${CENTRE.x} ${CENTRE.z} ${LENGTH} ${WIDTH}`), 'a surface of the corridor laid from another space');
+const OWN = [`${CENTRE.x} ${CENTRE.z} ${LENGTH} ${WIDTH}`, `${HALL_CENTRE.x} ${HALL_CENTRE.z} ${HALL.maxX - HALL.minX} ${HALL_LENGTH}`];
+assert.ok(spaceOf(corridorHTML).every((s) => OWN.includes(s)), 'a surface of the corridor or its hall laid from another space');
 console.log(`tiles tests: ok (${cases.length} surfaces, ${walls.length} walls, ${gridded.length} gridded surfaces with their space)`);

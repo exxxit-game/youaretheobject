@@ -5,6 +5,58 @@ The newest entry is read at the start of every session, with `git log --oneline 
 feature at hand goes to the end of docs/board.md, one line each.
 Entries of 14.10 and before: docs/progress-2026-10-14.md; the earlier ones of 15.10: docs/progress-2026-10-15.md.
 
+## 2026-10-16, late night — feature 3: the whole building, then the directories; accepted
+A window opened by the one of 15-16.10 for feature 3, in his order of 16.10: the whole building first.
+Done:
+- Research (docs/research/vr/12-whole-building.md): the Science and Engineering Offices, University of Illinois at
+  Chicago Circle (13 stories, 1968: its elevator lobby, corridor and stair photographed in 1968, its floors' 2023
+  plans) and University Hall there (28 floors, 1965); the 1978 BOCA code read in its text (two exits a floor, remote,
+  dead ends at most 20 ft, elevators no exit, a floor sign on every stair landing), added to the papers index. Our
+  floor broke two of those rules (one stair, no elevators).
+- His choices by buttons: variant A (the elevator hall where the stair was, a stair on each side); after my error in
+  the elevators' size, A1 (the same corridor, 5 rooms; A2 kept 9 in a longer corridor, my advice); the directories'
+  words "for now as they are".
+- Built (src/app/lobby/plan.js, hall.js, directory.js): the elevator core in the middle three bays of the south
+  wall (the hall, four centre-opening 3'6" x 7'0" entrances, lanterns, call stations, light slots), a stair in each
+  end bay, the way in and out at the hall's end (a glass wall with a pair of swinging doors), walking and the
+  clipboard over the corridor and the hall; the main directory at the entrance (changeable letters on black felt,
+  20 x 30 in) and the floor directory where one comes out of the hall (blue/white panels, capital and lower case).
+- Checks: npm test green at every commit; two fact checks of the building page (its findings fixed in the research;
+  the page itself not published, a pictures sheet sent instead); the practice review (its findings fixed or on the
+  board); room 01's check against its paper, which the headset lock asked for (15 findings on the room itself, none
+  from this window: on the board and in the window's notes); GitHub's smoke test found a light slot 4 mm under the
+  ceiling and the worst view at 100 draw calls (both fixed; the last run pending at this entry); my look in the
+  headset (90 fps, 31 draw calls, OVR Metrics' HUD on), then his: he accepted item 3 (16.10). passes: true.
+- His two requests on the headset: OVR Metrics' HUD on at every look in VR, off when the look ends (tools/quest-look.mjs
+  vr and sleep).
+- His request to answer from inside the headset (he cannot press the chat's buttons with the headset on): his choice of
+  my mixed advice, now: tools/quest-look.mjs ask (a question in the headset, its answers as the game's own buttons
+  under the controller's ray) and end (the last step: take it off and answer in the chat; then the HUD off and
+  asleep); his acceptance of a thing stays in the chat, his own channel (a press in the headset passes through my
+  tool's link to the page). Checked on the laptop (a press recorded, the note and buttons gone); in the headset with
+  him tomorrow.
+Errors of mine: search words given to DPLA that found nothing; the elevators drawn a third of their size, so variant A
+had to be redrawn after he chose it; variant A called the 1968 building "as is" (it is modelled on it: one corridor,
+not two offset wings); floor 1's stairs first drawn leaving through the hall (BOCA 611.5); the floor directory first
+put on the hall's side walls, pointing nowhere useful (the practice review); the light slot and the draw calls
+(GitHub's smoke test).
+Pull request #25: GitHub's tests green from 9dfd067 on; CodeRabbit's three findings fixed in d7d25c7 (the east call
+station's down button; the HUD's lines say "asked"; a HUD request not delivered is reported and stops vr), each thread
+answered.
+GitHub's runs on d7d25c7 and 416c5ed green. CodeRabbit's second round, four findings, fixed: an unanswered question's
+buttons taken away, end stops when its step was not shown, a power dump the tools cannot read counts as neither on
+nor off the head (no VR, no restart, no sleep on it); and passes was set true with the acceptance while a run was
+pending: answered with the runs, all green.
+The headset answers tried in the headset with him: quest-look ask showed the question with two buttons, his press
+came back (the first button, "I see them, pressing"); end waited until he took the headset off, asked the HUD off and put
+it to sleep. (The laptop's preview server had stopped overnight: the headset showed an empty page until it was
+started again.)
+Not done: the merge into room-polish (I try it myself first; if refused, his merge button with "Create a merge
+commit"), the main folder pulled.
+Next: room 01's paper findings (the board's end: the green-light tapes have a learnable pattern while the player is
+told it is chance), the corridor's light (feature 4), and the board's three thoughts on the elevators, their jamb
+numbers and an EXIT sign over the stairs.
+
 ## 2026-10-16, night — the floor directory: period photos; the whole building comes first
 Same window, after #23; his choice: the two forms are built in a new window.
 Done:

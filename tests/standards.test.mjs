@@ -55,9 +55,10 @@ assert.ok(sw && pos(sw)[1] >= 0.381 && pos(sw)[1] <= 1.219, 'switch within reach
 // in 1979 (docs/research/vr/07-corridor-1979.md, C21), not A4
 const notes = tags('a-entity').filter(t => /^note/.test(attr(t, 'id') || ''));
 assert.ok(notes.length === 2 && notes.every(t => near(prop(attr(t, 'panel'), 'w'), 0.2159, 0.0002) && near(prop(attr(t, 'panel'), 'h'), 0.2794, 0.0002)), 'notices on Letter paper');
-// Tackboard: a 44 mm aluminium trim round the cork
-const board = tags('a-box').find(t => /metalness: .6/.test(attr(t, 'material') || '') && attr(t, 'class') === 'on-wall');
+// Tackboard: a 44 mm aluminium trim round the cork (the aluminium body on the wall behind the cork:
+// the floor directory's frame on the same wall is aluminium too)
 const cork = tags('a-plane').find(t => /kind: cork/.test(attr(t, 'surface') || ''));
+const board = tags('a-box').find(t => /metalness: .6/.test(attr(t, 'material') || '') && attr(t, 'class') === 'on-wall' && near(pos(t)[0], pos(cork)[0]) && near(pos(t)[1], pos(cork)[1]));
 assert.ok(near((Number(attr(board, 'width')) - Number(attr(cork, 'width'))) / 2, 0.044) && near((Number(attr(board, 'height')) - Number(attr(cork, 'height'))) / 2, 0.044), 'tackboard trim 44 mm');
 // Troffers: 2 × 4 ft (0.6096 × 1.2192 m)
 const troffers = tags('a-box').filter(t => attr(t, 'color') === '#dcdcd5');

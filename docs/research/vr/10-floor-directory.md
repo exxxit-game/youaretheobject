@@ -125,7 +125,9 @@ the side-session notes folder of 15.10 (floor-directory/, from-owner/, floor-dir
 
 1. Form A is covered (1a). Form B has no dated 1965-85 photo; Means Square Foot Costs 1983 lists directory
    board sizes (archive.org isbn_0911950540, lending only, not opened).
-2. NFPA 101-1976 and BOCA 1978 text on stair identification: not found online.
+2. NFPA 101-1976 text on stair identification: not found online. BOCA 1978 (opened 16.10, 616.11): "A sign shall be
+   provided at each landing in all interior stairways more than three (3) stories in height designating the floor
+   level above the floor of discharge" (12-whole-building.md).
 3. The Local Law 5/1973 text itself (only the 1974 directive and today's code were read).
 
 ## Sources (10.10.2026)

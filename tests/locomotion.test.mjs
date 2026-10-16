@@ -2,9 +2,9 @@
 // what a stick asks for, the teleport arc, and where the player ends up. Values from Meta's
 // locomotion guidance: snap turn 45°, back step 80 cm, a stick fires past 0.8 and re-arms under 0.5.
 import assert from 'node:assert/strict';
-import { STICK, MOVE, SMOOTH, readStick, arc, inside, snapTurn, teleport, backStep, slide, smoothTurnDeg, vignetteLevel } from '../src/engine/locomotion-math.js';
+import { STICK, MOVE, SMOOTH, readStick, arc, inside, snapTurn, teleport, backStep, slide, smoothTurnDeg, vignetteLevel, areasFrom, areasText } from '../src/engine/locomotion-math.js';
 import { DIST as VIGNETTE_DIST } from '../src/engine/vignette.js';
-import { BOUNDS } from '../src/app/lobby/plan.js';
+import { BOUNDS, AREAS, HALL_BOUNDS } from '../src/app/lobby/plan.js';
 
 const near = (a, b, e = 1e-9) => Math.abs(a - b) < e;
 // the walking area the corridor really has, from its plan
@@ -97,4 +97,17 @@ assert.ok(vignetteLevel(0, 0) === 0 && near(vignetteLevel(0.7, 0), 0.5) && vigne
 // eye does: even 5 cm off centre (wider than human eyes sit) shifts it under half a degree
 const shiftDeg = Math.atan(0.05 / VIGNETTE_DIST) * 180 / Math.PI;
 assert.ok(shiftDeg < 0.5, `the vignette shifts ${shiftDeg.toFixed(2)}° between the eyes`);
+// The corridor and its elevator hall: two areas that overlap where the hall opens, so a teleport
+// lands in either, a step or a slide passes from one into the other, and each stops at its own walls
+// (src/app/lobby/plan.js, AREAS; written into the components' attribute and read back the same)
+assert.deepEqual(areasFrom(areasText(AREAS)), AREAS, 'areas written and read back');
+const inHall = [0.7, 8.0], inCorridor = [-4, 3.0];
+assert.ok(inside(...inHall, AREAS) && inside(...inCorridor, AREAS), 'a teleport lands in the hall and in the corridor');
+assert.ok(!inside(-4, 6, AREAS), 'behind the south wall, outside the hall: no target');
+const into = backStep([0.7, 3.0], 0, AREAS);   // facing the doors, a step back goes into the hall
+assert.ok(near(into[1], 3.8), `a back step from the corridor into the hall: ${into}`);
+const deep = slide([0.7, HALL_BOUNDS.maxZ - 0.05], 0, 0, 1, 1, AREAS);   // pulled back at the hall's far wall
+assert.ok(near(deep[1], HALL_BOUNDS.maxZ), "stopped at the hall's far wall");
+const side = slide([-4, 3.0], 0, 0, 1, 1, AREAS);   // in the corridor beside the hall, pulled back toward the south wall
+assert.ok(near(side[1], BOUNDS.maxZ), "stopped at the corridor's south wall beside the hall");
 console.log('locomotion tests: ok');
