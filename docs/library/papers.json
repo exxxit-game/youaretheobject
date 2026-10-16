@@ -6048,6 +6048,26 @@
    "card": "docs/cards/schult-2014.md"
   },
   {
+   "id": "searles-2023",
+   "authors": "Searles, A., Nakatsuka, Y., Ozturk, E., Paverd, A., Tsudik, G., Enkoji, A.",
+   "year": "2023",
+   "title": "An Empirical Study & Evaluation of Modern CAPTCHAs",
+   "sections": [
+    "games-platforms"
+   ],
+   "tags": [
+    "CAPTCHA",
+    "bot checks",
+    "solving time",
+    "delivery"
+   ],
+   "type": "article",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://arxiv.org/abs/2307.12108",
+   "note": "saved by the delivery research of 16.10 (the owner: no player may meet a captcha)"
+  },
+  {
    "id": "sebanz-2003",
    "authors": "Sebanz, Knoblich & Prinz",
    "year": "2003",

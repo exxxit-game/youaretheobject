@@ -1,6 +1,6 @@
 # The owner's decisions
 
-Settled: never asked again, never advised against; a change comes only from the owner. One line a decision with
+Settled: never asked again; a new fact against one is told him once, with its source; only he changes it. One line a decision with
 his key words (the date he said them, UTC); loaded with CLAUDE.md at every session start and after every compaction.
 Here: what holds in every window. A decision of one theme is in .claude/rules/ (game, measures, data, setup), loaded
 when a file of that theme is read or edited («утверждаю» 14.10), settled alike. All his words, how each came, and the

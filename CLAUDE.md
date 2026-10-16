@@ -10,7 +10,7 @@ The owner's permanent prompt: his long text of 11.10 put in points, variant B of
 > 6. При нужде пользуйся интернетом, обновляй документацию, инструменты и наши знания.
 
 Our words, approved by him word for word («Утверждаю» 14.10 and 15.10): @docs/ten-circles.md
-His decisions load with this file, settled (never re-asked): @docs/owner-decisions.md
+His decisions load with this file: @docs/owner-decisions.md
 
 "You are the object" (the name is never translated): a browser VR game (WebXR, A-Frame as vendored in vendor/) for Meta Quest; the player is the subject of
 real psychology experiments, one room each, then sees how he was caught. Maps: ARCHITECTURE.md, docs/state.md.
