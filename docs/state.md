@@ -26,7 +26,7 @@
   `docs/headset-capabilities.md`; owner page: https://claude.ai/artifact/Srhwjio7Ukp4FBDQAHpZB2
 - THE WORK is the feature list `docs/features.json` (the start names the current one; his accept word is the only measure of progress) and the board `docs/board.md` (his words, what waits).
   Every owner message is logged on the laptop by the prompt hook. The big plan (archive and strategy, read only
-  when a step needs it): https://claude.ai/code/artifact/71113d16-57ad-42ce-9905-87ff87dfdbd7
+  when a step needs it): https://claude.ai/code/artifact/71113d16-57ad-42ce-9905-87ff87dfdbd7; the delivery chain from today to a million players, checked by four fact-check runs (16.10, his doc, the map each window checks the delivery against): https://claude.ai/code/artifact/61184b9b-cbd5-41be-82ad-54088c45a30e
   Every critical problem still open on 10.10 (money, law, data, headset, process, records), whose step each is and
   the owner's choices: https://claude.ai/artifact/NGika3MZ8ms7GdFvfiZhvT
   The road from the corridor to the store, how he and I work, the tools (10.10): https://claude.ai/artifact/3unCQLkqfc36ExW2RtzvX4
