@@ -129,9 +129,10 @@ try {
   assert.deepEqual(Object.keys(hooks).sort(), ['SubagentStart', 'SubagentStop', 'UserPromptSubmit']);
   if (process.platform === 'win32') {
     const command = hooks.UserPromptSubmit[0].hooks[0].commandWindows;
-    const win = run('cmd.exe', ['/d', '/s', '/c', `"${command}"`], { windowsVerbatimArguments: true, cwd: path.join(root, 'src'), input: JSON.stringify(event('UserPromptSubmit', { cwd: path.join(root, 'src'), prompt: 'Configured command fixture' })) });
+    const win = run('cmd.exe', ['/d', '/s', '/c', `"${command}"`], { windowsVerbatimArguments: true, cwd: path.join(root, 'src'), input: JSON.stringify(event('UserPromptSubmit', { cwd: path.join(root, 'src'), prompt: yes })) });
     assert.equal(win.status, 0, win.stderr);
     assert.deepEqual(JSON.parse(win.stdout.trim()), {});
+    assert.equal(gate(), 0, 'Windows command damaged the Russian owner acceptance');
     const bad = run('cmd.exe', ['/d', '/s', '/c', `"${command}"`], { windowsVerbatimArguments: true, input: '{ broken' });
     assert.notEqual(bad.status, 0, 'configured command swallowed the recorder failure');
   }
