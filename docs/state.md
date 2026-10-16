@@ -50,7 +50,7 @@ One line each: for every window in `docs/owner-decisions.md` (loaded at every st
 ## How errors are caught (the owner cannot read code)
 - `new-room` skill; `paper-reviewer` agent; `docs/mistakes.md` (a mistake that broke the game, with the test that now catches it); facts in one place
   with a test; `tests/structure.test.mjs` (sizes, imports, no Russian outside texts, this file ≤ 80 lines).
-- Machine stops: tools/hooks (no commit while the quick tests fail, no push without the secret check, main only on
+- Machine stops: tools/hooks (commits by command only: the app's own git buttons skip repository hooks since app 2.42304.0, its notes of 15.10; no commit while the quick tests fail, no push without the secret check, main only on
   his word); Claude Code hooks, `tools/claude-guard.mjs` (state at start and after compaction, owner messages
   logged, no skipping hooks, no browser on the laptop, no GitHub connector writes); their refusals asserted in tests/guard.test.mjs and tests/review-gate.test.mjs, the planted mistakes of `tools/prove-guards.mjs` run on GitHub when a guard file changed.
 
