@@ -5,6 +5,29 @@ The newest entry is read at the start of every session, with `git log --oneline 
 feature at hand goes to the end of docs/board.md, one line each.
 Entries of 14.10 and before: docs/progress-2026-10-14.md; the earlier ones of 15.10: docs/progress-2026-10-15.md.
 
+## 2026-10-16 — Codex trial migration baseline
+The owner asked Codex to take over reversibly, preserve prior work, assess the whole tool chain, and teach him one useful action at a time.
+Owner guide: https://chatgpt.com/space/page_42ac40c68e748191affb6ef7b9686d0e (read back; rendering not inspected).
+Done:
+- Isolated trial: codex/trial-migration in ~/.codex/worktrees/codex-trial-migration/objekt; fast-forwarded from
+  3084b40 to room-polish 435e6d2 (nine existing commits). The primary folder and its two local changes are untouched.
+- npm test passed at 435e6d2. The local shell-hook cases were skipped by the test itself; GitHub run 38905672992
+  passed for that same commit. Neither result establishes that Claude hooks run in Codex.
+- Google Drive connected: objekt-files and its six main folders found; five ANSUR file names and sizes match the
+  local files, and one text file was fetched. Full cloud completeness and restore remain unverified.
+- Local library manifest: 2,195 files, 1,287,376,373 bytes, SHA-256 for each; no read errors or changes during reading.
+  This is an inventory, not a backup. Evidence: ~/.codex/visualizations/2026/10/16/
+  01a144b4-cfa4-7562-a2c9-3bf52c70806c/migration-evidence/checkpoint.json and library-manifest.json.
+Found:
+- The published preview still records source ff7a812 (10 Oct). Its live src/main.js matches that source, not
+  435e6d2. The earlier Codex headset check proved access and VR on this old preview, not the current game.
+- The trial has an own-look review and an exact paper review for room 01, but no exact practice review for
+  publication. No review records were changed and no preview was published.
+Not done: native import, Codex event-hook compatibility/trust, acceptance logging, exact practice review,
+the current version's headset check, full archive reconciliation. No feature was accepted or game code edited.
+Next: inspect native selective import before copying old rules; test the two event-dependent records, then
+inspect the current game and obtain the required exact review before publishing its test copy.
+
 ## 2026-10-16, evening — the delivery chain published; Codex's review checked and its first fixes
 Same window (his «do it here» to the proposed next window), on a new branch from room-polish 3084b40.
 Done:
