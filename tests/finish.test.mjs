@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
-import { checkMergeReadiness, codeRabbitStatus } from '../tools/finish.mjs';
+import { checkMergeReadiness, codeRabbitStatus, codeRabbitRetryCommand } from '../tools/finish.mjs';
 
 const complete = { context: 'CodeRabbit', state: 'success', description: 'Review completed', creator: { login: 'coderabbitai[bot]' } };
 const good = { checks: [{ name: 'test', bucket: 'pass' }, { name: 'CodeRabbit', bucket: 'pass' }],
@@ -28,6 +28,14 @@ assert.ok(!ready({ unresolved: undefined }), 'unknown discussion state blocks re
 assert.ok(!ready({ draft: true }), 'a draft stays a draft');
 assert.ok(!ready({ reviewedHead: 'another' }), 'a changed PR head requires fresh checks');
 assert.ok(!ready({ head: undefined, reviewedHead: undefined }));
+// A failed review needs an explicit retry route; pending reviews must not request duplicates.
+for (const state of ['error', 'failure']) {
+  assert.equal(codeRabbitRetryCommand({ ...complete, state }, 28), 'gh pr comment 28 --body "@coderabbitai review"');
+  assert.ok(!ready({ statuses: [{ ...complete, state }] }));
+}
+for (const status of [undefined, complete, { ...complete, state: 'pending' }]) {
+  assert.equal(codeRabbitRetryCommand(status, 28), undefined);
+}
 // Conflicting modes must stop before Git is invoked; the fixture has no repository or remote.
 const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'finish-mode-'));
 try {

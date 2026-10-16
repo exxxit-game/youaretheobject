@@ -5,15 +5,15 @@ The newest entry is read at the start of every session, with `git log --oneline 
 feature at hand goes to the end of docs/board.md, one line each.
 Entries of 14.10 and before: docs/progress-2026-10-14.md; the earlier ones of 15.10: docs/progress-2026-10-15.md.
 
-## 2026-10-17 - Close false readiness and distinguish the Codex handover from old setup claims
-Starting version: 693a0a4, codex/trial-migration. finish now rejects green skipped/missing/failed reviews, missing or failed tests,
-drafts, unresolved discussions and a mismatched PR head; --check reads without publishing or asking a bot. Regression tests join npm test.
-CodeRabbit config makes review errors fail and applies owner decisions to all paths; drafts and automatic code fixes stay disabled.
-AGENTS, README and state identify the tested checkout, the owner's scoped Chrome permission, historical Claude claims and unverified recovery.
-Validation: npm test passed including finish readiness/mode tests; diff --check passed. The first run caught a misplaced map entry, now fixed.
-Owner explicitly approved and I saved: room-polish requires PR, test from GitHub Actions and resolved discussions; main now requires resolved discussions; dependency graph and Dependabot alerts enabled.
-Ruleset API readback confirms both active, test source 15368, zero required human approvals, no bypass; Chrome confirms dependency settings saved. Automatic updates stay off; CodeQL remains unconfigured.
-Code 32710b9 is in draft PR #28; live finish --check correctly rejects its skipped CodeRabbit review. CI 38968068791: npm test passed, smoke pending at this record. Next: real CodeRabbit review, Codex callback activation (still zero events), and recovery verification.
+## 2026-10-17 - GitHub gates and the first real CodeRabbit review in Codex
+Starting 693a0a4, codex/trial-migration. finish rejects skipped/missing/failed reviews, failed tests, drafts, open threads and a changed head; --check is read-only.
+CodeRabbit uses repository config: review errors fail, owner decisions cover all paths, drafts and automatic code fixes stay disabled. AGENTS/README/state separate Codex evidence from historical claims.
+Owner-approved settings saved and read back: room-polish requires PR, test from Actions (15368), resolved discussions; main requires resolved discussions; no bypass. Dependency graph/alerts on; automatic updates off, CodeQL unconfigured.
+Code 32710b9 passed npm test; a misplaced map entry was corrected. At 773c541, GitHub CI 38968880258 passed including smoke.
+Owner-approved configuration/review comments posted in PR28. Bot reviewed 773c541 (run e3bc5b30-71df-4631-a0f8-2bda879a45fd); effective YAML confirmed. Live --check rejected draft plus one unresolved finding despite both checks passing.
+Finding r4299575101 confirmed: terminal bot errors had no retry route. finish now prints the exact manual command for error/failure; pending reviews get no duplicate request. Full npm test and diff --check pass; this fix is not covered by the prior bot review.
+Service audit evidence and owner actions are private: objekt-files/notes/codex-service-audit-2026-10-17.json. No production data, service settings or subscriptions changed by this audit.
+Next: publish this correction and run the owner-approved repeat review on its exact version; real Codex callback activation (still unproven), recovery verification. No merge or game release claimed.
 
 ## 2026-10-16 - GitHub settings read in the owner's authorized Chrome; no settings changed
 Draft PR #28 is open against room-polish, head 693a0a4; GitHub run 38962201372 passed all stages.

@@ -18,6 +18,8 @@ const arg = (name) => { const i = process.argv.indexOf(name); return i > 0 ? pro
 
 // GitHub returns commit statuses newest first. A skipped review also has state=success.
 export const codeRabbitStatus = (statuses) => statuses.find((s) => s.context === 'CodeRabbit' && s.creator?.login === 'coderabbitai[bot]');
+export const codeRabbitRetryCommand = (status, number) => ['error', 'failure'].includes(status?.state)
+  ? `gh pr comment ${number} --body "@coderabbitai review"` : undefined;
 export function checkMergeReadiness({ checks, statuses, unresolved, draft, head, reviewedHead }) {
   const reasons = [], rabbit = codeRabbitStatus(statuses);
   if (!head || head !== reviewedHead) reasons.push('the PR head differs from the local commit');
@@ -72,7 +74,9 @@ async function main() {
     run('gh', ['pr', 'comment', String(pr.number), '--body', '@coderabbitai review']);
     asked = true;
   }
-  say(asked ? 'CodeRabbit review requested' : `CodeRabbit: ${reviewing()?.description || 'no status for this commit'}`);
+  const rabbit = reviewing(), retry = codeRabbitRetryCommand(rabbit, pr.number);
+  say(asked ? 'CodeRabbit review requested' : `CodeRabbit: ${rabbit?.description || 'no status for this commit'}`);
+  if (retry) say(`CodeRabbit ended unsuccessfully. To request another review: ${retry}`);
 
   // GitHub's checks (the tests and CodeRabbit's status), read once a minute until none is pending; the test run
   // takes 7-14 minutes (docs/state.md), so 45 minutes is the limit. `gh pr checks` exits non-zero while any
