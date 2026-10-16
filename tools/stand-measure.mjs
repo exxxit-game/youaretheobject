@@ -199,9 +199,13 @@ async function main() {
         }
         const steps = await run('window.__flow ? window.__flow.steps : []');
         const end = log('end', { thermal: thermal('end'), steps, flow: f });
-        const summary = { dir: DIR, minutes: Number(((end.at - t0) / 60000).toFixed(2)), stoppedFor, flow: f, ...flowSummary(rows, steps), ...longSummary(rows) };
+        // the run's end told apart: the flow finished, failed, or did not finish (a stop, a lost page, the hour gone);
+        // anything but a finish exits non-zero, so a broken run is never read as a measure that passed
+        const result = f?.error ? 'error' : f?.done && !stoppedFor ? 'success' : 'incomplete';
+        const summary = { dir: DIR, result, minutes: Number(((end.at - t0) / 60000).toFixed(2)), stoppedFor, flow: f, ...flowSummary(rows, steps), ...longSummary(rows) };
         fs.writeFileSync(path.join(DIR, 'summary.json'), JSON.stringify(summary, null, 1));
         console.log(JSON.stringify(summary, null, 1));
+        if (result !== 'success') process.exitCode = 1;
         return;
       }
       const t0 = now(), rows = [];
@@ -219,9 +223,11 @@ async function main() {
         if (stoppedFor) break;
       }
       const end = log('end', { thermal: thermal('end') });
-      const summary = { dir: DIR, minutes: Number(((end.at - t0) / 60000).toFixed(2)), stoppedFor, ...longSummary(rows) };
+      const result = stoppedFor ? 'incomplete' : 'success';
+      const summary = { dir: DIR, result, minutes: Number(((end.at - t0) / 60000).toFixed(2)), stoppedFor, ...longSummary(rows) };
       fs.writeFileSync(path.join(DIR, 'summary.json'), JSON.stringify(summary, null, 1));
       console.log(JSON.stringify(summary, null, 1));
+      if (result !== 'success') process.exitCode = 1;
       return;
     }
 
@@ -278,9 +284,12 @@ async function main() {
     v.batteryTwoSources = { start: [startT.current.battery, startT.battery], end: [end.thermal.current.battery, end.thermal.battery] };
     // the GPU's clock read at one of the levels the system sets (an unlisted value would mean a misread)
     v.gpuClock = { seen: gpu ? [...new Set(gpu['GPU Frequency'] || [])] : null, meanLoad: gpu ? mean(gpu['GPU % Utilization'] || []) : null };
-    const summary = { dir: DIR, marks, verdicts: v, samples: samples.length, minutes: Number(((end.at - t0) / 60000).toFixed(2)) };
+    // a verdict that did not pass fails the trial (the two-source and clock entries are readings, not verdicts)
+    const failed = Object.entries(v).filter(([, x]) => x && x.pass === false).map(([k]) => k);
+    const summary = { dir: DIR, result: failed.length ? 'error' : 'success', failed, marks, verdicts: v, samples: samples.length, minutes: Number(((end.at - t0) / 60000).toFixed(2)) };
     fs.writeFileSync(path.join(DIR, 'summary.json'), JSON.stringify(summary, null, 1));
     console.log(JSON.stringify(summary, null, 1));
+    if (failed.length) process.exitCode = 1;
   } catch (e) {
     try { log('failed', { error: String(e.message || e) }); } catch (err) { /* the headset itself gone */ }
     console.log(`failed: ${e.message || e} (log: ${LOG})`);
