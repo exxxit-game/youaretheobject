@@ -40,7 +40,12 @@ had to be redrawn after he chose it; variant A called the 1968 building "as is" 
 not two offset wings); floor 1's stairs first drawn leaving through the hall (BOCA 611.5); the floor directory first
 put on the hall's side walls, pointing nowhere useful (the practice review); the light slot and the draw calls
 (GitHub's smoke test).
-Not done: the pull request's smoke run, CodeRabbit, the merge (waiting at this entry).
+Pull request #25: GitHub's tests green from 9dfd067 on; CodeRabbit's three findings fixed in d7d25c7 (the east call
+station's down button; the HUD's lines say "asked"; a HUD request not delivered is reported and stops vr), each thread
+answered.
+Not done (he went to sleep, 16.10; tomorrow): the last runs of GitHub and CodeRabbit on d7d25c7, the merge into
+room-polish (I try it myself first; if refused, his merge button with "Create a merge commit"), the main folder
+pulled; the headset answers (ask, end) tried in the headset with him.
 Next: room 01's paper findings (the board's end: the green-light tapes have a learnable pattern while the player is
 told it is chance), the corridor's light (feature 4), and the board's three thoughts on the elevators, their jamb
 numbers and an EXIT sign over the stairs.
