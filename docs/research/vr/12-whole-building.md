@@ -24,7 +24,10 @@ the corridor, where it leads is unclear, and there are no elevators. Found 16.10
   one south of its; on floor 1 each stair has its own door straight outside, and the way in is under an overhang at the
   east end; floor 5 has 37 numbered rooms. Measured on the floor-5 drawing (no scale printed; door swings taken as 3 ft):
   each elevator with its shaft about one office module, about 3 m; the hall one module wide; the core three modules
-  along the corridor and two deep. That the 1968 core is unchanged: consistent with the 1968 photos, not proven.
+  along the corridor and two deep. That the 1968 core is unchanged: consistent with the 1968 photos, not proven. The owner's worry (15.10, 23:19 UTC): the
+  lobby photo shows building work, so the building may not have kept its form and the elevators look newly
+  installed; the window of feature 3 read the photo of 25 January 1968 as the building before it opened (its walls and floor still bare), not of a later
+  rebuilding, so the walls' and floor's colours are ours (hall.js, PAINT).
 - **University Hall (UH), same campus**, 601 S. Morgan St., first named the Staff and Administrative Offices Building:
   SOM drawings of 2 July 1962 (sheet A-12, section: OFFICE | CORRIDOR | ELEV. LOBBY | CORRIDOR | OFFICE, "25 FLOORS @
   11'-6""), built 1963-65, 28 floors; photos of 1965 labelled on the print (a 2nd-floor entrance beside an elevator, 5/3/65;
