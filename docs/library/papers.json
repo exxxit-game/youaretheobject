@@ -1885,6 +1885,26 @@
    "status": "no card"
   },
   {
+   "id": "comachio-2025",
+   "authors": "Comachio, J., Poulsen, A., Bamgboje-Ayodele, A., Tan, A., Ayre, J., Raeside, R., Roy, R., O'Hagan, E.",
+   "year": "2025",
+   "title": "Identifying and counteracting fraudulent responses in online recruitment for health research: a scoping review",
+   "sections": [
+    "methods-ethics-law"
+   ],
+   "tags": [
+    "online fraud",
+    "bots",
+    "data quality",
+    "online studies"
+   ],
+   "type": "article",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://doi.org/10.1136/bmjebm-2024-113170",
+   "note": "saved by the product research of 16.10 (bots without captchas)"
+  },
+  {
    "id": "cooper-2010",
    "authors": "Cooper, Treuille, Barbero et al.",
    "year": "2010",
