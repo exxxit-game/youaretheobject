@@ -70,8 +70,8 @@ One line each: for every window in `docs/owner-decisions.md` (loaded at every st
 - Meta's tools: the Meta VR CLI is installed (npm install -g metavr, Meta's own package) and runs from the shell
   (metavr device, perf, vrc-local); the meta-vr plugin's MCP server gave 0 tools (started through npx it answered
   Claude Code's protocol probe late and then refused the tool list), so the CLI is the way in. Supabase: the plugin's server is not signed
-  in; the claude.ai connector's writes and any SELECT that calls a writing function are refused by
-  tools/claude-guard.mjs. The process rebuild of 10.10 and its audits' findings: objekt-files/notes/archive/docs/audit/process-rebuild.md.
+  in; the claude.ai connector reads as supabase_read_only_user, so the server refuses its writes, and its write tools
+  are denied in .claude/settings.json (the guard's own SQL check was removed on 15.10, 7a25902). The process rebuild of 10.10 and its audits' findings: objekt-files/notes/archive/docs/audit/process-rebuild.md.
 - Earlier causes and audits: objekt-files/notes/archive/docs/audit/README.md. Corridor: finished item by item on the board; approved shots in docs/rooms/corridor-shots/.
   Style book: https://claude.ai/artifact/DKDDa4sH1BG9TF24MJyQaH. How to use Claude Code, his memo: https://claude.ai/artifact/V4HzbgVtK8HGqczZ3zyfS9.
 - Process review 11.10: https://claude.ai/artifact/NMfbi3vWaZQX8oR9t39mTC, measures in objekt-files\notes\process-review-2026-10-11;
