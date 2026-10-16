@@ -24,6 +24,8 @@ if (process.argv[2] === 'pulled') {
   // the main folder is the first worktree git lists (git-worktree(1): "the main worktree is listed first")
   const main = read('git', ['worktree', 'list', '--porcelain']).split('\n').find((l) => l.startsWith('worktree '))?.slice(9);
   if (!main) stop('no main folder found');
+  const on = read('git', ['-C', main, 'branch', '--show-current']);
+  if (on !== BASE) stop(`the main folder ${main} is on ${on || 'no branch'}, not ${BASE}: not pulled`);
   say(read('git', ['-C', main, 'pull', '--ff-only']) || 'up to date');
   say(`main folder ${main}: ${read('git', ['-C', main, 'log', '--oneline', '-1'])}`);
   process.exit(0);
@@ -62,7 +64,8 @@ say(asked ? 'CodeRabbit had not started by itself: asked by comment' : 'CodeRabb
 // check is pending or failed, so its JSON is read from the error too
 const checks = () => {
   try { return JSON.parse(read('gh', ['pr', 'checks', String(pr.number), '--json', 'name,bucket'])); } catch (e) {
-    try { return JSON.parse(e.stdout || '[]'); } catch { return []; }
+    // pending or failed checks still print their JSON; no JSON at all is a gh or network failure, not a wait
+    try { return JSON.parse(e.stdout); } catch { return stop(`gh pr checks gave no result: ${String(e.stderr || e.message).trim()}`); }
   }
 };
 let now = checks();
@@ -71,9 +74,15 @@ const green = now.length > 0 && now.every((c) => ['pass', 'skipping'].includes(c
 for (const c of now) say(`  ${c.name}: ${c.bucket}`);
 
 // CodeRabbit's remarks still open: each must be fixed, or shown wrong by a test or doc it accepts (CLAUDE.md step 6)
-const query = 'query($o:String!,$r:String!,$n:Int!){repository(owner:$o,name:$r){pullRequest(number:$n){reviewThreads(first:100){nodes{isResolved comments(first:1){nodes{author{login} path}}}}}}}';
-const threads = JSON.parse(read('gh', ['api', 'graphql', '-f', `query=${query}`, '-F', `o=${owner.login}`, '-F', `r=${name}`, '-F', `n=${pr.number}`]))
-  .data.repository.pullRequest.reviewThreads.nodes.filter((t) => !t.isResolved);
+// every page of threads is read (GraphQL pagination, pageInfo), so none past the first hundred is missed
+const query = 'query($o:String!,$r:String!,$n:Int!,$after:String){repository(owner:$o,name:$r){pullRequest(number:$n){reviewThreads(first:100,after:$after){pageInfo{hasNextPage endCursor} nodes{isResolved comments(first:1){nodes{author{login} path}}}}}}}';
+const threads = [];
+for (let after = null, more = true; more;) {
+  const page = JSON.parse(read('gh', ['api', 'graphql', '-f', `query=${query}`, '-F', `o=${owner.login}`, '-F', `r=${name}`, '-F', `n=${pr.number}`, ...(after ? ['-f', `after=${after}`] : [])]))
+    .data.repository.pullRequest.reviewThreads;
+  threads.push(...page.nodes.filter((t) => !t.isResolved));
+  ({ hasNextPage: more, endCursor: after } = page.pageInfo);
+}
 say(`GitHub's checks: ${green ? 'all green' : 'NOT green: see the checks above'}`);
 say(`CodeRabbit's open remarks: ${threads.length}${threads.length ? `: ${threads.map((t) => t.comments.nodes[0]?.path || '?').join(', ')}` : ''}`);
 say(green && !threads.length

@@ -9,7 +9,7 @@ Entries of 14.10 and before: docs/progress-2026-10-14.md; the earlier ones of 15
 A window opened by the one of feature 3 to finish the 26 forgotten items (side notes: forgotten-all-2026-10-16.md), detached
 from it the same day (the windows woke each other up the chain).
 Done:
-- CodeRabbit: no card entered (his answer), nothing charged on 23.10; then the free open-source plan, a review called by
+- CodeRabbit: no card entered (his answer), so no charge is expected when the trial ends on 23.10; then the free plan, a review called by
   comment under 10 stars. The records that said the plan's steps were given to him corrected. ChatGPT Plus (his, 15.10) in
   docs/state.md; its setup as the second checker waits for its own window.
 - His decisions approved word for word, texts 1-4 (the HUD at every VR look, answers by buttons in the headset,
