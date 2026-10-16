@@ -33,6 +33,10 @@ const HALL_SPACE = `space: ${HALL_CENTRE.x} ${HALL_CENTRE.z} ${r(HALL.maxX - HAL
 const PAINT = '#c9c8bd';          // the walls and ceiling: light, as in the photo (black and white: the tone is ours)
 const DARK = '#1d1c1a';           // the frames and doors: dark metal, as in the photo
 const FRAME = `color="${DARK}" material="metalness: .4; roughness: .5"`;
+// the hall's few looks: every metal part shares one (its colour aside), every light print one; parts
+// that differ only in colour merge into one draw call (merge-static.js), which the corridor's
+// worst view needs to stay under Quest 2's 100 (tests/draw-calls.mjs)
+const METAL = 'metalness: .6; roughness: .35', MARK = 'roughness: .6';
 const BASE = '#2b2d29';           // the 4 in base, the corridor's (docs/building-standards.md)
 // along a side wall (the x of its face) the pieces of wall between the entrances' openings, and
 // the openings themselves: { z0, z1 } along z
@@ -69,14 +73,14 @@ function entrance({ x, z, facing, basement }) {
   const side = 1, a = E.arrow / 2;
   const arrow = (up, y) => `
     <a-triangle position="${r(x - facing * E.depth * 0.5)} ${y} ${r(z + side * (E.door.w / 2 - 0.0005))}" rotation="0 ${side > 0 ? 180 : 0} 0"
-      vertex-a="0 ${up ? a : -a} 0" vertex-b="${-a} ${up ? -a : a} 0" vertex-c="${a} ${up ? -a : a} 0" color="#e9e6dc" material="roughness: .6; side: double"></a-triangle>`;
+      vertex-a="0 ${up ? a : -a} 0" vertex-b="${-a} ${up ? -a : a} 0" vertex-c="${a} ${up ? -a : a} 0" color="#e9e6dc" material="${MARK}"></a-triangle>`;
   return `
     <a-box position="${mid} ${r(E.top / 2)} ${jz(-1)}" width="${E.depth}" height="${E.top}" depth="${jamb}" ${FRAME}></a-box>
     <a-box position="${mid} ${r(E.top / 2)} ${jz(1)}" width="${E.depth}" height="${E.top}" depth="${jamb}" ${FRAME}></a-box>
     <a-box position="${mid} ${r(E.door.h + (E.top - E.door.h) / 2)} ${z}" width="${E.depth}" height="${r(E.top - E.door.h)}" depth="${r(w - 2 * jamb)}" ${FRAME}></a-box>
     <a-box position="${r(back - facing * 0.015)} ${r(E.door.h / 2)} ${r(z - E.door.w / 4)}" width="0.03" height="${E.door.h}" depth="${r(E.door.w / 2 - 0.002)}" ${FRAME}></a-box>
     <a-box position="${r(back - facing * 0.015)} ${r(E.door.h / 2)} ${r(z + E.door.w / 4)}" width="0.03" height="${E.door.h}" depth="${r(E.door.w / 2 - 0.002)}" ${FRAME}></a-box>
-    <a-box position="${r(x - facing * E.depth / 2)} 0.003 ${z}" width="${E.depth}" height="0.006" depth="${r(E.door.w)}" material="color: #9a9c9e; metalness: .6; roughness: .4"></a-box>${arrow(true, r(E.lantern + 0.04))}${basement ? arrow(false, r(E.lantern - 0.04)) : ''}`;
+    <a-box position="${r(x - facing * E.depth / 2)} 0.003 ${z}" width="${E.depth}" height="0.006" depth="${r(E.door.w)}" material="color: #9a9c9e; ${METAL}"></a-box>${arrow(true, r(E.lantern + 0.04))}${basement ? arrow(false, r(E.lantern - 0.04)) : ''}`;
 }
 
 // the call station on the wall between a side's two entrances: a faceplate with an up and a down
@@ -85,9 +89,9 @@ function callStation(x) {
   const facing = x === HALL.minX ? 1 : -1, zs = CARS.filter((c) => c.x === x).map((c) => c.z);
   const z = r((zs[0] + zs[1]) / 2), out = r(x + facing * 0.004);
   return `
-    <a-box position="${out} ${E.call.y} ${z}" width="0.008" height="${E.call.h}" depth="${E.call.w}" material="color: #b9bcbe; metalness: .6; roughness: .35"></a-box>
-    <a-cylinder position="${r(out + facing * 0.006)} ${r(E.call.y + 0.03)} ${z}" rotation="0 0 90" radius="0.0095" height="0.006" color="#e9e6dc"></a-cylinder>
-    <a-cylinder position="${r(out + facing * 0.006)} ${r(E.call.y - 0.03)} ${z}" rotation="0 0 90" radius="0.0095" height="0.006" color="#e9e6dc"></a-cylinder>`;
+    <a-box position="${out} ${E.call.y} ${z}" width="0.008" height="${E.call.h}" depth="${E.call.w}" material="color: #b9bcbe; ${METAL}"></a-box>
+    <a-cylinder position="${r(out + facing * 0.006)} ${r(E.call.y + 0.03)} ${z}" rotation="0 0 90" radius="0.0095" height="0.006" color="#e9e6dc" material="${MARK}"></a-cylinder>
+    <a-cylinder position="${r(out + facing * 0.006)} ${r(E.call.y - 0.03)} ${z}" rotation="0 0 90" radius="0.0095" height="0.006" color="#e9e6dc" material="${MARK}"></a-cylinder>`;
 }
 
 // the light slot along the top of each side wall: a lamp's lens filling a strip of the ceiling at the
@@ -124,7 +128,7 @@ function exitWall(ceil) {
     <a-box position="${r((xa + xb) / 2)} ${r(LEAF_H - s / 2)} ${r(z - MULL / 2)}" width="${r(LEAF_W - 2 * s)}" height="${s}" depth="0.045" ${FRAME}></a-box>
     <a-box position="${r((xa + xb) / 2)} 0.1 ${r(z - MULL / 2)}" width="${r(LEAF_W - 2 * s)}" height="0.2" depth="0.045" ${FRAME}></a-box>
     ${pane(xa + s, xb - s, 0.2, LEAF_H - s, 0.004)}
-    <a-box position="${r((xa + xb) / 2)} ${PUSH} ${r(z - MULL - 0.04)}" width="${r(LEAF_W - 2 * s - 0.04)}" height="0.03" depth="0.02" material="color: #cfd2d5; metalness: .5; roughness: .35"></a-box>`;
+    <a-box position="${r((xa + xb) / 2)} ${PUSH} ${r(z - MULL - 0.04)}" width="${r(LEAF_W - 2 * s - 0.04)}" height="0.03" depth="0.02" material="color: #cfd2d5; ${METAL}"></a-box>`;
   };
   return `
     ${bar(HALL.minX + MULL / 2, MULL)}${bar(x0 + MULL / 2, MULL)}${bar(mid, MULL)}${bar(x1 - MULL / 2, MULL)}${bar(HALL.maxX - MULL / 2, MULL)}
@@ -143,7 +147,7 @@ function exitWall(ceil) {
 // University, Johnson Hall; our estimate from it), its middle at eye height; the floor directory's
 // middle at eye height too, its edges clear of the block courses (tests/masonry.test.mjs). No glass
 // over the felt: in a headset it would only mirror the light slots.
-const ALU = 'material="color: #b9bcbf; metalness: .6; roughness: .35"';
+const ALU = `material="color: #b9bcbf; ${METAL}"`;
 // the two directories' faces (directory.js draws them): the main board 20 x 30 in; a floor
 // directory's panels 2 x 14 in, an eighth of an inch apart (our reading: panels slid into one frame
 // meet with a seam), the frame as tall as its panels
@@ -179,7 +183,7 @@ export function directoriesHTML() {
 export function hallHTML(ceil) {
   return `
     <a-plane rotation="-90 0 0" position="${HALL_CENTRE.x} 0 ${HALL_CENTRE.z}" width="${r(HALL.maxX - HALL.minX)}" height="${HALL_LENGTH}" surface="kind: linoleum; ${HALL_SPACE}"></a-plane>
-    <a-plane rotation="90 0 0" position="${HALL_CENTRE.x} ${ceil} ${HALL_CENTRE.z}" width="${r(HALL.maxX - HALL.minX - 2 * SLOT)}" height="${HALL_LENGTH}" color="${PAINT}" material="roughness: .95"></a-plane>
+    <a-plane rotation="90 0 0" position="${HALL_CENTRE.x} ${ceil} ${HALL_CENTRE.z}" width="${r(HALL.maxX - HALL.minX - 2 * SLOT)}" height="${HALL_LENGTH}" color="${PAINT}" material="roughness: .9"></a-plane>
     ${sideWall(HALL.minX, ceil)}
     ${sideWall(HALL.maxX, ceil)}
     ${exitWall(ceil)}
