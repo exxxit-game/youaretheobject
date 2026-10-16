@@ -64,7 +64,7 @@ for (const step of steps) {
 }
 const probe = await run('JSON.stringify(window.__probe)');
 probePage.close();
-sleepNow();
+if (!sleepNow()) console.log('left awake: the headset is still on his head, or its state did not read');
 const p = JSON.parse(probe || '{}');
 // a step that left nothing says so, rather than missing from the print
 for (const step of steps) if (!p[KEY[step]]) console.log(step, 'no result');

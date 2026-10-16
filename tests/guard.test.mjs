@@ -272,6 +272,10 @@ assert.ok(!onHead(dump('HEADSET_UNMOUNTED', 'DISABLED')) && !onHead(dump('STANDB
 assert.ok(offHead(dump('HEADSET_UNMOUNTED', 'DISABLED')) && offHead(dump('STANDBY', 'DISABLED')) && !offHead(dump('HEADSET_MOUNTED', 'DISABLED')), 'off the head is free to restart');
 // a dump the tools cannot read is neither: no VR on it, and no restart or sleep either
 for (const odd of ['', 'Service not found', dump('HEADSET_MOUNTED', 'UNKNOWN'), 'Virtual proximity state: DISABLED' + String.fromCharCode(10)]) assert.ok(!onHead(odd) && !offHead(odd), `an unread dump acts: ${JSON.stringify(odd)}`);
+// the check sits in the shared actions themselves, so a tool that calls them cannot skip it
+const headsetTool = fs.readFileSync(path.join(ROOT, 'tools', 'headset.mjs'), 'utf8');
+assert.match(headsetTool, /export function sleepNow\(\) \{\s*if \(!takenOff\(\)\) return false;/, 'sleepNow does not first check that the headset is off his head');
+assert.match(headsetTool, /export function restartBrowser\(url\) \{\s*if \(!takenOff\(\)\) throw/, 'restartBrowser does not first check that the headset is off his head');
 
 // docs/owner-decisions.md reaches every session at its start and after each compaction: CLAUDE.md imports
 // it (Claude Code loads CLAUDE.md then, whole). A session that does not see it asks him again what he settled

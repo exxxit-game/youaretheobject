@@ -78,8 +78,8 @@ const hud = (on) => {
 };
 if (cmd === 'sleep') {
   const failed = hud(false);
-  sleepNow();
-  console.log(failed ? `OVR Metrics' HUD could not be asked off (${failed}); asleep` : "OVR Metrics' HUD asked off; asleep");
+  const slept = sleepNow() ? 'asleep' : 'left awake: the owner is wearing it, or its state did not read';
+  console.log(failed ? `OVR Metrics' HUD could not be asked off (${failed}); ${slept}` : `OVR Metrics' HUD asked off; ${slept}`);
   process.exit(0);
 }
 if (cmd === 'worn') {
