@@ -24,7 +24,10 @@ the corridor, where it leads is unclear, and there are no elevators. Found 16.10
   one south of its; on floor 1 each stair has its own door straight outside, and the way in is under an overhang at the
   east end; floor 5 has 37 numbered rooms. Measured on the floor-5 drawing (no scale printed; door swings taken as 3 ft):
   each elevator with its shaft about one office module, about 3 m; the hall one module wide; the core three modules
-  along the corridor and two deep. That the 1968 core is unchanged: consistent with the 1968 photos, not proven.
+  along the corridor and two deep. That the 1968 core is unchanged: consistent with the 1968 photos, not proven. The owner's worry (15.10, 23:19 UTC): the
+  lobby photo shows building work, so the building may not have kept its form and the elevators look newly
+  installed; the window of feature 3 read the photo of 25 January 1968 as the building before it opened (its walls and floor still bare), not of a later
+  rebuilding, so the walls' and floor's colours are ours (hall.js, PAINT).
 - **University Hall (UH), same campus**, 601 S. Morgan St., first named the Staff and Administrative Offices Building:
   SOM drawings of 2 July 1962 (sheet A-12, section: OFFICE | CORRIDOR | ELEV. LOBBY | CORRIDOR | OFFICE, "25 FLOORS @
   11'-6""), built 1963-65, 28 floors; photos of 1965 labelled on the print (a 2nd-floor entrance beside an elevator, 5/3/65;
@@ -56,6 +59,32 @@ https://archive.org/details/boca-basic-building-code-1978 (text: objekt-files/pa
   designating the floor level above the floor of discharge" (the stair sign, see 10-floor-directory.md, 3).
 - NFPA 101-1973 (helper's reading of the scanned book's search, OCR, not opened by me): two exits a floor (13-2411),
   elevators not an exit (13-42). The 1976 edition, and which code Evanston enforced in 1979: **unverified**.
+- Pages only a person can open (listed by the helpers on 15.10, given to the owner on 16.10); none changes what is
+  built, which follows BOCA 1978 as read above. The Uniform Building Code of 1976
+  (https://archive.org/details/uniformbuildingc0000unse_g4g9), **opened** on 16.10 by the owner's loan, his
+  screenshots in objekt-files/imports/owner-screens-2026-10-16: Sec. 3302 (a), p. 497, floors above the first with an
+  occupant load over 10 have "not less than two exits"; (c), p. 498, two exits "placed a distance apart equal to not
+  less than one-half of the length of the maximum overall diagonal dimension of the building or area to be served
+  measured in a straight line between exits" (so by 1976 this had replaced the 1964 edition's "one-fifth of the
+  perimeter"); (d), 150 ft to an exit unsprinklered, 200 ft sprinklered. Ours passes: the two stair doors 12.8 m apart
+  (plan.js, bays -2 and 2), half the floor's overall diagonal 9.7 m (its outline 15.0 x 12.2 m with walls, the rooms
+  3.2 m deep as room 01, the core 6.4 m: 19.3 m corner to corner; it passes up to a 20.7 m deep outline). The 1979
+  edition (https://archive.org/details/uniformbuildingc0000vari_l1f7) is then not needed for this. NFPA's 1981 Life
+  Safety Code Handbook (https://archive.org/details/lifesafetycodeha0000lath), **searched** on 16.10 by the owner's
+  loan (its search-inside list for "college" on his screenshots, same folder): p. 23 "College classroom buildings are
+  considered Business Occupancies"; p. 24 the business list holds "College and university-instructional buildings,
+  classrooms under 50 persons, and instructional laboratories"; p. 254 "Because of the maturity of the occupants,
+  college buildings more properly resemble office occupancies". So our floor is an office (business) floor in 1981 as
+  in BOCA 1978's use group B; which edition first moved colleges there: **unverified**, not needed. The 1973 Life
+  Safety Code (https://archive.org/details/lifesafetycode1900nati), **searched** on 16.10 by the owner's loan for
+  "dead end" (33 results, his screenshots, same folder): p. 91, 9-1271, educational, no dead-end corridor "more than
+  20 feet beyond the stairway"; p. 115, 10-1236, none "exceeding 30 feet"; p. 144, "a dead-end corridor up to 35 feet
+  long may be permitted"; p. 171, 14-2163, "no dead end may be more than 50 feet deep"; p. 201, Table A-5-118 compiles
+  them by occupancy (the table itself not read). The least found is 20 ft (6.1 m); ours are 0.9 m. Closed to us both:
+  Harvard's William James Hall drawings (https://harvardplanning.emuseum.com/objects/111748, Harvard staff only);
+  UIC's record drawings of SEO (its facilities site https://fimweb.vcas.uic.edu/Public/BuildingSummary opens to a
+  guest and lists "0631 - Science & Engineering Offices (SEO)"; whether its "Record Drawings" archive needs a
+  university login: **unverified**).
 
 ## 3. Our floor against them
 

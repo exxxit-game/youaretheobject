@@ -10,7 +10,7 @@ The owner's permanent prompt: his long text of 11.10 put in points, variant B of
 > 6. При нужде пользуйся интернетом, обновляй документацию, инструменты и наши знания.
 
 Our words, approved by him word for word («Утверждаю» 14.10 and 15.10): @docs/ten-circles.md
-His decisions load with this file, settled (never re-asked): @docs/owner-decisions.md
+His decisions load with this file: @docs/owner-decisions.md
 
 "You are the object" (the name is never translated): a browser VR game (WebXR, A-Frame as vendored in vendor/) for Meta Quest; the player is the subject of
 real psychology experiments, one room each, then sees how he was caught. Maps: ARCHITECTURE.md, docs/state.md.
@@ -27,9 +27,9 @@ real psychology experiments, one room each, then sees how he was caught. Maps: A
    and, for a room, the paper-reviewer have run: tools/review-gate.mjs).
 5. "passes" turns true only after those checks and his «Принимаю N» to what he saw (N: its number in the list);
    nothing else in the file changes. An error is fixed in the thing itself, never with a new rule.
-6. End: a commit, a dated entry in docs/progress.md (done / not done and why / next); the branch reaches room-polish
-   through a pull request CodeRabbit reviews (its findings fixed, or shown wrong by a test or doc it accepts), merged,
-   then the main folder pulled.
+6. End: a commit, a dated entry in docs/progress.md (done / not done and why / next); tools/finish.mjs: the
+   pull request into room-polish, CodeRabbit (its findings fixed, or shown wrong by a test or doc it accepts), his
+   merge button, then `finish.mjs pulled`.
 
 ## The owner and me
 He has zero technical knowledge («ноль знаний в языках программирования, в супабейсе, в гитхабах, в доменах… весь наш

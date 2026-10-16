@@ -5,6 +5,30 @@ The newest entry is read at the start of every session, with `git log --oneline 
 feature at hand goes to the end of docs/board.md, one line each.
 Entries of 14.10 and before: docs/progress-2026-10-14.md; the earlier ones of 15.10: docs/progress-2026-10-15.md.
 
+## 2026-10-16, day — what the four windows forgot, then the delivery chain
+A window opened by the one of feature 3 to finish the 26 forgotten items (side notes: forgotten-all-2026-10-16.md), detached
+from it the same day (the windows woke each other up the chain).
+Done:
+- CodeRabbit: no card entered (his answer), so no charge is expected when the trial ends on 23.10; then the free plan, a review called by
+  comment under 10 stars. The records that said the plan's steps were given to him corrected. ChatGPT Plus (his, 15.10) in
+  docs/state.md; its setup as the second checker waits for its own window.
+- His decisions approved word for word, texts 1-4 (the HUD at every VR look, answers by buttons in the headset,
+  the building A1, the theme files' repeated head cut for room) and text 5 (the head of his decisions: a new fact
+  against one is told him once); the talk protocol closed as it stands (his approval). History entries off the repo.
+- Owed to him: the six login-only pages (three read with him: UBC 1976 Sec. 3302 passes, the 1981 handbook, the 1973 dead
+  ends); the stack study told; five unanswered questions answered; his game decisions for later in his doc.
+- The delivery chain he asked for (up to 1,000,000 players, no captcha, every store, the heaviest real weight): six
+  researches in the side notes folder (hosting, stores, law and money, product and operations, real weights, three checks);
+  the chain document drafted (delivery-chain-draft-2026-10-16.md there) and under two fact-checks; not shown to him yet.
+- tools/finish.mjs, his request of 15.10: a window's end in one command (CLAUDE.md step 6).
+- Technical leftovers: stale records, his doc's rows 103 and 155 closed, two library records, the Portland photos kept.
+Errors of mine: numbers given in chat on assumptions (5 MB a room, 10% buyers), then the future game weighed by one room,
+a list instead of a chain; technical questions put to him; detail he does not need. For 21.10: the start hook counts 2
+accepted this week, but one is the smoke test (his yes to a green run, not seen in the headset); by his rule it is 1.
+Not done: the delivery document published and read by him; the merge.
+Next: fix the fact-checkers' findings in the draft, publish it as his doc (the map every window checks against: the link "me"
+first), then his choice in its section 9 (stay web and light, native store apps, or both); ChatGPT's setup window.
+
 ## 2026-10-16, late night — feature 3: the whole building, then the directories; accepted
 A window opened by the one of 15-16.10 for feature 3, in his order of 16.10: the whole building first.
 Done:
@@ -138,7 +162,7 @@ Checked: npm test green; tools/prove-guards.mjs on the laptop, all 48 guards saw
 by GitHub's run, fixed in 1f8e6ff); GitHub's test green; CodeRabbit on #22: four findings fixed, one kept with a reason.
 Not checked: the hooks act only after the merge and the main folder's pull; whether his measure reaches him at a
 new window's start; the update's three checks (an edit passes in auto mode, the guard refuses a commit that skips
-the hooks, the measure shows).
+the hooks, the measure shows). Checked on 16.10 (the window that finished the forgotten items): edits pass in auto mode (every edit of that window landed); the refusal of a commit that skips the hooks is asserted by tests/guard.test.mjs (npm test green); the measure line was printed at that window's start and said to him; on his screen: not checked.
 Errors of mine: I began removing the watchers on the earlier window's confirmation, not on his word here; a mistake
 planted into a file the acceptance gate imports left a guard blind; a node one-liner wrote literal line breaks into a
 test (restored, redone with Edit); the list's first form copied "his choice" onto technical items and turned "not
