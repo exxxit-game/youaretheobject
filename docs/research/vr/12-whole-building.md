@@ -57,10 +57,16 @@ https://archive.org/details/boca-basic-building-code-1978 (text: objekt-files/pa
 - NFPA 101-1973 (helper's reading of the scanned book's search, OCR, not opened by me): two exits a floor (13-2411),
   elevators not an exit (13-42). The 1976 edition, and which code Evanston enforced in 1979: **unverified**.
 - Pages only a person can open (listed by the helpers on 15.10, given to the owner on 16.10); none changes what is
-  built, which follows BOCA 1978 as read above: the Uniform Building Code of 1976
-  (https://archive.org/details/uniformbuildingc0000unse_g4g9) and 1979
-  (https://archive.org/details/uniformbuildingc0000vari_l1f7), an archive.org loan, for when its "half the diagonal"
-  rule for exit spacing replaced the 1964 edition's "one-fifth of the perimeter"; NFPA's 1981 Life Safety Code
+  built, which follows BOCA 1978 as read above. The Uniform Building Code of 1976
+  (https://archive.org/details/uniformbuildingc0000unse_g4g9), **opened** on 16.10 by the owner's loan, his
+  screenshots in objekt-files/imports/owner-screens-2026-10-16: Sec. 3302 (a), p. 497, floors above the first with an
+  occupant load over 10 have "not less than two exits"; (c), p. 498, two exits "placed a distance apart equal to not
+  less than one-half of the length of the maximum overall diagonal dimension of the building or area to be served
+  measured in a straight line between exits" (so by 1976 this had replaced the 1964 edition's "one-fifth of the
+  perimeter"); (d), 150 ft to an exit unsprinklered, 200 ft sprinklered. Ours passes: the two stair doors 12.8 m
+  apart (plan.js, bays -2 and 2), half the floor's overall diagonal 9.7 m (its outline 15.0 x 12.2 m with walls,
+  the rooms 3.2 m deep as room 01, the core 6.4 m: 19.3 m corner to corner; it passes up to a 20.7 m deep outline). The 1979 edition (https://archive.org/details/uniformbuildingc0000vari_l1f7) is
+  then not needed for this. NFPA's 1981 Life Safety Code
   Handbook (https://archive.org/details/lifesafetycodeha0000lath, a loan), for which edition moved colleges into the
   business occupancy; the 1973 Life Safety Code's leaf 213, Table A-5-118 (https://archive.org/details/lifesafetycode1900nati,
   a loan), for its dead-end limits. Closed to us both: Harvard's William James Hall drawings
