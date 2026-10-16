@@ -83,15 +83,18 @@ function entrance({ x, z, facing, basement }) {
     <a-box position="${r(x - facing * E.depth / 2)} 0.003 ${z}" width="${E.depth}" height="0.006" depth="${r(E.door.w)}" material="color: #9a9c9e; ${METAL}"></a-box>${arrow(true, r(E.lantern + 0.04))}${basement ? arrow(false, r(E.lantern - 0.04)) : ''}`;
 }
 
-// the call station on the wall between a side's two entrances: a faceplate with an up and a down
-// button, the down one for the car that goes on to the basement (plan.js, CARS)
+// the call station on the wall between a side's two entrances: a faceplate with an up button, and a
+// down one only on the side whose car goes on to the basement (plan.js, CARS), so each station calls
+// what its own cars do, as their lanterns show (our reading: which cars a station calls the 1968
+// photo does not show)
 function callStation(x) {
-  const facing = x === HALL.minX ? 1 : -1, zs = CARS.filter((c) => c.x === x).map((c) => c.z);
+  const facing = x === HALL.minX ? 1 : -1, cars = CARS.filter((c) => c.x === x), zs = cars.map((c) => c.z);
+  const down = cars.some((c) => c.basement);
   const z = r((zs[0] + zs[1]) / 2), out = r(x + facing * 0.004);
   return `
     <a-box position="${out} ${E.call.y} ${z}" width="0.008" height="${E.call.h}" depth="${E.call.w}" material="color: #b9bcbe; ${METAL}"></a-box>
     <a-cylinder position="${r(out + facing * 0.006)} ${r(E.call.y + 0.03)} ${z}" rotation="0 0 90" radius="0.0095" height="0.006" color="#e9e6dc" material="${MARK}"></a-cylinder>
-    <a-cylinder position="${r(out + facing * 0.006)} ${r(E.call.y - 0.03)} ${z}" rotation="0 0 90" radius="0.0095" height="0.006" color="#e9e6dc" material="${MARK}"></a-cylinder>`;
+    ${down ? `<a-cylinder position="${r(out + facing * 0.006)} ${r(E.call.y - 0.03)} ${z}" rotation="0 0 90" radius="0.0095" height="0.006" color="#e9e6dc" material="${MARK}"></a-cylinder>` : ''}`;
 }
 
 // the light slot along the top of each side wall: a lamp's lens filling a strip of the ceiling at the

@@ -6,11 +6,11 @@
 //   node tools/quest-look.mjs open             open the test copy in the headset browser
 //   node tools/quest-look.mjs open local [p]   open the laptop's server (the preview's port, or p)
 //                                              in the headset as its own localhost:3000
-//   node tools/quest-look.mjs sleep            OVR Metrics' HUD off, the proximity sensor given back,
-//                                              and to sleep: ends every look
+//   node tools/quest-look.mjs sleep            OVR Metrics' HUD asked off, the proximity sensor given
+//                                              back, and to sleep: ends every look
 //   node tools/quest-look.mjs reload           reload it, skipping every cache (after publish-preview)
 //   node tools/quest-look.mjs vr               enter VR, as if the VR button were pressed, OVR Metrics'
-//                                              HUD on; only while the owner wears the headset
+//                                              HUD asked on first; only while the owner wears the headset
 //                                              (headset.mjs, onHead)
 //   node tools/quest-look.mjs frame out.png    save what the headset shows right now, both eyes (in VR)
 //   node tools/quest-look.mjs eval "<js>"      run JavaScript in the game page, print the result
@@ -68,12 +68,18 @@ if (cmd === 'open') {
   console.log('opened', url, closed ? `(${closed} other game tab${closed > 1 ? 's' : ''} closed)` : '');
   process.exit(0);
 }
-// OVR Metrics Tool's HUD, on for a look in VR, off when the look ends ("sleep")
-const hud = (on) => adb('shell', `am broadcast -n com.oculus.ovrmonitormetricsservice/.SettingsBroadcastReceiver -a com.oculus.ovrmonitormetricsservice.${on ? 'ENABLE' : 'DISABLE'}_OVERLAY ; true`);
+// OVR Metrics Tool's HUD asked on for a look in VR, off when the look ends ("sleep", "end"). Its state
+// is not read back (tools/measure.mjs says the same); a request the headset did not deliver (no
+// "Broadcast completed" in its reply, or adb's own error) is returned as a failure
+const hud = (on) => {
+  let out = '';
+  try { out = adb('shell', 'am', 'broadcast', '-n', 'com.oculus.ovrmonitormetricsservice/.SettingsBroadcastReceiver', '-a', `com.oculus.ovrmonitormetricsservice.${on ? 'ENABLE' : 'DISABLE'}_OVERLAY`); } catch (e) { out = String(e.stderr || e.message); }
+  return /Broadcast completed/.test(out) ? null : out.trim().slice(0, 160) || 'no reply';
+};
 if (cmd === 'sleep') {
-  hud(false);
+  const failed = hud(false);
   sleepNow();
-  console.log("OVR Metrics' HUD asked off; asleep");
+  console.log(failed ? `OVR Metrics' HUD could not be asked off (${failed}); asleep` : "OVR Metrics' HUD asked off; asleep");
   process.exit(0);
 }
 if (cmd === 'worn') {
@@ -109,11 +115,13 @@ if (cmd === 'reload') {
   // it restarts: twice the owner could not get in. No wake key either: it opens the quick menu over
   // the browser.
   if (!wornByPerson()) { console.log('not now: VR only while the owner wears the headset'); process.exit(1); }
-  // OVR Metrics Tool's HUD on for every look in VR: frame rate and CPU and GPU load in the headset
-  // the whole time (Meta, webxr-perf-tools: "highly recommended that you keep this HUD up and running
-  // throughout development", docs/research/engine-and-tools-2.md); measures turn it off, since it costs
-  // GPU time of its own (docs/baseline.md; tools/measure.mjs --clean, tools/stand-measure.mjs)
-  hud(true);
+  // OVR Metrics Tool's HUD asked on for every look in VR: frame rate and CPU and GPU load in the
+  // headset the whole time (Meta, webxr-perf-tools: "highly recommended that you keep this HUD up and
+  // running throughout development", docs/research/engine-and-tools-2.md); no look without it, so a
+  // request not delivered stops here; measures turn it off, since it costs GPU time of its own
+  // (docs/baseline.md; tools/measure.mjs --clean, tools/stand-measure.mjs)
+  const failed = hud(true);
+  if (failed) { console.log(`not now: OVR Metrics' HUD could not be asked on (${failed})`); process.exit(1); }
   console.log("OVR Metrics' HUD asked on");
   console.log(await run("document.querySelector('a-scene').enterVR().then(() => 'in VR', (e) => 'failed: ' + e.message)"));
 } else if (cmd === 'levels') {
@@ -214,10 +222,10 @@ if (cmd === 'reload') {
   const v = await run(noteScript(String(arg || ''), process.argv[4] || ''));
   console.log(JSON.stringify(v));
   for (const end = Date.now() + ASK_MS; wornByPerson() && Date.now() < end;) await new Promise((r) => setTimeout(r, 1000));
-  hud(false);
+  const failed = hud(false), off = failed ? `OVR Metrics' HUD could not be asked off (${failed})` : "OVR Metrics' HUD asked off";
   // never put to sleep on his head: still worn after the wait, the headset is left awake
-  if (wornByPerson()) console.log("still worn after the wait; OVR Metrics' HUD asked off; left awake");
-  else { sleepNow(); console.log("taken off; OVR Metrics' HUD asked off; asleep"); }
+  if (wornByPerson()) console.log(`still worn after the wait; ${off}; left awake`);
+  else { sleepNow(); console.log(`taken off; ${off}; asleep`); }
 } else if (cmd === 'frame') {
   // What the headset shows, both eyes, taken by the headset itself (screencap): reading the page's own
   // pixels came out black once both eyes were drawn in one pass (multiview draws into a texture
