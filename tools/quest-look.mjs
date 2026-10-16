@@ -6,7 +6,8 @@
 //   node tools/quest-look.mjs open             open the test copy in the headset browser
 //   node tools/quest-look.mjs open local [p]   open the laptop's server (the preview's port, or p)
 //                                              in the headset as its own localhost:3000
-//   node tools/quest-look.mjs sleep            give the proximity sensor back and put it to sleep
+//   node tools/quest-look.mjs sleep            OVR Metrics' HUD off, the proximity sensor given back,
+//                                              and to sleep: ends every look
 //   node tools/quest-look.mjs reload           reload it, skipping every cache (after publish-preview)
 //   node tools/quest-look.mjs vr               enter VR, as if the VR button were pressed, OVR Metrics'
 //                                              HUD on; only while the owner wears the headset
@@ -57,9 +58,12 @@ if (cmd === 'open') {
   console.log('opened', url, closed ? `(${closed} other game tab${closed > 1 ? 's' : ''} closed)` : '');
   process.exit(0);
 }
+// OVR Metrics Tool's HUD, on for a look in VR, off when the look ends ("sleep")
+const hud = (on) => adb('shell', `am broadcast -n com.oculus.ovrmonitormetricsservice/.SettingsBroadcastReceiver -a com.oculus.ovrmonitormetricsservice.${on ? 'ENABLE' : 'DISABLE'}_OVERLAY ; true`);
 if (cmd === 'sleep') {
+  hud(false);
   sleepNow();
-  console.log('asleep');
+  console.log("OVR Metrics' HUD asked off; asleep");
   process.exit(0);
 }
 if (cmd === 'worn') {
@@ -99,7 +103,7 @@ if (cmd === 'reload') {
   // the whole time (Meta, webxr-perf-tools: "highly recommended that you keep this HUD up and running
   // throughout development", docs/research/engine-and-tools-2.md); measures turn it off, since it costs
   // GPU time of its own (docs/baseline.md; tools/measure.mjs --clean, tools/stand-measure.mjs)
-  adb('shell', 'am broadcast -n com.oculus.ovrmonitormetricsservice/.SettingsBroadcastReceiver -a com.oculus.ovrmonitormetricsservice.ENABLE_OVERLAY ; true');
+  hud(true);
   console.log("OVR Metrics' HUD asked on");
   console.log(await run("document.querySelector('a-scene').enterVR().then(() => 'in VR', (e) => 'failed: ' + e.message)"));
 } else if (cmd === 'levels') {
