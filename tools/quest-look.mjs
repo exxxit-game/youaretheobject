@@ -22,7 +22,7 @@
 //   node tools/quest-look.mjs restart-browser  the browser restarted on the test copy: the cure when
 //                                              every VR request fails with NotSupportedError
 //   node tools/quest-look.mjs reboot           restart the headset; both refuse while it is on the
-//                                              owner's head (headset.mjs, wornByPerson)
+//                                              owner's head (headset.mjs, takenOff)
 //   node tools/quest-look.mjs levels           play each corridor sound at its game volume and the
 //                                              voice, measure what reaches the headset's output and
 //                                              check the mix (LEVELS below); exits 1 when it is off
@@ -45,7 +45,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { adb, serveToHeadset, localPort, worn, sleepNow, openUrl, page, wornByPerson, restartBrowser, openGame, screencap, noteScript, answersScript } from './headset.mjs';
+import { adb, serveToHeadset, localPort, worn, sleepNow, openUrl, page, wornByPerson, takenOff, restartBrowser, openGame, screencap, noteScript, answersScript, clearAnswersScript } from './headset.mjs';
 import { requireReview, requirePaper } from './review-gate.mjs';
 
 const PREVIEW = 'https://exxxit-game.github.io/object-preview/';
@@ -88,7 +88,7 @@ if (cmd === 'worn') {
   process.exit(0);
 }
 if (cmd === 'restart-browser' || cmd === 'reboot') {
-  if (wornByPerson()) { console.log('not now: the owner is wearing the headset; this would throw him out'); process.exit(1); }
+  if (!takenOff()) { console.log('not now: the owner is wearing the headset, or its state did not read; this would throw him out'); process.exit(1); }
   if (cmd === 'reboot') adb('reboot'); else restartBrowser(PREVIEW);
   console.log(cmd === 'reboot' ? 'rebooting' : 'browser restarted on the test copy');
   process.exit(0);
@@ -213,18 +213,20 @@ if (cmd === 'reload') {
     await new Promise((r) => setTimeout(r, 500));
     answer = await run('window.__ownerAnswer ?? null', false);
   }
-  console.log(answer === null ? `no answer in ${ASK_MS / 60000} minutes` : `answer: ${answer}`);
-  if (answer === null) process.exit(1);
+  if (answer === null) { await run(clearAnswersScript, false); console.log(`no answer in ${ASK_MS / 60000} minutes; the question taken away`); process.exit(1); }
+  console.log(`answer: ${answer}`);
 } else if (cmd === 'end') {
   // The look's last step: what to do now (take the headset off and answer in the chat), shown in the
   // headset; once he takes it off (its proximity sensor), OVR Metrics' HUD off and the headset asleep,
   // so nothing of the look waits on him with the headset on
   const v = await run(noteScript(String(arg || ''), process.argv[4] || ''));
   console.log(JSON.stringify(v));
-  for (const end = Date.now() + ASK_MS; wornByPerson() && Date.now() < end;) await new Promise((r) => setTimeout(r, 1000));
+  // the last step not shown: nothing waits for him to take off a headset that never told him to
+  if (!v || v.error) process.exit(1);
+  for (const end = Date.now() + ASK_MS; !takenOff() && Date.now() < end;) await new Promise((r) => setTimeout(r, 1000));
   const failed = hud(false), off = failed ? `OVR Metrics' HUD could not be asked off (${failed})` : "OVR Metrics' HUD asked off";
-  // never put to sleep on his head: still worn after the wait, the headset is left awake
-  if (wornByPerson()) console.log(`still worn after the wait; ${off}; left awake`);
+  // never put to sleep on his head: not seen taken off after the wait, the headset is left awake
+  if (!takenOff()) console.log(`not seen taken off after the wait; ${off}; left awake`);
   else { sleepNow(); console.log(`taken off; ${off}; asleep`); }
 } else if (cmd === 'frame') {
   // What the headset shows, both eyes, taken by the headset itself (screencap): reading the page's own

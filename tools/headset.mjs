@@ -51,8 +51,18 @@ export function sleepNow() { worn(false); adb('shell', 'input', 'keyevent', 'KEY
 // (`dumpsys vrpowermanager`: "Virtual proximity state: DISABLED"; our "worn on" reads CLOSE).
 // Restarting the browser or the headset then throws the owner out of what he is doing, so those
 // wait until he takes it off.
-export const onHead = (powerDump) => /State: HEADSET_MOUNTED/.test(powerDump) && /Virtual proximity state: DISABLED/.test(powerDump);
+// A dump without both lines read is neither: on his head is then not proven (VR and a measure wait),
+// and off it is not proven either (nothing restarts or sleeps the headset), so an unread dump never
+// acts on a headset he may be wearing.
+export const headState = (powerDump) => {
+  const state = powerDump.match(/\bState: (HEADSET_MOUNTED|HEADSET_UNMOUNTED|STANDBY)\b/)?.[1];
+  const proximity = powerDump.match(/Virtual proximity state: (DISABLED|CLOSE)\b/)?.[1];
+  return state && proximity ? state === 'HEADSET_MOUNTED' && proximity === 'DISABLED' : null;
+};
+export const onHead = (powerDump) => headState(powerDump) === true;
+export const offHead = (powerDump) => headState(powerDump) === false;
 export const wornByPerson = () => onHead(adb('shell', 'dumpsys', 'vrpowermanager'));
+export const takenOff = () => offHead(adb('shell', 'dumpsys', 'vrpowermanager'));
 // The browser restarted, the game page opened again: a browser that has lost its link to the VR
 // system answers every request to enter VR with NotSupportedError, whatever the page asks for.
 export function restartBrowser(url) {
@@ -184,6 +194,8 @@ export async function page(match, { noAnswerMs = 120000 } = {}) {
 export const answersScript = (labels) => `import(new URL('src/engine/ui/choice.js', document.baseURI).href).then(({ createChoice }) => {
     const note = document.getElementById('ownerNote'), labels = ${JSON.stringify(labels)};
     if (!note || !note.object3D.visible) return { error: 'no note shown to answer' };
+    // an earlier question's buttons, left by a wait that ended unanswered, go first: one set at a time
+    for (const old of note.querySelectorAll('.answer')) old.remove();
     window.__ownerAnswer = null;
     const onTop = note.getObject3D('mesh').material.depthTest === false;
     const choice = createChoice(note, { x: 0, y: -0.25, z: 0.005, w: 0.7, h: 0.1, gap: 0.02 });
@@ -199,6 +211,8 @@ export const answersScript = (labels) => `import(new URL('src/engine/ui/choice.j
     if (onTop) for (const el of note.querySelectorAll('.answer')) el.addEventListener('loaded', () => el.object3D.traverse((o) => { if (o.material) { o.material.depthTest = false; o.renderOrder = 999; } }));
     return { answers: labels.length };
   })`;
+// what an unanswered question leaves: its buttons and its note gone, no answer kept
+export const clearAnswersScript = `(() => { const n = document.getElementById('ownerNote'); if (n) { for (const b of n.querySelectorAll('.answer')) b.remove(); n.object3D.visible = false; } window.__ownerAnswer = null; return true; })()`;
 export const noteScript = (main, small = '') => `new Promise((resolve) => {
     const s = document.querySelector('a-scene'), main = ${JSON.stringify(main)}, small = ${JSON.stringify(small)};
     let p = document.getElementById('ownerNote');

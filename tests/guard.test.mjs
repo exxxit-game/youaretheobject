@@ -11,7 +11,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { refusal, ciLine, EXTRA_LINE, imports } from '../tools/claude-guard.mjs';
-import { onHead } from '../tools/headset.mjs';
+import { onHead, offHead } from '../tools/headset.mjs';
 import { split } from '../tools/board.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -268,7 +268,10 @@ assert.equal(ask('Bash', 'grep -rn "git commit --no-verify" docs/'), 0, 'the hoo
 const dump = (state, virtual) => `Virtual proximity state: ${virtual}\nisAutosleepDisabled: false\nState: ${state}\n`;
 assert.ok(onHead(dump('HEADSET_MOUNTED', 'DISABLED')), 'worn by the owner reads as on his head');
 assert.ok(!onHead(dump('HEADSET_MOUNTED', 'CLOSE')), 'our own "worn on" override is not a person');
-assert.ok(!onHead(dump('HEADSET_UNMOUNTED', 'DISABLED')) && !onHead(dump('STANDBY', 'DISABLED')), 'off the head is free to restart');
+assert.ok(!onHead(dump('HEADSET_UNMOUNTED', 'DISABLED')) && !onHead(dump('STANDBY', 'DISABLED')), 'off the head is not on it');
+assert.ok(offHead(dump('HEADSET_UNMOUNTED', 'DISABLED')) && offHead(dump('STANDBY', 'DISABLED')) && !offHead(dump('HEADSET_MOUNTED', 'DISABLED')), 'off the head is free to restart');
+// a dump the tools cannot read is neither: no VR on it, and no restart or sleep either
+for (const odd of ['', 'Service not found', dump('HEADSET_MOUNTED', 'UNKNOWN'), 'Virtual proximity state: DISABLED' + String.fromCharCode(10)]) assert.ok(!onHead(odd) && !offHead(odd), `an unread dump acts: ${JSON.stringify(odd)}`);
 
 // docs/owner-decisions.md reaches every session at its start and after each compaction: CLAUDE.md imports
 // it (Claude Code loads CLAUDE.md then, whole). A session that does not see it asks him again what he settled

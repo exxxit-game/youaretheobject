@@ -32,7 +32,7 @@ async function main() {
     console.log(JSON.stringify(verdicts(lines.filter((l) => l.step === 'sample'), MARKS), null, 1));
     return;
   }
-  const { adb, serveToHeadset, localPort, openGame, page, wornByPerson, connected, sleepNow, restartBrowser, screencap } = await import('./headset.mjs');
+  const { adb, serveToHeadset, localPort, openGame, page, takenOff, connected, sleepNow, restartBrowser, screencap } = await import('./headset.mjs');
   const PREVIEW = 'https://exxxit-game.github.io/object-preview/';
   const { requireReview, requirePaper } = await import('./review-gate.mjs');
   const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -51,7 +51,7 @@ async function main() {
     return { out, after: proximityOf(sh('dumpsys vrpowermanager')) };
   };
   if (mode === 'restore') {
-    if (wornByPerson()) { console.log('not now: the owner wears the headset'); process.exit(1); }
+    if (!takenOff()) { console.log('not now: the owner wears the headset, or its state did not read'); process.exit(1); }
     console.log(JSON.stringify(giveBack('restart')));
     return;
   }
@@ -64,7 +64,7 @@ async function main() {
   const awakeFront = async () => { metavr('device', 'proximity', '--disable'); await pause(10000); return front(); };
   const blockers = async () => { const inFront = await awakeFront(); return [
     !(await fetch(`http://localhost:${localPort()}/`).then((r) => r.ok, () => false)) && `the game server is not running on port ${localPort()}: start the preview "objekt"`,
-    wornByPerson() && 'the headset is worn: this measure is for the stand',
+    !takenOff() && 'the headset is worn, or its state did not read: this measure is for the stand',
     /guardian/.test(inFront) && 'the headset cannot find its place in the room (its tracking or boundary window is in front): switch on travel mode in its quick settings (no position tracking, which a still stand does not need; it made the run of 14.10 go), or face the stand to furniture, not a bare wall or a door'
   ].filter(Boolean); };
   if (mode === 'check') { const b = await blockers(); const f = front(); metavr('device', 'proximity', '--enable'); console.log(b.length ? `not ready: ${b.join('; ')}` : `ready (in front: ${f})`); process.exit(b.length ? 1 : 0); }
@@ -87,9 +87,9 @@ async function main() {
   const b = await blockers();
   // the check above left the proximity sensor overridden: given back on every way out, the headset put to sleep
   // only when nobody wears it
-  if (b.length) { console.log(`not ready: ${b.join('; ')}`); metavr('device', 'proximity', '--enable'); if (!wornByPerson()) sleepNow(); process.exit(1); }
+  if (b.length) { console.log(`not ready: ${b.join('; ')}`); metavr('device', 'proximity', '--enable'); if (takenOff()) sleepNow(); process.exit(1); }
   // this run is for a headset nobody wears: on a person it would hold frames and rates against him
-  if (wornByPerson()) { console.log('not now: the owner wears the headset; this measure is for the stand'); metavr('device', 'proximity', '--enable'); process.exit(1); }
+  if (!takenOff()) { console.log('not now: the owner wears the headset, or its state did not read; this measure is for the stand'); metavr('device', 'proximity', '--enable'); process.exit(1); }
   const ids = gpuIds(sh('ovrgpuprofiler -m'), ['GPU Frequency', 'GPU % Utilization']);
 
   const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
