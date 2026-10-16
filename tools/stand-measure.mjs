@@ -169,7 +169,9 @@ async function main() {
       // stands on; the view turned 45° a minute, so a standing player's look round repeats every 8 minutes. Frames every
       // 10 s, heat every 30 s, the page's memory every minute, the GPU every 5 minutes; whether the session stays
       // visible is read with every sample (Meta's safety page: standby after about 15 minutes with no interaction)
-      const minutes = Number((process.argv.find((a) => a.startsWith('--minutes=')) || '').split('=')[1]) || 45;
+      const given = process.argv.find((a) => a.startsWith('--minutes='));
+      const minutes = given ? Number(given.split('=')[1]) : 45;
+      if (!(minutes > 0)) { console.log(`not measured: --minutes must be a number above 0, not ${given.split('=')[1]}`); process.exit(1); }
       // a headset just woken drew nothing for 38 s in VR while "visible" (the long run's first try): its place being found,
       // so the run begins at the first frames; none in 3 minutes is no link to the VR system: restarted, as a held entry
       // the heat is watched in the wait too (every 30 s), so a hot headset stops the run before it begins
@@ -199,9 +201,13 @@ async function main() {
         }
         const steps = await run('window.__flow ? window.__flow.steps : []');
         const end = log('end', { thermal: thermal('end'), steps, flow: f });
-        const summary = { dir: DIR, minutes: Number(((end.at - t0) / 60000).toFixed(2)), stoppedFor, flow: f, ...flowSummary(rows, steps), ...longSummary(rows) };
+        // the run's end told apart: the flow finished, failed, or did not finish (a stop, a lost page, the hour gone);
+        // anything but a finish exits non-zero, so a broken run is never read as a measure that passed
+        const result = f?.error ? 'error' : f?.done && !stoppedFor ? 'success' : 'incomplete';
+        const summary = { dir: DIR, result, minutes: Number(((end.at - t0) / 60000).toFixed(2)), stoppedFor, flow: f, ...flowSummary(rows, steps), ...longSummary(rows) };
         fs.writeFileSync(path.join(DIR, 'summary.json'), JSON.stringify(summary, null, 1));
         console.log(JSON.stringify(summary, null, 1));
+        if (result !== 'success') process.exitCode = 1;
         return;
       }
       const t0 = now(), rows = [];
@@ -219,9 +225,13 @@ async function main() {
         if (stoppedFor) break;
       }
       const end = log('end', { thermal: thermal('end') });
-      const summary = { dir: DIR, minutes: Number(((end.at - t0) / 60000).toFixed(2)), stoppedFor, ...longSummary(rows) };
+      // success only for a run that was not stopped, has samples, and kept the session visible and awake throughout
+      const long = longSummary(rows);
+      const result = !stoppedFor && rows.length && long.stayedVisible && long.stayedAwake ? 'success' : 'incomplete';
+      const summary = { dir: DIR, result, minutes: Number(((end.at - t0) / 60000).toFixed(2)), stoppedFor, ...long };
       fs.writeFileSync(path.join(DIR, 'summary.json'), JSON.stringify(summary, null, 1));
       console.log(JSON.stringify(summary, null, 1));
+      if (result !== 'success') process.exitCode = 1;
       return;
     }
 
@@ -278,9 +288,12 @@ async function main() {
     v.batteryTwoSources = { start: [startT.current.battery, startT.battery], end: [end.thermal.current.battery, end.thermal.battery] };
     // the GPU's clock read at one of the levels the system sets (an unlisted value would mean a misread)
     v.gpuClock = { seen: gpu ? [...new Set(gpu['GPU Frequency'] || [])] : null, meanLoad: gpu ? mean(gpu['GPU % Utilization'] || []) : null };
-    const summary = { dir: DIR, marks, verdicts: v, samples: samples.length, minutes: Number(((end.at - t0) / 60000).toFixed(2)) };
+    // a verdict that did not pass fails the trial (the two-source and clock entries are readings, not verdicts)
+    const failed = Object.entries(v).filter(([, x]) => x && x.pass === false).map(([k]) => k);
+    const summary = { dir: DIR, result: failed.length ? 'error' : 'success', failed, marks, verdicts: v, samples: samples.length, minutes: Number(((end.at - t0) / 60000).toFixed(2)) };
     fs.writeFileSync(path.join(DIR, 'summary.json'), JSON.stringify(summary, null, 1));
     console.log(JSON.stringify(summary, null, 1));
+    if (failed.length) process.exitCode = 1;
   } catch (e) {
     try { log('failed', { error: String(e.message || e) }); } catch (err) { /* the headset itself gone */ }
     console.log(`failed: ${e.message || e} (log: ${LOG})`);

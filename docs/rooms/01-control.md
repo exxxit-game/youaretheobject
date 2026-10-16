@@ -75,7 +75,7 @@ From any state the game's menu can take the player out, back to `idle` in the co
 
 ## Data sent (only with consent, only at full speed, as the debrief's truth page is shown; the privacy page is privacy.html)
 The condition and the whole result of `src/rooms/01-control/report.js` (counts, percentages, actual
-control, heuristics, discrepancies, voided and stray presses, every answer with its shown position),
+control, heuristics, discrepancies, voided and stray presses, every answer's value; its shown position is not sent, item 3 below),
 plus seated, speed and first/repeat. No raw event times. The server whitelist must list these fields.
 
 ## Check of 13.10 (the paper reviewer, after the engine's fixes of shelf 3; the room is set aside, the fixes wait for its shelf)

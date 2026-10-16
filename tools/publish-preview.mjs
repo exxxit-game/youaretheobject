@@ -42,7 +42,19 @@ try {
   console.log(`could not read the tests on GitHub: ${e.message.split('\n')[0]}`);
 }
 const sha = git(ROOT, 'rev-parse', '--short', 'HEAD');
+// the run of this very commit, not only room-polish's last: a copy whose own commit has no green run on GitHub
+// (not pushed yet, still running, or GitHub out of reach) is published marked unchecked, never as passed
+let checked = false;
+try {
+  const [own] = JSON.parse(execFileSync('gh', ['run', 'list', '--commit', git(ROOT, 'rev-parse', 'HEAD'), '--workflow', 'test.yml', '--status', 'completed', '--limit', '1', '--json', 'conclusion,url'], { cwd: ROOT, encoding: 'utf8' }));
+  if (own && own.conclusion !== 'success') {
+    console.log(`the tests on GitHub ${own.conclusion} for this very commit ${sha}: ${own.url}`);
+    if (!process.argv.includes('--anyway')) { console.log('not published: fix that first (or publish with --anyway)'); process.exit(1); }
+  }
+  checked = own?.conclusion === 'success';
+} catch (e) { /* GitHub out of reach: the copy goes out marked unchecked */ }
 const dirty = git(ROOT, 'status', '--porcelain', '--', ...PUBLIC.map(p => p.replace(/\/$/, '')));
+const unchecked = !checked || !!dirty;
 const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'object-preview-'));
 for (const p of PUBLIC) {
   const from = path.join(ROOT, p);
@@ -56,7 +68,7 @@ fs.writeFileSync(index, fs.readFileSync(index, 'utf8').replace('<head>', '<head>
 git(dir, 'init', '-q', '-b', 'main');
 git(dir, 'add', '-A');
 git(dir, '-c', `user.name=${git(ROOT, 'config', 'user.name')}`, '-c', `user.email=${git(ROOT, 'config', 'user.email')}`,
-  'commit', '-q', '-m', `Preview of ${sha}${dirty ? ' with uncommitted changes' : ''}`);
+  'commit', '-q', '-m', `Preview of ${sha}${dirty ? ' with uncommitted changes' : ''}${unchecked ? ' (unchecked on GitHub)' : ''}`);
 // the copy is pushed from this folder, where git runs no hook: the same check as before every push
 const leaks = check('HEAD', dir);
 if (leaks.length) {
@@ -67,7 +79,7 @@ if (leaks.length) {
 }
 git(dir, 'push', '-q', '--force', REPO, 'main');
 fs.rmSync(dir, { recursive: true, force: true });
-console.log(`published ${sha}${dirty ? ' (+ uncommitted changes)' : ''}: https://exxxit-game.github.io/object-preview/`);
+console.log(`published ${sha}${dirty ? ' (+ uncommitted changes)' : ''}${unchecked ? ', UNCHECKED on GitHub: this version\'s own tests have not passed there' : ', its own tests green on GitHub'}: https://exxxit-game.github.io/object-preview/`);
 
 // GitHub Pages builds the copy after the push and now and then fails with no reason given
 // ("Page build failed"); the old copy then stays online unnoticed. Wait for the build, ask for
