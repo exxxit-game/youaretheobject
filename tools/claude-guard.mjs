@@ -7,7 +7,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { withoutGitVars } from './secrets.mjs';
-import { ownText } from './owner-links.mjs';
+import { ownText, ownerEntryApplies } from './owner-links.mjs';
 import { scan, named, entries, write, lastReport, REVIEWER, REPORT_END, PAPER_REVIEWER, PAPER_END, roomScan, checkedRooms, endsWithBlock } from './review-gate.mjs';
 import { split } from './board.mjs';
 
@@ -393,6 +393,7 @@ if (mode === 'accepted') {
   const yes = new Set();
   try {
     for (const m of fs.readFileSync(LOG, 'utf8').split('\n## ')) {
+      if (!ownerEntryApplies(m.split('\n')[0], HERE)) continue;
       const said = m.slice(m.indexOf('\n') + 1);
       if (!(Date.parse(m.split(' ')[0]) > Date.now() - 108e5)) continue;
       if (/^\s*(не\s+принимаю[\s,.!и\d]*|стоп[\s.!]*)$/i.test(said)) yes.clear();

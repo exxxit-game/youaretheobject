@@ -5,6 +5,79 @@ The newest entry is read at the start of every session, with `git log --oneline 
 feature at hand goes to the end of docs/board.md, one line each.
 Entries of 14.10 and before: docs/progress-2026-10-14.md; the earlier ones of 15.10: docs/progress-2026-10-15.md.
 
+## 2026-10-16 - Codex event bridge prepared; runtime activation remains unverified
+The owner asked for a useful concrete tool and to start working. Added tools/codex-events.mjs, its isolated
+test, .codex/hooks.json and two native reviewer profiles. They record events; they do not start reviewers.
+The adapter uses documented final-message fields, not Claude transcript parsing. Reviews need a matching
+session/agent/checkout start, a complete final report, and unchanged reviewed files. The full report is kept.
+Codex owner messages carry checkout provenance. Duplicate events do not refresh acceptance or override a later
+stop. The existing acceptance reader rejects another checkout's Codex entries; legacy Claude records remain valid.
+Validation: npm test passed including the new isolated event tests and existing guard/review-gate tests.
+The exact Windows hook command was exercised in a temporary checkout with spaces, including a nested cwd and
+failure exit. TOML profiles parse; these checks do not prove Codex loads them or emits their events.
+The first test draft replaced only one fixture's root; corrected to replace all. Windows command test initially
+double-escaped its shell argument; corrected. Structure found the new files missing from the map; map updated.
+The process-size test also failed: the Claude-era list excluded new Codex steering. Proposed for PR review:
+include AGENTS.md, Codex configuration/profiles, the bridge and owner-links in the count; baseline 116793 to
+134147 characters (+17354). This is an explicit migration increase, not a reduction. The growth check and
+1000-character ratchet stay. This budget change needs the existing PR review before merging; no main update.
+Real journals were unchanged by testing (SHA-256 owner messages 4933e4378c44..., reviews 2e92f5f8681e...).
+Read-only status reports zero Codex owner/reviewer events and no journal lock. Runtime trust and actual callback
+delivery have NOT been established; no real review, feature acceptance, or game release is claimed.
+Next: inspect/trust the prepared hooks through the normal Codex UI in this trial checkout, observe a neutral
+owner message, then one real scoped review when needed. Do not manually inject success records to validate it.
+Operational details and official sources: docs/tools.md. The primary checkout still only has the handoff file.
+
+## 2026-10-16 - Codex readiness recheck: migration is not finished
+The owner asked for an evidence-based handover, useful integrations and reliable continuation between chats.
+Confirmed:
+- The primary checkout is still room-polish 3084b40 with two preserved local changes; the attached trial is
+  codex/trial-migration b42f8a0, game code 435e6d2. The latest real-headset check below applies to that trial.
+- Code, tests, GitHub, read-only Supabase, Drive reads and Quest have bounded successful checks. This does not
+  establish deployment, live migrations, complete recovery, or every installed skill's operation.
+- Codex config selects Astra/xhigh. Native browser inventory exposes Chrome and the in-app browser.
+- No project .codex layer, global hooks.json or inline global hook configuration was found. Repository
+  .claude/settings.json wires owner-message and reviewer records to Claude events. No Codex equivalent is
+  demonstrated. Publication still lacks the exact practice review; preserve the gate, do not forge a record.
+- Git's shared hooksPath points at the primary checkout. Its pre-commit and pre-push files currently have
+  the same SHA-256 as the trial's copies; that is not proof of future worktree isolation or runtime enforcement.
+- F:/objekt-files exists, despite older state text saying no separate-disk copy. Its freshness, completeness,
+  independence and recovery have not been established. The earlier library manifest remains an inventory.
+Changed:
+- Added a short AGENTS.md in the primary and trial checkouts: resume from the trial's progress log, verify
+  the working copy, preserve owner decisions, use appropriate checks, and keep unverified capabilities explicit.
+- Fixed the previous Codex log entry's Russian quote to an English translation after the structure check
+  rejected it. The original answer remains in the external Quest result.json. No game code changed.
+- Searched the plugin catalog for relevant observability, security and research options. No new integration
+  was justified by an established missing provider; none installed and no permissions expanded.
+Validation: structure tests passed after these changes; trial git diff --check passed; the two 17-line AGENTS.md files have identical SHA-256 and no trailing whitespace.
+Sources: https://learn.chatgpt.com/guides/best-practices and https://learn.chatgpt.com/docs/hooks .
+Open: validate Codex review/owner-acceptance recording; reconcile unfinished Claude work and recovery;
+prove a bounded change through checks and a reviewable release, with rollback and owner-visible evidence.
+Next: migrate and test the two event-dependent records without weakening the existing gates. Store delivery
+and engine choice remain a separate product decision; they do not justify another general setup cycle.
+
+## 2026-10-16 — Codex current-code Quest launch and controller check
+The owner approved proceeding from setup to a practical headset check.
+Done:
+- Ran the existing local preview from codex/trial-migration (b42f8a0; game code 435e6d2). The worktree was clean;
+  its only difference from the already tested code commit was docs/progress.md. The broad suite was not rerun.
+- Quest 3 connected over USB. The headset browser loaded localhost:3000; SHA-256 of src/main.js matched the
+  worktree, including after entering VR. The scene loaded and the XR session was visible with both controllers.
+- Inspected a screenshot containing both eyes. Five-second sample: approximately 90 fps, worst interval rounded
+  to 16 ms, 52 draw calls, 79,935 triangles, multiview on. This is not a sustained performance result.
+- The owner answered the in-headset visual/controller question: "Yes, I can press it" (English translation; original in result.json). He separately confirmed that
+  he had closed the first game tab himself. No crash is established by that tab disappearance.
+- Showed the completion instruction in VR. The tool confirmed the headset was taken off, delivered the HUD-off
+  broadcast and put it to sleep. The local preview server remains running in this Codex task session.
+Evidence: ~/.codex/visualizations/2026/10/16/01a145d5-8edb-73b3-9695-97ebfe5a5bcd/quest-current-check/
+(result.json, browser-current.png, vr-current.png).
+Found: quest-look.mjs perf counts intervals over 1000/72 + 2 ms, although its text says "slower than 72 Hz".
+Treat that counter as having a 2 ms tolerance; do not report it as a strict 72 Hz check.
+Not done: full room playthrough, all controls/locomotion, audio, sustained stability, store build or purchases.
+No game code changed, publication made, review record fabricated, or feature acceptance recorded.
+Next: one bounded gameplay task, using this proven current-code path; exact publication review remains outstanding.
+
 ## 2026-10-16 — Codex trial migration baseline
 The owner asked Codex to take over reversibly, preserve prior work, assess the whole tool chain, and teach him one useful action at a time.
 Owner guide: https://chatgpt.com/space/page_42ac40c68e748191affb6ef7b9686d0e (read back; rendering not inspected).

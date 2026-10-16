@@ -10,6 +10,18 @@
 // his either: logged, a yes among them would count as his acceptance of a feature (tools/claude-guard.mjs accepted)
 const NOTICE = /^\s*(<(task-notification|system-reminder|agent-message|artifact-view-context|ci-monitor-event|side-sessions-event|cross-session-message|scheduled-task)\b|Background \(from the session that started this one\):)/;
 // his own text, or '' for a notice
+import path from 'node:path';
+import crypto from 'node:crypto';
+
+// Bind new Codex owner messages to a checkout; old Claude entries retain their old semantics.
+export function ownerRoot(root) {
+  const resolved = path.resolve(root);
+  return crypto.createHash('sha256').update(process.platform === 'win32' ? resolved.toLowerCase() : resolved).digest('hex');
+}
+export function ownerEntryApplies(header, root) {
+  return !header.includes(' codex:') || header.match(/ codex:([a-f0-9]{64}):[\w-]+:[\w-]+$/)?.[1] === ownerRoot(root);
+}
+
 export function ownText(text) {
   const own = String(text).replace(/^(\s*<system-reminder>[\s\S]*?<\/system-reminder>)+/, '').trim();
   return own && !NOTICE.test(own) ? own : '';

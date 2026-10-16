@@ -1,5 +1,23 @@
 # What to take when
 
+## Codex migration events
+`tools/codex-events.mjs` records documented UserPromptSubmit and scoped reviewer start/stop events.
+Project configuration: .codex/hooks.json; reviewer profiles: .codex/agents/. The profiles inherit the model;
+they do not start themselves, delegate, or create automatic review loops.
+The bridge keeps the existing local journals and acceptance gate. Codex owner messages are bound to their
+checkout; replayed messages do not refresh acceptance. A completed review preserves its final report and
+requires a matching start and unchanged reviewed files. Completion does not mean no findings or owner approval.
+`node tools/codex-events.mjs --status` reads recorded events and a leftover lock, without writing a journal.
+Zero events is not a successful activation. Config presence does not establish runtime hook trust.
+New/changed hooks must be reviewed through Codex's normal trust UI; the documented CLI entry is /hooks.
+After trust, verify a new neutral user message reaches the log, then observe a real, needed scoped reviewer
+with its actual agent type. Never create synthetic success records in the owner's journal for this test.
+The isolated `tests/codex-events.test.mjs` is in npm test; it uses temporary journals and checks the Windows command.
+If codex-events.lock remains after a crash, inspect its PID before removing that specific stale lock; do not
+erase journals. These local files are not a tamper-proof audit or a substitute for checking review findings.
+Existing Claude entries retain their older acceptance semantics. Other Claude event guards are not migrated.
+Sources: https://learn.chatgpt.com/docs/hooks and https://learn.chatgpt.com/docs/agent-configuration/subagents .
+
 ## Before a task: what to read first
 The book: Gregory, Game Engine Architecture, 4th ed. (2026): objekt-files/books/gregory-2026-4th-vol1.txt and vol2
 (the Russian 3rd ed. for quoting him: gregory-2021-ru-3rd.txt). VR: A-Frame 1.8.0's docs
