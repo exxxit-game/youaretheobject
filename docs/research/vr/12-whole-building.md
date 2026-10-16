@@ -56,6 +56,17 @@ https://archive.org/details/boca-basic-building-code-1978 (text: objekt-files/pa
   designating the floor level above the floor of discharge" (the stair sign, see 10-floor-directory.md, 3).
 - NFPA 101-1973 (helper's reading of the scanned book's search, OCR, not opened by me): two exits a floor (13-2411),
   elevators not an exit (13-42). The 1976 edition, and which code Evanston enforced in 1979: **unverified**.
+- Pages only a person can open (listed by the helpers on 15.10, given to the owner on 16.10); none changes what is
+  built, which follows BOCA 1978 as read above: the Uniform Building Code of 1976
+  (https://archive.org/details/uniformbuildingc0000unse_g4g9) and 1979
+  (https://archive.org/details/uniformbuildingc0000vari_l1f7), an archive.org loan, for when its "half the diagonal"
+  rule for exit spacing replaced the 1964 edition's "one-fifth of the perimeter"; NFPA's 1981 Life Safety Code
+  Handbook (https://archive.org/details/lifesafetycodeha0000lath, a loan), for which edition moved colleges into the
+  business occupancy; the 1973 Life Safety Code's leaf 213, Table A-5-118 (https://archive.org/details/lifesafetycode1900nati,
+  a loan), for its dead-end limits. Closed to us both: Harvard's William James Hall drawings
+  (https://harvardplanning.emuseum.com/objects/111748, Harvard staff only); UIC's record drawings of SEO (its facilities
+  site https://fimweb.vcas.uic.edu/Public/BuildingSummary opens to a guest and lists "0631 - Science & Engineering
+  Offices (SEO)"; whether its "Record Drawings" archive needs a university login: **unverified**).
 
 ## 3. Our floor against them
 
