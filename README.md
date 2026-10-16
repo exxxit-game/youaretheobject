@@ -13,3 +13,5 @@ Each room is one experiment: first it catches you, then it shows you honestly ho
 Play: https://youaretheobject.com (in a headset, press VR).
 
 For developers and AI agents: start with [ARCHITECTURE.md](ARCHITECTURE.md) and [CLAUDE.md](CLAUDE.md).
+
+Codex continuation: [AGENTS.md](AGENTS.md), then the latest [progress entry](docs/progress.md).

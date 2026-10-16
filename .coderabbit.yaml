@@ -11,6 +11,7 @@ reviews:
   high_level_summary_in_walkthrough: true
   request_changes_workflow: false    # never approves anything by itself
   commit_status: true                # each pull request shows whether the review of its last push has finished;
+  fail_commit_status: true           # a review error must be visible; a skipped review still needs a separate check
   review_progress: false             # the schema uses commit_status only with this off (check runs instead)
   auto_review:
     enabled: true
@@ -60,5 +61,6 @@ knowledge_base:
   code_guidelines:
     enabled: true
     filePatterns:                    # CLAUDE.md is read by default; its import is not followed
-      - "docs/owner-decisions.md"
+      - files: "docs/owner-decisions.md"
+        applyTo: "**/*"              # a bare docs/ path scopes the guidance only to documents
       - "ARCHITECTURE.md"

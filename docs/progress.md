@@ -5,28 +5,37 @@ The newest entry is read at the start of every session, with `git log --oneline 
 feature at hand goes to the end of docs/board.md, one line each.
 Entries of 14.10 and before: docs/progress-2026-10-14.md; the earlier ones of 15.10: docs/progress-2026-10-15.md.
 
+## 2026-10-17 - Close false readiness and distinguish the Codex handover from old setup claims
+Starting version: 693a0a4, codex/trial-migration. finish now rejects green skipped/missing/failed reviews, missing or failed tests,
+drafts, unresolved discussions and a mismatched PR head; --check reads without publishing or asking a bot. Regression tests join npm test.
+CodeRabbit config makes review errors fail and applies owner decisions to all paths; drafts and automatic code fixes stay disabled.
+AGENTS, README and state identify the tested checkout, the owner's Chrome read-only permission, historical Claude claims and unverified recovery.
+Validation: npm test passed including finish readiness/mode tests; diff --check passed. The first run caught a misplaced map entry, now fixed.
+Live settings are unchanged. Codex still records zero real events; activation is unverified. Next: update draft PR #28, inspect its exact-head CI, then approve specific GitHub settings.
+
+## 2026-10-16 - GitHub settings read in the owner's authorized Chrome; no settings changed
+Draft PR #28 is open against room-polish, head 693a0a4; GitHub run 38962201372 passed all stages.
+CodeRabbit explicitly skipped the draft despite a green status. It has not reviewed this version.
+A finish.mjs correction and isolated passing readiness tests are in Temp/objekt-github-audit-20261016 only.
+UI confirmed: Actions default token read-only, self-approval off; main requires PR and test from GitHub Actions.
+room-polish only prevents deletion/force push: PR/tests are not required. Review-conversation resolution is off.
+Dependency graph/Dependabot alerts are off; CodeQL is unconfigured. Secret/push protection and Pages HTTPS are on.
+Six app installations: evidence in objekt-files/notes/codex-github-audit-2026-10-16.json, outside this public repo.
+Next: get specific approval for live settings; integrate the prepared finish/CodeRabbit corrections and test.
+Codex real callback activation and external-service billing/configuration remain unverified.
+
 ## 2026-10-16 - Codex event bridge prepared; runtime activation remains unverified
-The owner asked for a useful concrete tool and to start working. Added tools/codex-events.mjs, its isolated
-test, .codex/hooks.json and two native reviewer profiles. They record events; they do not start reviewers.
-The adapter uses documented final-message fields, not Claude transcript parsing. Reviews need a matching
-session/agent/checkout start, a complete final report, and unchanged reviewed files. The full report is kept.
-Codex owner messages carry checkout provenance. Duplicate events do not refresh acceptance or override a later
-stop. The existing acceptance reader rejects another checkout's Codex entries; legacy Claude records remain valid.
-Validation: npm test passed including the new isolated event tests and existing guard/review-gate tests.
-The exact Windows hook command was exercised in a temporary checkout with spaces, including a nested cwd and
-failure exit. TOML profiles parse; these checks do not prove Codex loads them or emits their events.
-The first test draft replaced only one fixture's root; corrected to replace all. Windows command test initially
-double-escaped its shell argument; corrected. Structure found the new files missing from the map; map updated.
-The process-size test also failed: the Claude-era list excluded new Codex steering. Proposed for PR review:
-include AGENTS.md, Codex configuration/profiles, the bridge and owner-links in the count; baseline 116793 to
-134147 characters (+17354). This is an explicit migration increase, not a reduction. The growth check and
-1000-character ratchet stay. This budget change needs the existing PR review before merging; no main update.
-Real journals were unchanged by testing (SHA-256 owner messages 4933e4378c44..., reviews 2e92f5f8681e...).
-Read-only status reports zero Codex owner/reviewer events and no journal lock. Runtime trust and actual callback
-delivery have NOT been established; no real review, feature acceptance, or game release is claimed.
-Next: inspect/trust the prepared hooks through the normal Codex UI in this trial checkout, observe a neutral
-owner message, then one real scoped review when needed. Do not manually inject success records to validate it.
-Operational details and official sources: docs/tools.md. The primary checkout still only has the handoff file.
+Added tools/codex-events.mjs, isolated tests, .codex/hooks.json and two reviewer profiles. They record events; they do not start reviewers.
+Reviews require matching session/agent/checkout, a complete final report and unchanged files. Owner messages carry checkout provenance;
+duplicates cannot refresh acceptance, another checkout is rejected, and legacy Claude records remain valid.
+npm test passed. The Windows command worked in a temporary path with spaces, nested cwd and a failure exit; TOML profiles parsed.
+Corrected the first fixture-root replacement, shell escaping and missing architecture-map entries before passing.
+The size check exposed uncounted Codex steering. Explicit migration proposal: include AGENTS, Codex profiles/hooks, bridge and owner-links;
+baseline 116793 to 134147 characters (+17354). The growth check and 1000-character ratchet remain; PR review is still required.
+Real journals were unchanged (SHA-256 owner messages 4933e4378c44..., reviews 2e92f5f8681e...); status showed zero Codex events, no lock.
+Runtime trust/callback delivery, real review and feature acceptance are NOT established. No game release is claimed.
+Next: normal hook trust/activation in the trial, a neutral real owner message, then a real scoped review when needed. Never inject success records.
+Details and sources: docs/tools.md. The primary checkout retains its handoff and owner changes.
 
 ## 2026-10-16 - Codex readiness recheck: migration is not finished
 The owner asked for an evidence-based handover, useful integrations and reliable continuation between chats.
