@@ -9,9 +9,11 @@ Entries of 14.10 and before: docs/progress-2026-10-14.md; the earlier ones of 15
 Starting version: 693a0a4, codex/trial-migration. finish now rejects green skipped/missing/failed reviews, missing or failed tests,
 drafts, unresolved discussions and a mismatched PR head; --check reads without publishing or asking a bot. Regression tests join npm test.
 CodeRabbit config makes review errors fail and applies owner decisions to all paths; drafts and automatic code fixes stay disabled.
-AGENTS, README and state identify the tested checkout, the owner's Chrome read-only permission, historical Claude claims and unverified recovery.
+AGENTS, README and state identify the tested checkout, the owner's scoped Chrome permission, historical Claude claims and unverified recovery.
 Validation: npm test passed including finish readiness/mode tests; diff --check passed. The first run caught a misplaced map entry, now fixed.
-Live settings are unchanged. Codex still records zero real events; activation is unverified. Next: update draft PR #28, inspect its exact-head CI, then approve specific GitHub settings.
+Owner explicitly approved and I saved: room-polish requires PR, test from GitHub Actions and resolved discussions; main now requires resolved discussions; dependency graph and Dependabot alerts enabled.
+Ruleset API readback confirms both active, test source 15368, zero required human approvals, no bypass; Chrome confirms dependency settings saved. Automatic updates stay off; CodeQL remains unconfigured.
+Code 32710b9 is in draft PR #28; live finish --check correctly rejects its skipped CodeRabbit review. CI 38968068791: npm test passed, smoke pending at this record. Next: real CodeRabbit review, Codex callback activation (still zero events), and recovery verification.
 
 ## 2026-10-16 - GitHub settings read in the owner's authorized Chrome; no settings changed
 Draft PR #28 is open against room-polish, head 693a0a4; GitHub run 38962201372 passed all stages.
