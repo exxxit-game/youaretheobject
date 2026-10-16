@@ -67,8 +67,12 @@ https://archive.org/details/boca-basic-building-code-1978 (text: objekt-files/pa
   apart (plan.js, bays -2 and 2), half the floor's overall diagonal 9.7 m (its outline 15.0 x 12.2 m with walls,
   the rooms 3.2 m deep as room 01, the core 6.4 m: 19.3 m corner to corner; it passes up to a 20.7 m deep outline). The 1979 edition (https://archive.org/details/uniformbuildingc0000vari_l1f7) is
   then not needed for this. NFPA's 1981 Life Safety Code
-  Handbook (https://archive.org/details/lifesafetycodeha0000lath, a loan), for which edition moved colleges into the
-  business occupancy; the 1973 Life Safety Code's leaf 213, Table A-5-118 (https://archive.org/details/lifesafetycode1900nati,
+  Handbook (https://archive.org/details/lifesafetycodeha0000lath), **searched** on 16.10 by the owner's loan (its
+  search-inside list for "college" on his screenshots, same folder): p. 23 "College classroom buildings are considered
+  Business Occupancies"; p. 24 the business list holds "College and university-instructional buildings, classrooms
+  under 50 persons, and instructional laboratories"; p. 254 "Because of the maturity of the occupants, college
+  buildings more properly resemble office occupancies". So our floor is an office (business) floor in 1981 as in BOCA
+  1978's use group B; which edition first moved colleges there: **unverified**, not needed. The 1973 Life Safety Code's leaf 213, Table A-5-118 (https://archive.org/details/lifesafetycode1900nati,
   a loan), for its dead-end limits. Closed to us both: Harvard's William James Hall drawings
   (https://harvardplanning.emuseum.com/objects/111748, Harvard staff only); UIC's record drawings of SEO (its facilities
   site https://fimweb.vcas.uic.edu/Public/BuildingSummary opens to a guest and lists "0631 - Science & Engineering
