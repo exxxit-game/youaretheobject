@@ -138,7 +138,7 @@ Checked: npm test green; tools/prove-guards.mjs on the laptop, all 48 guards saw
 by GitHub's run, fixed in 1f8e6ff); GitHub's test green; CodeRabbit on #22: four findings fixed, one kept with a reason.
 Not checked: the hooks act only after the merge and the main folder's pull; whether his measure reaches him at a
 new window's start; the update's three checks (an edit passes in auto mode, the guard refuses a commit that skips
-the hooks, the measure shows). Checked on 16.10 (the window «Доделать забытое»): edits pass in auto mode (every edit of that window landed); the refusal of a commit that skips the hooks is asserted by tests/guard.test.mjs (npm test green); the measure line was printed at that window's start and said to him; on his screen: not checked.
+the hooks, the measure shows). Checked on 16.10 (the window that finished the forgotten items): edits pass in auto mode (every edit of that window landed); the refusal of a commit that skips the hooks is asserted by tests/guard.test.mjs (npm test green); the measure line was printed at that window's start and said to him; on his screen: not checked.
 Errors of mine: I began removing the watchers on the earlier window's confirmation, not on his word here; a mistake
 planted into a file the acceptance gate imports left a guard blind; a node one-liner wrote literal line breaks into a
 test (restored, redone with Edit); the list's first form copied "his choice" onto technical items and turned "not
