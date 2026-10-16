@@ -47,8 +47,12 @@ GitHub's runs on d7d25c7 and 416c5ed green. CodeRabbit's second round, four find
 buttons taken away, end stops when its step was not shown, a power dump the tools cannot read counts as neither on
 nor off the head (no VR, no restart, no sleep on it); and passes was set true with the acceptance while a run was
 pending: answered with the runs, all green.
+The headset answers tried in the headset with him: quest-look ask showed the question with two buttons, his press
+came back (the first button, "I see them, pressing"); end waited until he took the headset off, asked the HUD off and put
+it to sleep. (The laptop's preview server had stopped overnight: the headset showed an empty page until it was
+started again.)
 Not done: the merge into room-polish (I try it myself first; if refused, his merge button with "Create a merge
-commit"), the main folder pulled; the headset answers (ask, end) tried in the headset with him.
+commit"), the main folder pulled.
 Next: room 01's paper findings (the board's end: the green-light tapes have a learnable pattern while the player is
 told it is chance), the corridor's light (feature 4), and the board's three thoughts on the elevators, their jamb
 numbers and an EXIT sign over the stairs.
