@@ -29,6 +29,12 @@ Done:
   headset (90 fps, 31 draw calls, OVR Metrics' HUD on), then his: he accepted item 3 (16.10). passes: true.
 - His two requests on the headset: OVR Metrics' HUD on at every look in VR, off when the look ends (tools/quest-look.mjs
   vr and sleep).
+- His request to answer from inside the headset (he cannot press the chat's buttons with the headset on): his choice of
+  my mixed advice, now: tools/quest-look.mjs ask (a question in the headset, its answers as the game's own buttons
+  under the controller's ray) and end (the last step: take it off and answer in the chat; then the HUD off and
+  asleep); his acceptance of a thing stays in the chat, his own channel (a press in the headset passes through my
+  tool's link to the page). Checked on the laptop (a press recorded, the note and buttons gone); in the headset with
+  him tomorrow.
 Errors of mine: search words given to DPLA that found nothing; the elevators drawn a third of their size, so variant A
 had to be redrawn after he chose it; variant A called the 1968 building "as is" (it is modelled on it: one corridor,
 not two offset wings); floor 1's stairs first drawn leaving through the hall (BOCA 611.5); the floor directory first

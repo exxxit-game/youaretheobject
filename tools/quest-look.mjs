@@ -28,6 +28,14 @@
 //                                              check the mix (LEVELS below); exits 1 when it is off
 //   node tools/quest-look.mjs say "<step>" ["<small line>"]   show the owner his next step inside the
 //                                              headset ("say off" takes it away)
+//   node tools/quest-look.mjs ask "<question>" "<answer>" ["<answer>" ...]   a question inside the
+//                                              headset, its answers as buttons he presses with the
+//                                              controller's ray; prints his answer (waits 10 min). While
+//                                              he wears the headset nothing waits on the chat: every
+//                                              step and question goes here (his request)
+//   node tools/quest-look.mjs end "<step>" ["<small line>"]   the look's last step (take the headset
+//                                              off, what to answer in the chat); once it is off, OVR
+//                                              Metrics' HUD off and the headset asleep
 //   node tools/quest-look.mjs perf             five seconds of frames: rate, slow frames, draw calls,
 //                                              triangles; exits 1 over Meta's Quest 2 budget
 // Screenshots taken by the headset itself show the room through its cameras while it lies on
@@ -37,7 +45,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { adb, serveToHeadset, localPort, worn, sleepNow, openUrl, page, wornByPerson, restartBrowser, openGame, screencap, noteScript } from './headset.mjs';
+import { adb, serveToHeadset, localPort, worn, sleepNow, openUrl, page, wornByPerson, restartBrowser, openGame, screencap, noteScript, answersScript } from './headset.mjs';
 import { requireReview, requirePaper } from './review-gate.mjs';
 
 const PREVIEW = 'https://exxxit-game.github.io/object-preview/';
@@ -50,6 +58,8 @@ const PREVIEW = 'https://exxxit-game.github.io/object-preview/';
 // in the headset (docs/mistakes.md).
 const LEVELS = { eventUnderVoicePeak: [0, 12], humUnderVoiceRms: [15, 30], eye: 1.6 };
 const [cmd, arg] = process.argv.slice(2);
+// how long a question in the headset waits for his press, and the last step for him to take it off
+const ASK_MS = 10 * 60 * 1000;
 
 if (cmd === 'open') {
   // local: the laptop's server, seen by the headset through the cable as its own localhost:3000
@@ -182,6 +192,32 @@ if (cmd === 'reload') {
   // The owner's next step inside the headset: where it stands and why, in tools/headset.mjs noteScript
   const v = await run(noteScript(String(arg || ''), process.argv[4] || ''));
   console.log(JSON.stringify(v));
+} else if (cmd === 'ask') {
+  // A question in the headset answered in the headset: the note, its answers as buttons under it
+  // (headset.mjs answersScript); waits for his press up to ASK_MS and prints the answer chosen
+  const labels = process.argv.slice(4).filter(Boolean);
+  if (!arg || !labels.length) { console.log('usage: ask "<question>" "<answer>" ["<answer>" ...]'); process.exit(1); }
+  const shown = await run(noteScript(String(arg), ''));
+  const v = shown && !shown.error ? await run(answersScript(labels)) : shown;
+  if (!v || v.error) { console.log(JSON.stringify(v)); process.exit(1); }
+  let answer = null;
+  for (const end = Date.now() + ASK_MS; answer === null && Date.now() < end;) {
+    await new Promise((r) => setTimeout(r, 500));
+    answer = await run('window.__ownerAnswer ?? null', false);
+  }
+  console.log(answer === null ? `no answer in ${ASK_MS / 60000} minutes` : `answer: ${answer}`);
+  if (answer === null) process.exit(1);
+} else if (cmd === 'end') {
+  // The look's last step: what to do now (take the headset off and answer in the chat), shown in the
+  // headset; once he takes it off (its proximity sensor), OVR Metrics' HUD off and the headset asleep,
+  // so nothing of the look waits on him with the headset on
+  const v = await run(noteScript(String(arg || ''), process.argv[4] || ''));
+  console.log(JSON.stringify(v));
+  for (const end = Date.now() + ASK_MS; wornByPerson() && Date.now() < end;) await new Promise((r) => setTimeout(r, 1000));
+  hud(false);
+  // never put to sleep on his head: still worn after the wait, the headset is left awake
+  if (wornByPerson()) console.log("still worn after the wait; OVR Metrics' HUD asked off; left awake");
+  else { sleepNow(); console.log("taken off; OVR Metrics' HUD asked off; asleep"); }
 } else if (cmd === 'frame') {
   // What the headset shows, both eyes, taken by the headset itself (screencap): reading the page's own
   // pixels came out black once both eyes were drawn in one pass (multiview draws into a texture
