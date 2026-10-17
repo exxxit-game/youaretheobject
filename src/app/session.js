@@ -1,4 +1,4 @@
-import { sendResult, sendPlaytest, sendIssue, markPlayed } from '../engine/results.js';
+import { sendResult, sendPlaytest, sendIssue, markPlayed, compareRoom } from '../engine/results.js';
 import { issueReport } from './issue-report.js';
 import { CONSENT_VERSION } from './consent.js';
 
@@ -7,7 +7,8 @@ import { CONSENT_VERSION } from './consent.js';
 
 // The test copy for the owner's headset (exxxit-game.github.io/object-preview, made by
 // tools/publish-preview.mjs) never sends: our own checks must not reach the statistics.
-export const PREVIEW = location.pathname.startsWith('/object-preview');
+export const PREVIEW = globalThis.document?.documentElement?.dataset?.preview === 'true'
+  || location.pathname.startsWith('/object-preview');
 
 // Results are sent only with the privacy page published (privacy.html) and only
 // when the player chose "start with recording".
@@ -51,6 +52,7 @@ export function createSession(roomId, roomVersion) {
     // context() returns { state, xr } at the moment of the error.
     watchIssues(context) {
       const add = (err) => {
+        if (seen.size >= MAX_ISSUES) return;
         const report = issueReport(err, { ...context(), userAgent: navigator.userAgent });
         const key = report.kind + report.message + report.file + report.line;
         if (seen.has(key)) return;
@@ -61,6 +63,7 @@ export function createSession(roomId, roomVersion) {
       window.addEventListener('error', (e) => add({ kind: 'error', message: e.message, file: e.filename, line: e.lineno }));
       window.addEventListener('unhandledrejection', (e) => add({ kind: 'rejection', message: (e.reason && (e.reason.message || String(e.reason))) || 'unknown' }));
     },
+    compare() { return canSend() ? compareRoom(roomId, roomVersion) : Promise.resolve(null); },
     get record() { return record; },
     get first() { return first; },
     // Sends the report when the player agreed and this is a real-speed run.

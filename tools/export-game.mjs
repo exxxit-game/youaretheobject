@@ -78,7 +78,7 @@ export function exportGame(root, output, { previous, preview = false } = {}) {
     fs.writeFileSync(target, file.data);
   }
   const index = path.join(output, 'index.html');
-  if (preview) fs.writeFileSync(index, fs.readFileSync(index, 'utf8').replace('<head>', '<head>\n  <meta name="robots" content="noindex, nofollow">'));
+  if (preview) fs.writeFileSync(index, fs.readFileSync(index, 'utf8').replace('<html ', '<html data-preview="true" ').replace('<head>', '<head>\n  <meta name="robots" content="noindex, nofollow">'));
   fs.writeFileSync(path.join(output, '.nojekyll'), '');
   const manifest = prepareDelivery(output);
   if (previous) retainObjects(previous, output);

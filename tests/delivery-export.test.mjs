@@ -7,18 +7,30 @@ import { gunzipSync } from 'node:zlib';
 import { execFileSync } from 'node:child_process';
 import { publicationSnapshot } from '../tools/verify-delivery.mjs';
 import { exportGame, retainObjects } from '../tools/export-game.mjs';
-import { ROOT, hash } from '../tools/delivery-pack.mjs';
+import { ROOT, hash, deliveryFiles } from '../tools/delivery-pack.mjs';
+import { fingerprint } from '../tools/review-gate.mjs';
 
 const folder = fs.mkdtempSync(path.join(os.tmpdir(), 'object-game-export-'));
 try {
   const a = path.join(folder, 'A'), b = path.join(folder, 'B');
+  const source=path.join(folder,'source');fs.mkdirSync(source);
+  for(const file of deliveryFiles(ROOT)){const target=path.join(source,file.path);fs.mkdirSync(path.dirname(target),{recursive:true});fs.writeFileSync(target,file.data);}
+  fs.writeFileSync(path.join(source,'src/.local-note'),'NONSECRET TEST NOTE');
+  fs.mkdirSync(path.join(source,'vendor/.private'));fs.writeFileSync(path.join(source,'vendor/.private/note.txt'),'NONSECRET TEST NOTE');
+  const filtered=exportGame(source,path.join(folder,'filtered'),{preview:true});
+  assert.ok(!filtered.files.some(file=>file.path.split('/').some(part=>part.startsWith('.'))),'hidden files cannot enter the manifest');
+  assert.ok(!fs.existsSync(path.join(folder,'filtered/src/.local-note')),'hidden files cannot enter the raw fallback');
+  const before=fingerprint(source);fs.writeFileSync(path.join(source,'tools/export-game.mjs'),'changed export recipe');
+  assert.notEqual(fingerprint(source),before,'a changed export recipe must invalidate a previous review');
   const first = exportGame(ROOT, a, { preview: true });
   const second = exportGame(ROOT, b, { previous: a, preview: true });
   assert.equal(first.version, second.version, 'same files produce the same release');
   const entry = fs.readFileSync(path.join(a, 'index.html'), 'utf8');
   assert.ok(entry.includes('data-delivery="prepare"') && entry.includes('noindex, nofollow'));
   assert.ok(!entry.includes('aframe-1.8.0.min.js'), 'uncontrolled shell must not start a mixed game');
-  assert.ok(fs.readFileSync(path.join(a, 'uncached.html'), 'utf8').includes('AFRAME_CDN_ROOT'));
+  const fallback=fs.readFileSync(path.join(a,'uncached.html'),'utf8');
+  assert.ok(fallback.includes('AFRAME_CDN_ROOT'));
+  assert.ok(fallback.includes('data-preview="true"'),'plain fallback must keep preview protection at every URL');
   for (const file of first.files) {
     const data = Buffer.concat(file.parts.map(part => {
       const data = fs.readFileSync(path.join(a, 'delivery/objects', part.sha256 + '.bin'));

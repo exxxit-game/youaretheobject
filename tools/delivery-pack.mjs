@@ -1,26 +1,17 @@
-// A local transfer probe, not a game build or a publication command.
+// Shared chunk format and local transfer inventory; this file never publishes.
 // Reuse the preview allowlist; never package the repository or private notes.
 import fs from 'node:fs';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { PUBLIC } from '../tests/static-server.mjs';
+import { PUBLIC, publicFiles } from './public-files.mjs';
 
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 export const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 export const CHUNK_BYTES = 256 * 1024;
 
-export function deliveryFiles(root = ROOT) {
-  function walk(rel) {
-    const stat = fs.lstatSync(path.join(root, rel));
-    if (stat.isSymbolicLink()) throw new Error(`Refusing link: ${rel}`);
-    if (stat.isDirectory()) return fs.readdirSync(path.join(root, rel)).sort()
-      .flatMap(name => walk(`${rel.replace(/\/$/, '')}/${name}`));
-    return [{ path: rel, data: fs.readFileSync(path.join(root, rel)) }];
-  }
-  return PUBLIC.flatMap(walk).sort((a, b) => a.path < b.path ? -1 : 1);
-}
+export const deliveryFiles = (root = ROOT) => publicFiles(root);
 
 export function makePack(entries, chunkBytes = CHUNK_BYTES) {
   if (!Number.isSafeInteger(chunkBytes) || chunkBytes < 1) throw new Error('Invalid chunk size');

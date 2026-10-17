@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+const timers=new Map();let next=0,now=0,paused=false;
+const source=fs.readFileSync(new URL('../src/rooms/01-control/flow.js',import.meta.url),'utf8').replace('export function','function');
+const create=vm.runInNewContext(source+';createRun',{performance:{now:()=>now},setInterval:fn=>{timers.set(++next,fn);return next;},clearInterval:id=>timers.delete(id)});
+const flow=create(()=>paused), tick=ms=>{now+=ms;for(const fn of [...timers.values()])fn();};
+let finished=false;const delayed=flow.within(flow.delay(100));delayed.then(()=>{finished=true;});
+paused=true;tick(1000);await Promise.resolve();assert.equal(finished,false);
+flow.end();assert.equal(timers.size,0,'leaving a paused room must cancel its timer immediately');
+paused=false;tick(1000);await Promise.resolve();assert.equal(finished,false,'old flow must never continue');
+const nextRun=flow.within(flow.delay(100));tick(100);await nextRun;assert.equal(timers.size,0);
+console.log('room flow: pause, immediate cancellation and fresh re-entry passed');

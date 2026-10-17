@@ -108,6 +108,9 @@ try {
   mode = ''; bad = '';
   assert.deepEqual(Buffer.from(await (await rollback.request(lazy.path)).arrayBuffer()), model);
   assert.equal(hash(model), lazy.sha256);
+  await cache.delete(url);cache.blocked=part.sha256;
+  assert.deepEqual(Buffer.from(await (await rollback.request(lazy.path)).arrayBuffer()),model,'a full cache must not break a verified on-demand download');
+  assert.equal(await cache.match(url),undefined,'failed storage is not reported as cached');cache.blocked='';
   const zipped = { ...a.manifest, files:a.manifest.files.map(file=>({...file,parts:file.parts.map(part=>({...part,gzipBytes:gzipSync(all.get(part.sha256)).length}))})) };
   for(const hostDecodes of [false,true]) {
     wireGzip=hostDecodes;

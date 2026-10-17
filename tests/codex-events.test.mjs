@@ -115,7 +115,7 @@ try {
   assert.equal(gate(), 1, 'a failed journal write became an acceptance');
 
   // Exercise the CLI and the exact configured Windows command, with paths containing spaces.
-  for (const f of ['tools/codex-events.mjs', 'tools/owner-links.mjs', 'tools/review-gate.mjs', 'tools/secrets.mjs', 'tests/static-server.mjs', '.codex/hooks.json']) {
+  for (const f of ['tools/codex-events.mjs', 'tools/owner-links.mjs', 'tools/review-gate.mjs', 'tools/public-files.mjs', 'tools/secrets.mjs', 'tests/static-server.mjs', '.codex/hooks.json']) {
     put(f, fs.readFileSync(path.join(ROOT, f), 'utf8'));
   }
   const cli = (input) => run(process.execPath, ['tools/codex-events.mjs'], { input });

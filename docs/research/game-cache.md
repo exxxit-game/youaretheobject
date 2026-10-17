@@ -51,3 +51,7 @@ The live publisher's clone/retain/push/Pages round trip has not run. CDN caching
 Server object history is retained without automatic pruning: set a release-retention policy before substantial growth. Browser cache may be evicted; a fresh profile, cleared storage or missing lazy asset can require another download. No full offline play, worldwide reach, protected paid floors or independent backup origin is established by this change.
 
 Lifecycle and format references: [Service Workers specification](https://www.w3.org/TR/service-workers/), [updateViaCache](https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerRegistration/updateViaCache), [CacheStorage](https://developer.mozilla.org/en-US/docs/Web/API/CacheStorage), [DecompressionStream](https://developer.mozilla.org/en-US/docs/Web/API/DecompressionStream), [Git attributes](https://git-scm.com/docs/gitattributes).
+
+## Source audit follow-up, 17 October 2026
+
+The measurements above belong to commit 802847f and its exact export manifests. The subsequent source audit found and fixed hidden-file export, incomplete review fingerprints, URL-dependent preview protection, active lazy-load quota failure and filesystem-link escapes. Source-audit details and test evidence: docs/research/source-audit.md. The old statement that the room paper gate is present does not apply after the room changes in this audit; fresh gates are required. No new live-provider measurement is claimed.

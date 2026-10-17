@@ -28,7 +28,7 @@ export function deliveryWorker(manifest) {
     return bytes;
   }
 
-  async function partBytes(part) {
+  async function partBytes(part, required = false) {
     if (pending.has(part.sha256)) return pending.get(part.sha256);
     const task = (async () => {
       const cache = await objects(), url = key(part.sha256), stored = await cache.match(url);
@@ -47,7 +47,12 @@ export function deliveryWorker(manifest) {
         // Some hosts add Content-Encoding and fetch already decompresses the object.
         if (compressed && !await valid(bytes, part)) bytes = await readBounded(new Response(bytes).body.pipeThrough(new DecompressionStream('gzip')), part.bytes);
         if (!await valid(bytes, part)) throw new Error('Part integrity failed');
-        await cache.put(url, new Response(bytes));
+        try { await cache.put(url, new Response(bytes)); }
+        catch (error) {
+          // A candidate must persist its core; an active game's lazy asset may still play online.
+          if (required) throw error;
+          console.warn('Game asset verified but not cached', error);
+        }
         return bytes.buffer;
       } finally { clearTimeout(timer); controller.abort(); }
     })();
@@ -59,7 +64,7 @@ export function deliveryWorker(manifest) {
   self.addEventListener('install', event => event.waitUntil((async () => {
     // A failed candidate never activates. Already verified pieces survive a retry.
     const parts = [...partsFor(manifest.files.filter(file => file.core)).values()];
-    for (let i = 0; i < parts.length; i += 4) await Promise.all(parts.slice(i, i + 4).map(partBytes));
+    for (let i = 0; i < parts.length; i += 4) await Promise.all(parts.slice(i, i + 4).map(part => partBytes(part, true)));
   })()));
   self.addEventListener('activate', event => event.waitUntil((async () => {
     const state = await metadata(), activeKey = new URL('delivery/active', scope).href;
