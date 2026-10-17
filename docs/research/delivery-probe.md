@@ -1,7 +1,7 @@
 # Delivery probe: measured files and two-source recovery
 
 17 October 2026. Base: codex/trial-migration, 267bbbace57ce38a17618cb721edb21b6e133fce.
-This is a local transport experiment. The game does not import the downloader; no floor is accepted or released.
+Local transport experiment plus a public-file Gcore HTTPS probe. Code verified at 422f0bcfd89285eff955ab28467a903b726ff558. The game does not import the downloader; no floor is accepted or released.
 Decision context: [store-fees-own-sales.md](store-fees-own-sales.md), [engine-native.md](engine-native.md).
 
 ## Measured inventory
@@ -81,7 +81,7 @@ Bunny: one Standard storage region (Frankfurt), one Volume pull zone, no Optimiz
 Gcore: one Standard PAYG object bucket in an available EU region, its own PAYG CDN resource, private origin authentication and secure CDN URLs. Do not point it at Bunny/R2.
 Account check: owner Chrome successfully opened Bunny, Gcore and Cloudflare. Gcore storage onboarding reached payment-info-management: required billing address and card/PayPal/other method verification, with an unspecified small charge and refund. No payment details entered or confirmation submitted by the assistant. A free CDN allowance is not an activated free storage origin.
 Assistant recommendation after the owner asked whether payment is worthwhile: use the free PAYG CDN allowance for a first full-transfer check on an already-public file before buying storage. The official PAYG announcement confirms no card or subscription is required to start. This shared-origin check can measure the CDN route, but cannot establish independent stored copies.
-The final attempt to read the account CDN overview failed because browser control was unattached. No CDN resource activation or real transfer is claimed. The owner has not authorized a charge.
+Before the subsequently authorized live setup below, browser attachment failed on the final overview check. That earlier attempt did not establish activation or transfer. The owner has not authorized a charge.
 On both: identical versioned files, binary MIME for parts, HTTPS, CORS for the exact test page origin, no HTML challenge for asset requests, bounded cache lifetime for authorization and immutable content caching after authorization.
 CDN cache-key/auth ordering, origin bypass, expired access and anonymous denial must be tested on BOTH services before any paid floor is uploaded. Do not expose keys in browser code or reports.
 Proposed traffic budget: at most 20 complete passes per provider (571,033,360 bytes including manifest), one copy per origin for one month; no persistent logs/add-ons/backend/DNS purchase.
@@ -110,8 +110,10 @@ Origin and Host header: youaretheobject.com; origin pull changed to HTTPS. No DN
 Saved browser caching at 600 seconds; edge caching respects origin headers. Disabled Always Online (stale content on error), preserved query strings/Set-Cookie behavior, and added X-Robots-Tag: noindex, nofollow.
 Mutable file names must not receive a year-long immutable policy. Browser freshness avoids network within its lifetime; after expiry an unchanged ETag can return 304 with no file body. Cache eviction/private browsing/hard reload can require another download.
 Actual public main is still the older A-Frame 1.7.1 build. GET of its vendor/aframe-1.7.1.min.js returned 1,277,857 bytes, SHA-256 79fbf09427910d43063d99fef43de771a0f37e05f7e61eff2414e6e2b0f448e0; conditional GET returned 304 and zero body bytes.
-The Gcore HTTP diagnostic still returned 503 (14-byte body); its settings UI warns of up to 15 minutes to propagate. A full Gcore transfer or cache success is NOT established.
-Namecheap authoritative DNS confirmed; its opened page requires owner sign-in. No CNAME or certificate issuance completed yet. HTTPS on the trial hostname is not ready. This is the next blocker, not a request to pay.
+After the owner signed in to Namecheap, added only CNAME cdn-probe -> cl-gl5b557661.gcdn.co; read back the saved row and authoritative DNS answer. Existing apex/www records stayed unchanged.
+Free Let's Encrypt issuance completed; normal curl TLS verification succeeded, without bypasses. HTTP-to-HTTPS redirect is not yet confirmed: after issuance the portal stayed on its loading skeleton across reload/new-tab attempts, so this optional setting could not be completed. HTTPS itself remains verified.
+At 2026-10-17T00:44:54.103Z, Gcore HTTPS returned 200 and 1,277,857 bytes with the exact reference SHA-256 above. Both conditional requests returned 304 and zero body; Cache: HIT, max-age=600 and noindex were present. A deliberately nonmatching validator returned 200 and the same complete file.
+This bounded check transferred 3,833,571 body bytes in total: one reference and two CDN bodies. It did not modify origin content and therefore does not prove a live multi-file release update. Earlier 503 responses and the temporary certificate-save error were superseded by these successful checks; no paid service was activated.
 
 Publication checks previously fetched every model/script/style on every retry (up to 12 complete rounds).
 
@@ -122,7 +124,7 @@ Publication checks previously fetched every model/script/style on every retry (u
 
 This fixes repeated verification traffic and configures ordinary browser HTTP caching; it is not an offline game installer, atomic multi-file release manager or paid-floor entitlement cache.
 Future immutable files require content hashes in their URLs/manifests, old-version retention during active sessions, changed-file cache invalidation at publication, and a real update/rollback test before cutover. Paid content/API responses need separate authorization/cache rules; this public probe must not be used as their policy.
-Evidence outside the repo: gcore-cache-settings.jpg and gcore-live-http.json in this chat's visualization directory. Network tests use public files only; the test script now keeps a validator for the reference file too.
+Evidence outside the repo: gcore-live-https.json, gcore-dns-record.jpg and gcore-cache-settings.jpg in this chat's visualization directory. Network tests use public files only; the test script now keeps a validator for the reference file too.
 Basis: [HTTP caching](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching) and the observed provider UI/headers. 304 saves file bytes, not all request/header traffic; automatic Quest/Safari reuse remains to measure on those devices.
 
 ## External acceptance still required
