@@ -5,6 +5,122 @@ The newest entry is read at the start of every session, with `git log --oneline 
 feature at hand goes to the end of docs/board.md, one line each.
 Entries of 14.10 and before: docs/progress-2026-10-14.md; the earlier ones of 15.10: docs/progress-2026-10-15.md.
 
+## 2026-10-17 - Complete-process request: workspace gap, index fix and recovery
+Owner asks for a reasoned process suited to our two-person studio before more game work, plain-language learning and no prolonged setup cycle. He clarified room-polish as the development/test branch and main as release, and supplied another person's advice as material to assess. No model change or release approval inferred. Technical details: docs/research/source-audit.md, process extension and branch/site map.
+Reproduced and fixed pre-commit parsing disk contents instead of staged contents; real Git regressions cover partial staging and commit -a. Configured trial-only Git hooks to use its own tools/hooks; primary unchanged. Full npm test passed at a964ea6, whose real pre-commit ran successfully. Codex entry instructions explicitly read the retained workflow.
+Recovered both source copies (637/616 files, dirty files included) from a separate F: snapshot, then all 2,205 recorded library files, checking every hash. Scope/time boundaries are in the report; this is not cloud, credential or live database recovery.
+At 4749351, CRLF mutation checks caught 37/37; LF had one refusal with missing diagnostics. Isolated secret-hook probes passed in both modes, but that alone did not close the full-run failure. Code checkpoint ee239d931fb64263a59603553ca8f6a312f71d4d now records subprocess errors/silent failures; four focused diagnostic cases passed, and the complete LF repeat caught 37/37. The original failure log remains; its cause is unknown. Whole old log entries moved without text loss; both working and prepared-commit structure checks passed.
+Live branch/site comparison: public main 26f0944 uses A-Frame 1.7.1; published preview's main.js matches ff7a812 and its index uses 1.8.0. Remote room-polish is 435e6d2, primary is 3084b40, current repairs are on the trial branch. Direct-source main publication does not deploy the new generated cache. Draft PR28 still targets room-polish. Evidence: branch-map.json and guards-lf-ee239d9.txt in the private source-audit folder.
+Quest 3 was connected, charging at 95%, not worn at 12:45 UTC; no new VR launch/playthrough. This chat remains in the old primary folder, while native hooks/profiles are in the trial. Supported attachment refused ownership by another task. Real Codex owner/review event counts remain zero; no bypass or fabricated records.
+Not complete: correct chat context and normal hook trust, real scoped review callbacks, current independent review and remote CI, permitted preview/Quest checks, production export path and owner acceptance. Next: finish the exact-version CI checkpoint and supported workspace connection, then prove one complete existing-game cycle before extending the toolchain. No main merge, website publication, purchase or live migration.
+
+## 2026-10-17 - GitHub gates and the first real CodeRabbit review in Codex
+Starting 693a0a4, codex/trial-migration. finish rejects skipped/missing/failed reviews, failed tests, drafts, open threads and a changed head; --check is read-only.
+CodeRabbit uses repository config: review errors fail, owner decisions cover all paths, drafts and automatic code fixes stay disabled. AGENTS/README/state separate Codex evidence from historical claims.
+Owner-approved settings saved and read back: room-polish requires PR, test from Actions (15368), resolved discussions; main requires resolved discussions; no bypass. Dependency graph/alerts on; automatic updates off, CodeQL unconfigured.
+Code 32710b9 passed npm test; a misplaced map entry was corrected. At 773c541, GitHub CI 38968880258 passed including smoke.
+Owner-approved configuration/review comments posted in PR28. Bot reviewed 773c541 (run e3bc5b30-71df-4631-a0f8-2bda879a45fd); effective YAML confirmed. Live --check rejected draft plus one unresolved finding despite both checks passing.
+Finding r4299575101 confirmed: terminal bot errors had no retry route. finish now prints the exact manual command for error/failure; pending reviews get no duplicate request. Full npm test and diff --check pass; this fix is not covered by the prior bot review.
+Service audit evidence and owner actions are private: objekt-files/notes/codex-service-audit-2026-10-17.json. No production data, service settings or subscriptions changed by this audit.
+Next: publish this correction and run the owner-approved repeat review on its exact version; real Codex callback activation (still unproven), recovery verification. No merge or game release claimed.
+
+## 2026-10-16 - GitHub settings read in the owner's authorized Chrome; no settings changed
+Draft PR #28 is open against room-polish, head 693a0a4; GitHub run 38962201372 passed all stages.
+CodeRabbit explicitly skipped the draft despite a green status. It has not reviewed this version.
+A finish.mjs correction and isolated passing readiness tests are in Temp/objekt-github-audit-20261016 only.
+UI confirmed: Actions default token read-only, self-approval off; main requires PR and test from GitHub Actions.
+room-polish only prevents deletion/force push: PR/tests are not required. Review-conversation resolution is off.
+Dependency graph/Dependabot alerts are off; CodeQL is unconfigured. Secret/push protection and Pages HTTPS are on.
+Six app installations: evidence in objekt-files/notes/codex-github-audit-2026-10-16.json, outside this public repo.
+Next: get specific approval for live settings; integrate the prepared finish/CodeRabbit corrections and test.
+Codex real callback activation and external-service billing/configuration remain unverified.
+
+## 2026-10-16 - Codex event bridge prepared; runtime activation remains unverified
+Added tools/codex-events.mjs, isolated tests, .codex/hooks.json and two reviewer profiles. They record events; they do not start reviewers.
+Reviews require matching session/agent/checkout, a complete final report and unchanged files. Owner messages carry checkout provenance;
+duplicates cannot refresh acceptance, another checkout is rejected, and legacy Claude records remain valid.
+npm test passed. The Windows command worked in a temporary path with spaces, nested cwd and a failure exit; TOML profiles parsed.
+Corrected the first fixture-root replacement, shell escaping and missing architecture-map entries before passing.
+The size check exposed uncounted Codex steering. Explicit migration proposal: include AGENTS, Codex profiles/hooks, bridge and owner-links;
+baseline 116793 to 134147 characters (+17354). The growth check and 1000-character ratchet remain; PR review is still required.
+Real journals were unchanged (SHA-256 owner messages 4933e4378c44..., reviews 2e92f5f8681e...); status showed zero Codex events, no lock.
+Runtime trust/callback delivery, real review and feature acceptance are NOT established. No game release is claimed.
+Next: normal hook trust/activation in the trial, a neutral real owner message, then a real scoped review when needed. Never inject success records.
+Details and sources: docs/tools.md. The primary checkout retains its handoff and owner changes.
+
+## 2026-10-16 - Codex readiness recheck: migration is not finished
+The owner asked for an evidence-based handover, useful integrations and reliable continuation between chats.
+Confirmed:
+- The primary checkout is still room-polish 3084b40 with two preserved local changes; the attached trial is
+  codex/trial-migration b42f8a0, game code 435e6d2. The latest real-headset check below applies to that trial.
+- Code, tests, GitHub, read-only Supabase, Drive reads and Quest have bounded successful checks. This does not
+  establish deployment, live migrations, complete recovery, or every installed skill's operation.
+- Codex config selects Astra/xhigh. Native browser inventory exposes Chrome and the in-app browser.
+- No project .codex layer, global hooks.json or inline global hook configuration was found. Repository
+  .claude/settings.json wires owner-message and reviewer records to Claude events. No Codex equivalent is
+  demonstrated. Publication still lacks the exact practice review; preserve the gate, do not forge a record.
+- Git's shared hooksPath points at the primary checkout. Its pre-commit and pre-push files currently have
+  the same SHA-256 as the trial's copies; that is not proof of future worktree isolation or runtime enforcement.
+- F:/objekt-files exists, despite older state text saying no separate-disk copy. Its freshness, completeness,
+  independence and recovery have not been established. The earlier library manifest remains an inventory.
+Changed:
+- Added a short AGENTS.md in the primary and trial checkouts: resume from the trial's progress log, verify
+  the working copy, preserve owner decisions, use appropriate checks, and keep unverified capabilities explicit.
+- Fixed the previous Codex log entry's Russian quote to an English translation after the structure check
+  rejected it. The original answer remains in the external Quest result.json. No game code changed.
+- Searched the plugin catalog for relevant observability, security and research options. No new integration
+  was justified by an established missing provider; none installed and no permissions expanded.
+Validation: structure tests passed after these changes; trial git diff --check passed; the two 17-line AGENTS.md files have identical SHA-256 and no trailing whitespace.
+Sources: https://learn.chatgpt.com/guides/best-practices and https://learn.chatgpt.com/docs/hooks .
+Open: validate Codex review/owner-acceptance recording; reconcile unfinished Claude work and recovery;
+prove a bounded change through checks and a reviewable release, with rollback and owner-visible evidence.
+Next: migrate and test the two event-dependent records without weakening the existing gates. Store delivery
+and engine choice remain a separate product decision; they do not justify another general setup cycle.
+
+## 2026-10-16 — Codex current-code Quest launch and controller check
+The owner approved proceeding from setup to a practical headset check.
+Done:
+- Ran the existing local preview from codex/trial-migration (b42f8a0; game code 435e6d2). The worktree was clean;
+  its only difference from the already tested code commit was docs/progress.md. The broad suite was not rerun.
+- Quest 3 connected over USB. The headset browser loaded localhost:3000; SHA-256 of src/main.js matched the
+  worktree, including after entering VR. The scene loaded and the XR session was visible with both controllers.
+- Inspected a screenshot containing both eyes. Five-second sample: approximately 90 fps, worst interval rounded
+  to 16 ms, 52 draw calls, 79,935 triangles, multiview on. This is not a sustained performance result.
+- The owner answered the in-headset visual/controller question: "Yes, I can press it" (English translation; original in result.json). He separately confirmed that
+  he had closed the first game tab himself. No crash is established by that tab disappearance.
+- Showed the completion instruction in VR. The tool confirmed the headset was taken off, delivered the HUD-off
+  broadcast and put it to sleep. The local preview server remains running in this Codex task session.
+Evidence: ~/.codex/visualizations/2026/10/16/01a145d5-8edb-73b3-9695-97ebfe5a5bcd/quest-current-check/
+(result.json, browser-current.png, vr-current.png).
+Found: quest-look.mjs perf counts intervals over 1000/72 + 2 ms, although its text says "slower than 72 Hz".
+Treat that counter as having a 2 ms tolerance; do not report it as a strict 72 Hz check.
+Not done: full room playthrough, all controls/locomotion, audio, sustained stability, store build or purchases.
+No game code changed, publication made, review record fabricated, or feature acceptance recorded.
+Next: one bounded gameplay task, using this proven current-code path; exact publication review remains outstanding.
+
+## 2026-10-16 — Codex trial migration baseline
+The owner asked Codex to take over reversibly, preserve prior work, assess the whole tool chain, and teach him one useful action at a time.
+Owner guide: https://chatgpt.com/space/page_42ac40c68e748191affb6ef7b9686d0e (read back; rendering not inspected).
+Done:
+- Isolated trial: codex/trial-migration in ~/.codex/worktrees/codex-trial-migration/objekt; fast-forwarded from
+  3084b40 to room-polish 435e6d2 (nine existing commits). The primary folder and its two local changes are untouched.
+- npm test passed at 435e6d2. The local shell-hook cases were skipped by the test itself; GitHub run 38905672992
+  passed for that same commit. Neither result establishes that Claude hooks run in Codex.
+- Google Drive connected: objekt-files and its six main folders found; five ANSUR file names and sizes match the
+  local files, and one text file was fetched. Full cloud completeness and restore remain unverified.
+- Local library manifest: 2,195 files, 1,287,376,373 bytes, SHA-256 for each; no read errors or changes during reading.
+  This is an inventory, not a backup. Evidence: ~/.codex/visualizations/2026/10/16/
+  01a144b4-cfa4-7562-a2c9-3bf52c70806c/migration-evidence/checkpoint.json and library-manifest.json.
+Found:
+- The published preview still records source ff7a812 (10 Oct). Its live src/main.js matches that source, not
+  435e6d2. The earlier Codex headset check proved access and VR on this old preview, not the current game.
+- The trial has an own-look review and an exact paper review for room 01, but no exact practice review for
+  publication. No review records were changed and no preview was published.
+Not done: native import, Codex event-hook compatibility/trust, acceptance logging, exact practice review,
+the current version's headset check, full archive reconciliation. No feature was accepted or game code edited.
+Next: inspect native selective import before copying old rules; test the two event-dependent records, then
+inspect the current game and obtain the required exact review before publishing its test copy.
+
 ## 2026-10-16, evening — the delivery chain published; Codex's review checked and its first fixes
 Same window (his «do it here» to the proposed next window), on a new branch from room-polish 3084b40.
 Done:
@@ -119,40 +235,6 @@ called unverified (CodeRabbit on #24; corrected).
 Next (a new window, his choice): the whole building from a real university building of the period (outside photos,
 plans, stairs, elevators, entrance) and the fire rules of the time, shown to him as pictures with options; then the
 directories in their places (the main one at the entrance, a floor one at the stairs and elevators); feature 3.
-
-## 2026-10-15, night — the counted process files one by one
-A window opened by "Old problems one by one" (step 3 of its brief); his order here: the process files, then the floor
-directory, then every other link one by one (the board's end).
-Done:
-- His measure came to me at this window's start; his screenshot shows no line from the machine, only my repeat
-  (row 69: the desktop checked, the phone not).
-- His approval: the monthly update check gone, the scheduled task and two setup lines (58631a0); he reminds me.
-- Four read-only helpers reviewed every counted file (notes: the shared notes folder, review-*.md). The guard refused
-  47 real calls since 09.10: 2 right, 2 arguable, 38 false, 5 from a removed mode.
-- Cuts, one change a commit, each with its expected effect: the prover's 9 cases that only repeated the tests
-  (62b5848); stale comments in the gate, prover and hooks (4ab897c); two false-stop kinds of the guard, a raw -f
-  "@" field (c780fea) and one-liners naming review-gate (1c93161); the guard's stale text and dead code (052bc1c);
-  the helpers and the skill (10d299b); CLAUDE.md, the tools page, settings (c889c07); stale CLAUDE.md citations
-  (016ab5c). On his yes: the guard's SQL check, after the connector was read as supabase_read_only_user with no
-  write grants (7a25902); database changes stay a file he pastes and runs. His approval of 1, 2 and 3: three stale lines
-  of his rules (e52f656). Process size 129 981 to 116 872.
-- His doc: rows 21, 39, 40, 42, 43, 52 closed with their commits; 69 and 74 noted as checked.
-Kept on purpose: the start's feature line (a machine bringing it beats a text telling me to fetch it); imports() not
-moved into the test (text moved where the limit does not count, row 22); the library guard's wide path match
-(narrowing adds code); systemMessage until the phone is checked; the deny rules as the spare lock.
-Checked: npm test green after every commit; tools/prove-guards.mjs CRLF and LF: 39 of 39 after the first cut, 37 of
-37 at e52f656.
-- PR #23: CodeRabbit's two findings: the record rule narrowed, not dropped (ea41abd, it agreed); assets/ shown never
-  to have existed (it withdrew). The app's auto-mode classifier refused my fast-forward push to room-polish ("CI
-  Bypass"), so he merged with the button (15a7615); the main folder pulled.
-Not checked: the start without its first line (the next window's start shows it).
-Errors of mine: a node one-liner of mine was stopped by the guard's false rule (fixed in 1c93161); a script of mine
-failed on CRLF lines in docs/tools.md (nothing written there; redone); the allow rule for a push to room-polish
-removed as unused (c889c07), then my push refused (whether the two are linked: not checked); the LoC link held back
-"for the end" instead of given to him at once.
-For him later: "never advised against" in his decisions (row 34); the circles' header said twice; rare setup lines
-out of what loads, by his principle of this window.
-Next: the floor directory (the entry above).
 
 ## 2026-10-15, late evening — old problems one by one: the one list, the cleanup, four cuts
 A window opened by the evening window (its brief: one list of the old problems from the analyses already made, the

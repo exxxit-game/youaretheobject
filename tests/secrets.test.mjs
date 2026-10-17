@@ -71,6 +71,38 @@ const probe = spawnSync('sh', [hook('pre-push')], { input: `refs/heads/x ${'0'.r
 if (probe.error) console.log('(no shell here: the hooks are run on GitHub)');
 else assert.equal(probe.status, 0, `the pre-push hook stopped deleting a branch, which carries nothing to check:\n${probe.stdout}`);
 
+// Git must parse the index, including commit -a's temporary index, not later working edits.
+// Other guards have their own tests above; stub them only in this disposable syntax fixture.
+{
+  const fixture = repo({ 'package.json': '{"type":"module"}', 'script.js': 'export const x = 1;\n' }, PRIVATE_EMAIL);
+  const git = (...args) => spawnSync('git', args, { cwd: fixture, env: withoutGitVars(), encoding: 'utf8', timeout: 30000 });
+  const ok = (...args) => { const r = git(...args); assert.equal(r.status, 0, r.stderr + r.stdout); };
+  const script = path.join(fixture, 'script.js');
+  const commit = (...args) => git('-c', 'user.name=test', '-c', 'user.email=' + PRIVATE_EMAIL,
+    '-c', 'commit.gpgsign=false', 'commit', '-qm', 'syntax fixture', ...args);
+  try {
+    fs.mkdirSync(path.join(fixture, 'hooks'));
+    fs.mkdirSync(path.join(fixture, 'tools'));
+    fs.writeFileSync(path.join(fixture, 'hooks/pre-commit'), commitHook, { mode: 0o755 });
+    fs.writeFileSync(path.join(fixture, 'tools/secrets.mjs'), 'process.exit(0);');
+    fs.writeFileSync(path.join(fixture, 'tools/claude-guard.mjs'), 'for await (const c of process.stdin) {}');
+    ok('config', 'core.hooksPath', 'hooks');
+    fs.writeFileSync(script, 'export const = ;\n');
+    ok('add', 'script.js');
+    fs.writeFileSync(script, 'export const x = 2;\n');
+    const badIndex = commit();
+    assert.notEqual(badIndex.status, 0, 'broken staged script passed because its working copy was fixed');
+    assert.match(badIndex.stdout + badIndex.stderr, /does not parse/);
+    ok('add', 'script.js');
+    fs.writeFileSync(script, 'export const = ;\n');
+    const goodIndex = commit();
+    assert.equal(goodIndex.status, 0, 'valid staged module rejected for an unstaged edit: ' + goodIndex.stderr + goodIndex.stdout);
+    const all = commit('-a');
+    assert.notEqual(all.status, 0, 'commit -a ignored its temporary index');
+    assert.match(all.stdout + all.stderr, /does not parse/);
+  } finally { clean(fixture); }
+}
+
 assert.equal(fs.readFileSync(path.join(decoy, '.git', 'config'), 'utf8'), decoyConfig, 'a GIT_DIR from a hook reached a repository this test did not make');
 delete process.env.GIT_DIR;
 clean(decoy);

@@ -6,10 +6,11 @@
 // paused(): whether the room holds now.
 export function createRun(paused) {
   let id = 0;
+  const timers = new Set();
   const never = () => new Promise(() => {});
   return {
     get id() { return id; },
-    end() { id++; },
+    end() { id++; for (const timer of timers) clearInterval(timer); timers.clear(); },
     // p, once it settles, only for the run that was current when the step began (at)
     within(p, at = id) { return p.then((v) => (at === id ? v : never())); },
     delay(ms) {
@@ -19,8 +20,9 @@ export function createRun(paused) {
           const now = performance.now();
           if (!paused()) left -= now - last;
           last = now;
-          if (left <= 0 && !paused()) { clearInterval(tick); resolve(); }   // delay(0): until the room no longer holds
+          if (left <= 0 && !paused()) { clearInterval(tick); timers.delete(tick); resolve(); }   // delay(0): until the room no longer holds
         }, 20);
+        timers.add(tick);
       });
     }
   };

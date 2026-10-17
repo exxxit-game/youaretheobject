@@ -18,7 +18,6 @@ import { createAwayMeter } from '../../engine/away-meter.js';
 import { markStarted, markReached, watchExit } from '../../app/left-early.js';
 import { ROOM1_NUMBER } from '../../app/lobby/plan.js';
 import { createSession, SPEED, PLAYTEST } from '../../app/session.js';
-import { compareRoom } from '../../engine/results.js';
 import { askPlaytest } from '../../app/playtest.js';
 import { playtestReport } from '../../app/playtest-report.js';
 import { APP_T } from '../../app/texts.ru.js';
@@ -195,7 +194,7 @@ async function reveal(condition) {
   const r = analyse(eventLog.entries);
   await say(T.thanks);
   // test runs never ask the live server
-  const others = SPEED === 1 ? await flow.within(compareRoom(ROOM_ID, ROOM_VERSION)) : null;
+  const others = await flow.within(session.compare());
   const pages = revealPages(r, condition, others);
   for (let i = 0; i < pages.length; i++) {
     // debriefed, and the result sent, as the truth is shown (p. 452); leaving before it: the short debrief, nothing sent

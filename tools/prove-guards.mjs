@@ -1,7 +1,4 @@
-// A test that passes says only that nothing broke the rule
-// OR that the test cannot see it; the way to tell them apart is to plant the mistake and watch the
-// guard go red (mutation testing). Each case below plants exactly the mistake one guard exists
-// for, in a throwaway clone of the last commit, runs that guard, and puts the clone back.
+// Plant each guard's mistake in a disposable clone of HEAD; verify the intended refusal, then restore the clone.
 import { execFileSync, spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -31,7 +28,7 @@ const swap = (f, from, to) => {
 const many = (n, text) => Array.from({ length: n }, () => text).join('\n');
 const run = (cmd, args, extra = {}) => {
   const r = spawnSync(cmd, args, { cwd: dir, env: { ...env, ...extra }, encoding: 'utf8' });
-  return { ok: r.status === 0, out: `${r.stdout}${r.stderr}` };
+  return { ok: r.status === 0, out: `${r.stdout || ''}${r.stderr || ''}${r.error ? '\nERROR: ' + r.error.message : ''}` || (r.status === 0 ? '' : `ERROR: exit ${r.status}; signal ${r.signal}`) };
 };
 const test = (file) => () => run(process.execPath, [`tests/${file}`]);
 const structure = test('structure.test.mjs');
