@@ -20,3 +20,5 @@ of the process moved to objekt-files/notes/archive:
 - `docs/research/trial-places.md`: where VR players can try one room first.
 - `docs/research/vr/menu-button.md`: the left Menu button and the Meta button, Meta's rules.
 - `docs/research/why-people-stop-trying.md`: why people stop trying, and whether a short opening message changes it.
+
+- `docs/research/delivery-probe.md`: measured delivery experiment, provider probes and limits; continued in game-cache.md.

@@ -5,6 +5,12 @@ The newest entry is read at the start of every session, with `git log --oneline 
 feature at hand goes to the end of docs/board.md, one line each.
 Entries of 14.10 and before: docs/progress-2026-10-14.md; the earlier ones of 15.10: docs/progress-2026-10-15.md.
 
+## 2026-10-17 - Complete-process request: workspace gap, index fix and recovery
+Owner asks to finish verifying the process before more game work; later stresses reasoned choices suited to this two-person studio, learning through concrete steps, and avoiding another long setup cycle. Base c791a8e; details/evidence: docs/research/source-audit.md, process extension. Current chat remains in the older primary checkout; native hook/profile files live only in the trial. Supported attach refused: owned by another task. No app state/trust bypass.
+Configured trial-only Git hooks to use its own tools/hooks; primary config unchanged. Reproduced and fixed pre-commit parsing disk contents instead of the index; real Git regressions include partial staging and commit -a. Full npm test passed. Updated Codex entry instructions to read the retained workflow explicitly.
+Recovered both source copies (637/616 files, dirty files included) from a new Git/file snapshot on physically separate F:, then all 2,205 recorded library files; all hashes matched, sources unchanged. Snapshot scope and time boundaries in the report; no live database/credential/cloud recovery claim.
+Still zero real Codex events, no current independent reviews, new remote CI, publication or owner acceptance. Next: correct the chat workspace through supported app UI, review/trust project hooks normally, observe a real owner message and needed named review; then exact-version CI, preview and Quest checks. Implementation a964ea6ef7f850ab5e817969044d7e64298e741d: normal worktree pre-commit ran, exit 0 (24.4 s). Initial clean-clone checks found delivery-probe.md linked only from uncommitted notes; its research index link is now saved. Final mutation results follow after the committed-version check.
+
 ## 2026-10-17 - GitHub gates and the first real CodeRabbit review in Codex
 Starting 693a0a4, codex/trial-migration. finish rejects skipped/missing/failed reviews, failed tests, drafts, open threads and a changed head; --check is read-only.
 CodeRabbit uses repository config: review errors fail, owner decisions cover all paths, drafts and automatic code fixes stay disabled. AGENTS/README/state separate Codex evidence from historical claims.
