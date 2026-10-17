@@ -11,7 +11,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { PUBLIC } from '../tests/static-server.mjs';
-import { deliveryVerifier } from './verify-delivery.mjs';
+import { deliveryVerifier, publicationSnapshot } from './verify-delivery.mjs';
 import { check } from './secrets.mjs';
 import { requireReview, requirePaper } from './review-gate.mjs';
 
@@ -66,6 +66,8 @@ fs.writeFileSync(path.join(dir, '.nojekyll'), ''); // serve files as they are
 const index = path.join(dir, 'index.html');
 fs.writeFileSync(index, fs.readFileSync(index, 'utf8').replace('<head>', '<head>\n  <meta name="robots" content="noindex, nofollow">'));
 
+const publishedFiles = publicationSnapshot(dir);
+
 git(dir, 'init', '-q', '-b', 'main');
 git(dir, 'add', '-A');
 git(dir, '-c', `user.name=${git(ROOT, 'config', 'user.name')}`, '-c', `user.email=${git(ROOT, 'config', 'user.email')}`,
@@ -97,16 +99,12 @@ const settled = async () => {
 // Right after a build the Pages servers can still hand out some old files beside the new ones
 // (files are kept up to 10 minutes): a game whose modules come from two versions fails to start
 // ("Failed to fetch dynamically imported module"). So "live" only once every script, page and
-// style is served exactly as published; and every model the controllers take from the game itself
-// (vendor/aframe-assets: a model still missing there leaves a player's hands empty), compared byte for byte.
+// asset is served as published, including the transformed index.html, fonts, sound and models.
+// Compare the captured public directory, not the checkout which may have changed during the build.
 const BASE = 'https://exxxit-game.github.io/object-preview/';
-const pageFiles = PUBLIC.flatMap((p) => p.endsWith('/')
-  ? fs.readdirSync(path.join(ROOT, p), { recursive: true }).map((f) => (p + f).replace(/\\/g, '/'))
-  : [p]).filter((f) => /\.(js|html|css|glb)$/.test(f) && f !== 'index.html');   // index.html gets the noindex line
+const pageFiles = [...publishedFiles.keys()];
 const served = async () => {
-  const verifier = deliveryVerifier(BASE, new Map(pageFiles.map(f => [f, {
-    bytes: fs.readFileSync(path.join(ROOT, f)), binary: f.endsWith('.glb')
-  }])));
+  const verifier = deliveryVerifier(BASE, publishedFiles);
   let old = [];
   for (let i = 0; i < 12; i++) {
     old = [];

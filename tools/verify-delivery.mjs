@@ -1,3 +1,24 @@
+import fs from 'node:fs';
+import path from 'node:path';
+
+// Capture the prepared public directory before Git metadata is added. The entry page
+// already has its preview-only changes; later checkout edits cannot alter this release.
+export function publicationSnapshot(root) {
+  const files = new Map();
+  function walk(folder, prefix) {
+    for (const entry of fs.readdirSync(folder, { withFileTypes: true })) {
+      const name = prefix + entry.name, full = path.join(folder, entry.name);
+      if (entry.isDirectory()) walk(full, name + '/');
+      else if (entry.isFile()) files.set(name, {
+        bytes: fs.readFileSync(full), binary: !/\.(?:html|js|mjs|css|json|md|txt|svg)$/i.test(name)
+      });
+      else throw new Error('Unsupported publication entry: ' + name);
+    }
+  }
+  walk(root, '');
+  return files;
+}
+
 // WHY: RFC 9110 If-None-Match / 304 preserves a previous content comparison without
 // retransmitting unchanged models on every publication poll. A changed release gets a new verifier.
 export function deliveryVerifier(base, files, { timeoutMs = 10000 } = {}) {
@@ -12,7 +33,9 @@ export function deliveryVerifier(base, files, { timeoutMs = 10000 } = {}) {
     stats.requests++;
     try {
       const response = await fetch(new URL(name, base), {
-        headers: previous ? { 'If-None-Match': previous.etag } : {},
+        // GitHub Pages/Gcore weaken ETags for gzip. Verify identity bytes once, then
+        // reuse a strong validator; accepting a weak ETag would lose byte equality.
+        headers: { 'Accept-Encoding': 'identity', ...(previous ? { 'If-None-Match': previous.etag } : {}) },
         cache: 'no-cache', redirect: 'error', signal: controller.signal
       });
       const etag = response.headers.get('etag');

@@ -1,7 +1,7 @@
 # Delivery probe: measured files and two-source recovery
 
 17 October 2026. Base: codex/trial-migration, 267bbbace57ce38a17618cb721edb21b6e133fce.
-Local transport experiment plus a public-file Gcore HTTPS probe. Code verified at 422f0bcfd89285eff955ab28467a903b726ff558. The game does not import the downloader; no floor is accepted or released.
+Local transport experiment plus a public-file Gcore HTTPS probe. Initial code verified at 422f0bcfd89285eff955ab28467a903b726ff558; the gzip follow-up below resumes cc153c0. Final code commit is recorded in docs/progress.md. The game does not import the downloader; no floor is accepted or released.
 Decision context: [store-fees-own-sales.md](store-fees-own-sales.md), [engine-native.md](engine-native.md).
 
 ## Measured inventory
@@ -111,7 +111,7 @@ Saved browser caching at 600 seconds; edge caching respects origin headers. Disa
 Mutable file names must not receive a year-long immutable policy. Browser freshness avoids network within its lifetime; after expiry an unchanged ETag can return 304 with no file body. Cache eviction/private browsing/hard reload can require another download.
 Actual public main is still the older A-Frame 1.7.1 build. GET of its vendor/aframe-1.7.1.min.js returned 1,277,857 bytes, SHA-256 79fbf09427910d43063d99fef43de771a0f37e05f7e61eff2414e6e2b0f448e0; conditional GET returned 304 and zero body bytes.
 After the owner signed in to Namecheap, added only CNAME cdn-probe -> cl-gl5b557661.gcdn.co; read back the saved row and authoritative DNS answer. Existing apex/www records stayed unchanged.
-Free Let's Encrypt issuance completed; normal curl TLS verification succeeded, without bypasses. HTTP-to-HTTPS redirect is not yet confirmed: after issuance the portal stayed on its loading skeleton across reload/new-tab attempts, so this optional setting could not be completed. HTTPS itself remains verified.
+Free Let's Encrypt issuance completed; normal curl TLS verification succeeded, without bypasses. The portal recovered on continuation. HTTP-to-HTTPS redirect was saved, read back and verified as 301 to the same HTTPS path at 00:52 UTC.
 At 2026-10-17T00:44:54.103Z, Gcore HTTPS returned 200 and 1,277,857 bytes with the exact reference SHA-256 above. Both conditional requests returned 304 and zero body; Cache: HIT, max-age=600 and noindex were present. A deliberately nonmatching validator returned 200 and the same complete file.
 This bounded check transferred 3,833,571 body bytes in total: one reference and two CDN bodies. It did not modify origin content and therefore does not prove a live multi-file release update. Earlier 503 responses and the temporary certificate-save error were superseded by these successful checks; no paid service was activated.
 
@@ -126,6 +126,46 @@ This fixes repeated verification traffic and configures ordinary browser HTTP ca
 Future immutable files require content hashes in their URLs/manifests, old-version retention during active sessions, changed-file cache invalidation at publication, and a real update/rollback test before cutover. Paid content/API responses need separate authorization/cache rules; this public probe must not be used as their policy.
 Evidence outside the repo: gcore-live-https.json, gcore-dns-record.jpg and gcore-cache-settings.jpg in this chat's visualization directory. Network tests use public files only; the test script now keeps a validator for the reference file too.
 Basis: [HTTP caching](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching) and the observed provider UI/headers. 304 saves file bytes, not all request/header traffic; automatic Quest/Safari reuse remains to measure on those devices.
+
+## Compression, verifier regression and browser follow-up
+
+17 October, resumed cc153c0. Enabled Gzip for supported text MIME types; no paid Origin Shielding/Brotli or large-file slicing was enabled. Saved/read back redirect and Gzip.
+The same public A-Frame file transferred 340,760 gzip bytes and decoded to the original 1,277,857 bytes and SHA-256: 73.33% less body traffic. Gzip responses retain Vary: Accept-Encoding, max-age=600 and a weak ETag; conditional GET returned 304/zero body.
+A real HEAD comparison exposed a gap in the earlier publication verifier: both GitHub Pages and Gcore supply a weak ETag under fetch's default gzip negotiation. The original strong-validator-only implementation therefore downloaded every response again.
+The new negotiated-gzip regression failed before the fix: 12 complete decoded model bodies instead of one. The verifier now requests Accept-Encoding: identity, retaining exact-byte checks and strong-validator reuse. Weak validators are still never trusted for byte equality. This only changes publication verification; player browsers retain compression.
+Regression and full npm test passed; shell-hook cases explicitly skipped locally. A real Gcore check using the amended helper made 3 requests, received 1,277,857 body bytes total and reused 2 empty 304 responses. No publication, CI or headset test was run.
+
+The separate local Chrome fixture uses two manifests, content-hash asset URLs, immutable asset caching, and candidate activation only after all hashes pass. It is not imported by the game. Independent server request logs and browser Resource Timing agree:
+
+| Local fixture scenario | Observed result |
+|---|---|
+| First A | 1 MiB model and 20-byte rules received |
+| Repeat A | No asset requests reach the server; cached bodies reused |
+| B with its changed file unavailable | HTTP 503; A remains active |
+| Recovered B | Shared model reused; only the new 28-byte rules received |
+| Repeat B and rollback A | All asset bodies reused, no additional model request |
+
+The server saw the model exactly once; manifest statuses were 200,304,200,304,304,200. This proves the fixture's update pattern, not a complete game release manager, browser restart survival or offline use.
+Timing-Allow-Origin: http://127.0.0.1:8793 propagated by 01:09 UTC. Direct Chrome fetch then received 405,722 encoded bytes (1,277,857 decoded, pinned SHA-256); Resource Timing transferSize was 406,022 including its header allowance. Repeat fetch and a new tab after closing the first both returned transferSize 0 with the same nonzero body sizes and hash. This is browser cache reuse of the public 1.7.1 probe within its 600-second lifetime, not an entire game, browser restart or offline guarantee. Chrome and the earlier curl run received different compressed sizes; no common encoding/edge is assumed. The diagnostic header stays limited to the local test origin.
+Artifacts in this chat's visualization directory: gcore-gzip-result.json, live-verifier-result.json, browser-cache-results.json, browser-cache-server.json, browser-cache-summary.json; reproducible fixture/check scripts are in delivery-stage/.
+Measurement basis: [MDN Resource Timing](https://developer.mozilla.org/en-US/docs/Web/API/PerformanceResourceTiming/transferSize). Browser transferSize includes a header allowance; the body sizes above are kept separate.
+
+## Entry-page and publication audit, 17 October
+
+The owner noticed 1.7.1 in the probe while the game uses 1.8.0. Read-only public HTML and local source comparison at 01:11 UTC confirmed:
+
+| Location | A-Frame loaded | AFRAME_CDN_ROOT set in entry page |
+|---|---|---|
+| Main youaretheobject.com, also the current Gcore origin | 1.7.1 | No |
+| Published object-preview | 1.8.0 | No |
+| Trial checkout cc153c0 | 1.8.0 | Yes, local vendor/aframe-assets |
+
+The preview A-Frame 1.8.0 body matched the trial byte for byte: 1,323,381 bytes, SHA-256 0fd9768440300b116af76343ab9d7bfb4699758ed236bdcda5be56f316d3709f. The main branch staying older is a recorded owner decision, not evidence that the working game was downgraded. Missing AFRAME_CDN_ROOT in published preview leaves the library's external cdn.aframe.io default; actual controller requests on a headset were not measured. The trial and public preview are not the same release.
+
+Confirmed publication hazards: index.html was excluded outright; fonts/audio/JSON were outside the extension filter; expected bytes were read from the working checkout after the push/build wait. That could falsely accept an old entry page or compare against later unpublished edits.
+Fixed locally: capture every file from the prepared public directory after its noindex change and before Git metadata; verify that frozen snapshot, including binary fonts/audio. Review and publication gates remain intact. HTTP regression covers old entry page plus its 304, correct transformed page, later local edits, corrupt font bytes and old JSON. The amended verifier correctly rejected the real current public preview entry page against the prepared trial entry page, receiving only 521 bytes. Full npm test passed; no live publication/CI/headset claim.
+Evidence: publication-version-audit.json, preview-entry.html, main-entry.html, browser-cache-summary.json and browser-cdn-cache-proof.jpg in this chat's visualization directory. Later portal reload stalled; saved settings had already been read back, and actual CDN headers/downloads confirmed their effect. No origin switch to preview was attempted.
+Next: versioned game exports and update/rollback integration; publish a reviewed current preview through the existing gates, then exercise it on Quest/Safari. Ordinary HTTP caching and the local fixture do not yet satisfy the complete-game update requirement.
 
 ## External acceptance still required
 
