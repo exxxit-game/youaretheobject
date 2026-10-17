@@ -20,7 +20,7 @@ Setup reports dated before the migration describe Claude; they are not proof of 
   (contact t.me/exxxit). Tests pin client fields to the SQL (`tests/results.test.mjs`, `tests/playtest.test.mjs`). The laptop's Supabase CLI: logged out 12.10 on his word, no token.
 - Files outside the repo, one folder `C:\Users\admin\Documents\objekt-files\`: `papers\` (every paper as `<id>.pdf`
   and `<id>.txt`), `datasets\`, `imports\` (exports as downloaded), `notes\` (his messages, the review record); its
-  Drive sync was reported on 14.10; F:/objekt-files was found on 16.10, but freshness and restoration are unverified. The card index of
+  Drive sync was reported on 14.10; disk F: is separate from C:. On 17.10 all 2,205 files in its saved library snapshot and both repository copies were restored and hash-checked (docs/research/source-audit.md). Cloud/database recovery and later additions remain unverified. The card index of
   the whole library: `docs/library.md` (sections, then one line per paper, then card, then text; wanted and
   dropped papers in `docs/library/wanted.md`; a new paper needs a record in `docs/library/papers.json`). 145 cards from full texts: `docs/cards/`, checked by
   `node tools/check-cards.mjs`; catalog generated: `docs/catalog.md` (`node tools/build-catalog.mjs`);
@@ -36,7 +36,7 @@ Setup reports dated before the migration describe Claude; they are not proof of 
   His room as the headset reads it (11.10; records in objekt-files/notes/headset): https://claude.ai/artifact/CgxirtxxN4gPidXWnmiDjV; room 101 behind its door (11.10): https://claude.ai/artifact/RrNeo3s4Uk9WpzyrnoLGLH
 - Headset: Quest 3 over USB; `tools/quest-check.mjs` (11/11 PASS 08.10, old 60 fps bar, no log); `tools/xr-probe.html`.
   Owner plays the test copy https://exxxit-game.github.io/object-preview/ (bookmark in the headset, the
-  game from GitHub): `node tools/publish-preview.mjs` before he looks; it sends no results (it still asks the live average: a fix on the shelf-2 list). From 9.10 the
+  game from GitHub): `node tools/publish-preview.mjs` before he looks; it sends no results (the public copy is older; current local export blocks result, playtest and comparison calls). From 9.10 the
   headset stays on the laptop's USB cable (his choice); it charges slowly and power is cut daily: wake it
   only to check, end with `quest-look.mjs sleep`, push work often. I check in the headset myself:
   `tools/quest-look.mjs` (open [local port], reload, vr, frame, eval, sleep); opening 8.10: sign +10 s, 90 fps; the measured baseline of 13.10 (each place, heat, memory, loading): docs/baseline.md.

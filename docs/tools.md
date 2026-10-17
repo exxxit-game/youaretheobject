@@ -1,21 +1,18 @@
 # What to take when
 
 ## Codex migration events
-`tools/codex-events.mjs` records documented UserPromptSubmit and scoped reviewer start/stop events.
-Project configuration: .codex/hooks.json; reviewer profiles: .codex/agents/. The profiles inherit the model;
-they do not start themselves, delegate, or create automatic review loops.
-The bridge keeps the existing local journals and acceptance gate. Codex owner messages are bound to their
-checkout; replayed messages do not refresh acceptance. A completed review preserves its final report and
-requires a matching start and unchanged reviewed files. Completion does not mean no findings or owner approval.
-`node tools/codex-events.mjs --status` reads recorded events and a leftover lock, without writing a journal.
-Zero events is not a successful activation. Config presence does not establish runtime hook trust.
-New/changed hooks must be reviewed through Codex's normal trust UI; the documented CLI entry is /hooks.
-After trust, verify a new neutral user message reaches the log, then observe a real, needed scoped reviewer
-with its actual agent type. Never create synthetic success records in the owner's journal for this test.
-The isolated `tests/codex-events.test.mjs` is in npm test; it uses temporary journals and checks the Windows command.
-If codex-events.lock remains after a crash, inspect its PID before removing that specific stale lock; do not
-erase journals. These local files are not a tamper-proof audit or a substitute for checking review findings.
-Existing Claude entries retain their older acceptance semantics. Other Claude event guards are not migrated.
+tools/codex-events.mjs records UserPromptSubmit and named reviewer start/stop events through .codex/hooks.json.
+Profiles in .codex/agents/ inherit the model; they never start themselves or other agents.
+The bridge uses the existing local journals and acceptance gate. Owner messages are checkout-bound;
+replays cannot refresh acceptance. A review needs a matching start, complete final report and unchanged files.
+Completion means neither no findings nor owner approval. Legacy Claude records retain their semantics.
+node tools/codex-events.mjs --status reads events and the lock without writes. Zero does not prove activation.
+Check the chat root first: a shell workdir does not move the chat or load another checkout's profiles.
+Hooks need normal Codex trust (CLI: /hooks); config presence does not prove trust. After trust, verify a real
+neutral owner message, then a needed review with its actual agent type. Never inject synthetic success records.
+tests/codex-events.test.mjs uses temporary journals and checks the Windows command; it cannot prove live callbacks.
+After a crash, inspect codex-events.lock's PID before removing that exact stale lock; never erase journals.
+Local journals are not tamper-proof or a substitute for checking findings. Other Claude event guards are not migrated.
 Sources: https://learn.chatgpt.com/docs/hooks and https://learn.chatgpt.com/docs/agent-configuration/subagents .
 
 ## Before a task: what to read first
@@ -31,7 +28,7 @@ docs search), the W3C WebXR spec. The page read goes in the WHY comment.
 - Loading, frame rate, memory: Gregory 7, 8 and 17.4; Meta's performance docs; docs/baseline.md.
 - Controls and the menu: Gregory 9; Meta's input docs (the default mapping).
 - Data and the server: Supabase's docs (search_docs); docs/methodology.md; .claude/rules/data.md.
-- Tests, GitHub, the process: Gregory 2 and 10; Claude Code's docs (the claude-code-guide helper); GitHub's docs.
+- Tests, GitHub, the process: Gregory 2 and 10; the active agent's official docs (Codex: openai-docs); GitHub's docs. Legacy helper names below do not prove Codex availability.
 
 ## Which tool when
 - A claim about our setup: the thing itself first (the service through its connector, the vendored code, a fresh
