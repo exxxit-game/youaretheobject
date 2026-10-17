@@ -74,3 +74,12 @@ export const plural = (n, one, few, many) => {
   const m = n % 100, d = n % 10;
   return (m > 10 && m < 20) ? many : d === 1 ? one : (d > 1 && d < 5) ? few : many;
 };
+
+// Loading and storage recovery before entering the game.
+export const DELIVERY_T = {
+  preparing: 'Подготовка игры. Уже сохранённые файлы используются повторно.',
+  failed: 'Не удалось подготовить игру. Проверьте соединение и попробуйте ещё раз.',
+  retry: 'Попробовать ещё раз',
+  plain: 'Открыть без сохранения файлов',
+  scripting: 'Для игры необходимо включить JavaScript.'
+};

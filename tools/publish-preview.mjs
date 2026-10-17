@@ -13,6 +13,7 @@ import { fileURLToPath } from 'node:url';
 import { PUBLIC } from '../tests/static-server.mjs';
 import { deliveryVerifier, publicationSnapshot } from './verify-delivery.mjs';
 import { check } from './secrets.mjs';
+import { prepareDelivery, retainObjects } from './export-game.mjs';
 import { requireReview, requirePaper } from './review-gate.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -66,7 +67,19 @@ fs.writeFileSync(path.join(dir, '.nojekyll'), ''); // serve files as they are
 const index = path.join(dir, 'index.html');
 fs.writeFileSync(index, fs.readFileSync(index, 'utf8').replace('<head>', '<head>\n  <meta name="robots" content="noindex, nofollow">'));
 
+prepareDelivery(dir);
 const publishedFiles = publicationSnapshot(dir);
+// Old tabs may request a lazy model after a newer release is published. Retain immutable
+// objects from the prior public export; a failed history read must stop the publication.
+const previous = fs.mkdtempSync(path.join(os.tmpdir(), 'object-preview-history-'));
+try {
+  git(os.tmpdir(), 'clone', '-q', '--depth', '1', REPO, previous);
+  retainObjects(previous, dir);
+} finally {
+  if (path.dirname(path.resolve(previous)) !== path.resolve(os.tmpdir()) || !path.basename(previous).startsWith('object-preview-history-'))
+    throw new Error('Unexpected history directory');
+  fs.rmSync(previous, { recursive: true, force: true });
+}
 
 git(dir, 'init', '-q', '-b', 'main');
 git(dir, 'add', '-A');

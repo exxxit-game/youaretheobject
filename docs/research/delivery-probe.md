@@ -167,6 +167,10 @@ Fixed locally: capture every file from the prepared public directory after its n
 Evidence: publication-version-audit.json, preview-entry.html, main-entry.html, browser-cache-summary.json and browser-cdn-cache-proof.jpg in this chat's visualization directory. Later portal reload stalled; saved settings had already been read back, and actual CDN headers/downloads confirmed their effect. No origin switch to preview was attempted.
 Next: versioned game exports and update/rollback integration; publish a reviewed current preview through the existing gates, then exercise it on Quest/Safari. Ordinary HTTP caching and the local fixture do not yet satisfy the complete-game update requirement.
 
+## 17 October continuation — integrated game cache
+
+The earlier integration TODO is now completed locally: [versioned game cache](game-cache.md) records the actual game export, compressed changed-piece downloads, failed-update preservation and browser rollback. Public publication and platform acceptance remain pending; the earlier CDN measurement is still a separate experiment.
+
 ## External acceptance still required
 
 Full downloads in target ISPs/countries; actual Quest/Safari Vision Pro CORS, memory, storage quota/eviction and frame behavior; TLS/DNS failure, real provider challenge and cache errors; origin privacy and expiring access; independent initial HTML/loader; durable resume after browser restart; account billing and spending stop.

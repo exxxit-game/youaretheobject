@@ -1,0 +1,21 @@
+.delivery {
+  min-height: 100%;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 16px;
+  padding: 24px;
+  box-sizing: border-box;
+  text-align: center;
+  font: 20px/1.5 system-ui, sans-serif;
+}
+.delivery p { max-width: 560px; }
+.delivery button {
+  padding: 14px 20px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}

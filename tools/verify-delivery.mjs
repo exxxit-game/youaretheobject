@@ -7,6 +7,7 @@ export function publicationSnapshot(root) {
   const files = new Map();
   function walk(folder, prefix) {
     for (const entry of fs.readdirSync(folder, { withFileTypes: true })) {
+      if (entry.name === '.git' || entry.name === '.gitattributes') continue;
       const name = prefix + entry.name, full = path.join(folder, entry.name);
       if (entry.isDirectory()) walk(full, name + '/');
       else if (entry.isFile()) files.set(name, {
