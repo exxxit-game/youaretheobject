@@ -11,6 +11,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { PUBLIC } from '../tests/static-server.mjs';
+import { deliveryVerifier } from './verify-delivery.mjs';
 import { check } from './secrets.mjs';
 import { requireReview, requirePaper } from './review-gate.mjs';
 
@@ -103,20 +104,15 @@ const pageFiles = PUBLIC.flatMap((p) => p.endsWith('/')
   ? fs.readdirSync(path.join(ROOT, p), { recursive: true }).map((f) => (p + f).replace(/\\/g, '/'))
   : [p]).filter((f) => /\.(js|html|css|glb)$/.test(f) && f !== 'index.html');   // index.html gets the noindex line
 const served = async () => {
+  const verifier = deliveryVerifier(BASE, new Map(pageFiles.map(f => [f, {
+    bytes: fs.readFileSync(path.join(ROOT, f)), binary: f.endsWith('.glb')
+  }])));
   let old = [];
   for (let i = 0; i < 12; i++) {
     old = [];
     for (let k = 0; k < pageFiles.length; k += 8) {
       await Promise.all(pageFiles.slice(k, k + 8).map(async (f) => {
-        // a file that cannot be fetched (offline, DNS, TLS) counts as not yet served, never as a gh failure
-        if (f.endsWith('.glb')) {
-          const got = await fetch(BASE + f).then((r) => (r.ok ? r.arrayBuffer() : null)).catch(() => null);
-          if (!got || !Buffer.from(got).equals(fs.readFileSync(path.join(ROOT, f)))) old.push(f);
-          return;
-        }
-        const text = await fetch(BASE + f).then((r) => r.text()).catch(() => '');
-        const mine = fs.readFileSync(path.join(ROOT, f), 'utf8').replace(/\r\n/g, '\n');
-        if (text.replace(/\r\n/g, '\n') !== mine) old.push(f);
+        if (!await verifier.check(f)) old.push(f);
       }));
     }
     if (!old.length) return 'built';

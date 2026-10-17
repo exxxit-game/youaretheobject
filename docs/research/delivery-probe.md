@@ -102,6 +102,29 @@ Gcore's temporary payment-method verification charge is additional cash flow wit
 The existing Bunny balance is credit already in the account, not free ongoing hosting. New zones can consume it; auto-recharge must not be enabled without approval.
 No extra DNS, certificates, payments, entitlement backend, research backend or production logging is bought in this trial. Those services have separate future costs; bandwidth rates alone are not the game's complete operating budget.
 
+## Live CDN setup and repeated-download control
+
+The owner authorized the free trial, then requested avoiding repeated downloads while accounting for future edits.
+Verified account PAYG plan; created Gcore resource 1159463, cdn-probe.youaretheobject.top, target cl-gl5b557661.gcdn.co.
+Origin and Host header: youaretheobject.com; origin pull changed to HTTPS. No DNS delegation, WAAP, Shielding, Image Stack, storage purchase or top-up.
+Saved browser caching at 600 seconds; edge caching respects origin headers. Disabled Always Online (stale content on error), preserved query strings/Set-Cookie behavior, and added X-Robots-Tag: noindex, nofollow.
+Mutable file names must not receive a year-long immutable policy. Browser freshness avoids network within its lifetime; after expiry an unchanged ETag can return 304 with no file body. Cache eviction/private browsing/hard reload can require another download.
+Actual public main is still the older A-Frame 1.7.1 build. GET of its vendor/aframe-1.7.1.min.js returned 1,277,857 bytes, SHA-256 79fbf09427910d43063d99fef43de771a0f37e05f7e61eff2414e6e2b0f448e0; conditional GET returned 304 and zero body bytes.
+The Gcore HTTP diagnostic still returned 503 (14-byte body); its settings UI warns of up to 15 minutes to propagate. A full Gcore transfer or cache success is NOT established.
+Namecheap authoritative DNS confirmed; its opened page requires owner sign-in. No CNAME or certificate issuance completed yet. HTTPS on the trial hostname is not ready. This is the next blocker, not a request to pay.
+
+Publication checks previously fetched every model/script/style on every retry (up to 12 complete rounds).
+
+- tools/verify-delivery.mjs now retains a per-file strong ETag only after comparing the response bytes; a 304 reuses that comparison, including a previous mismatch. A new release starts a new verifier.
+- Changed validators/content cause a fresh body comparison. 401/403/404/503, redirects, timeouts and an unsolicited/contradictory 304 never become a successful verification. Text CRLF normalization and binary byte equality are preserved.
+- tools/publish-preview.mjs uses this verifier inside the existing bounded retry loop; publication/review gates are unchanged. It still checks every file each round, but does not redownload an unchanged body when a strong ETag is available.
+- tests/verify-delivery.test.mjs uses a real HTTP server: 12 checks of a 1 MiB model transferred 1 MiB, with 11 empty 304 responses; changed releases, wrong/old content and errors also passed. npm test passed; shell-hook cases reported skipped locally. No live publication, CI or headset run for this change.
+
+This fixes repeated verification traffic and configures ordinary browser HTTP caching; it is not an offline game installer, atomic multi-file release manager or paid-floor entitlement cache.
+Future immutable files require content hashes in their URLs/manifests, old-version retention during active sessions, changed-file cache invalidation at publication, and a real update/rollback test before cutover. Paid content/API responses need separate authorization/cache rules; this public probe must not be used as their policy.
+Evidence outside the repo: gcore-cache-settings.jpg and gcore-live-http.json in this chat's visualization directory. Network tests use public files only; the test script now keeps a validator for the reference file too.
+Basis: [HTTP caching](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching) and the observed provider UI/headers. 304 saves file bytes, not all request/header traffic; automatic Quest/Safari reuse remains to measure on those devices.
+
 ## External acceptance still required
 
 Full downloads in target ISPs/countries; actual Quest/Safari Vision Pro CORS, memory, storage quota/eviction and frame behavior; TLS/DNS failure, real provider challenge and cache errors; origin privacy and expiring access; independent initial HTML/loader; durable resume after browser restart; account billing and spending stop.
