@@ -3,6 +3,7 @@
 // A-Frame 1.8.0 tracks gripSpace but laser-controls applies its pointing correction only
 // after a model loads. A failed model request therefore leaves the wrong, grip-forward ray.
 // Read the native ray in grip coordinates: the entity/rig still supplies its world transform.
+const same = (a, b) => Math.abs(a.x - b.x) < 1e-6 && Math.abs(a.y - b.y) < 1e-6 && Math.abs(a.z - b.z) < 1e-6;
 AFRAME.registerComponent('controller-ray', {
   after: ['tracked-controls'],
   init() {
@@ -34,7 +35,6 @@ AFRAME.registerComponent('controller-ray', {
     }
     const origin = pose.transform.position;
     const direction = this.direction.set(0, 0, -1).applyQuaternion(pose.transform.orientation);
-    const same = (a, b) => Math.abs(a.x - b.x) < 1e-6 && Math.abs(a.y - b.y) < 1e-6 && Math.abs(a.z - b.z) < 1e-6;
     // Avoid schema/line updates for the usual fixed transform. A late model-ready event
     // may replace these values, so compare the raycaster itself, not a private last pose.
     if (!ray.data.enabled || !same(origin, ray.data.origin) || !same(direction, ray.data.direction)) {

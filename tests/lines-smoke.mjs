@@ -27,7 +27,7 @@ export async function playLines(browser) {
   let shot = 0;
   const layoutProblems = [];
   const capture = async label => {
-    const scope = label === 'menu' ? '#menu' : label === 'stopped' ? '#trialStopped' : '#linesDisplay';
+    const scope = ['menu', 'controller-recovery'].includes(label) ? '#menu' : label === 'stopped' ? '#trialStopped' : '#linesDisplay';
     const problems = await page.evaluate(scope => {
       const eye = new THREE.Vector3(); document.querySelector('a-scene').camera.getWorldPosition(eye);
       return [...document.querySelectorAll(`${scope} [panel]`)].flatMap(el => {
@@ -148,6 +148,7 @@ export async function playLines(browser) {
     }
     await page.waitForFunction(() => document.querySelector('#menu')?.dataset.notice === 'controller-model');
     await page.waitForSelector('#menu .answer[data-index="0"][data-ready="1"]', { state: 'attached' });
+    await capture('controller-recovery');
     // Aim the emulated physical controller and squeeze its trigger; no DOM click.
     // Use the ray observed in the rig's reference frame, preserving any IWER offset.
     await page.evaluate(() => {
