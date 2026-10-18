@@ -106,6 +106,7 @@ export async function playLines(browser) {
       r.mount(root, { number: '205' }); r.enter(false);
       const seat = new THREE.Vector3(0, 0, 0.35); root.object3D.updateWorldMatrix(true, false); root.object3D.localToWorld(seat);
       const rig = document.querySelector('#rig'); rig.object3D.position.copy(seat); rig.object3D.rotation.y = Math.PI;
+      rig.setAttribute('recenter', { x: seat.x, z: seat.z, yaw: 180 });
       rig.emit('recentered');
       return { id: r.ENTRY.id, title: document.title, state: document.documentElement.dataset.roomState };
     });
@@ -116,6 +117,11 @@ export async function playLines(browser) {
     await page.evaluate(() => document.querySelector('a-scene').enterVR());
     await page.waitForFunction(() => document.querySelector('a-scene').renderer.xr.isPresenting);
     await page.waitForFunction(() => document.querySelector('[laser-controls*="right"]').components['tracked-controls']?.controller);
+    // XR placement invalidates an adjustment started in the flat view. Resume explicitly.
+    await state('interrupted');
+    await page.waitForSelector('#linesDisplay .answer[data-index="0"][data-ready="1"]', { state: 'attached' });
+    await page.evaluate(() => document.querySelector('#linesDisplay .answer[data-index="0"]').emit('click'));
+    await state('adjust');
     const xrBefore = await page.$eval('#linesScreen', el => el.components.panel.c.toDataURL());
     await page.evaluate(() => window.__xr.controllers.right.updateAxis('thumbstick', 'y-axis', -0.5));
     await page.waitForFunction(before => document.querySelector('#linesScreen').components.panel.c.toDataURL() !== before, xrBefore);
