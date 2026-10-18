@@ -216,7 +216,9 @@ export const answersScript = (labels) => `import(new URL('src/engine/ui/choice.j
     for (const old of note.querySelectorAll('.answer')) old.remove();
     window.__ownerAnswer = null;
     const onTop = note.getObject3D('mesh').material.depthTest === false;
-    const choice = createChoice(note, { x: 0, y: -0.25, z: 0.005, w: 0.7, h: 0.1, gap: 0.02 });
+    // Match the note's canvas density; wall-button defaults halved reply text resolution.
+    const density = note.components.panel.c.width / note.components.panel.data.w;
+    const choice = createChoice(note, { x: 0, y: -0.25, z: 0.005, w: 0.7, h: 0.1, gap: 0.02, density });
     choice.show(labels, (i) => {
       window.__ownerAnswer = labels[i];
       note.object3D.visible = false;

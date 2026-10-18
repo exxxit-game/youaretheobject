@@ -114,9 +114,62 @@ export async function playLines(browser) {
     await pick(); await state('instructions'); await pick(); await pick(); await state('adjust');
     await capture('relocated-adjust'); await pick(); await pick(); await state('ready');
     await pick(); await state('adjust');
+    // Reproduce missing controller downloads through all automatic retries; native
+    // pointing must still work and the recovery choice must be visible in VR.
+    const modelRequests = new Map();
+    await page.route('**/controllers/meta/*.glb', async route => {
+      const url = route.request().url(), count = (modelRequests.get(url) || 0) + 1;
+      modelRequests.set(url, count);
+      if (count <= 4) return route.fulfill({ status: 503, body: 'temporary controller download failure' });
+      return route.continue();
+    });
     await page.evaluate(() => document.querySelector('a-scene').enterVR());
     await page.waitForFunction(() => document.querySelector('a-scene').renderer.xr.isPresenting);
     await page.waitForFunction(() => document.querySelector('[laser-controls*="right"]').components['tracked-controls']?.controller);
+    const pointing = await page.evaluate(() => new Promise(resolve => {
+      const scene = document.querySelector('a-scene');
+      scene.xrSession.requestAnimationFrame(() => scene.xrSession.requestAnimationFrame((time, frame) => {
+        resolve([...scene.querySelectorAll('[laser-controls]')].map(el => {
+          const input = el.components['tracked-controls'].controller;
+          const pose = frame.getPose(input.targetRaySpace, input.gripSpace);
+          const dir = new THREE.Vector3(0, 0, -1).applyQuaternion(pose.transform.orientation);
+          const ray = el.components.raycaster.data;
+          return { component: !!el.components['controller-ray'], model: !!el.components['gltf-model'].model,
+            enabled: ray.enabled, directionError: dir.distanceTo(ray.direction),
+            originError: new THREE.Vector3().copy(pose.transform.position).distanceTo(ray.origin) };
+        }));
+      }));
+    }));
+    assert.equal(pointing.length, 2);
+    for (const hand of pointing) {
+      assert.equal(hand.component, true); assert.equal(hand.model, false);
+      assert.equal(hand.enabled, true); assert.ok(hand.directionError < 1e-5 && hand.originError < 1e-5,
+        `native pointing works before a controller model loads: ${JSON.stringify(hand)}`);
+    }
+    await page.waitForFunction(() => document.querySelector('#menu')?.dataset.notice === 'controller-model');
+    await page.waitForSelector('#menu .answer[data-index="0"][data-ready="1"]', { state: 'attached' });
+    // Aim the emulated physical controller and squeeze its trigger; no DOM click.
+    // Use the ray observed in the rig's reference frame, preserving any IWER offset.
+    await page.evaluate(() => {
+      const el = document.querySelector('[laser-controls*="right"]'), hand = window.__xr.controllers.right;
+      const button = document.querySelector('#menu .answer[data-index="0"]');
+      const target = new THREE.Vector3(); button.object3D.getWorldPosition(target);
+      el.object3D.parent.worldToLocal(target);
+      const origin = new THREE.Vector3().copy(el.components.raycaster.data.origin).applyQuaternion(el.object3D.quaternion).add(el.object3D.position);
+      const current = new THREE.Vector3().copy(el.components.raycaster.data.direction).applyQuaternion(el.object3D.quaternion);
+      const delta = new THREE.Quaternion().setFromUnitVectors(current.normalize(), target.sub(origin).normalize());
+      const q = delta.multiply(new THREE.Quaternion(hand.quaternion.x, hand.quaternion.y, hand.quaternion.z, hand.quaternion.w));
+      hand.quaternion.set(q.x, q.y, q.z, q.w);
+    });
+    await page.waitForFunction(() => document.querySelector('[laser-controls*="right"]').components.raycaster.intersectedEls.includes(document.querySelector('#menu .answer[data-index="0"]')));
+    await page.evaluate(() => window.__xr.controllers.right.updateButtonValue('trigger', 1));
+    await page.waitForFunction(() => document.querySelector('[laser-controls*="right"]').components.cursor.isCursorDown);
+    await page.evaluate(() => window.__xr.controllers.right.updateButtonValue('trigger', 0));
+    await page.waitForFunction(() => !document.documentElement.dataset.menu);
+    await page.waitForFunction(() => [...document.querySelectorAll('[laser-controls]')].every(el =>
+      el.components['gltf-model']?.model && el.components['controller-batch']?.mesh));
+    assert.equal(modelRequests.size, 2);
+    assert.ok([...modelRequests.values()].every(n => n >= 5), 'both failed model downloads retry after visible recovery choice');
     // XR placement invalidates an adjustment started in the flat view. Resume explicitly.
     await state('interrupted');
     await page.waitForSelector('#linesDisplay .answer[data-index="0"][data-ready="1"]', { state: 'attached' });
@@ -139,7 +192,7 @@ export async function playLines(browser) {
     assert.deepEqual(errors, []); assert.deepEqual(outside, [], 'no requests leave the preview origin');
     assert.deepEqual(layoutProblems, [], 'all trial screens fit at readable size');
     const receipt = { exportedVersion: manifest.version, uncachedEntrypoint: true, output: out,
-      checks: ['real mouse clicks', 'keyboard adjustment', 'pause', 'complete flow', 'reveal pages', 'restart confirmation', 'seated stop', 'relocated 205 practice', 'emulated XR thumbstick', 'desktop after XR exit'], errors, outside };
+      checks: ['real mouse clicks', 'keyboard adjustment', 'pause', 'complete flow', 'reveal pages', 'restart confirmation', 'seated stop', 'relocated 205 practice', 'native pointing without models', 'failed controller downloads recover', 'emulated XR thumbstick', 'desktop after XR exit'], pointing, errors, outside };
     if (images) {
       fs.writeFileSync(path.join(images, 'browser.json'), JSON.stringify(receipt, null, 2));
       // Quest must receive the tested bytes, not a rebuild with another runtime/compressor.

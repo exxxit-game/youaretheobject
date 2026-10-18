@@ -50,6 +50,8 @@ export const APP_T = {
   },
   // The game's menu (src/app/menu.js): the Menu button on the left controller, Escape on a computer.
   menu: {
+    controllerMissing: 'Не удалось показать контроллеры. Наведение лучом доступно. Можно повторить загрузку или вернуться в меню.',
+    retryController: 'Повторить загрузку',
     title: 'Меню',
     resume: 'Продолжить',
     leaveRoom: 'Выйти из опыта',

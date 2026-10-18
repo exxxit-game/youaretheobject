@@ -57,6 +57,9 @@ No sharing during this local prototype. Prior-experience questionnaire and resea
 this trial cannot count as science data. Owner feedback is recorded only when actually supplied.
 
 ## Placement and checks
+Owner's first Quest pass (18 October,5508e78): initially reports odd relative placement and the ability to approach the board. He then clarifies by button that he meant only the right line being lower; no depth/tilt defect reported. The deliberate2.1deg downward displacement follows Appendix p14; preserve it. Both lines share the same canvas plane. Current code has no viewer-position gate, so minimized-head-movement wording alone does not establish controlled viewing conditions.
+Proposed correction, not implemented: define and verify a viewing position before adjustment; outside its declared tolerance, pause and hide the stimulus, retain exit/menu access and explain how to return. Returning restarts the interrupted adjustment through the existing pause flow. Do not force the camera pose, follow the head with measured lines or remove the source's displacement. Tolerance is an implementation parameter requiring explicit documentation and geometric/Quest checks, not a number supplied by this paper. Scientific equivalence remains unverified.
+
 Stable id 02-lines, version 1. New mount receives the assignment number from the app;
 positions are local metres and no floor-specific number enters protocol, voice or report.
 Reuse the existing booth shell, omit the old button apparatus and furniture.

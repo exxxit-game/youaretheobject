@@ -8,6 +8,7 @@ appears.
 
 | Mistake (what happened) | Guard that catches it now |
 |---|---|
+| Failed controller-model downloads left the grip-forward ray instead of native pointing, with no recovery | `tests/controller-ray.test.mjs` "relative pose alone cannot keep a stale absolute hand clickable", "exhausted retries report a visible in-game recovery choice"; `tests/lines-smoke.mjs` rejects model downloads then selects recovery with native XR ray and trigger |
 | A nonzero stick value survived XR exit without a neutral event, so desktop frames kept moving the answer | `tests/lines.test.mjs` "XR exit without a neutral stick event stops adjustment": actual room and control, no hold-state change; clear input on exit |
 | Trial input and active time depended on Window RAF, which standalone immersive VR may stop | `tests/lines.test.mjs` "XR renderer counts full active time without Window RAF": mounted renderer tick, controller input, pause and disposal with Window RAF unavailable; `tests/lines-smoke.mjs` checks emulated XR thumbstick and desktop return |
 | Opening a Quest trial through adb lost URL parameters after an ampersand because Android interpreted them as shell syntax | `tests/guard.test.mjs` "Android shell must preserve all trial URL parameters": quote the URL as one Android shell word in open/restart calls |
