@@ -14,10 +14,37 @@ const KEEP = ['position', 'normal', 'uv'];
 
 AFRAME.registerComponent('controller-batch', {
   init() {
+    // A-Frame gltf-model emits model-error and does not retry. A temporary USB/server
+    // loss must not leave invisible controllers for the rest of the visit.
+    this.failures = 0;
+    this.retry = () => {
+      clearTimeout(this.retryTimer);
+      this.retryTimer = null;
+      if (!this.failed) return;
+      const loader = this.el.components['gltf-model'];
+      if (loader && !loader.model) { this.failed = false; loader.update(); }
+    };
+    this.failedModel = () => {
+      this.failed = true;
+      if (this.failures < 3) this.retryTimer = setTimeout(this.retry, 1000 * 2 ** this.failures++);
+      else this.el.sceneEl.emit('controller-model-unavailable');
+    };
+    this.resumed = () => {
+      if (this.el.sceneEl.xrSession?.visibilityState === 'visible') this.retry();
+    };
+    this.session = () => this.el.sceneEl.xrSession?.addEventListener('visibilitychange', this.resumed);
+    this.el.addEventListener('model-error', this.failedModel);
+    this.el.addEventListener('controllerconnected', this.retry);
+    this.el.sceneEl.addEventListener('enter-vr', this.session);
     this.build = this.build.bind(this);
     this.el.addEventListener('controllermodelready', this.build);
   },
   remove() {
+    clearTimeout(this.retryTimer);
+    this.el.removeEventListener('model-error', this.failedModel);
+    this.el.removeEventListener('controllerconnected', this.retry);
+    this.el.sceneEl.removeEventListener('enter-vr', this.session);
+    this.el.sceneEl.xrSession?.removeEventListener('visibilitychange', this.resumed);
     this.el.removeEventListener('controllermodelready', this.build);
     this.clear();
   },
@@ -32,6 +59,9 @@ AFRAME.registerComponent('controller-batch', {
     this.mesh = null;
   },
   build() {
+    clearTimeout(this.retryTimer);
+    this.failed = false;
+    this.failures = 0;
     this.clear();
     const model = this.el.getObject3D('mesh');
     if (!model) return;

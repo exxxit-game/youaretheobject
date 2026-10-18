@@ -2,6 +2,16 @@
 
 Three lines each: what, why, consequence. No diary.
 
+## Second queued trial: original Drori paired-view task
+Build candidate two from Drori 2020 Experiment 1; retain all six aspects and four staircases per aspect.
+The owner rejected the shortened substitute; later author tables do not identify the original configuration.
+Consequence: the later explicit request to see and try the room permits a separately labelled adjustable preview with our strengths; no claim of the full original experiment or threshold.
+
+## First queued trial: portable visual adjustment
+Use the two poor-context ML configurations from Cretenoud et al. (2020), pp. 3-4 and 14, for a local VR trial of catalog candidate one.
+They provide an explicit active procedure; preserve one practice and two measured adjustments per configuration, without a deadline or a guaranteed effect.
+Consequence: document the subset, controller/display transfer and uncalibrated luminance; no population inference/upload, and no floor number in the experiment identity.
+
 ## No build step, A-Frame vendored
 Plain ES modules and `vendor/aframe-1.8.0.min.js` (one line put back for multiview: tests/vendor.test.mjs), served as static files.
 Fewer moving parts for a non-programmer owner and for AI sessions.
@@ -29,6 +39,7 @@ Why: paying changes who takes part and biases the sample; all known citizen-scie
 Consequence: a study is paid for by the partner lab or a grant, never by the participant.
 
 ## A player who leaves early chooses whether to learn what it was
+Historical, superseded by the owner's 14 October decision in .claude/rules/data.md: early exit reveals nothing, including at the next visit. The old rationale below is retained as history, not the current instruction.
 Leaving VR mid-room shows "go back" or "learn what it was"; a closed page asks the same at the next visit. Nothing is revealed without a click.
 Why: debriefing must be available to early leavers (BPS), but someone who left by accident may want to come back naive.
 Consequence: src/app/left-early.js; test runs (?speed=N) leave no mark.

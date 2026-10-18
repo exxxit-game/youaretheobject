@@ -45,5 +45,4 @@ Repo English; Russian only where tests/structure.test.mjs allows. Who does what:
   (the ask rules in .claude/settings.json).
 
 ## Rooms and code
-A room: the new-room skill (its card, its paper read in full, a clear task); the paper-reviewer checks it. No build
-step; the code's shape is held by tests/structure.test.mjs.
+A room: the new-room skill (its card, its paper read in full, a clear task); the paper-reviewer checks it. Static source; publication export. The code's shape is held by tests/structure.test.mjs.

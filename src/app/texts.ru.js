@@ -50,6 +50,8 @@ export const APP_T = {
   },
   // The game's menu (src/app/menu.js): the Menu button on the left controller, Escape on a computer.
   menu: {
+    controllerMissing: 'Не удалось показать контроллеры. Наведение лучом доступно. Можно повторить загрузку или вернуться в меню.',
+    retryController: 'Повторить загрузку',
     title: 'Меню',
     resume: 'Продолжить',
     leaveRoom: 'Выйти из опыта',
@@ -73,4 +75,20 @@ export const APP_T = {
 export const plural = (n, one, few, many) => {
   const m = n % 100, d = n % 10;
   return (m > 10 && m < 20) ? many : d === 1 ? one : (d > 1 && d < 5) ? few : many;
+};
+
+// Loading and storage recovery before entering the game.
+export const DELIVERY_T = {
+  preparing: 'Подготовка игры. Уже сохранённые файлы используются повторно.',
+  failed: 'Не удалось подготовить игру. Проверьте соединение и попробуйте ещё раз.',
+  retry: 'Попробовать ещё раз',
+  plain: 'Открыть без сохранения файлов',
+  scripting: 'Для игры необходимо включить JavaScript.'
+};
+
+export const TRIAL_T = {
+  restart: 'Начать пробу заново', stop: 'Завершить пробу',
+  restartAsk: 'Начать заново? Текущие ответы будут потеряны.', stopAsk: 'Завершить пробу? Текущие ответы будут потеряны.',
+  keep: 'Продолжить текущую пробу',
+  stopped: 'Проба остановлена. Можно снять шлем или начать снова.', start: 'Начать снова'
 };

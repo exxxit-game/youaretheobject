@@ -1,14 +1,13 @@
-// The automatic stop before the owner meets anything: the headset tools do not start VR and the
-// test copy is not published until the practice reviewer (.claude/agents/practice-reviewer.md)
-// has seen the files a person meets: the game and the headset probe, as the local server serves
-// them (PUBLIC, tests/static-server.mjs). A check built from a first idea wasted his headset run
-// (docs/mistakes.md); a rule in text was not enough to stop the next one.
-// The record is written only by Claude Code's hook (tools/claude-guard.mjs, subagent-stop).
+// Publication and headset use require review of the current public files and export recipe.
+// Only reviewer lifecycle hooks write records; passing tests is not review approval.
 import crypto from 'node:crypto';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { PUBLIC, isPublic } from '../tests/static-server.mjs';
+import { PUBLIC, isPublic, publicPath } from './public-files.mjs';
+// These files determine the bytes and paths the player receives, too.
+export const PUBLIC_RECIPE = ['tools/public-files.mjs', 'tools/export-game.mjs', 'tools/delivery-pack.mjs',
+  'tools/publish-preview.mjs', 'tools/verify-delivery.mjs', 'tests/static-server.mjs'];
 
 const RECORD = process.env.OBJECT_REVIEW_RECORD
   || path.join(os.homedir(), 'Documents', 'objekt-files', 'notes', 'practice-reviews.jsonl');
@@ -25,8 +24,9 @@ export function scan(root) {
     const abs = path.join(root, p);
     if (!fs.existsSync(abs)) continue;
     const found = p.endsWith('/') ? fs.readdirSync(abs, { recursive: true }).map((f) => p + String(f).split(path.sep).join('/')) : [p];
-    for (const rel of found) if (isPublic(rel) && fs.statSync(path.join(root, rel)).isFile()) names.push(rel);
+    for (const rel of found) if (isPublic(rel) && fs.statSync(publicPath(root, rel)).isFile()) names.push(rel);
   }
+  for (const file of PUBLIC_RECIPE) if (fs.existsSync(path.join(root,file))) names.push(file);
   return prints(root, names);
 }
 const prints = (root, names) => {
@@ -53,10 +53,7 @@ export function roomScan(root) {
   return Object.fromEntries(rooms.map((r) => [r, prints(root, fs.readdirSync(path.join(dir, r), { recursive: true })
     .map((f) => `${ROOMS}/${r}/${String(f).split(path.sep).join('/')}`).filter((rel) => fs.statSync(path.join(root, rel)).isFile()))]));
 }
-// a report reached its last block when the last line that begins with the marker is followed only
-// by that block's own list lines ("- <its link> — what to find there", .claude/agents/
-// practice-reviewer.md) or blank lines: a marker further up followed by more prose is a run cut
-// short. A plain prefix test, so no marker text is read as a regular expression.
+// A completed report ends with its marker and optional list lines, never more prose.
 export const endsWithBlock = (text, end) => {
   const lines = String(text).split('\n').map((l) => l.trim());
   const at = lines.map((l) => l.startsWith(end)).lastIndexOf(true);

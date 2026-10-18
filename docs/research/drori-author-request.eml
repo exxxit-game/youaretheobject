@@ -1,0 +1,27 @@
+To: gadidrori@gmail.com
+Subject: Original UnReal 2020 Experiment 1 configuration
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+
+Dear Dr Drori,
+
+I am working on a WebXR recreation of Experiment 1 from your UnReal article
+(Drori et al., 2020, DOI 10.3390/jcm9061627). I have read the article and
+supplement, but cannot establish several settings needed to preserve the
+original procedure.
+
+Could you point me to the original 2020 task code or configuration, or clarify:
+
+1. Initial alteration values and permitted bounds for all six aspects.
+2. The exact stopping rule for each of the 24 interleaved staircases.
+3. The response-update rule: the method says 1-up/2-down, while the following
+   description appears to reduce the alteration after a different response.
+4. How the altered view was allocated to the first or second presentation,
+   and whether any identical pairs were included in Experiment 1.
+5. Whether Experiment 1 participants stood or sat, and its typical duration.
+
+I found the later psych_gady repository and 2025 follow-up materials, but do
+not want to assume those settings describe the 2020 procedure.
+
+Any publicly shareable code, configuration or clarification would help avoid
+silently replacing missing settings with guesses. Thank you.

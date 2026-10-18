@@ -1,7 +1,7 @@
 // Publishes the game files of this checkout to the owner's test copy for the headset:
 // https://exxxit-game.github.io/object-preview/ (GitHub Pages of exxxit-game/object-preview).
 // The headset opens it from a bookmark: no laptop, no cable, after any restart. Only what
-// the page needs goes there (the PUBLIC list of tests/static-server.mjs): no notes, tests
+// the page needs goes there (the PUBLIC list of tools/public-files.mjs): no notes, tests
 // or history. Games on the test copy never send results (src/app/session.js, PREVIEW).
 // The live site (main of exxxit-game/youaretheobject) is not touched: it changes only with a release (CLAUDE.md).
 // Usage: node tools/publish-preview.mjs [--anyway]
@@ -10,9 +10,11 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { PUBLIC } from '../tests/static-server.mjs';
+import { PUBLIC } from './public-files.mjs';
+import { deliveryVerifier, publicationSnapshot } from './verify-delivery.mjs';
 import { check } from './secrets.mjs';
-import { requireReview, requirePaper } from './review-gate.mjs';
+import { exportGame, retainObjects } from './export-game.mjs';
+import { requireReview, requirePaper, PUBLIC_RECIPE } from './review-gate.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const REPO = 'https://github.com/exxxit-game/object-preview.git';
@@ -53,32 +55,42 @@ try {
   }
   checked = own?.conclusion === 'success';
 } catch (e) { /* GitHub out of reach: the copy goes out marked unchecked */ }
-const dirty = git(ROOT, 'status', '--porcelain', '--', ...PUBLIC.map(p => p.replace(/\/$/, '')));
+const dirty = git(ROOT, 'status', '--porcelain', '--', ...PUBLIC.map(p => p.replace(/\/$/, '')), ...PUBLIC_RECIPE);
 const unchecked = !checked || !!dirty;
-const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'object-preview-'));
-for (const p of PUBLIC) {
-  const from = path.join(ROOT, p);
-  if (fs.existsSync(from)) fs.cpSync(from, path.join(dir, p), { recursive: true });
-}
-fs.writeFileSync(path.join(dir, '.nojekyll'), ''); // serve files as they are
-// search engines must not list the test copy
-const index = path.join(dir, 'index.html');
-fs.writeFileSync(index, fs.readFileSync(index, 'utf8').replace('<head>', '<head>\n  <meta name="robots" content="noindex, nofollow">'));
+const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'object-preview-'));
+const dir = path.join(temporary, 'public');
+let publishedFiles;
+try {
+  exportGame(ROOT, dir, { preview: true });
+  publishedFiles = publicationSnapshot(dir);
+  // Old tabs may request a lazy model after a newer release is published. Retain immutable
+  // objects from the prior public export; a failed history read must stop the publication.
+  const previous = fs.mkdtempSync(path.join(os.tmpdir(), 'object-preview-history-'));
+  try {
+    git(os.tmpdir(), 'clone', '-q', '--depth', '1', REPO, previous);
+    retainObjects(previous, dir);
+  } finally {
+    if (path.dirname(path.resolve(previous)) !== path.resolve(os.tmpdir()) || !path.basename(previous).startsWith('object-preview-history-'))
+      throw new Error('Unexpected history directory');
+    fs.rmSync(previous, { recursive: true, force: true });
+  }
 
-git(dir, 'init', '-q', '-b', 'main');
-git(dir, 'add', '-A');
-git(dir, '-c', `user.name=${git(ROOT, 'config', 'user.name')}`, '-c', `user.email=${git(ROOT, 'config', 'user.email')}`,
-  'commit', '-q', '-m', `Preview of ${sha}${dirty ? ' with uncommitted changes' : ''}${unchecked ? ' (unchecked on GitHub)' : ''}`);
-// the copy is pushed from this folder, where git runs no hook: the same check as before every push
-const leaks = check('HEAD', dir);
-if (leaks.length) {
-  for (const p of leaks) console.log('STOP ', p);
-  fs.rmSync(dir, { recursive: true, force: true });
-  console.log('not published: something private is in the files');
-  process.exit(1);
+  git(dir, 'init', '-q', '-b', 'main');
+  git(dir, 'add', '-A');
+  git(dir, '-c', `user.name=${git(ROOT, 'config', 'user.name')}`, '-c', `user.email=${git(ROOT, 'config', 'user.email')}`,
+    'commit', '-q', '-m', `Preview of ${sha}${dirty ? ' with uncommitted changes' : ''}${unchecked ? ' (unchecked on GitHub)' : ''}`);
+  // the copy is pushed from this folder, where git runs no hook: the same check as before every push
+  const leaks = check('HEAD', dir);
+  if (leaks.length) {
+    for (const p of leaks) console.log('STOP ', p);
+
+    throw new Error('Not published: something private is in the files');
+  }
+  git(dir, 'push', '-q', '--force', REPO, 'main');
+} finally {
+  if (path.dirname(path.resolve(temporary)) !== path.resolve(os.tmpdir()) || !path.basename(temporary).startsWith('object-preview-')) throw new Error('Unexpected export directory');
+  fs.rmSync(temporary, { recursive: true, force: true });
 }
-git(dir, 'push', '-q', '--force', REPO, 'main');
-fs.rmSync(dir, { recursive: true, force: true });
 console.log(`published ${sha}${dirty ? ' (+ uncommitted changes)' : ''}${unchecked ? ', UNCHECKED on GitHub: this version\'s own tests have not passed there' : ', its own tests green on GitHub'}: https://exxxit-game.github.io/object-preview/`);
 
 // GitHub Pages builds the copy after the push and now and then fails with no reason given
@@ -96,27 +108,18 @@ const settled = async () => {
 // Right after a build the Pages servers can still hand out some old files beside the new ones
 // (files are kept up to 10 minutes): a game whose modules come from two versions fails to start
 // ("Failed to fetch dynamically imported module"). So "live" only once every script, page and
-// style is served exactly as published; and every model the controllers take from the game itself
-// (vendor/aframe-assets: a model still missing there leaves a player's hands empty), compared byte for byte.
+// asset is served as published, including the transformed index.html, fonts, sound and models.
+// Compare the captured public directory, not the checkout which may have changed during the build.
 const BASE = 'https://exxxit-game.github.io/object-preview/';
-const pageFiles = PUBLIC.flatMap((p) => p.endsWith('/')
-  ? fs.readdirSync(path.join(ROOT, p), { recursive: true }).map((f) => (p + f).replace(/\\/g, '/'))
-  : [p]).filter((f) => /\.(js|html|css|glb)$/.test(f) && f !== 'index.html');   // index.html gets the noindex line
+const pageFiles = [...publishedFiles.keys()];
 const served = async () => {
+  const verifier = deliveryVerifier(BASE, publishedFiles);
   let old = [];
   for (let i = 0; i < 12; i++) {
     old = [];
     for (let k = 0; k < pageFiles.length; k += 8) {
       await Promise.all(pageFiles.slice(k, k + 8).map(async (f) => {
-        // a file that cannot be fetched (offline, DNS, TLS) counts as not yet served, never as a gh failure
-        if (f.endsWith('.glb')) {
-          const got = await fetch(BASE + f).then((r) => (r.ok ? r.arrayBuffer() : null)).catch(() => null);
-          if (!got || !Buffer.from(got).equals(fs.readFileSync(path.join(ROOT, f)))) old.push(f);
-          return;
-        }
-        const text = await fetch(BASE + f).then((r) => r.text()).catch(() => '');
-        const mine = fs.readFileSync(path.join(ROOT, f), 'utf8').replace(/\r\n/g, '\n');
-        if (text.replace(/\r\n/g, '\n') !== mine) old.push(f);
+        if (!await verifier.check(f)) old.push(f);
       }));
     }
     if (!old.length) return 'built';

@@ -11,7 +11,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { refusal, ciLine, EXTRA_LINE, imports } from '../tools/claude-guard.mjs';
-import { onHead, offHead, headsetActions } from '../tools/headset.mjs';
+import { onHead, offHead, headsetActions, androidShellWord } from '../tools/headset.mjs';
 import { split } from '../tools/board.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -266,6 +266,9 @@ assert.equal(ask('Bash', 'grep -rn "git commit --no-verify" docs/'), 0, 'the hoo
 // The headset tools restart nothing while the owner wears the headset: the power service's dump
 // says mounted with no override of ours (tools/headset.mjs). Dumps as the headset printed them.
 const dump = (state, virtual) => `Virtual proximity state: ${virtual}\nisAutosleepDisabled: false\nState: ${state}\n`;
+const trialUrl = 'http://localhost:3000/?room=02-lines&trial=1&build=test';
+assert.equal(androidShellWord(trialUrl), "'" + trialUrl + "'", 'Android shell must preserve all trial URL parameters');
+assert.equal(androidShellWord("a'b"), "'a'\\''b'");
 assert.ok(onHead(dump('HEADSET_MOUNTED', 'DISABLED')), 'worn by the owner reads as on his head');
 assert.ok(!onHead(dump('HEADSET_MOUNTED', 'CLOSE')), 'our own "worn on" override is not a person');
 assert.ok(!onHead(dump('HEADSET_UNMOUNTED', 'DISABLED')) && !onHead(dump('STANDBY', 'DISABLED')), 'off the head is not on it');
@@ -280,7 +283,10 @@ for (const [powerDump, free] of [[dump('HEADSET_MOUNTED', 'DISABLED'), false], [
   const h = headsetActions((...a) => { sent.push(a.join(' ')); return a.includes('vrpowermanager') ? powerDump : ''; });
   assert.equal(h.sleepNow(), free, `sleep ${free ? 'refused' : 'allowed'} for ${JSON.stringify(powerDump)}`);
   assert.equal(sent.some((c) => c.includes('KEYCODE_SLEEP')), free, `the sleep key ${free ? 'not ' : ''}sent for ${JSON.stringify(powerDump)}`);
-  if (free) h.restartBrowser('https://example.test/');
+  if (free) {
+    h.restartBrowser(trialUrl);
+    assert.ok(sent.some(c => c.includes('-d ' + androidShellWord(trialUrl) + ' com.oculus.browser')));
+  }
   else assert.throws(() => h.restartBrowser('https://example.test/'), /not restarted/);
   assert.equal(sent.some((c) => c.includes('force-stop')), free, `the browser ${free ? 'not ' : ''}restarted for ${JSON.stringify(powerDump)}`);
 }

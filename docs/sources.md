@@ -5,6 +5,22 @@ Status is `verified` (checked against the full text) or `UNVERIFIED` (do not sho
 Abstracts are not enough: room 01 once removed a true fact because only the
 abstract had been read.
 
+## Drori et al. (2020), JCM 9(6):1627, DOI 10.3390/jcm9061627
+Verified main p. 5, section 2.6.1: two 2-second VR views separated by a 1-second black screen;
+one altered and one unaltered environment, then a same/different response. Six aspects,
+four randomly interleaved staircases each. Initial levels, exact stopping/update rule
+and altered-view allocation are unresolved: no inferred defaults or working-room claim.
+Full evidence and supplemental details: [source check](research/drori-recreation.md).
+
+## Cretenoud et al. (2020), JOV 20(6):4, DOI 10.1167/jov.20.6.4
+Local full text/PDF: cretenoud-2020 in the external papers library; Methods/Results/Discussion/Appendix read 18.10.
+Verified: original recruited 86, analysed 76, 12 variants, practice once and measure twice (p. 3);
+reference 15.6 degrees, fins 3.5 degrees, offset 2.1 degrees, initial range 0-21.5 (p. 14).
+Verified: the poor-context outward variant did not show the expected effect (Results p. 5).
+Trial 02-lines uses only two poor-context ML configurations. Its own difference uses actual drawn
+lengths, averaged before subtraction/division by the reference (p. 3). No numeric group mean claimed.
+VR/controller transfer, shortened subset and uncalibrated brightness are deviations, not source validation.
+
 The Ono (1987) room that once was room 01 is gone from the game; its sources stay with it in
 commit 005c92a on GitHub (the git tag ono-room-final marks it on the owner's laptop).
 

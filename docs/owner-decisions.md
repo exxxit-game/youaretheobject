@@ -1,14 +1,15 @@
 # The owner's decisions
 
 Settled: never asked again; a new fact against one is told him once, with its source; only he changes it. One line a decision with
-his key words (the date he said them, UTC); loaded with CLAUDE.md at every session start and after every compaction.
-Here: what holds in every window. A decision of one theme is in .claude/rules/ (game, measures, data, setup), loaded
-when a file of that theme is read or edited («утверждаю» 14.10), settled alike. All his words, how each came, and the
+his key words (the date he said them, UTC); Codex reads this through AGENTS.md at start and context recovery.
+Here: what holds in every window. Theme decisions remain in .claude/rules/ (game, measures, data, setup), read
+before advice or edits on that theme, settled alike («утверждаю» 14.10). All his words, how each came, and the
 texts he accepted: docs/owner-decisions-history.md, read when a line is not enough. A new decision: its line here or
 in its theme's rule, the rest there. A risk list or a general method is no reason to reopen one. My technical advice
 once written here as his is in docs/decisions.md, "Moved from his decisions" (his «Утверждено» 14.10).
 
 ## The process
+- Claude no longer works on this project (17.10: «Надо его полностью отключать от этого всего», «он больше работать над этим не будет»).
 - The rules read at start shortened («укорачивать» 11.10): the important always in front of me, the rest read only during its task («чтобы твоя память была чистая» 11.10).
 - Bans few, thinking free, no invention in precise work («Размышлять… я вообще никогда тебе не запрещаю. Но вот додумывать, фантазировать… когда здесь точечная работа» 11.10).
 - His permanent prompt stands at the top of CLAUDE.md: his long text of 11.10 («Да, длинный вариант»), in the form he chose («Вариант В» 11.10); the text as he pasted it is in the record.
@@ -27,7 +28,7 @@ once written here as his is in docs/decisions.md, "Moved from his decisions" (hi
 - 21.10, his check: only «Принимаю N» to things seen in the headset count; fewer than three, no rollback: process work stops, only the game, until three («Утверждаю» 15.10).
 - Think ahead: every decision weighed for a million players of every country and age, scientifically, for the long run («берись с расчетом, что вот уже будет миллион игроков… с разных стран, разных возрастов… по-научному… посмотри в будущее»; «постоянно смотреть в будущее» 13.10).
 - Work in order, from step one («Шаг 15, шаг 30, шаг 50… Где… шаг номер один» 13.10).
-- Одно окно за раз: новое окно открывается только после того, как работа предыдущего влита в room-polish, и оно должно видеть всё, что ему нужно, а не другое состояние («Да, только так. И чтобы оно видело всё что необходимо, бывает так что видит что-то другое и ТД.» 15.10).
+- Main chat plus sequential tasks; shared verified files, assistant selects model/effort and hands off per docs/board.md (17.10: «согласен, давай так и поступим и настроим модели и рассуждения по задачам»). Supersedes merge-before-chat/always-strongest; no release approval.
 - The revision goes through all 14 shelves, filled from what exists first («Мы будем идти по всем 14 полкам. Надо сначала полки наполнить… мы всегда должны отталкиваться от настоящего» 12.10).
 - Everything marked not checked gets checked, fully: the revision fills the gaps and takes the tools it needs («все, что не проверено, нам надо все будет проверять. Полностью все… Заполняем пробелы» 13.10).
 - The process before the game until he is sure of it, explained to him bit by bit («мы все только донастраиваем… Мы пока дальше не двигаемся, потому что мы не уверены в процессе… понемногу объясняем мне это все» 13.10); the game after all is set up, learned, tested and measured, the 45-minute measure among them («когда мы здесь все настроим, узнаем, протестируем, замерим качественно… тогда можно заниматься игрой, потому что уже тогда будет понятно, чем конкретно мы занимаемся» 13.10); the start's count of commits to the game and to the process is told to him every window («напоминай мне, что как раз мы до игры не добрались, это меня мотивирует» 13.10).

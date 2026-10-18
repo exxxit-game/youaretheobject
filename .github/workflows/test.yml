@@ -14,8 +14,27 @@ permissions:
   contents: read
 
 jobs:
+  review-completed:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 27
+    permissions:
+      contents: read
+      statuses: read
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node tools/review-completed.mjs
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with:
@@ -27,6 +46,10 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       - run: npm test
+      # Catch visible gameplay failures before the slower guard mutation passes.
+      - run: npm run test:smoke
+        env:
+          OBJECT_LINES_EVIDENCE: ${{ runner.temp }}/lines-evidence
       # the guard prover runs only when a guard or its test changed in this push: run on every push it
       # turned the tests red 23 times in a row through its own planting and found one blind guard
       # (the process review of 11.10, the owner's yes); a new branch or a lost "before" runs it
@@ -42,4 +65,10 @@ jobs:
         run: node tools/prove-guards.mjs --lf   # every guard must go red on its own mistake
       - if: steps.guards.outputs.changed == 'true'
         run: node tools/prove-guards.mjs        # and with Windows line ends, as on the laptop
-      - run: npm run test:smoke
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lines-evidence
+          path: ${{ runner.temp }}/lines-evidence
+          retention-days: 3
+          if-no-files-found: ignore

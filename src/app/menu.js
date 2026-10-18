@@ -51,6 +51,17 @@ export function createMenu(scene) {
 
   scene.addEventListener('menu-button', () => (open ? close() : show()));
   scene.addEventListener('menu-back', () => { if (open) close(); });
+  // Exhausted model retries are visible in VR too; the page's DOM hint is not.
+  scene.addEventListener('controller-model-unavailable', () => {
+    if (!place) return;
+    if (!open) show();
+    root.dataset.notice = 'controller-model';
+    page([APP_T.menu.title, APP_T.menu.controllerMissing], [APP_T.menu.retryController, APP_T.menu.title], i => {
+      if (i) { menuPage(); return; }
+      for (const el of scene.querySelectorAll('[controller-batch]')) el.components['controller-batch']?.retry();
+      close();
+    });
+  });
 
   function page(blocks, labels, onPick, later = 0) {
     choice.hide();
@@ -78,6 +89,11 @@ export function createMenu(scene) {
     pressable(panelEl, true);
     root.setAttribute('visible', true);
     place.hold?.(true);
+    menuPage();
+  }
+
+  function menuPage() {
+    delete root.dataset.notice;
     const items = typeof place.items === 'function' ? place.items() : place.items;
     page([APP_T.menu.title], [APP_T.menu.resume, ...items.map((i) => i.label)], (i) => (i ? choose(items[i - 1]) : close()));
   }
@@ -114,6 +130,7 @@ export function createMenu(scene) {
   }
 
   function shut() {
+    delete root.dataset.notice;
     open = false;
     pending++;
     choice.hide();

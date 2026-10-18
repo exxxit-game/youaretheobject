@@ -6,6 +6,8 @@ import fs from 'node:fs';
 
 // MSYS_NO_PATHCONV: Git Bash would otherwise turn adb's device paths into Windows paths
 const run = (args) => execFileSync('adb', args, { encoding: 'utf8', env: { ...process.env, MSYS_NO_PATHCONV: '1' } }).trim();
+// adb shell joins arguments again on Android; an unquoted URL loses everything after '&'.
+export const androidShellWord = value => "'" + String(value).replaceAll("'", "'\\''") + "'";
 // The headset can be listed twice, on its cable and over Wi-Fi (tools/quest-wifi.mjs), and adb then
 // refuses every command that names no device ("more than one device/emulator"): the cable's serial
 // (the one without an address) is named, unless ANDROID_SERIAL names one already.
@@ -80,14 +82,14 @@ export function headsetActions(run) {
     restartBrowser(url) {
       if (!off()) throw new Error('the headset is on his head, or its state did not read: the browser is not restarted');
       run('shell', 'am', 'force-stop', 'com.oculus.browser');
-      run('shell', 'am', 'start', '-a', 'android.intent.action.VIEW', '-d', url, 'com.oculus.browser');
+      run('shell', 'am', 'start', '-a', 'android.intent.action.VIEW', '-d', androidShellWord(url), 'com.oculus.browser');
     }
   };
 }
 export const { sleepNow, restartBrowser } = headsetActions(adb);
 export function openUrl(url) {
   adb('shell', 'input', 'keyevent', 'KEYCODE_WAKEUP');
-  adb('shell', 'am', 'start', '-a', 'android.intent.action.VIEW', '-d', url, 'com.oculus.browser');
+  adb('shell', 'am', 'start', '-a', 'android.intent.action.VIEW', '-d', androidShellWord(url), 'com.oculus.browser');
 }
 
 // The game opened in one tab only: two game tabs play two sets of sounds, so a room's hum from a tab
@@ -214,7 +216,9 @@ export const answersScript = (labels) => `import(new URL('src/engine/ui/choice.j
     for (const old of note.querySelectorAll('.answer')) old.remove();
     window.__ownerAnswer = null;
     const onTop = note.getObject3D('mesh').material.depthTest === false;
-    const choice = createChoice(note, { x: 0, y: -0.25, z: 0.005, w: 0.7, h: 0.1, gap: 0.02 });
+    // Match the note's canvas density; wall-button defaults halved reply text resolution.
+    const density = note.components.panel.c.width / note.components.panel.data.w;
+    const choice = createChoice(note, { x: 0, y: -0.25, z: 0.005, w: 0.7, h: 0.1, gap: 0.02, density });
     choice.show(labels, (i) => {
       window.__ownerAnswer = labels[i];
       note.object3D.visible = false;

@@ -8803,6 +8803,18 @@
    "text": "ok",
    "status": "no card",
    "source": "https://doi.org/10.1038/s41562-024-02024-1"
+  },
+  {
+   "id": "cretenoud-2020",
+   "authors": "Cretenoud, A. F., Grzeczkowski, L., Bertamini, M., Herzog, M. H.",
+   "year": "2020",
+   "title": "Individual differences in the Müller-Lyer and Ponzo illusions are stable across different contexts",
+   "sections": ["perception"],
+   "tags": ["visual illusions", "individual differences", "context"],
+   "type": "article",
+   "text": "ok",
+   "status": "no card",
+   "source": "https://doi.org/10.1167/jov.20.6.4"
   }
  ]
 }

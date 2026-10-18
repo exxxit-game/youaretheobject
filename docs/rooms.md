@@ -1,5 +1,7 @@
 # Room contract
 
+Current first queued local trial: [02-lines specification](rooms/02-lines.md).
+
 A room is a folder `src/rooms/NN-name/` and stands behind a door of the corridor. The app holds
 the scene, the player (the rig, the camera, both controllers) and the corridor with every door for
 the whole visit (`src/app/lab.js`, `src/app/stage.js`); the room is only what is behind its door.
@@ -68,7 +70,17 @@ A door sign shows the room's number only, on the door's corridor face (`doorHTML
 the wall inside: the experiment's name would tell the player what is studied before they do it
 (demand characteristics); the name comes in the reveal, and on the door once the room is done
 (`tests/plaque.test.mjs`). The number comes from the corridor plan (`src/app/lobby/plan.js`):
-the room imports it for its texts and its own sign; the lobby writes the corridor's signs and door 1's.
+the legacy room imports it for its texts and its own sign; the lobby writes the corridor's signs and door 1's.
+
+Owner's trial requirement (18 October): new experiments must not import a fixed floor or door number.
+Keep the experiment id and protocol version stable when relocating it. The app supplies the displayed
+number and placement; the room keeps geometry in local metres, including its seat and interaction area.
+Do not put a floor/door number in the protocol, recorded result identity or spoken recordings. Changing
+the assignment must not alter stimulus dimensions or restart the player's experiment history. The current
+launcher still serves only door 1; multi-floor routing is not implemented or proved by this contract.
+Before calling a new trial portable, exercise its mounting, numbering, entry/exit and local-to-world
+coordinates under two assignments, including another floor number. Do not copy its procedure into a
+second room folder to move it. See research/first-room-trials.md for the fixed sequential trial queue.
 
 Add a room: read the paper in full first (CLAUDE.md: the paper read in full), write the spec, then
 `protocol.js` and its test, then the rest. File names must not look like tracking

@@ -13,12 +13,12 @@ paths:
 ---
 # The owner's decisions on the setup: connectors, plugins, models, GitHub, CodeRabbit, updates
 
-Claude Code loads this file when a file of the paths above is read or edited.
+Codex reads this canonical topic before advice or edits; entry: AGENTS.md.
 
 - Two empty PATH entries in Windows stay («Вообще не хочу туда лезть» 10.10).
 - Google Drive is the papers' cloud copy; the old Dropbox files stay («мы выбираем Google Driver» 10.10).
-- The strongest model («взял самую-самую умную» 9.10), the search helpers too («вернуть Opus» 12.10).
-- Paid tools only when they help decisively («не готов платить за лишнюю херню» 10.10).
+- Codex model/effort follow docs/board.md (approved 17.10), superseding Claude's model choice of 9-12.10.
+- Paid tools must solve a serious concrete need; prefer free, cheaper than $30/month («30 баксов в месяц потолок», 18.10). This is a ceiling, not purchase approval. Scite excluded by owner (18.10).
 - CodeRabbit kept only if useful («А если он нам будет очень полезен, я, может, и дальше за него буду платить» 10.10); it replaces the PR review toolkit («делай» 10.10) and reviews each window's pull request into room-polish; the robot that moved its baseline retired on his word («reviewed, делай что нужно, если это самое умное решение» 14.10); its trial: docs/state.md.
 - The dialogues are kept whole as the archive of why each path was taken, to check against («чтобы оставалась память, по которой мы понимаем, почему мы так поступали… чтобы мы могли всегда свериться» 13.10); Claude Desktop keeps them at any age (Claude Code's docs).
 - He sets up and connects; I check it all as one whole («Все, что надо настроить, подключить, я настрою и подключу» 10.10).

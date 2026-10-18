@@ -1,8 +1,14 @@
 {
   "why": "The rules and guards that steer the agent stay as they are or shrink, never grow: a cut held by text alone grew back within days, twice. tests/structure.test.mjs adds up the characters of what is listed in count (line ends as LF) and fails over limit, or when a cut leaves more than slack under it, so the limit comes down with every cut. '@CLAUDE.md' means the files CLAUDE.md imports; a name ending in / means every file under it.",
-  "limit": 116793,
+  "limit": 134147,
   "slack": 1000,
+  "migration_note": "Proposed Codex handover baseline: account for the event adapter, native profiles and handoff instead of leaving new Codex steering outside the Claude-era count. The prior limit was 116793. Keep the existing gates while runtime activation is unverified; review this one-time increase in the migration PR before merging. The ratchet and 1000-character slack are unchanged.",
   "count": [
+    "AGENTS.md",
+    ".codex/hooks.json",
+    ".codex/agents/",
+    "tools/codex-events.mjs",
+    "tools/owner-links.mjs",
     "CLAUDE.md",
     "@CLAUDE.md",
     ".claude/rules/",
@@ -14,6 +20,7 @@
     "tools/review-gate.mjs",
     "tools/prove-guards.mjs",
     "tools/board.mjs",
-    "tools/hooks/"
+    "tools/hooks/",
+    "tools/codex-guard.mjs"
   ]
 }

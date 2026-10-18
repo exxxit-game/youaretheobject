@@ -1,7 +1,7 @@
 # perception
 
 Generated from `docs/library/papers.json` by `node tools/build-library.mjs`. Do not edit by hand.
-49 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
+50 papers. Each line: id, authors and year, title, tags, then the card or the status. The text is
 in the library folder's papers\ as `<id>.txt` (a data set: `<dir>/<id>.txt` from the library folder); "text: ocr" marks a scan's
 text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 
@@ -13,6 +13,7 @@ text, "placeholder" an excerpt. Index of all sections: [library](../library.md).
 - **bansal-2019** Bansal et al. 2019. Movement-contingent time flow in virtual reality causes temporal recalibration · time perception, temporal recalibration, movement-contingent time · [card](../cards/bansal-2019.md)
 - **caljouw-2014** Caljouw & van Wijck 2014. Is the glass half full or half empty? How to reverse the effect of glass elongation on the volume poured · glass shape, volume perception, pouring, elongation bias, food perception · [card](../cards/caljouw-2014.md)
 - **canzoneri-2012** Canzoneri et al. 2012. Dynamic sounds capture the boundaries of peripersonal space representation in humans · peripersonal space, looming sound, multisensory · [card](../cards/canzoneri-2012.md)
+- **cretenoud-2020** Cretenoud et al. 2020. Individual differences in the Müller-Lyer and Ponzo illusions are stable across different contexts · visual illusions, individual differences, context · no card
 - **croucher-2002** Croucher et al. 2002. Naive optics: Understanding the geometry of mirror reflections · naive optics, mirror reflection, intuitive physics · [card](../cards/croucher-2002.md)
 - **cwiek-2022** Ćwiek et al. 2022. The bouba/kiki effect is robust across cultures and writing systems · bouba-kiki effect, sound symbolism, cross-cultural, language · [card](../cards/cwiek-2022.md)
 - **drori-2020** Drori et al. 2020. UnReal? Investigating the sense of reality and psychotic symptoms with virtual reality · sense of reality, altered reality, change detection, psychosis · [card](../cards/drori-2020.md)
