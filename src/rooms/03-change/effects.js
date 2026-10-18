@@ -13,7 +13,7 @@ export function createEffects(world, camera, height) {
       gl_FragColor=vec4(vec3(n),amount);}` });
   const grain = new THREE.Mesh(geometry, noise); grain.name = 'changeGrain'; grain.renderOrder = 9997; grain.visible = false;
   const blackMaterial = new THREE.MeshBasicMaterial({ color: 0, side: THREE.BackSide,
-    depthTest: false, depthWrite: false });
+    transparent: true, opacity: 1, depthTest: false, depthWrite: false });
   const black = new THREE.Mesh(geometry, blackMaterial); black.name = 'changeBlack'; black.renderOrder = 10000; black.visible = false;
   camera.add(grain, black);
   const reset = () => {

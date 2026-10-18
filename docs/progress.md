@@ -2,6 +2,10 @@
 The newest entry is read at the start of every session, with `git log --oneline -20` and docs/features.json (CLAUDE.md, "Every session"). Newest entry on top. Each entry: done, not done and why, next. Anything outside the
 feature at hand goes to the end of docs/board.md, one line each.
 Floor directory and day history of 16.10: docs/progress-2026-10-16.md. Entries of 14.10 and before: docs/progress-2026-10-14.md; selected older entries of 15-16.10: docs/progress-2026-10-15.md.
+## 2026-10-18 - Second viewing preview implemented; rendered checks pending
+Owner explicitly requested an actual room to view and try initial strengths; author contact declined. Saved9f196e5 through normal commit hooks. New03-change uses all six aspects with repeated2s/1s/2s pairs, weaker/stronger/repeat controls and no threshold/upload. Own strengths, fixed six-slot order, booth, relative height and custom grain are expressly preview choices; original24-staircase protocol remains unimplemented. Full sequential npm test passed; five recordings generated/transcribed, all OK. Paper reviewer checked complete preview/source, found three minor voice/spec issues, now corrected; no full-study fidelity claim. Mandatory practice review and hosted rendering pending; no Quest launch/comfort or acceptance claimed. Existing room and unrelated dirty documents preserved. CLI auth was inaccessible only in restricted execution; read-only check with Windows keyring access succeeded, no credential/settings change. Normal branch push in progress; never main. Older Quest launch entry moved intact to docs/progress-2026-10-16-quest.md.
+Next: inspect hosted six-aspect screenshots/flow, fix concrete failures, complete practice gate and serve exact tested export on Quest for owner viewing.
+
 ## 2026-10-18 - Resume first trial: clear held input at XR exit
 Owner explicitly resumed game work after process explanation. Baseline d5d9910, same trial checkout; unrelated local changes preserved. Existing one-line02-lines exit-vr fix clears adjustment input before hold sync. Isolated read shim restored the previous handler in memory only: the real room/control regression rejected it; current lines tests passed. No laptop rendering, room procedure/text/geometry/data change or acceptance. Current-room paper/practice reviews requested under the existing new-room procedure; no other audit. Next: save the bounded fix with its unit/hosted-XR regression, inspect hosted CI and actual CodeRabbit result, then prepare and check that exact export on Quest before owner playthrough.
 Follow-up: saved/pushed5508e780f53815ad9d9443b77bb54b26fdc4c9a1 with normal hooks. CI39143070623 passed both required jobs: npm, full smoke including held-stick XR exit, LF/CRLF guard probes. CodeRabbit reports Review completed16:06:04UTC, no new actionable comments; it skipped six similar files, so do not claim a fresh detailed bot review of each. Two real scoped reviewer completions examined current code/source; practice and paper exact/own-look gates valid,10 starts/completions,0 rejections. Artifact df3d9af28d16b250a953758045544bcbf4f6fce854815b0349efd52f5b34af40 downloaded;695 runtime files compared,237 gzip streams differ encoded but decode identically; two non-runtime dotfiles absent. Serve downloaded tested bytes directly, port52020. Browser layout/errors/outside requests empty; XR adjustment screenshot inspected. Quest loaded intro with preview=true and no worker; device-fetched room SHA301a72afc7c7e15bdd2b934331d137e5afb71036b7b69a44f7a5e94e13d88511 matches artifact. Off-head --lines --play stopped at frame precondition before sending inputs; no proximity override, playthrough or VR claim. Asked owner to wear for real technical look; all in-headset steps must use say/ask. Evidence in ignored node_modules/.cache/lines-exit-5508e78/. Next: worn-headset VR/frame/performance and actual controller path, then owner trial; no new room or main merge.
@@ -277,23 +281,3 @@ prove a bounded change through checks and a reviewable release, with rollback an
 Next: migrate and test the two event-dependent records without weakening the existing gates. Store delivery
 and engine choice remain a separate product decision; they do not justify another general setup cycle.
 
-## 2026-10-16 — Codex current-code Quest launch and controller check
-The owner approved proceeding from setup to a practical headset check.
-Done:
-- Ran the existing local preview from codex/trial-migration (b42f8a0; game code 435e6d2). The worktree was clean;
-  its only difference from the already tested code commit was docs/progress.md. The broad suite was not rerun.
-- Quest 3 connected over USB. The headset browser loaded localhost:3000; SHA-256 of src/main.js matched the
-  worktree, including after entering VR. The scene loaded and the XR session was visible with both controllers.
-- Inspected a screenshot containing both eyes. Five-second sample: approximately 90 fps, worst interval rounded
-  to 16 ms, 52 draw calls, 79,935 triangles, multiview on. This is not a sustained performance result.
-- The owner answered the in-headset visual/controller question: "Yes, I can press it" (English translation; original in result.json). He separately confirmed that
-  he had closed the first game tab himself. No crash is established by that tab disappearance.
-- Showed the completion instruction in VR. The tool confirmed the headset was taken off, delivered the HUD-off
-  broadcast and put it to sleep. The local preview server remains running in this Codex task session.
-Evidence: ~/.codex/visualizations/2026/10/16/01a145d5-8edb-73b3-9695-97ebfe5a5bcd/quest-current-check/
-(result.json, browser-current.png, vr-current.png).
-Found: quest-look.mjs perf counts intervals over 1000/72 + 2 ms, although its text says "slower than 72 Hz".
-Treat that counter as having a 2 ms tolerance; do not report it as a strict 72 Hz check.
-Not done: full room playthrough, all controls/locomotion, audio, sustained stability, store build or purchases.
-No game code changed, publication made, review record fabricated, or feature acceptance recorded.
-Next: one bounded gameplay task, using this proven current-code path; exact publication review remains outstanding.

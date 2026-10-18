@@ -20,6 +20,7 @@ export async function playChange(browser) {
   const images = process.env.OBJECT_LINES_EVIDENCE && path.join(process.env.OBJECT_LINES_EVIDENCE, 'change');
   const errors = [], outside = [], layouts = []; let shot = 0;
   page.on('pageerror', e => errors.push(e.message));
+  page.on('console', m => { if (m.type() === 'error' && /WebGLProgram|Shader Error|VALIDATE_STATUS/.test(m.text())) errors.push(m.text()); });
   page.on('request', r => { if (!r.url().startsWith(origin) && !/^(data|blob):/.test(r.url())) outside.push(r.url()); });
   const state = value => page.waitForFunction(value => document.documentElement.dataset.roomState === value, value);
   const capture = async label => {
@@ -58,12 +59,43 @@ export async function playChange(browser) {
     await pick(); await state('first');
     await page.evaluate(async () => { const r = await import('./src/rooms/03-change/room.js'); r.hold(true); r.hold(false); });
     await state('interrupted'); assert.deepEqual(await transform(), { x: 1, y: 0, pitch: 0, grain: false });
-    await capture('interrupted'); await pick();
+    await capture('interrupted');
+    // Actual-pixel regression: an opaque mask loses to late transparent scene details.
+    await page.evaluate(() => {
+      const scene = document.querySelector('a-scene'), camera = scene.camera;
+      const mask = camera.getObjectByName('changeBlack');
+      const probe = new THREE.Mesh(new THREE.PlaneGeometry(0.2, 0.2),
+        new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, depthTest: false, depthWrite: false }));
+      probe.position.z = -0.3; probe.renderOrder = 9000; camera.add(probe);
+      mask.material.transparent = false; mask.material.needsUpdate = true;
+      window.__blankPixels = [];
+      AFRAME.registerComponent('change-blank-probe', {
+        tock() {
+          if (document.documentElement.dataset.roomState !== 'blank' || window.__blankPixels.length >= 2) return;
+          const gl = scene.renderer.getContext(), pixel = new Uint8Array(4);
+          gl.readPixels(Math.floor(gl.drawingBufferWidth / 2), Math.floor(gl.drawingBufferHeight / 2), 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, pixel);
+          window.__blankPixels.push([...pixel]);
+          mask.material.transparent = true; mask.material.needsUpdate = true;
+          if (window.__blankPixels.length === 2) {
+            camera.remove(probe); probe.geometry.dispose(); probe.material.dispose();
+          }
+        }
+      });
+      scene.setAttribute('change-blank-probe', '');
+    });
+    await pick();
     for (let index = 0; index < 6; index++) {
       if (index) { await state('ready'); await pick(); }
       await state('first'); const first = await transform(); await capture(`view-${index}-first`);
       await state('blank');
       assert.equal(await page.evaluate(() => document.querySelector('a-scene').camera.getObjectByName('changeBlack').visible), true);
+      if (!index) {
+        await page.waitForFunction(() => window.__blankPixels.length === 2);
+        const pixels = await page.evaluate(() => window.__blankPixels);
+        assert.ok(pixels[0].slice(0, 3).every(v => v > 240), 'old opaque mask leaks the transparent detail');
+        assert.ok(pixels[1].slice(0, 3).every(v => v <= 1), 'corrected mask covers the transparent detail with actual black pixels');
+        await capture('black');
+      }
       await state('second'); const second = await transform(); await capture(`view-${index}-second`);
       assert.notDeepEqual(first, second, `aspect ${index} actually changes rendered state`);
       await state('answer'); await capture(`answer-${index}`); await pick();
@@ -74,6 +106,15 @@ export async function playChange(browser) {
     await page.evaluate(() => document.querySelector('a-scene').enterVR());
     await page.waitForFunction(() => document.querySelector('a-scene').renderer.xr.isPresenting);
     await capture('xr-intro');
+    const xrPick = async () => {
+      await page.waitForSelector('#changeDisplay .answer[data-index="0"][data-ready="1"]', { state: 'attached' });
+      await page.evaluate(() => document.querySelector('#changeDisplay .answer[data-index="0"]').emit('click'));
+    };
+    await xrPick(); await state('ready'); await xrPick();
+    await page.waitForFunction(() => document.querySelector('a-scene').camera.getObjectByName('changeGrain').visible);
+    await capture('xr-grain');
+    await page.evaluate(async () => { const r = await import('./src/rooms/03-change/room.js'); r.hold(true); r.hold(false); });
+    await state('interrupted'); assert.deepEqual(await transform(), { x: 1, y: 0, pitch: 0, grain: false });
     await page.evaluate(() => document.querySelector('a-scene').exitVR());
     assert.deepEqual(errors, []); assert.deepEqual(outside, []); assert.deepEqual(layouts, []);
     if (images) {
