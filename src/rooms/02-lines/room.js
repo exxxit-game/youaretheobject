@@ -24,7 +24,7 @@ export const ENTRY = { id: '02-lines', real: false, debrief: T.early, extra: [],
 const VERSION = 1;
 const trial = createTrial();
 let root, display, choice, adjust, session, assignedNumber, menuHeld = false, hidden = false;
-let screen, caption, inspect = -1, resultPage = 0, now = 0, frame = 0;
+let screen, caption, inspect = -1, resultPage = 0, restartPending = false, now = 0, frame = 0;
 const cleanup = [];
 const listen = (target, type, fn) => { target?.addEventListener(type, fn); cleanup.push(() => target?.removeEventListener(type, fn)); };
 const held = () => menuHeld || hidden;
@@ -64,8 +64,15 @@ function draw() {
     say(T.interference);
   } else if (s === 'done') {
     const rows = trial.report();
-    display.dataset.resultPage = inspect >= 0 ? 'inspect' : String(resultPage);
-    if (inspect >= 0) {
+    display.dataset.resultPage = restartPending ? 'restart' : inspect >= 0 ? 'inspect' : String(resultPage);
+    if (restartPending) {
+      paragraph(caption, T.resultTitle);
+      const bottom = paragraph(screen, T.restartAsk);
+      hush();
+      buttons([T.restart, T.keepResult], i => {
+        if (i === 0) enter(false); else { restartPending = false; draw(); }
+      }, 2.1 - bottom - 0.04);
+    } else if (inspect >= 0) {
       paragraph(caption, `${inspect + 1}/2 · ${T.inspectTitle}`, 36);
       drawStimulus(screen, rows[inspect].condition, rows[inspect].meanDeg, false);
       buttons([T.other, T.back], i => { inspect = i ? -1 : 1 - inspect; if (i) resultPage = 0; draw(); });
@@ -76,7 +83,7 @@ function draw() {
         : paragraph(screen, resultPage ? T.reveal : T.result(rows));
       if (resultPage < 2) buttons([T.next], () => { resultPage++; draw(); }, 2.1 - bottom - 0.04);
       else buttons([T.inspect, T.back, T.restart], i => {
-        if (i === 2) enter(false);
+        if (i === 2) { restartPending = true; draw(); }
         else { if (i === 1) resultPage = 0; else inspect = 0; draw(); }
       }, 2.1 - bottom - 0.04);
       if (resultPage) say(resultPage === 1 ? T.reveal : T.source); else hush();
@@ -132,7 +139,7 @@ export function mount(r, assignment) {
 }
 export function enter() {
   unlock(); trial.begin(); menuHeld = false; hidden = isHidden(); trial.pause(held());
-  session.begin(false); inspect = -1; resultPage = 0; delete display.dataset.resultPage; alignHeight();
+  session.begin(false); inspect = -1; resultPage = 0; restartPending = false; delete display.dataset.resultPage; alignHeight();
   document.title = T.title(assignedNumber); showHint({ title: T.title(assignedNumber), body: T.hint }); draw();
 }
 export function hold(on) { menuHeld = on; syncHold(); }

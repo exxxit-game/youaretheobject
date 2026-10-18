@@ -40,7 +40,8 @@ export async function checkLines() {
       await pick(0);await pick(0);await state('ready');await pick(0);
       for(let i=0;i<4;i++)await pick(0);
       await state('feedback');await pick(0);await state('done');
-      await pick(0);await pick(0);await pick(0);await pick(1);await pick(0);await pick(0);await pick(2);await state('intro');
+      await pick(0);await pick(0);await pick(0);await pick(1);await pick(0);await pick(0);await pick(2);
+      await pick(1);await state('done');await pick(2);await pick(0);await state('intro');
       return {flow:true,syntheticControllerEvent:true,paused:true,reveal:true,restarted:true};
     })()`, true);
     if (result?.error || result?.flow !== true) throw new Error(JSON.stringify(result));

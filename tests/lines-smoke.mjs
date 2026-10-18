@@ -80,7 +80,11 @@ export async function playLines(browser) {
     await pick(); await capture('reveal'); await pick(); await capture('source');
     await pick(); await capture('inspect'); await pick(1);
     assert.equal(await page.$eval('#linesDisplay', el => el.dataset.resultPage), '0');
-    await pick(); await pick(); await pick(2); await state('intro');
+    await pick(); await pick(); await pick(2); await capture('restart-question');
+    assert.equal(await page.$eval('#linesDisplay', el => el.dataset.resultPage), 'restart');
+    await pick(1); await state('done');
+    assert.equal(await page.$eval('#linesDisplay', el => el.dataset.resultPage), '2');
+    await pick(2); await pick(0); await state('intro');
     // Cancelling reset keeps the run; stopping needs an explicit second choice.
     await page.keyboard.press('Escape'); await pick(1, '#menu'); await pick(1, '#menu'); await state('intro');
     await page.evaluate(() => { document.querySelector('#cam').object3D.position.y = 1.05; });

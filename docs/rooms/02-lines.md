@@ -44,7 +44,7 @@ The brief opening calls this a VR trial; no limited answer becomes proof of an i
 ## Flow and measures
 Intro -> practice instructions -> 2 practice adjustments -> repeat practice / start measured
 -> 4 measured adjustments -> no-blame interference choice -> results -> explanation -> source -> inspect / restart.
-Inspection returns to results. Menu reset/stop ask confirmation; stopped UI follows seated eye height.
+Inspection returns to results. Reset/stop and replacing a finished result ask confirmation; stopped UI follows seated eye height.
 No forced wait, timer, fixed completion deadline, scoring or correct-answer feedback during measure.
 One explicit confirmation per adjustment. Menu/hidden headset cannot submit answers.
 Leaving cancels the run. Re-entry starts afresh. Restart remains the same experiment identity.
