@@ -1,5 +1,4 @@
-// Translate documented Codex events into the existing local review/owner journals.
-// Completion is not approval: findings still need fixes and owner acceptance stays separate.
+// Codex callbacks to existing journals. Completion is not approval.
 // Spec: https://learn.chatgpt.com/docs/hooks . Never parse a Codex transcript as Claude JSONL.
 import fs from 'node:fs';
 import os from 'node:os';
@@ -46,8 +45,9 @@ export function handleEvent(event, { root = ROOT, notes = NOTES } = {}) {
     fs.writeFileSync(fd, JSON.stringify({ pid: process.pid, root, session, turn }));
     if (kind === 'UserPromptSubmit') {
       if (typeof event.prompt !== 'string') throw Error('Missing user prompt');
-      // Do not unwrap machine notices or attachments into a human acceptance.
-      const prompt = event.prompt.replace(/\r\n?/g, '\n');
+      // Strip only the observed desktop browser envelope; other XML remains a notice.
+      const prompt = event.prompt.replace(/\r\n?/g, '\n').replace(
+        /^\s*<in-app-browser-context source="ambient-ui-state">[\s\S]*?<\/in-app-browser-context>\s*\n## My request:\s*\n/, '');
       const own = /^\s*</.test(prompt) ? '' : ownText(prompt);
       if (!own) return { status: 'ignored' };
       const log = path.join(notes, 'owner-messages.md');

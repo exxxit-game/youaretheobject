@@ -1,7 +1,7 @@
 # Where things are (the work itself: docs/features.json and docs/board.md)
 
-Codex migration: work in `C:/Users/admin/.codex/worktrees/codex-trial-migration/objekt`, branch `codex/trial-migration`; resume from AGENTS.md and docs/progress.md. The primary checkout contains older code and local changes.
-Setup reports dated before the migration describe Claude; they are not proof of Codex behavior. Current verification and pending work are in docs/progress.md.
+Codex migration: work in `C:/Users/admin/.codex/worktrees/codex-trial-migration/objekt`, branch `codex/trial-migration`; resume from AGENTS.md and docs/progress.md. The primary checkout contains older code and local changes. Pre-migration setup reports describe Claude, not verified Codex behavior; current evidence and pending work are in docs/progress.md.
+Knowledge entry on this laptop: [start here](file:///C:/Users/admin/Documents/objekt-files/00-start-here.html); [cloud library](https://drive.google.com/drive/folders/13RwQqUvcdnAKx_u13bnH-9zZQoFDomSa). The entry is a dated navigation/catalog export, not a second decision log. Canonical roles and the evidence chain: docs/board.md, "База знаний"; ownership: docs/tandem.md. Refresh source is in objekt-files/notes/knowledge-2026-10-17/build-knowledge.mjs; pass the verified checkout and a staging output path before replacing the entry.
 ## Where things are
 - Repo `exxxit-game/youaretheobject` (folder `C:\Users\admin\Documents\GitHub\objekt`). Site:
   https://youaretheobject.com (registered 7.10.2026 at Namecheap to 7.10.2027; a spare, youaretheobject.top, bought by him 14.10, to 13.10.2027, pointed nowhere yet) (GitHub Pages from `main`; `main` is an OLD package; since 12.10, his yes, main takes changes only by a pull request with the test check green, no bypass: ruleset 24770045, the test check pinned to GitHub Actions). The Supabase connector since 13.10: the custom «Supabase чтение», https://mcp.supabase.com/mcp?project_ref=rkvdwzlymmewsxjysgma&read_only=true (one project, a read-only Postgres user); the full one removed. Read 13.10 through it: current_user supabase_read_only_user, transaction_read_only on, no INSERT or DELETE on app.runs, no CREATE in public or app, rolbypassrls true (it reads every row). My GitHub access since 12.10: one fine-grained key he made (this repo and object-preview; contents, pull requests, workflows write; actions, statuses read; no administration, no deployments; expires in 90 days), git through gh; the old logins removed. Work: `room-polish`.
@@ -20,14 +20,14 @@ Setup reports dated before the migration describe Claude; they are not proof of 
   (contact t.me/exxxit). Tests pin client fields to the SQL (`tests/results.test.mjs`, `tests/playtest.test.mjs`). The laptop's Supabase CLI: logged out 12.10 on his word, no token.
 - Files outside the repo, one folder `C:\Users\admin\Documents\objekt-files\`: `papers\` (every paper as `<id>.pdf`
   and `<id>.txt`), `datasets\`, `imports\` (exports as downloaded), `notes\` (his messages, the review record); its
-  Drive sync was reported on 14.10; disk F: is separate from C:. On 17.10 all 2,205 files in its saved library snapshot and both repository copies were restored and hash-checked (docs/research/source-audit.md). Cloud/database recovery and later additions remain unverified. The card index of
+  Drive mapping verified 17.10: local C: volume, private cloud folder under "Ноутбук"; six main folders agree. Client snapshot: 2,368 items, no pending/queued uploads or differences among comparable hashes; not a full cloud restore. F: is a separate fixed disk for backups, not Google Drive; its objekt-files folder is an older copy, dated snapshots are under objekt-files-snapshots and objekt-project-snapshots. On 17.10 all 2,205 files of a saved library snapshot and both repository copies were restored and hash-checked (docs/research/source-audit.md). Cloud/database recovery and later additions remain unverified. The card index of
   the whole library: `docs/library.md` (sections, then one line per paper, then card, then text; wanted and
   dropped papers in `docs/library/wanted.md`; a new paper needs a record in `docs/library/papers.json`). 145 cards from full texts: `docs/cards/`, checked by
   `node tools/check-cards.mjs`; catalog generated: `docs/catalog.md` (`node tools/build-catalog.mjs`);
   search coverage: `docs/library/coverage.md`; research notes: `docs/research/README.md`; ideas: `objekt-files/notes/archive/docs/ideas/`; headset abilities:
-  `docs/headset-capabilities.md`; owner page: https://claude.ai/artifact/Srhwjio7Ukp4FBDQAHpZB2
+  `docs/headset-capabilities.md`; historical owner page: https://claude.ai/artifact/Srhwjio7Ukp4FBDQAHpZB2
 - THE WORK is the feature list `docs/features.json` (the start names the current one; his accept word is the only measure of progress) and the board `docs/board.md` (his words, what waits).
-  Claude logged owner messages through its prompt hook; Codex callback delivery remains unverified (zero recorded events on 17.10). The big plan (archive and strategy, read only
+  Codex callback journals read18.10:36 owner events and8 matching reviewer completions, no lock. New PreToolUse is trusted but actual interception remains unverified; see latest docs/progress.md and docs/studio-map.md. The big plan (archive and strategy, read only
   when a step needs it): https://claude.ai/code/artifact/71113d16-57ad-42ce-9905-87ff87dfdbd7; the delivery chain from today to a million players, checked by four fact-check runs (16.10, his doc, the map each window checks the delivery against): https://claude.ai/code/artifact/61184b9b-cbd5-41be-82ad-54088c45a30e
   Every critical problem still open on 10.10 (money, law, data, headset, process, records), whose step each is and
   the owner's choices: https://claude.ai/artifact/NGika3MZ8ms7GdFvfiZhvT
@@ -46,7 +46,7 @@ Setup reports dated before the migration describe Claude; they are not proof of 
 - docs/tools.md: named in CLAUDE.md (not imported, so not loaded by itself), read at a task's start. Everything available, used or not, with its recorded reason: the inventory of 15.10 (objekt-files/notes/others-2026-10-15/inventory-2026-10-15.md).
 
 ## Decisions with the owner
-One line each: for every window in `docs/owner-decisions.md` (loaded at every start), for one theme in `.claude/rules/` (game, measures, data, setup; loaded when a file of that theme is read or edited); all his words in `docs/owner-decisions-history.md` (read for a task).
+Codex entry: `AGENTS.md`; general choices: `docs/owner-decisions.md`; topics: `.claude/rules/{game,data,measures,setup}.md`, read before advice or edits, not automatically imported. `docs/owner-decisions-history*.md` point to the private originals; `docs/decisions.md` also contains assistant advice, not owner authority.
 
 ## How errors are caught (the owner cannot read code)
 - `new-room` skill; `paper-reviewer` agent; `docs/mistakes.md` (a mistake that broke the game, with the test that now catches it); facts in one place

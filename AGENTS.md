@@ -1,16 +1,17 @@
 # Codex project handoff
 
-The owner is not a programmer. Do technical work yourself. In plain Russian explain the purpose, result, and one needed owner action. Separate verified facts from assumptions.
+Do technical work yourself; explain in plain Russian to a non-programmer. Separate evidence, owner decisions and proposals.
 
 ## Resume the actual work
-- During the Codex migration, the tested working copy is `C:/Users/admin/.codex/worktrees/codex-trial-migration/objekt`, branch `codex/trial-migration`. Verify that path, branch, HEAD and working-tree status before edits. The primary checkout has older code and preserved local changes; do not reset, clean or overwrite them to align copies.
-- Read the latest entries in that copy's `docs/progress.md` first. They record the migration status, evidence and next unfinished step. Then read `docs/state.md` for locations, treating its Claude-era setup claims as historical until verified.
-- Read `CLAUDE.md` for the retained workflow, `docs/owner-decisions.md`, `docs/board.md`, `docs/features.json`, and task-relevant research and `.claude/rules/`. Codex does not automatically load Claude imports, rules or permissions. Do not repeat the entire audit at each continuation.
-- Update the existing progress log with material results, exact version, remaining uncertainty and the next action. Keep user decisions separate from an assistant's proposals. Memory and chat summaries are aids, not proof of completed work.
+- Use `C:/Users/admin/.codex/worktrees/codex-trial-migration/objekt`, branch `codex/trial-migration`; verify cwd/branch/HEAD/status before edits. Preserve old primary checkout and local changes: no reset/clean/overwrite to align copies.
+- At start/recovery read latest `docs/progress.md`, then `docs/state.md`, `CLAUDE.md`, `docs/owner-decisions.md`, `docs/ten-circles.md`, `docs/board.md`, `docs/features.json`. Verify historical claims; do not repeat completed audits.
+- Before advice/edits read applicable `.claude/rules/`: game.md (game/art/controls), data.md (data/science/money/stores), measures.md (Quest/tests), setup.md (tools/process). Canonical for Codex, not automatically imported; Claude stays retired.
+- Later owner choices prevail; do not reopen settled ones or treat `docs/decisions.md` advice as his intent. Resolve ambiguity through `docs/owner-decisions-history*.md` and private originals, before task research.
+- Log material results/version/uncertainty/next in existing progress. Instructions, memory and summaries are not execution proof.
 
 ## Verify and preserve
-- Existing commands: `npm test`, `npm run test:smoke`, `npm run serve`. Run checks appropriate to the change; recorded success applies only to the version and scope actually tested.
-- Quest work uses `tools/quest-look.mjs` and `tools/headset.mjs`. Match the served game to the working copy, obey the worn-headset protections, and distinguish a short launch check from a full playthrough or performance test.
-- Project hooks/profiles load from the chat workspace, not from a shell command's workdir. Verify the chat root before relying on `.codex/`. Preserve review gates and owner acceptance. Never fabricate records. For the Codex bridge (docs/tools.md), check `node tools/codex-events.mjs --status` and real callbacks: fixture tests do not prove activation. Other Claude hooks are not migrated.
-- Preserve files and branches. Production data is read-only; main publication, live migrations and purchases need specific approval. Keep limited GitHub access; no login in the agent browser. The owner authorized reading GitHub in his Chrome; changing its settings needs specific approval.
-- Use bounded tasks with an observable completion condition. Extra agents and repeated reviews need a concrete purpose; installing tools is not evidence that the delivery process works.
+- Laptop: one light check; no Playwright/3D/emulators. Smoke only GitHub, VR only Quest (docs/tools.md). Results cover tested version/scope only.
+- Use tools/quest-look.mjs and tools/headset.mjs; match served files, protect worn headset. Launch is not playthrough/sustained measurement.
+- Verify chat root for `.codex/`, not shell cwd. Preserve reviews/owner acceptance; never fabricate records. `node tools/codex-events.mjs --status` plus real callbacks: fixtures do not prove activation. Other Claude hooks remain unmigrated.
+- Production data read-only. Main publication/live migrations/purchases require specific approval. Limited GitHub access; no agent-browser login. Reading GitHub in his Chrome is authorized; changing its settings needs specific approval.
+- Bounded tasks, observable finish. Extra agents/repeated reviews need concrete purpose. Installed tools do not prove delivery.

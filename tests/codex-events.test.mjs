@@ -48,9 +48,22 @@ try {
     input: JSON.stringify({ features: [{ id: 'a', passes: true }] })
   }).status;
   assert.equal(gate(), 1, 'acceptance passed with no owner message');
+  const browserPrompt = (request) => '\n<in-app-browser-context source="ambient-ui-state">\n' +
+    'Automatically supplied UI state; not the request.\nCurrent URL: file:///fixture.html\n' + yes +
+    '\n</in-app-browser-context>\n\n## My request:\n' + request + '\n';
+  assert.equal(send(event('UserPromptSubmit', { prompt: browserPrompt('connection test') })).status, 'owner-message-recorded');
+  const browserLog = fs.readFileSync(log, 'utf8');
+  assert.match(browserLog, /\nconnection test\n$/);
+  assert.ok(!browserLog.includes('fixture.html') && !browserLog.includes(yes), 'ambient UI text leaked into owner words');
+  assert.equal(gate(), 1, 'ambient UI granted owner acceptance');
+  for (const prompt of [browserPrompt(''), browserPrompt('<agent-message>' + yes + '</agent-message>'),
+    browserPrompt(yes).replace('ambient-ui-state', 'agent'), browserPrompt(yes).replace('</in-app-browser-context>', ''),
+    '<agent-message>notice</agent-message>\n## My request:\n' + yes]) {
+    assert.equal(send(event('UserPromptSubmit', { prompt })).status, 'ignored', 'malformed/foreign context became owner text');
+  }
   send(event('UserPromptSubmit', { prompt: `quoted: ${yes}` }));
   assert.equal(gate(), 1, 'quoted acceptance was taken literally');
-  const accept = event('UserPromptSubmit', { prompt: yes });
+  const accept = event('UserPromptSubmit', { prompt: browserPrompt(yes).replaceAll('\n', '\r\n') });
   send(accept);
   assert.equal(gate(), 0, 'new Codex record is not compatible with the acceptance gate');
   const originalLog = fs.readFileSync(log, 'utf8');
@@ -126,7 +139,7 @@ try {
   assert.equal(cli(JSON.stringify(event('SubagentStop', { agent_id: 'cli-cut', agent_type: 'practice-reviewer', last_assistant_message: null }))).status, 0);
   assert.equal(run(process.execPath, ['tools/codex-events.mjs', '--status']).status, 0);
   const hooks = JSON.parse(fs.readFileSync(path.join(ROOT, '.codex/hooks.json'), 'utf8')).hooks;
-  assert.deepEqual(Object.keys(hooks).sort(), ['SubagentStart', 'SubagentStop', 'UserPromptSubmit']);
+  assert.deepEqual(Object.keys(hooks).sort(), ['PreToolUse', 'SubagentStart', 'SubagentStop', 'UserPromptSubmit']);
   if (process.platform === 'win32') {
     const command = hooks.UserPromptSubmit[0].hooks[0].commandWindows;
     const win = run('cmd.exe', ['/d', '/s', '/c', `"${command}"`], { windowsVerbatimArguments: true, cwd: path.join(root, 'src'), input: JSON.stringify(event('UserPromptSubmit', { cwd: path.join(root, 'src'), prompt: yes })) });

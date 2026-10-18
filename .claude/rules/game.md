@@ -13,10 +13,11 @@ paths:
 ---
 # The owner's decisions on the game: the corridor, the rooms, the film, light, art, voice, controls
 
-Claude Code loads this file when a file of the paths above is read or edited.
+Codex reads this canonical topic before advice or edits; entry: AGENTS.md.
 
 - Three texts accepted as written, word for word in the history file: the manifesto, the game and Store page, the corridor's welcome (with the corridor's texts, board item 7) («Да» 10.10); where his «почти готовый текст» goes: his choice.
-- The corridor is the reference every room is built on, finished before anything else («доделать эталонный коридор, на который мы опираемся» 9.10); its order «Подпись, печать, лаборатории, картины… указатель… свет» (8.10), visuals first, texts after (9.10).
+- Personal experiment trials and replacing boring 101 precede corridor polish (18.10, supersedes 9.10); preserve the old room.
+- First five in catalog order, one at a time; provisional trials movable between floors/numbers (18.10; board and research/first-room-trials.md).
 - The building: variant A1 of the 1968 Science and Engineering Offices at Chicago Circle, both stairs on one side of our straight corridor («Да, А»; «А1 — 5 комнат»; «Да, строй» 15.10), checked against its plans and photos («чтоб ты не фантазировал» 15.10).
 - The headset check before the next room («Мы все время откладывали эту проверку» 9.10).
 - The start best-in-class («Пока первое не будет супер, дальше нечего даже идти» 9.10).

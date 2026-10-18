@@ -1,6 +1,4 @@
-// Guards on the assistant itself, run by Claude Code (.claude/settings.json), not by its memory:
-// a rule written as text is skipped under load, a hook is not. Exit 2 stops the action and tells
-// the assistant why (code.claude.com/docs/en/hooks: PreToolUse exit 2 blocks the tool call).
+// Shared shell policy: Claude hooks exit 2; Codex adapts refusal() to JSON denial.
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -20,15 +18,12 @@ const input = mode ? await new Promise((done) => {
 }) : '';
 const event = mode === 'accepted' ? { cwd: process.cwd() } : (() => { try { return JSON.parse(input || '{}'); } catch { return {}; } })();
 const stop = (why) => { process.stderr.write(`${why}\n`); process.exit(2); };
-// The checkout the session works in: Claude Code runs this script from the folder the session was
-// opened in (the main folder), while the work sits in the session's own worktree, named by the
-// event's cwd. Checked there, or the guard would judge the main folder instead of the work.
+// Judge the event checkout, not the shell's original folder.
 const HERE = (() => {
   try { return execFileSync('git', ['rev-parse', '--show-toplevel'], { cwd: event.cwd || ROOT, env: withoutGitVars(), encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim(); } catch { return ROOT; }
 })();
 
-// What Claude Code loads with a memory file (code.claude.com/docs/en/memory):
-// @path outside code, ending at the first space no backslash escapes, relative to its file, 4 hops deep
+// Resolve Claude @imports four hops deep; Codex must read referenced files explicitly.
 export function imports(file, hops = 4) {
   let t = '';
   try { t = fs.readFileSync(file, 'utf8').replace(/^ {0,3}(`{3,}|~{3,})[^]*?^ {0,3}\1/gm, '').replace(/(`+)(?!`)[^]*?[^`]\1(?!`)/g, ''); } catch { return []; }
@@ -36,12 +31,8 @@ export function imports(file, hops = 4) {
   return hops > 1 ? found.flatMap((f) => [f, ...imports(f, hops - 1)]) : found;
 }
 
-// A command line read the way the shell reads it (POSIX sh; PowerShell where it differs: backtick
-// escapes, '' inside single quotes, @'...'@ here-strings): the simple commands it runs, split on
-// ; & && || | ( ) { } and newlines, each with its words (quotes removed), its redirections and
-// the text fed to it (heredoc bodies, here-strings). Separators inside quotes or heredoc bodies
-// split nothing, so text that only names a command is no command; $(...) and `...` do run, so
-// their commands are listed too. A backslash before a letter stays (a Windows path).
+// Parse executed commands and substitutions, not quoted or heredoc data.
+// Preserve PowerShell quoting and Windows path backslashes.
 function commands(line, ps = false) {
   const out = [];
   let i = 0;
@@ -138,8 +129,7 @@ const WHY = {
   graphqlFile: 'sends GitHub a GraphQL request from a file or stdin, which the guard cannot read for a merge into main: give the query inline (-f query=...)',
   library: 'deletes files of the papers library (Documents\\objekt-files) or moves them out of it; no git holds that folder, so a lost paper comes back only from the backup: leave it, or ask the owner',
 };
-// the papers library in any spelling the shells take (C:\..., /c/..., ~, $HOME, %USERPROFILE%, relative),
-// but not its backup at a drive's root (F:\objekt-files, /f/objekt-files), which robocopy mirrors into
+// Protect all library path spellings; drive-root backups are separate copies.
 const LIB = /(^|[\\/"'=])objekt-files([\\/"']|$)/i;
 const BACKUP_ROOT = /(^|["'=])([a-z]:[\\/]+|\/[a-z]\/+)objekt-files([\\/"']|$)/i;
 const inLib = (x = '') => LIB.test(x) && !BACKUP_ROOT.test(x);
@@ -154,8 +144,7 @@ const RECORD = /practice-reviews|OBJECT_REVIEW_RECORD/i;
 const NO_VERIFY = /^--no-veri(f|fy)?$/;
 const hooksAt = (v = '') => v.replace(/\\/g, '/').replace(/^\.\//, '').replace(/\/+$/, '').toLowerCase() === 'tools/hooks';
 const playwright = (a) => a.some((v) => /^(@playwright\/test|playwright)(@\S*)?$/.test(v));
-// code handed to an interpreter that writes the record, or calls review-gate.mjs's write(); naming
-// the gate's file while writing another file writes no record
+// Detect actual journal writes, not harmless references to its name.
 const WRITE_CALL = /\b(?:writeFile|appendFile|createWriteStream|copyFile|cpSync|rename|unlink|truncate|rm|remove|write_text|write_bytes)\w*\s*\(|(?<!std(?:out|err)\.)\bwrite(?:Sync)?\s*\(|\bopen(?:Sync)?\s*\([^)]*['"][wa+]/;
 const writesRecord = (c) => ((/practice-reviews|OBJECT_REVIEW_RECORD/i.test(c) && WRITE_CALL.test(c)) || (/review-gate/.test(c) && /\bwrite\s*\(/.test(c)) ? WHY.record : null);
 // programs that run another command given after their own options (option: the ones taking a value)
@@ -176,6 +165,7 @@ function git(a) {
     }
   }
   const sub = a[k], rest = a.slice(k + 1);
+  if (sub === 'push' && rest.some(x => /^--(all|mirror)$/.test(x) || /^(?:\+)?(?:[^:]*:)?(?:refs\/heads\/)?main$/.test(x))) return WHY.merge;
   for (let j = 0; j < rest.length && (sub === 'commit' || sub === 'push'); j++) {
     const x = rest[j];
     if (x === '--') break;
@@ -209,10 +199,7 @@ function restarts(w) {
     || (p === 'svc' && /^power (reboot|shutdown)/.test(rest)) || (p === 'setprop' && w[1] === 'sys.powerctl');
 }
 
-// git reads config from the environment too (git-config(1), ENVIRONMENT: GIT_CONFIG_KEY_<n> with
-// GIT_CONFIG_VALUE_<n>, and GIT_CONFIG_PARAMETERS), so core.hooksPath set there skips the hooks as -c does;
-// the value follows the name's "=", or is the next word (PowerShell's "= value", set-item and setx),
-// or the word after PowerShell's named -Value (-V)
+// Git environment overrides can bypass hooks; inspect values before splitting them.
 function setsHooks(w, k) {
   const m = /^(\$?env:)?GIT_CONFIG_(KEY_\d+|PARAMETERS)(=|$)(.*)$/i.exec(w[k] ?? '');
   if (!m) return false;
@@ -251,20 +238,17 @@ function judge(words, stdin, ps, here = false) {
   if (p === 'cmd') { const c = a.findIndex((x) => /^\/[ck]$/i.test(x)); if (c >= 0) return refusal(a.slice(c + 1).join(' '), false, here); }
   if (p === 'invoke-expression' || p === 'iex') return refusal(a.join(' '), true, here);
   if (p === 'git') return git(a);
-  // a merge on GitHub is the owner's own; gh's own options may stand before or between its command
-  // words (gh pr -R owner/repo merge), so they are set aside before the words are read
+    // Only the owner merges; ignore gh global options.
   if (p === 'gh') {
     const g = [];
-    // an option's separate value would read as a command word, so "pr merge" is looked for anywhere
+    // Option values may precede "pr merge".
     for (let k = 0; k < a.length; k++) { if (/^(-R|--repo|--hostname)$/.test(a[k])) k++; else if (!a[k].startsWith('-')) g.push(a[k]); }
     const pr = g.indexOf('pr');
-    // through the REST paths or the GraphQL mutations (a query given as -f query=...). It catches a slip in the
-    // forms we use; other spellings of a deliberate merge are not chased (docs/research/restrictions.md)
+    // REST/GraphQL forms we use; not a security sandbox (docs/research/restrictions.md).
     if ((pr >= 0 && g[pr + 1] === 'merge') || (g[0] === 'api' && g.some((x) => /(^|\/)(merges|pulls\/\d+\/merge)$/.test(x) || /\b(mergePullRequest|enablePullRequestAutoMerge)\b/.test(x)))) return WHY.merge;
     // a GraphQL body read from a file or stdin (-F x=@file; -f is raw text: gh api --help) or --input
     if (g[0] === 'api' && g.includes('graphql') && (/(^| )(-F ?|--field[ =])[\w-]+=@/.test(a.join(' ')) || a.includes('--input'))) return WHY.graphqlFile;
-    // the session under review does not close the remarks on its own work: it answers, and the
-    // reviewer closes what it sees fixed in its next review
+    // The reviewer, not this executor, resolves review threads.
     if (g[0] === 'api' && a.some((x) => /\b(resolveReviewThread|minimizeComment)\b/.test(x))) return WHY.resolve;
   }
   // the smoke test and Playwright: only on GitHub
@@ -318,8 +302,7 @@ function judge(words, stdin, ps, here = false) {
   return library(p, a, here);
 }
 
-// the papers library: a delete in it, a move out of it, a mirror that purges it. A path is in it by its
-// spelling, or by being relative while the shell stands in it (here)
+// Refuse library deletion, purging mirrors and outward moves, including relative paths.
 function library(p, a, here) {
   const lib = (x = '') => inLib(x) || (here && !x.startsWith('-') && !ABSOLUTE.test(x));
   // cmd's one-letter switches (/Y, /S) are not places; a Unix path like /tmp is
@@ -344,8 +327,7 @@ function library(p, a, here) {
   return null;
 }
 
-// Why this command line may not run, or null: each command it runs is judged by its program and
-// arguments, never by words that only stand in it. tests/guard.test.mjs runs both ways.
+// Judge programs and arguments; naming a forbidden command in data remains allowed.
 export function refusal(line, ps = false, here = false) {
   for (const c of commands(line, ps)) {
     if (c.redirs.some((r) => r.op.includes('>') && RECORD.test(r.target))) return WHY.record;
@@ -364,8 +346,7 @@ export function refusal(line, ps = false, here = false) {
 // a start line is cut to EXTRA_LINE characters, so the start's length on the worst day is known
 export const EXTRA_LINE = 350;
 const clip = (line) => (line.length > EXTRA_LINE ? `${line.slice(0, EXTRA_LINE - 1)}…` : line);
-// conclusions that need a look (GitHub's run conclusions): a failure, a run that timed out, never
-// started or waits for an approval; a success, a skip or a cancel is quiet
+// Surface failed GitHub runs; success, cancellation and skipping need no warning.
 const NEEDS_LOOK = new Set(['failure', 'timed_out', 'startup_failure', 'action_required']);
 export const ciLine = (run) => (NEEDS_LOOK.has(run?.conclusion)
   ? `GitHub's tests are RED on room-polish (${run.conclusion}: ${run.displayTitle}): ${run.url} (gh run view ${run.databaseId} --log-failed)` : null);
@@ -382,10 +363,7 @@ if (mode === 'pre') {
 const LOG = path.join(os.homedir(), 'Documents', 'objekt-files', 'notes', 'owner-messages.md');
 const gitHere = (...a) => { try { return execFileSync('git', a, { cwd: HERE, env: withoutGitVars(), encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim(); } catch { return null; } };
 
-// accepted (tools/hooks/pre-commit; stdin: the staged list): a feature passing that was not, or gone, needs his
-// «Принимаю N» (CLAUDE.md step 5) in 3 hours, numbered in HEAD's list (it still holds a dropped feature; so no
-// reorder in the same commit); «Не принимаю N» or «Стоп» takes back all before. Only these buttons, each a whole
-// message, move it: his dictated speech doubts aloud, so its words are mine to read, never the machine's
+// Only recent whole-message numbered acceptance bound to this checkout can change a feature.
 if (mode === 'accepted') {
   const list = (f) => { try { return JSON.parse(f()).features; } catch { return null; } };
   const now = list(() => input), was = list(() => gitHere('show', `HEAD:${FEATURES}`)), n = was || now || [];
@@ -408,8 +386,7 @@ if (mode === 'accepted') {
 if (mode === 'start') {
   const out = [];
   const branch = gitHere('rev-parse', '--abbrev-ref', 'HEAD');
-  // the app can reuse an old worktree; hooks come from the main checkout, but CLAUDE.md and .claude/rules
-  // from this copy (code.claude.com/docs/en/worktrees), so a copy with no work of its own is brought up first
+  // Legacy Claude worktrees may be reused; inspect this copy first.
   if (gitHere('rev-parse', '--verify', '-q', 'room-polish') && gitHere('merge-base', '--is-ancestor', 'room-polish', 'HEAD') === null) {
     const behind = gitHere('rev-list', '--count', 'HEAD..room-polish');
     const own = gitHere('rev-list', '--count', 'room-polish..HEAD');
@@ -419,8 +396,7 @@ if (mode === 'start') {
       out.push(`WARNING: this checkout (${branch}) lacks ${behind} commits of room-polish and has work of its own or unsaved changes: merge room-polish before anything else, then read CLAUDE.md and every file it imports again.`);
     }
   }
-  // the one feature to work on (Anthropic's harness: "choose the highest-priority feature that's not yet
-  // done"); no chore is printed: each printed here became the window's first task before his message
+  // Surface the next feature, never a task overriding the owner's message.
   try {
     const next = JSON.parse(fs.readFileSync(path.join(HERE, FEATURES), 'utf8')).features.find((f) => !f.passes);
     out.push(next ? `Current feature (${FEATURES}): ${next.id}: ${next.what}` : `Every feature in ${FEATURES} passes.`);
@@ -449,9 +425,7 @@ if (mode === 'start') {
   process.exit(0);
 }
 
-// subagent-start, subagent-stop: a practice or paper reviewer's run is recorded for the owner's automatic stop
-// (tools/review-gate.mjs) by this hook, not by the assistant. It counts only when the files a person
-// meets did not change while it read them and its report reached its last block. Never blocks.
+// Record complete reviewer reports with matching starts and fingerprints; otherwise record void.
 if (mode === 'subagent-start' || mode === 'subagent-stop') {
   if (event.agent_type !== REVIEWER && event.agent_type !== PAPER_REVIEWER) process.exit(0);
   // a subagent here hands its report back through a tool call, not as its last text, so the
@@ -494,9 +468,7 @@ if (mode === 'subagent-start' || mode === 'subagent-stop') {
   process.exit(0);
 }
 
-// prompt: every message the owner sends is appended, word for word, to a log on the laptop,
-// outside the public repository, so no request is lost to a compaction (the request auditor
-// reads it). It never blocks the message.
+// Keep exact owner messages outside the public repo; logging failure never blocks a message.
 if (mode === 'prompt') {
   try {
     fs.mkdirSync(path.dirname(LOG), { recursive: true });

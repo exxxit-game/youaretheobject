@@ -3,7 +3,7 @@
 | Who | Does | Does not |
 |---|---|---|
 | He | what the game should be; looks in the headset; his accept word with the number (CLAUDE.md step 5), "not", "stop"; money and logins | read code, judge rules |
-| I | code, texts, search; one thing a window; my look in the headset first; open the next window from room-polish | write rules for myself, say "done" unchecked, give my advice as his decision |
+| I | code, texts, search; one task at a time; model/effort and handoff per docs/board.md; verified checkout per AGENTS.md; my headset look first | invent owner decisions, claim unchecked completion |
 | GitHub (tests) | green or red on every commit | decide what to build |
 | CodeRabbit | reviews the code from outside on every pull request | decide for him |
 | Checkers (AI) | check the facts in what he will read | write code |

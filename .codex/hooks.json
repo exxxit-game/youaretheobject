@@ -1,8 +1,9 @@
 {
-  "description": "Record owner messages and completed scoped reviews locally. Requires Codex hook trust; does not start agents or publish.",
+  "description": "Scoped owner/reviewer journals and pre-tool policy. Requires normal Codex trust.",
   "hooks": {
-    "UserPromptSubmit": [{ "hooks": [{ "type": "command", "command": "node \"$(git rev-parse --show-toplevel)/tools/codex-events.mjs\"", "commandWindows": "powershell.exe -NoLogo -NoProfile -NonInteractive -Command \"& node ((git rev-parse --show-toplevel).Trim() + '/tools/codex-events.mjs')\"", "timeout": 30 }] }],
-    "SubagentStart": [{ "matcher": "^(practice-reviewer|paper-reviewer)$", "hooks": [{ "type": "command", "command": "node \"$(git rev-parse --show-toplevel)/tools/codex-events.mjs\"", "commandWindows": "powershell.exe -NoLogo -NoProfile -NonInteractive -Command \"& node ((git rev-parse --show-toplevel).Trim() + '/tools/codex-events.mjs')\"", "timeout": 30 }] }],
-    "SubagentStop": [{ "matcher": "^(practice-reviewer|paper-reviewer)$", "hooks": [{ "type": "command", "command": "node \"$(git rev-parse --show-toplevel)/tools/codex-events.mjs\"", "commandWindows": "powershell.exe -NoLogo -NoProfile -NonInteractive -Command \"& node ((git rev-parse --show-toplevel).Trim() + '/tools/codex-events.mjs')\"", "timeout": 30 }] }]
+    "UserPromptSubmit": [{"hooks":[{"type":"command","command":"node \"$(git rev-parse --show-toplevel)/tools/codex-events.mjs\"","commandWindows":"powershell.exe -NoLogo -NoProfile -NonInteractive -Command \"& node ((git rev-parse --show-toplevel).Trim() + '/tools/codex-events.mjs')\"","timeout":30}]}],
+    "SubagentStart": [{"matcher":"^(practice-reviewer|paper-reviewer)$","hooks":[{"type":"command","command":"node \"$(git rev-parse --show-toplevel)/tools/codex-events.mjs\"","commandWindows":"powershell.exe -NoLogo -NoProfile -NonInteractive -Command \"& node ((git rev-parse --show-toplevel).Trim() + '/tools/codex-events.mjs')\"","timeout":30}]}],
+    "SubagentStop": [{"matcher":"^(practice-reviewer|paper-reviewer)$","hooks":[{"type":"command","command":"node \"$(git rev-parse --show-toplevel)/tools/codex-events.mjs\"","commandWindows":"powershell.exe -NoLogo -NoProfile -NonInteractive -Command \"& node ((git rev-parse --show-toplevel).Trim() + '/tools/codex-events.mjs')\"","timeout":30}]}],
+    "PreToolUse": [{"matcher":"*","hooks":[{"type":"command","command":"node \"$(git rev-parse --show-toplevel)/tools/codex-guard.mjs\"","commandWindows":"powershell.exe -NoLogo -NoProfile -NonInteractive -Command \"& node ((git rev-parse --show-toplevel).Trim() + '/tools/codex-guard.mjs')\"","timeout":10}]}]
   }
 }

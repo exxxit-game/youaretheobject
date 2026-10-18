@@ -20,6 +20,7 @@
     "tools/review-gate.mjs",
     "tools/prove-guards.mjs",
     "tools/board.mjs",
-    "tools/hooks/"
+    "tools/hooks/",
+    "tools/codex-guard.mjs"
   ]
 }
