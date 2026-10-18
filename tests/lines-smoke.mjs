@@ -24,6 +24,7 @@ export async function playLines(browser) {
   page.on('pageerror', e => errors.push(e.message));
   page.on('request', r => { if (!r.url().startsWith(origin) && !r.url().startsWith('data:') && !r.url().startsWith('blob:')) outside.push(r.url()); });
   let shot = 0;
+  const layoutProblems = [];
   const capture = async label => {
     const scope = label === 'menu' ? '#menu' : label === 'stopped' ? '#trialStopped' : '#linesDisplay';
     const problems = await page.evaluate(scope => {
@@ -39,9 +40,10 @@ export async function playLines(browser) {
         return p.overflow || deg < 1.35 ? [`${el.id || el.className}: overflow=${p.overflow}, font=${deg.toFixed(2)}deg`] : [];
       });
     }, scope);
-    assert.deepEqual(problems, [], `${label}: text fits at readable size`);
+    layoutProblems.push(...problems.map(problem => `${label}: ${problem}`));
     if (!images) return;
     fs.mkdirSync(images, { recursive: true });
+    fs.writeFileSync(path.join(images, 'layout.json'), JSON.stringify(layoutProblems, null, 2));
     await page.screenshot({ path: path.join(images, `${++shot}-${label}.png`) });
   };
   const state = s => page.waitForFunction(s => document.documentElement.dataset.roomState === s, s);
@@ -101,13 +103,14 @@ export async function playLines(browser) {
     await pick(); await state('instructions'); await pick(); await pick(); await state('adjust');
     await capture('relocated-adjust'); await pick(); await pick(); await state('ready');
     assert.deepEqual(errors, []); assert.deepEqual(outside, [], 'no requests leave the preview origin');
+    assert.deepEqual(layoutProblems, [], 'all trial screens fit at readable size');
     const receipt = { exportedVersion: manifest.version, uncachedEntrypoint: true, output: out,
       checks: ['real mouse clicks', 'keyboard adjustment', 'pause', 'complete flow', 'reveal pages', 'restart confirmation', 'seated stop', 'relocated 205 practice'], errors, outside };
     if (images) fs.writeFileSync(path.join(images, 'browser.json'), JSON.stringify(receipt, null, 2));
     console.log('lines browser: ok', JSON.stringify(receipt));
   } catch (error) {
     if (images) { fs.mkdirSync(images, { recursive: true }); await page.screenshot({ path: path.join(images, 'failure.png') }).catch(() => {}); }
-    console.error('lines browser failure', { errors, body: (await page.locator('body').textContent()).slice(0, 800), state: await page.getAttribute('html', 'data-room-state') });
+    console.error('lines browser failure', { errors, layoutProblems, state: await page.getAttribute('html', 'data-room-state') });
     throw error;
   } finally { await page.close(); server.close(); }
 }

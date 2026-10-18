@@ -16,7 +16,7 @@ export function createAdjustment(root, { y, z, getValue, change, enabled }) {
   const paint = () => {
     const p = bar?.components.panel;
     if (!p?.c) return;
-    p.write([], { bg: '#292929' });
+    p.write([], { bg: '#292929', pad: 0 });
     const { ctx, c } = p;
     ctx.font = `50px ${FONT}`; ctx.textBaseline = 'top'; ctx.fillStyle = '#dadada';
     ctx.textAlign = 'left'; ctx.fillText(T.shorter, c.width * 0.05, 6);
