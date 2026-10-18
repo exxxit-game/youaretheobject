@@ -27,7 +27,7 @@ Knowledge entry on this laptop: [start here](file:///C:/Users/admin/Documents/ob
   search coverage: `docs/library/coverage.md`; research notes: `docs/research/README.md`; ideas: `objekt-files/notes/archive/docs/ideas/`; headset abilities:
   `docs/headset-capabilities.md`; historical owner page: https://claude.ai/artifact/Srhwjio7Ukp4FBDQAHpZB2
 - THE WORK is the feature list `docs/features.json` (the start names the current one; his accept word is the only measure of progress) and the board `docs/board.md` (his words, what waits).
-  Codex callback journals read18.10:36 owner events and8 matching reviewer completions, no lock. New PreToolUse is trusted but actual interception remains unverified; see latest docs/progress.md and docs/studio-map.md. The big plan (archive and strategy, read only
+  Codex callback journals read 18.10: 37 owner events and 8 matching reviewer completions, no lock. After restart, PreToolUse denied actual shell-bypass and isolated journal-patch probes; scope and later results: docs/progress.md and docs/studio-map.md. The big plan (archive and strategy, read only
   when a step needs it): https://claude.ai/code/artifact/71113d16-57ad-42ce-9905-87ff87dfdbd7; the delivery chain from today to a million players, checked by four fact-check runs (16.10, his doc, the map each window checks the delivery against): https://claude.ai/code/artifact/61184b9b-cbd5-41be-82ad-54088c45a30e
   Every critical problem still open on 10.10 (money, law, data, headset, process, records), whose step each is and
   the owner's choices: https://claude.ai/artifact/NGika3MZ8ms7GdFvfiZhvT

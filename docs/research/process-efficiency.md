@@ -212,7 +212,7 @@ Installed manifests and vendor descriptions establish intended capabilities, not
 ### Action
 
 Use existing source files, official web access, technical checks and the selected relevant skills in the first
-room trial. Fix the bounded literature-helper dependency before using that route. Context7 and Scite remain
+room trial. Reuse the verified PubMed helper for esearch and esummary only. Context7 and Scite remain
 conditional candidates, not required installations: compare one real task against the existing route before adoption.
 The assistant selects and operates tools; the owner judges the room. No new account, purchase, installation,
 permission change, agent, background monitor, game edit or subscription-saving claim follows from this assessment.

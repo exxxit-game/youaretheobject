@@ -45,8 +45,12 @@ export function handleEvent(event, { root = ROOT, notes = NOTES } = {}) {
     fs.writeFileSync(fd, JSON.stringify({ pid: process.pid, root, session, turn }));
     if (kind === 'UserPromptSubmit') {
       if (typeof event.prompt !== 'string') throw Error('Missing user prompt');
-      // Strip only the observed desktop browser envelope; other XML remains a notice.
-      const prompt = event.prompt.replace(/\r\n?/g, '\n').replace(
+      // Ambiguous browser delimiters cannot establish human input.
+      const text = event.prompt.replace(/\r\n?/g, '\n');
+      if (/^\s*<in-app-browser-context source="ambient-ui-state">/.test(text) &&
+        ((text.match(/<in-app-browser-context\b/g) || []).length !== 1 ||
+         (text.match(/<\/in-app-browser-context>/g) || []).length !== 1)) return { status: 'ignored' };
+      const prompt = text.replace(
         /^\s*<in-app-browser-context source="ambient-ui-state">[\s\S]*?<\/in-app-browser-context>\s*\n## My request:\s*\n/, '');
       const own = /^\s*</.test(prompt) ? '' : ownText(prompt);
       if (!own) return { status: 'ignored' };

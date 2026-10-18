@@ -6,8 +6,8 @@ Owner messages are checkout-bound; replay cannot renew acceptance. Reviews requi
 and unchanged files. Completion is neither absence of findings nor owner approval; legacy records retain meaning.
 Check the chat root, not shell workdir. --status reads journals/lock, not runtime trust. Fixtures prove logic only.
 After a crash inspect the lock PID before removing that stale lock; never erase or fabricate journals.
-tools/codex-guard.mjs adapts shell/MCP restrictions to PreToolUse. Native trust is confirmed; actual interception
-in this ongoing turn failed. Do not rely on it before a real fresh-turn denial; progress holds exact evidence.
+tools/codex-guard.mjs adapts shell/MCP restrictions to PreToolUse. After restart, real Bash bypass and isolated
+journal-patch probes were denied; safe reads passed. This proves those paths, not all tools; see progress.
 Sources: https://learn.chatgpt.com/docs/hooks ; https://learn.chatgpt.com/docs/agent-configuration/subagents .
 
 ## Before a task: what to read first

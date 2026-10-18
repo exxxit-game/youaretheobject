@@ -11,10 +11,11 @@ const event = (tool_name, tool_input) => ({ hook_event_name: 'PreToolUse', cwd: 
 const check = e => checkTool(e, { root, cwd: root, settings }).hookSpecificOutput?.permissionDecision;
 try {
   for (const command of ['git -c core.hooksPath=__objekt_denial_probe__ status --short',
-    'git commit --no-verify -m x', 'git push origin main', 'npx playwright test',
+    'git commit --no-verify -m x', 'git push origin main', 'git push origin HEAD:main',
+    'git push origin +x:refs/heads/main', 'npx playwright test',
     'gh api graphql -f query="mutation { resolveReviewThread(input:{threadId:x}) {clientMutationId} }"'])
     assert.equal(check(event('Bash', { command })), 'deny', command);
-  for (const command of ['git status --short', 'node tests/lines.test.mjs',
+  for (const command of ['git status --short', 'git push origin codex/trial-migration', 'node tests/lines.test.mjs',
     'Get-Content docs/state.md', 'rg "requestAnimationFrame" src/rooms', 'node tools/quest-look.mjs perf'])
     assert.equal(check(event('Bash', { command })), undefined, command);
   assert.equal(check(event('exec_command', { cmd: 'git commit --no-verify -m x' })), 'deny');
