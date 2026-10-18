@@ -164,6 +164,18 @@ export async function playLines(browser) {
     await page.waitForFunction(() => document.querySelector('[laser-controls*="right"]').components.raycaster.intersectedEls.includes(document.querySelector('#menu .answer[data-index="0"]')));
     await page.evaluate(() => window.__xr.controllers.right.updateButtonValue('trigger', 1));
     await page.waitForFunction(() => document.querySelector('[laser-controls*="right"]').components.cursor.isCursorDown);
+    const lostClick = await page.evaluate(() => {
+      const el = document.querySelector('[laser-controls*="right"]');
+      // Exact upstream order: null pose, then triggerup, before controller-ray.tick.
+      el.components['tracked-controls'].pose = null;
+      el.emit('triggerup');
+      return document.querySelector('#menu').dataset.notice;
+    });
+    assert.equal(lostClick, 'controller-model', 'release in the first lost-tracking frame cannot choose the old target');
+    await page.evaluate(() => window.__xr.controllers.right.updateButtonValue('trigger', 0));
+    await page.waitForFunction(() => document.querySelector('[laser-controls*="right"]').components['tracked-controls'].pose);
+    await page.evaluate(() => window.__xr.controllers.right.updateButtonValue('trigger', 1));
+    await page.waitForFunction(() => document.querySelector('[laser-controls*="right"]').components.cursor.isCursorDown);
     await page.evaluate(() => window.__xr.controllers.right.updateButtonValue('trigger', 0));
     await page.waitForFunction(() => !document.documentElement.dataset.menu);
     await page.waitForFunction(() => [...document.querySelectorAll('[laser-controls]')].every(el =>

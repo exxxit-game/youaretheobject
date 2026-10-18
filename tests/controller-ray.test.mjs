@@ -26,7 +26,7 @@ class Events {
   listeners = new Map();
   addEventListener(n, fn) { if (!this.listeners.has(n)) this.listeners.set(n, new Set()); this.listeners.get(n).add(fn); }
   removeEventListener(n, fn) { this.listeners.get(n)?.delete(fn); }
-  emit(n) { for (const fn of this.listeners.get(n) || []) fn(); }
+  emit(n, event) { for (const fn of this.listeners.get(n) || []) fn(event); }
 }
 const scene = new Events(), el = new Events();
 scene.renderer = { xr: { isPresenting: true } };
@@ -56,7 +56,15 @@ ray.tick(); assert.equal(writes, 3);
 pose = validPose; ray.tick(); assert.equal(data.enabled, true);
 el.components['tracked-controls'].pose = null; ray.tick();
 assert.equal(data.enabled, false, 'relative pose alone cannot keep a stale absolute hand clickable');
+let blocked = false;
+scene.emit('click', { detail: { cursorEl: el }, stopImmediatePropagation() { blocked = true; } });
+assert.equal(blocked, true, 'a lost-pose click is cancelled before the target handler');
+el.components.cursor = { isCursorDown: true, cursorDownEl: {} }; ray.tick();
+assert.equal(el.components.cursor.isCursorDown, false, 'lost tracking cancels the pending press');
 el.components['tracked-controls'].pose = {}; ray.tick(); assert.equal(data.enabled, true);
+blocked = false; scene.emit('click', { detail: { cursorEl: el }, stopImmediatePropagation() { blocked = true; } });
+assert.equal(blocked, false, 'a tracked press is allowed');
+ray.remove(); assert.equal(scene.listeners.get('click').size, 0);
 scene.renderer.xr.isPresenting = false; const desktopWrites = writes; ray.tick();
 assert.equal(writes, desktopWrites, 'desktop ray untouched');
 

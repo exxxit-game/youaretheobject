@@ -7,6 +7,17 @@ AFRAME.registerComponent('controller-ray', {
   after: ['tracked-controls'],
   init() {
     this.direction = new THREE.Vector3();
+    // tracked-controls updates buttons before this tick. Its triggerup can therefore
+    // dispatch a cursor click in the very frame absolute tracking became null. Stop
+    // the target's click in capture phase, before its choice handler, not one tick later.
+    this.guardClick = event => {
+      if (this.el.sceneEl.renderer.xr.isPresenting && event.detail?.cursorEl === this.el &&
+          !this.el.components['tracked-controls']?.pose) event.stopImmediatePropagation();
+    };
+    this.el.sceneEl.addEventListener('click', this.guardClick, true);
+  },
+  remove() {
+    this.el.sceneEl.removeEventListener('click', this.guardClick, true);
   },
   tick() {
     const scene = this.el.sceneEl, tracked = this.el.components['tracked-controls'], source = tracked?.controller;
@@ -16,6 +27,8 @@ AFRAME.registerComponent('controller-ray', {
     // tracked-controls keeps its previous matrix then; never aim from that stale hand.
     const pose = tracked?.pose && source?.gripSpace && source.targetRaySpace && scene.frame?.getPose(source.targetRaySpace, source.gripSpace);
     if (!pose) {
+      const cursor = this.el.components.cursor;
+      if (cursor) { cursor.isCursorDown = false; cursor.cursorDownEl = null; }
       if (ray.data.enabled) this.el.setAttribute('raycaster', 'enabled', false);
       return;
     }
