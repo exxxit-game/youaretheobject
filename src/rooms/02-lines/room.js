@@ -66,7 +66,7 @@ function draw() {
     const rows = trial.report();
     display.dataset.resultPage = inspect >= 0 ? 'inspect' : String(resultPage);
     if (inspect >= 0) {
-      paragraph(caption, T.inspectTitle, 36);
+      paragraph(caption, `${inspect + 1}/2 · ${T.inspectTitle}`, 36);
       drawStimulus(screen, rows[inspect].condition, rows[inspect].meanDeg, false);
       buttons([T.other, T.back], i => { inspect = i ? -1 : 1 - inspect; if (i) resultPage = 0; draw(); });
     } else {

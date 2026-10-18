@@ -25,9 +25,10 @@ export async function playLines(browser) {
   page.on('request', r => { if (!r.url().startsWith(origin) && !r.url().startsWith('data:') && !r.url().startsWith('blob:')) outside.push(r.url()); });
   let shot = 0;
   const capture = async label => {
-    const problems = await page.evaluate(() => {
+    const scope = label === 'menu' ? '#menu' : label === 'stopped' ? '#trialStopped' : '#linesDisplay';
+    const problems = await page.evaluate(scope => {
       const eye = new THREE.Vector3(); document.querySelector('a-scene').camera.getWorldPosition(eye);
-      return [...document.querySelectorAll('#linesDisplay [panel]')].flatMap(el => {
+      return [...document.querySelectorAll(`${scope} [panel]`)].flatMap(el => {
         if (el.id === 'linesScreen' && ['adjust'].includes(document.documentElement.dataset.roomState)
           || el.id === 'linesScreen' && document.querySelector('#linesDisplay').dataset.resultPage === 'inspect') return [];
         const p = el.components.panel;
@@ -37,7 +38,7 @@ export async function playLines(browser) {
         const deg = 360 / Math.PI * Math.atan(mm / 2000 / at.distanceTo(eye));
         return p.overflow || deg < 1.35 ? [`${el.id || el.className}: overflow=${p.overflow}, font=${deg.toFixed(2)}deg`] : [];
       });
-    });
+    }, scope);
     assert.deepEqual(problems, [], `${label}: text fits at readable size`);
     if (!images) return;
     fs.mkdirSync(images, { recursive: true });
@@ -84,6 +85,7 @@ export async function playLines(browser) {
     await page.keyboard.press('Escape'); await pick(2, '#menu'); await pick(0, '#menu'); await state('idle');
     const stopY = await page.$eval('#trialStopped', el => el.object3D.position.y);
     assert.ok(Math.abs(stopY + 0.55) < 0.001, 'stop UI follows seated eye height');
+    await capture('stopped');
     await pick(0, '#trialStopped'); await state('intro');
     // Same module, different assignment; no protocol/identity/folder copy.
     const relocated = await page.evaluate(async () => {
