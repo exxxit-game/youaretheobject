@@ -23,5 +23,5 @@ const SAMPLE = 'Aa ' + String.fromCodePoint(0x42f, 0x44f);
 const fonts = Promise.all(FACES.map((f) => document.fonts.load(f, SAMPLE))).catch(() => {});
 Promise.race([fonts, new Promise((r) => setTimeout(r, FONT_WAIT_MS))])
   .then(() => Promise.all([import('./app/lab.js'), import(`./rooms/${id}/room.js`)]))
-  .then(([lab, room]) => lab.start(room))
+  .then(([lab, room]) => lab.start(room, { trial: new URLSearchParams(location.search).get('trial') === '1' }))
   .catch(showError);

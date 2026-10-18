@@ -21,11 +21,9 @@ $staged
 EOF
 # Isolate test repositories from Git's hook environment.
 unset GIT_DIR GIT_INDEX_FILE GIT_WORK_TREE GIT_PREFIX GIT_EDITOR
-pids=''
+# One process at a time: the owner's two-core laptop must remain responsive.
 for t in $(grep -o 'node tests/[a-z0-9.-]*\.test\.mjs' package.json | cut -c6-); do
   case " $SLOW $NOT_COMMIT " in *" $(basename "$t" .test.mjs) "*) continue ;; esac
-  node "$t" > /dev/null 2>&1 &
-  pids="$pids $!=$t"
+  node "$t" > /dev/null 2>&1 || stop "$t fails (node $t)"
 done
-for p in $pids; do wait "${p%%=*}" || stop "${p#*=} fails (node ${p#*=})"; done
 exit 0

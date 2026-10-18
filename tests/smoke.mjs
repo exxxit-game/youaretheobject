@@ -5,9 +5,11 @@
 // Needs Playwright + Chromium (heavy: run it in CI, not on a laptop).
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
+import { assertBrowserHost } from './browser-host.mjs';
 import { startServer } from './static-server.mjs';
 import { nearFaces } from './near-faces.mjs';
 import { playVR } from './smoke-vr.mjs';
+import { playLines } from './lines-smoke.mjs';
 import { watchOutside } from './outside.mjs';
 import { WALLS, CEIL } from '../src/app/lobby/scene.js';
 import { BOOTH, DOORWAY } from '../src/rooms/01-control/scene.js';
@@ -17,6 +19,7 @@ import { MIN_LETTER, READ_DIST, MIN_TARGET_DEG, letterDeg } from '../src/engine/
 // the reading rules, from the code that sets them: the smallest letter and the smallest target
 const RULES = { minMm: MIN_LETTER * 1000, minDeg: letterDeg(MIN_LETTER, READ_DIST), targetDeg: MIN_TARGET_DEG };
 
+assertBrowserHost();
 const server = await startServer(0);
 const base = `http://localhost:${server.address().port}/?speed=20`;
 // Chromium's documented software WebGL backend (docs/gpu/swiftshader.md): use ANGLE.
@@ -390,6 +393,7 @@ async function playRoom(url, playtest, { leave = false } = {}) {
 }
 
 try {
+  await playLines(browser);
   await playRoom(base, false);
   console.log('smoke test: ok (normal)');
   await playRoom(`${base}&playtest=1&sign=b`, true);

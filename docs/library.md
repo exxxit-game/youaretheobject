@@ -9,7 +9,7 @@ excerpt). A phenomenon by name: search `docs/library/papers.json`, every record 
 
 ## Sections
 
-- [perception](library/perception.md) (49): video passthrough, culture, distance perception, time perception, augmented reality, intuitive physics, multisensory, visual illusion, weight perception, affordances
+- [perception](library/perception.md) (50): video passthrough, culture, distance perception, time perception, augmented reality, intuitive physics, multisensory, visual illusion, weight perception, affordances
 - [body and space](library/body-space.md) (60): body ownership, Chevreul pendulum, ideomotor action, proxemics, spatial updating, embodiment, personal space, spatial memory, weight perception, affordances
 - [memory and attention](library/memory-attention.md) (38): spatial memory, attention guidance, change blindness, cinematic VR, cognitive control, conditioned place preference, curiosity, doorway effect, event boundaries, eyewitness memory
 - [decisions and self-knowledge](library/decisions-self.md) (68): choice blindness, replication, Chevreul pendulum, ideomotor action, introspection, growth mindset, learned helplessness, meta-analysis, sense of agency, contingency judgment
@@ -22,7 +22,7 @@ excerpt). A phenomenon by name: search `docs/library/papers.json`, every record 
 
 ## Status
 
-438 records: card 144 · no card 277 · wanted 11 · read-not-saved 5 · dropped 1. Text of the papers on disk: ok 381 · ocr 33 · placeholder 2 · none 5.
+439 records: card 144 · no card 278 · wanted 11 · read-not-saved 5 · dropped 1. Text of the papers on disk: ok 382 · ocr 33 · placeholder 2 · none 5.
 Relations: data 2 · derived 1 · duplicate 1 · replication 9 · reply 1 · supplement 10.
 Not in the library (wanted, read but not saved, dropped): [wanted](library/wanted.md). Areas searched
 for rooms: [coverage](library/coverage.md). Experiment cards: [catalog](catalog.md).

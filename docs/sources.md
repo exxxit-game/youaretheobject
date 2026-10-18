@@ -5,6 +5,15 @@ Status is `verified` (checked against the full text) or `UNVERIFIED` (do not sho
 Abstracts are not enough: room 01 once removed a true fact because only the
 abstract had been read.
 
+## Cretenoud et al. (2020), JOV 20(6):4, DOI 10.1167/jov.20.6.4
+Local full text/PDF: cretenoud-2020 in the external papers library; Methods/Results/Discussion/Appendix read 18.10.
+Verified: original recruited 86, analysed 76, 12 variants, practice once and measure twice (p. 3);
+reference 15.6 degrees, fins 3.5 degrees, offset 2.1 degrees, initial range 0-21.5 (p. 14).
+Verified: the poor-context outward variant did not show the expected effect (Results p. 5).
+Trial 02-lines uses only two poor-context ML configurations. Its own difference uses actual drawn
+lengths, averaged before subtraction/division by the reference (p. 3). No numeric group mean claimed.
+VR/controller transfer, shortened subset and uncalibrated brightness are deviations, not source validation.
+
 The Ono (1987) room that once was room 01 is gone from the game; its sources stay with it in
 commit 005c92a on GitHub (the git tag ono-room-final marks it on the owner's laptop).
 

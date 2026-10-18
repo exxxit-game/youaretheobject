@@ -8,6 +8,13 @@
 // The headset is woken and kept awake for the run, then put back to sleep (tools/headset.mjs).
 import { serveToHeadset, awake, worn, sleepNow, openUrl, page as openPage } from './headset.mjs';
 
+// New local trial has its own bounded flow; never run the legacy proximity override for it.
+if (process.argv.includes('--lines')) {
+  const { checkLines } = await import('./quest-lines.mjs');
+  await checkLines();
+  process.exit(0);
+}
+
 // 10× speed so the whole room (40 trials) is checked in about three minutes.
 const URL_TO_TEST = process.argv[2] || serveToHeadset() + '?speed=10';
 const ROOM = '01-control';

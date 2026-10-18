@@ -63,6 +63,7 @@ assert.ok(checked > 0 && pushed > checked, 'tools/publish-preview.mjs must run c
 // machines always; Git Bash here).
 const hook = (name) => fileURLToPath(new URL(`../tools/hooks/${name}`, import.meta.url));
 const commitHook = fs.readFileSync(hook('pre-commit'), 'utf8');
+assert.doesNotMatch(commitHook, /&\s*$/m, 'quick tests must not run concurrently on the owner laptop');
 assert.ok(/node tools\/secrets\.mjs --staged/.test(commitHook) && /node --check/.test(commitHook) && /package\.json/.test(commitHook),
   'the pre-commit hook must check the staged changes for secrets, parse the staged scripts and run the quick tests');
 const pushHook = fs.readFileSync(hook('pre-push'), 'utf8');

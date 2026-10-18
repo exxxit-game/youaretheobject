@@ -16,6 +16,7 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with:
@@ -43,3 +44,12 @@ jobs:
       - if: steps.guards.outputs.changed == 'true'
         run: node tools/prove-guards.mjs        # and with Windows line ends, as on the laptop
       - run: npm run test:smoke
+        env:
+          OBJECT_LINES_EVIDENCE: ${{ runner.temp }}/lines-evidence
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lines-evidence
+          path: ${{ runner.temp }}/lines-evidence
+          retention-days: 3
+          if-no-files-found: ignore

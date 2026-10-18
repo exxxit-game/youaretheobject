@@ -46,9 +46,10 @@ function commonSize(labels, pxW, pxH, density) {
 // read down the first column, then the second; smaller buttons would mean smaller letters.
 export function createChoice(parent, place) {
   const { x = 0, y, z, w = 1.5, h = 0.13, gap = 0.025, bottom = null, density = PX_PER_M, letter = null } = place;
-  let els = [];
+  let els = [], generation = 0;
 
   function hide() {
+    generation++;
     els.forEach(el => el.remove());
     els = [];
   }
@@ -74,6 +75,7 @@ export function createChoice(parent, place) {
     const rows = Math.ceil(n / cols);
     const bw = cols === 1 ? w : (w - g) / 2;
     hide();
+    const shownGeneration = generation;
     let done = false;
     const px = Math.round(bw * density);
     const size = fixed || commonSize(labels, px, Math.round(bh * density), density);
@@ -102,7 +104,7 @@ export function createChoice(parent, place) {
       el.addEventListener('mouseenter', () => paint(HOVER));
       el.addEventListener('mouseleave', () => paint(NORMAL));
       el.addEventListener('click', () => {
-        if (done || performance.now() - shownAt < READY_MS) return;
+        if (done || generation !== shownGeneration || performance.now() - shownAt < READY_MS) return;
         done = true;
         hide();
         onPick(i);
