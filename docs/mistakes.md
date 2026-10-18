@@ -8,6 +8,7 @@ appears.
 
 | Mistake (what happened) | Guard that catches it now |
 |---|---|
+| Opening a Quest trial through adb lost URL parameters after an ampersand because Android interpreted them as shell syntax | `tests/guard.test.mjs` "Android shell must preserve all trial URL parameters": quote the URL as one Android shell word in open/restart calls |
 | A removed adjustment bar could change a later answer, and its nominal upper endpoint missed the boundary warning through floating-point rounding | `tests/lines.test.mjs` "removed bar cannot change a later answer", "upper endpoint snaps exactly to the warned bound": execute the actual handlers after removal and at both ends |
 | A local automated WebGL run overloaded the owner's two-core laptop; the commit hook also launched quick tests concurrently | `tests/browser-host.test.mjs` rejects local and self-hosted browser runs before launch; `tests/secrets.test.mjs` "quick tests must not run concurrently on the owner laptop" |
 | Designed a room or recommended an experiment before reading its paper in full: a 40-minute experiment was planned, then compressed into a different one; a research summary overstated an effect and it was recommended as the first room (pseudo-haptic weight: 4 of 8 noticed unprompted) | unguarded: a step of a procedure, not a test (`.claude/skills/new-room/SKILL.md` step 1: no design and no recommendation before the full paper is read); no test can see whether a paper was read; `.claude/agents/paper-reviewer.md` checks the room against its paper afterwards |
