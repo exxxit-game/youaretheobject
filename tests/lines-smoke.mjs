@@ -110,7 +110,11 @@ export async function playLines(browser) {
     assert.deepEqual(layoutProblems, [], 'all trial screens fit at readable size');
     const receipt = { exportedVersion: manifest.version, uncachedEntrypoint: true, output: out,
       checks: ['real mouse clicks', 'keyboard adjustment', 'pause', 'complete flow', 'reveal pages', 'restart confirmation', 'seated stop', 'relocated 205 practice'], errors, outside };
-    if (images) fs.writeFileSync(path.join(images, 'browser.json'), JSON.stringify(receipt, null, 2));
+    if (images) {
+      fs.writeFileSync(path.join(images, 'browser.json'), JSON.stringify(receipt, null, 2));
+      // Quest must receive the tested bytes, not a rebuild with another runtime/compressor.
+      fs.cpSync(out, path.join(images, 'game'), { recursive: true, errorOnExist: true, force: false });
+    }
     console.log('lines browser: ok', JSON.stringify(receipt));
   } catch (error) {
     if (images) { fs.mkdirSync(images, { recursive: true }); await page.screenshot({ path: path.join(images, 'failure.png') }).catch(() => {}); }
