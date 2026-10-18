@@ -24,7 +24,8 @@ export async function checkLines() {
     if (!play) { console.log('Readiness only: no playthrough or VR comfort claim'); return; }
     const result = await game.run(`(async()=>{
       const wait=ms=>new Promise(r=>setTimeout(r,ms));
-      await Promise.race([new Promise(resolve=>requestAnimationFrame(resolve)),wait(2000).then(()=>{throw Error('Quest is not drawing frames; no input sent');})]);
+      const sc=document.querySelector('a-scene');
+      await Promise.race([new Promise(resolve=>(sc.xrSession||window).requestAnimationFrame(resolve)),wait(2000).then(()=>{throw Error('Quest is not drawing frames; no input sent');})]);
       const until=async fn=>{const end=Date.now()+12000;while(!fn()){if(Date.now()>end)throw Error('Quest step timeout');await wait(100);}};
       const state=s=>until(()=>document.documentElement.dataset.roomState===s);
       const pick=async i=>{const sel='#linesDisplay .answer[data-index="'+i+'"][data-ready="1"]';

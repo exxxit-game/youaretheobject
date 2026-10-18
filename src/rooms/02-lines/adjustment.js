@@ -5,7 +5,7 @@ import { FONT } from '../../engine/panel.js';
 // Unnumbered direct manipulation. Thumbstick supports fine continuous adjustment;
 // a ray/mouse click on the bar provides the coarse position, without exposing true length.
 export function createAdjustment(root, { y, z, getValue, change, enabled }) {
-  let bar = null, axis = 0, key = 0, last = 0, raf = 0, generation = 0;
+  let bar = null, axis = 0, key = 0, generation = 0;
   const stick = e => { axis = Math.abs(e.detail.y) > 0.15 ? -e.detail.y : 0; };
   const down = e => {
     if (!enabled() || !['ArrowUp', 'ArrowDown'].includes(e.code)) return;
@@ -26,17 +26,15 @@ export function createAdjustment(root, { y, z, getValue, change, enabled }) {
     ctx.fillStyle = '#e4bc62'; const x = c.width * (0.05 + 0.9 * getValue() / D.maxDeg);
     ctx.fillRect(x - 3, c.height * 0.55, 6, c.height * 0.3); p.tex.needsUpdate = true;
   };
-  const frame = now => {
-    const ms = last ? Math.min(now - last, 50) : 0; last = now;
-    if (enabled() && (axis || key)) { change(getValue() + (axis || key) * D.speedDeg * ms / 1000); paint(); }
-    raf = requestAnimationFrame(frame);
-  };
   const right = root.sceneEl.querySelector('[laser-controls*="right"]');
   right?.addEventListener('thumbstickmoved', stick);
   window.addEventListener('keydown', down); window.addEventListener('keyup', up); window.addEventListener('blur', reset);
-  raf = requestAnimationFrame(frame);
   return {
     reset,
+    tick(ms) {
+      if (!Number.isFinite(ms) || ms <= 0 || !enabled() || !(axis || key)) return;
+      change(getValue() + (axis || key) * D.speedDeg * Math.min(ms, 50) / 1000); paint();
+    },
     show() {
       this.hide();
       const active = generation;
@@ -55,7 +53,7 @@ export function createAdjustment(root, { y, z, getValue, change, enabled }) {
     },
     hide() { generation++; reset(); bar?.remove(); bar = null; },
     dispose() {
-      this.hide(); cancelAnimationFrame(raf); right?.removeEventListener('thumbstickmoved', stick);
+      this.hide(); right?.removeEventListener('thumbstickmoved', stick);
       window.removeEventListener('keydown', down); window.removeEventListener('keyup', up); window.removeEventListener('blur', reset);
     }
   };

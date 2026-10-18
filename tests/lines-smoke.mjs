@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
 import { chromium } from 'playwright';
 import { exportGame } from '../tools/export-game.mjs';
 import { startServer } from './static-server.mjs';
@@ -61,6 +62,11 @@ export async function playLines(browser) {
     await page.waitForFunction(el => !el.isConnected, button);
   };
   try {
+    await page.addInitScript({ path: createRequire(import.meta.url).resolve('iwer/build/iwer.min.js') });
+    await page.addInitScript(() => {
+      window.__xr = new IWER.XRDevice(IWER.metaQuest3);
+      window.__xr.installRuntime({ forceInstall: true });
+    });
     await page.goto(`${origin}/?room=02-lines&trial=1&speed=20`, { waitUntil: 'networkidle' });
     await state('intro'); await capture('intro');
     await pick(); await state('instructions'); await capture('instructions');
@@ -106,10 +112,26 @@ export async function playLines(browser) {
     assert.deepEqual(relocated, { id: '02-lines', title: '\u041f\u0440\u043e\u0431\u0430 \u00b7 205', state: 'intro' });
     await pick(); await state('instructions'); await pick(); await pick(); await state('adjust');
     await capture('relocated-adjust'); await pick(); await pick(); await state('ready');
+    await pick(); await state('adjust');
+    await page.evaluate(() => document.querySelector('a-scene').enterVR());
+    await page.waitForFunction(() => document.querySelector('a-scene').renderer.xr.isPresenting);
+    await page.waitForFunction(() => document.querySelector('[laser-controls*="right"]').components['tracked-controls']?.controller);
+    const xrBefore = await page.$eval('#linesScreen', el => el.components.panel.c.toDataURL());
+    await page.evaluate(() => window.__xr.controllers.right.updateAxis('thumbstick', 'y-axis', -0.5));
+    await page.waitForFunction(before => document.querySelector('#linesScreen').components.panel.c.toDataURL() !== before, xrBefore);
+    await page.evaluate(() => window.__xr.controllers.right.updateAxis('thumbstick', 'y-axis', 0));
+    await capture('xr-adjust');
+    await page.evaluate(() => document.querySelector('a-scene').exitVR());
+    await page.waitForFunction(() => !document.querySelector('a-scene').renderer.xr.isPresenting);
+    if (await page.getAttribute('html', 'data-room-state') === 'interrupted') await pick();
+    await state('adjust');
+    const flatBefore = await page.$eval('#linesScreen', el => el.components.panel.c.toDataURL());
+    await page.keyboard.down('ArrowDown'); await page.waitForTimeout(250); await page.keyboard.up('ArrowDown');
+    assert.notEqual(await page.$eval('#linesScreen', el => el.components.panel.c.toDataURL()), flatBefore, 'desktop adjustment resumes after XR exit');
     assert.deepEqual(errors, []); assert.deepEqual(outside, [], 'no requests leave the preview origin');
     assert.deepEqual(layoutProblems, [], 'all trial screens fit at readable size');
     const receipt = { exportedVersion: manifest.version, uncachedEntrypoint: true, output: out,
-      checks: ['real mouse clicks', 'keyboard adjustment', 'pause', 'complete flow', 'reveal pages', 'restart confirmation', 'seated stop', 'relocated 205 practice'], errors, outside };
+      checks: ['real mouse clicks', 'keyboard adjustment', 'pause', 'complete flow', 'reveal pages', 'restart confirmation', 'seated stop', 'relocated 205 practice', 'emulated XR thumbstick', 'desktop after XR exit'], errors, outside };
     if (images) {
       fs.writeFileSync(path.join(images, 'browser.json'), JSON.stringify(receipt, null, 2));
       // Quest must receive the tested bytes, not a rebuild with another runtime/compressor.

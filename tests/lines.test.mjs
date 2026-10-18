@@ -15,7 +15,8 @@ assert.deepEqual(P, { referenceDeg: 15.6, referenceShiftDeg: 0.2, comparisonDown
 assert.deepEqual(ORIGINAL, { recruited: 86, analysed: 76, variants: 12, trials: 24, expectedPoorOutwardEffect: false });
 assert.ok(Object.isFrozen(P) && Object.isFrozen(ORIGINAL));
 for (let i = 0; i < 100; i++) {
-  const s = makeSchedule();
+  let seed = i + 1;
+  const s = makeSchedule(() => (seed = (seed * 16807) % 2147483647) / 2147483647);
   assert.equal(s.length, 6);
   for (const c of ['inward', 'outward']) {
     assert.equal(s.filter(r => r.condition === c && r.practice).length, 1);
@@ -77,8 +78,9 @@ near(analyse(uneven)[0].meanMetres, (metres(0) + metres(21.5)) / 2);
 {
   const source = fs.readFileSync(new URL('../src/rooms/02-lines/adjustment.js', import.meta.url), 'utf8')
     .replace(/^import .*;\r?\n/gm, '').replace('export function', 'function');
-  const bars = [];
-  const context = { D, T: {}, FONT: '', requestAnimationFrame: () => 1, cancelAnimationFrame() {},
+  const bars = [], stickHandlers = {};
+  const right = { addEventListener(type, fn) { stickHandlers[type] = fn; }, removeEventListener(type) { delete stickHandlers[type]; } };
+  const context = { D, T: {}, FONT: '', requestAnimationFrame: () => { throw Error('Window frames unavailable in immersive mode'); },
     window: { addEventListener() {}, removeEventListener() {} },
     document: { createElement: () => {
       const el = { handlers: {}, components: {}, dataset: {}, classList: { add() {} }, setAttribute() {}, remove() {},
@@ -87,7 +89,7 @@ near(analyse(uneven)[0].meanMetres, (metres(0) + metres(21.5)) / 2);
     } } };
   const make = vm.runInNewContext(source + '\ncreateAdjustment', context);
   let value = 10;
-  const control = make({ sceneEl: { querySelector: () => null }, appendChild() {} },
+  const control = make({ sceneEl: { querySelector: () => right }, appendChild() {} },
     { y: 1, z: -1, getValue: () => value, enabled: () => true, change: v => { value = v; return true; } });
   const click = (bar, x) => bar.handlers.click({ detail: { intersection: { uv: { x } } } });
   control.show(); const removed = bars.at(-1); control.hide(); control.show();
@@ -95,6 +97,40 @@ near(analyse(uneven)[0].meanMetres, (metres(0) + metres(21.5)) / 2);
   click(bars.at(-1), 0.95); assert.equal(value, 25, 'upper endpoint snaps exactly to the warned bound');
   click(bars.at(-1), 0.05); assert.equal(value, 0);
   click(bars.at(-1), 0.5); near(value, 12.5);
+  stickHandlers.thumbstickmoved({ detail: { y: -1 } }); control.tick(50);
+  near(value, 12.5 + D.speedDeg * 0.05);
+  control.reset(); control.tick(50); near(value, 12.5 + D.speedDeg * 0.05);
+  click(bars.at(-1), 0.5);
   control.dispose(); click(bars.at(-1), 0.95); near(value, 12.5);
+  assert.equal(stickHandlers.thumbstickmoved, undefined);
+}
+// The mounted room must advance from renderer frames even when Window RAF cannot run.
+{
+  const source = fs.readFileSync(new URL('../src/rooms/02-lines/room.js', import.meta.url), 'utf8')
+    .replace(/^import .*;\r?\n/gm, '').replace(/^export \{.*;\r?\n/gm, '').replace(/export /g, '');
+  const definitions = {}, attrs = new Set(), trial = createTrial(() => 0.4), steps = [];
+  const adjustment = { tick: ms => steps.push(ms), hide() {}, dispose() {} };
+  const panel = { write() {} };
+  const target = { components: { panel }, addEventListener() {}, removeEventListener() {} };
+  const root = { querySelector: () => target, sceneEl: { querySelector: () => target, addEventListener() {}, removeEventListener() {} },
+    setAttribute: key => attrs.add(key), removeAttribute: key => attrs.delete(key) };
+  const ctx = { createTrial: () => trial, createAdjustment: () => adjustment, createChoice: () => ({ hide() {} }),
+    createSession() {}, loadVoice() {}, writePlaque() {}, hush() {}, VOICE_LINES: [], SOUNDS: [], ORIGINAL,
+    T: { early: '' }, document: { documentElement: { dataset: {} }, addEventListener() {}, removeEventListener() {} },
+    AFRAME: { registerComponent: (name, definition) => { definitions[name] = definition; } },
+    requestAnimationFrame: () => { throw Error('Window frames unavailable in immersive mode'); } };
+  // Strip only import.meta.url because VM runs without module support; no rendering is performed.
+  const room = vm.runInNewContext(source.replaceAll('import.meta.url', "'file:///room.js'") + '\n({mount,dispose,hold})', ctx);
+  room.mount(root, { number: '101' }); assert.ok(attrs.has('lines-frame'));
+  trial.begin(); trial.next(); trial.next(); trial.next();
+  const tick = dt => definitions['lines-frame'].tick.call({ el: root }, 0, dt);
+  tick(100); tick(250); tick(1000); trial.confirm(0, trial.generation);
+  assert.equal(trial.log[0].activeMs, 1350, 'XR renderer counts full active time without Window RAF');
+  assert.deepEqual(steps, [100, 250, 1000], 'same renderer frames reach controller adjustment');
+  trial.pause(true); tick(5000); trial.pause(false); trial.next(); tick(20); trial.confirm(1, trial.generation);
+  assert.equal(trial.log[1].activeMs, 20, 'hidden time and interrupted adjustment are excluded');
+  room.dispose(); assert.ok(!attrs.has('lines-frame'));
+  const count = steps.length; tick(20); assert.equal(steps.length, count, 'disposed room cannot keep ticking');
+  room.mount(root, { number: '205' }); assert.ok(attrs.has('lines-frame')); room.dispose();
 }
 console.log('lines tests: source constants, geometry, schedule, actual-length report and interrupted/stale input: ok');

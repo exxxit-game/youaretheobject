@@ -24,7 +24,14 @@ export const ENTRY = { id: '02-lines', real: false, debrief: T.early, extra: [],
 const VERSION = 1;
 const trial = createTrial();
 let root, display, choice, adjust, session, assignedNumber, menuHeld = false, hidden = false;
-let screen, caption, inspect = -1, resultPage = 0, restartPending = false, now = 0, frame = 0;
+let screen, caption, inspect = -1, resultPage = 0, restartPending = false;
+// A-Frame drives this from the active desktop or XR renderer, including standalone headsets.
+AFRAME.registerComponent('lines-frame', {
+  tick(t, dt) {
+    if (this.el !== root) return;
+    trial.tick(dt); adjust.tick(dt);
+  }
+});
 const cleanup = [];
 const listen = (target, type, fn) => { target?.addEventListener(type, fn); cleanup.push(() => target?.removeEventListener(type, fn)); };
 const held = () => menuHeld || hidden;
@@ -134,8 +141,7 @@ export function mount(r, assignment) {
     if (trial.state === 'adjust') { trial.pause(true); trial.pause(held()); }
     alignHeight(); if (!held()) draw();
   });
-  const tick = t => { trial.tick(now ? t - now : 0); now = t; frame = requestAnimationFrame(tick); };
-  frame = requestAnimationFrame(tick); state();
+  root.setAttribute('lines-frame', ''); state();
 }
 export function enter() {
   unlock(); trial.begin(); menuHeld = false; hidden = isHidden(); trial.pause(held());
@@ -148,4 +154,4 @@ export function leave() {
   trial.leave(); hush(); choice.hide(); adjust.hide(); screen.write([]); caption.write([]); state();
 }
 // Optional disposal for a new building assignment; no stale controls/animation on remount.
-export function dispose() { leave(); adjust.dispose(); cancelAnimationFrame(frame); cleanup.splice(0).forEach(fn => fn()); root = null; }
+export function dispose() { leave(); root.removeAttribute('lines-frame'); adjust.dispose(); cleanup.splice(0).forEach(fn => fn()); root = null; }
