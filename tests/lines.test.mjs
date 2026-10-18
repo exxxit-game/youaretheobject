@@ -109,16 +109,26 @@ near(analyse(uneven)[0].meanMetres, (metres(0) + metres(21.5)) / 2);
   const source = fs.readFileSync(new URL('../src/rooms/02-lines/room.js', import.meta.url), 'utf8')
     .replace(/^import .*;\r?\n/gm, '').replace(/^export \{.*;\r?\n/gm, '').replace(/export /g, '');
   const definitions = {}, attrs = new Set(), trial = createTrial(() => 0.4), steps = [];
-  const adjustment = { tick: ms => steps.push(ms), hide() {}, dispose() {} };
+  const events = () => ({ handlers: {}, addEventListener(type, fn) { this.handlers[type] = fn; },
+    removeEventListener(type) { delete this.handlers[type]; } });
   const panel = { write() {} };
-  const target = { components: { panel }, addEventListener() {}, removeEventListener() {} };
-  const root = { querySelector: () => target, sceneEl: { querySelector: () => target, addEventListener() {}, removeEventListener() {} },
+  const target = { ...events(), components: { panel } };
+  const root = { querySelector: () => target, sceneEl: { ...events(), querySelector: () => target },
     setAttribute: key => attrs.add(key), removeAttribute: key => attrs.delete(key) };
-  const ctx = { createTrial: () => trial, createAdjustment: () => adjustment, createChoice: () => ({ hide() {} }),
+  target.sceneEl = root.sceneEl;
+  const ctx = { createTrial: () => trial, createChoice: () => ({ hide() {} }), drawStimulus() {},
     createSession() {}, loadVoice() {}, writePlaque() {}, hush() {}, VOICE_LINES: [], SOUNDS: [], ORIGINAL,
-    T: { early: '' }, document: { documentElement: { dataset: {} }, addEventListener() {}, removeEventListener() {} },
+    D, FONT: '', T: { early: '' }, window: events(),
+    document: { ...events(), hidden: false, documentElement: { dataset: {} } },
     AFRAME: { registerComponent: (name, definition) => { definitions[name] = definition; } },
     requestAnimationFrame: () => { throw Error('Window frames unavailable in immersive mode'); } };
+  const adjustmentSource = fs.readFileSync(new URL('../src/rooms/02-lines/adjustment.js', import.meta.url), 'utf8')
+    .replace(/^import .*;\r?\n/gm, '').replace('export function', 'function');
+  const makeAdjustment = vm.runInNewContext(adjustmentSource + '\ncreateAdjustment', ctx);
+  ctx.createAdjustment = (...args) => {
+    const control = makeAdjustment(...args), original = control.tick;
+    control.tick = ms => { steps.push(ms); original(ms); }; return control;
+  };
   // Strip only import.meta.url because VM runs without module support; no rendering is performed.
   const room = vm.runInNewContext(source.replaceAll('import.meta.url', "'file:///room.js'") + '\n({mount,dispose,hold})', ctx);
   room.mount(root, { number: '101' }); assert.ok(attrs.has('lines-frame'));
@@ -129,6 +139,13 @@ near(analyse(uneven)[0].meanMetres, (metres(0) + metres(21.5)) / 2);
   assert.deepEqual(steps, [100, 250, 1000], 'same renderer frames reach controller adjustment');
   trial.pause(true); tick(5000); trial.pause(false); trial.next(); tick(20); trial.confirm(1, trial.generation);
   assert.equal(trial.log[1].activeMs, 20, 'hidden time and interrupted adjustment are excluded');
+  trial.begin(); trial.next(); trial.next(); trial.next();
+  const initial = trial.value;
+  target.handlers.thumbstickmoved({ detail: { y: -1 } }); tick(50);
+  assert.ok(trial.value > initial, 'actual controller changes the actual trial value');
+  const beforeExit = trial.value;
+  root.sceneEl.handlers['exit-vr'](); tick(50);
+  assert.equal(trial.value, beforeExit, 'XR exit without a neutral stick event stops adjustment');
   room.dispose(); assert.ok(!attrs.has('lines-frame'));
   const count = steps.length; tick(20); assert.equal(steps.length, count, 'disposed room cannot keep ticking');
   room.mount(root, { number: '205' }); assert.ok(attrs.has('lines-frame')); room.dispose();

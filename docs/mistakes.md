@@ -8,6 +8,7 @@ appears.
 
 | Mistake (what happened) | Guard that catches it now |
 |---|---|
+| A nonzero stick value survived XR exit without a neutral event, so desktop frames kept moving the answer | `tests/lines.test.mjs` "XR exit without a neutral stick event stops adjustment": actual room and control, no hold-state change; clear input on exit |
 | Trial input and active time depended on Window RAF, which standalone immersive VR may stop | `tests/lines.test.mjs` "XR renderer counts full active time without Window RAF": mounted renderer tick, controller input, pause and disposal with Window RAF unavailable; `tests/lines-smoke.mjs` checks emulated XR thumbstick and desktop return |
 | Opening a Quest trial through adb lost URL parameters after an ampersand because Android interpreted them as shell syntax | `tests/guard.test.mjs` "Android shell must preserve all trial URL parameters": quote the URL as one Android shell word in open/restart calls |
 | A removed adjustment bar could change a later answer, and its nominal upper endpoint missed the boundary warning through floating-point rounding | `tests/lines.test.mjs` "removed bar cannot change a later answer", "upper endpoint snaps exactly to the warned bound": execute the actual handlers after removal and at both ends |

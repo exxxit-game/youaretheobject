@@ -125,13 +125,15 @@ export async function playLines(browser) {
     const xrBefore = await page.$eval('#linesScreen', el => el.components.panel.c.toDataURL());
     await page.evaluate(() => window.__xr.controllers.right.updateAxis('thumbstick', 'y-axis', -0.5));
     await page.waitForFunction(before => document.querySelector('#linesScreen').components.panel.c.toDataURL() !== before, xrBefore);
-    await page.evaluate(() => window.__xr.controllers.right.updateAxis('thumbstick', 'y-axis', 0));
     await capture('xr-adjust');
+    // End XR with the stick held: no final neutral input is guaranteed by the controller.
     await page.evaluate(() => document.querySelector('a-scene').exitVR());
     await page.waitForFunction(() => !document.querySelector('a-scene').renderer.xr.isPresenting);
     if (await page.getAttribute('html', 'data-room-state') === 'interrupted') await pick();
     await state('adjust');
     const flatBefore = await page.$eval('#linesScreen', el => el.components.panel.c.toDataURL());
+    await page.waitForTimeout(200);
+    assert.equal(await page.$eval('#linesScreen', el => el.components.panel.c.toDataURL()), flatBefore, 'XR exit stops a held stick before desktop input');
     await page.keyboard.down('ArrowDown'); await page.waitForTimeout(250); await page.keyboard.up('ArrowDown');
     assert.notEqual(await page.$eval('#linesScreen', el => el.components.panel.c.toDataURL()), flatBefore, 'desktop adjustment resumes after XR exit');
     assert.deepEqual(errors, []); assert.deepEqual(outside, [], 'no requests leave the preview origin');

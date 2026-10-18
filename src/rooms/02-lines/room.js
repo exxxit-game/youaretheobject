@@ -136,7 +136,7 @@ export function mount(r, assignment) {
   listen(document, 'visibilitychange', visibility);
   listen(root.sceneEl.xrSession, 'visibilitychange', visibility);
   listen(root.sceneEl, 'enter-vr', () => { listen(root.sceneEl.xrSession, 'visibilitychange', visibility); });
-  listen(root.sceneEl, 'exit-vr', () => { hidden = document.hidden; syncHold(); });
+  listen(root.sceneEl, 'exit-vr', () => { adjust.reset(); hidden = document.hidden; syncHold(); });
   listen(root.sceneEl.querySelector('#rig'), 'recentered', () => {
     if (trial.state === 'adjust') { trial.pause(true); trial.pause(held()); }
     alignHeight(); if (!held()) draw();
