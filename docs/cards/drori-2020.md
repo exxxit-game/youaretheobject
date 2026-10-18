@@ -9,7 +9,7 @@
 |---|---|---|---|
 | Participants | 30 healthy adults: 15 in Exp. 1, 15 in Exp. 2 | "Fifteen participated in experiment 1 (10 women, mean age 24.8 years, SD = 4.3 years) and 15 in experiment 2" | 4 |
 | Equipment | HTC Vive headset and controller, Unity apartment scene | "The participants wore a head-mounted display (HMD-HTC Vive) during the experiment." | 4 |
-| Physical space | Stand in the middle of the virtual room and look around, no walking | "observed the environment in 360 from a stationary point" | 5 |
+| Physical space | Observe from a stationary point and look around, no walking; Exp. 1 posture unspecified | "observed the environment in 360 from a stationary point" | 5 |
 | Procedure: alterations | Six changes: grain, roll (tilt), stretch, narrow, grow and shrink (eye height up/down) | "(e) Elevating and (f) lowering the participants' first person perspective (grow and shrink)" | 5 |
 | Procedure (Exp. 1) | Two 2-s views with a 1-s black screen between; answer "same" or "different" | "participants were successively immersed in two virtual environments (2-s duration each), with a black screen displayed (1-s duration) between them" | 5 |
 | Procedure (Exp. 1): staircases | 1-up/2-down staircases, 6 alterations × 4 = 24 staircases | "There were 6 such staircase procedures (one for each condition), which appeared four times each, thus totaling in 24 randomly intermingled staircases" | 5 |

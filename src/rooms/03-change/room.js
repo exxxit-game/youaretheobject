@@ -27,7 +27,8 @@ const listen = (target, name, fn) => {
 const isHidden = () => document.hidden || (!!root.sceneEl.xrSession && root.sceneEl.xrSession.visibilityState !== 'visible');
 const held = () => menuHeld || hidden;
 const state = () => { document.documentElement.dataset.roomState = trial.state; };
-const paragraph = (panel, text, size = 46) => panel.write([{ t: text, size }], { fit: false });
+const paragraph = (panel, text, size = 46) => panel.write([{ t: text, size: panel === caption ? 40 : size }],
+  { fit: false, ...(panel === caption ? { pad: 12 } : {}) });
 function buttons(labels, fn, top) {
   const generation = trial.generation;
   choice.show(labels, index => { if (!held() && generation === trial.generation) fn(index); }, top);

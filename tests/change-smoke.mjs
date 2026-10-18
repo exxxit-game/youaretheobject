@@ -25,6 +25,7 @@ export async function playChange(browser) {
   const state = value => page.waitForFunction(value => document.documentElement.dataset.roomState === value, value);
   const capture = async label => {
     const issues = await page.evaluate(() => [...document.querySelectorAll('#changeDisplay [panel]')].flatMap(el => {
+      for (let object = el.object3D; object; object = object.parent) if (!object.visible) return [];
       const p = el.components.panel; if (!p || !Number.isFinite(p.smallest)) return [];
       const eye = new THREE.Vector3(), at = new THREE.Vector3(); el.sceneEl.camera.getWorldPosition(eye); el.object3D.getWorldPosition(at);
       const mm = p.smallest / p.c.width * p.data.w * 1000;
@@ -103,6 +104,16 @@ export async function playChange(browser) {
       assert.deepEqual(await transform(), { x: 1, y: 0, pitch: 0, grain: false }); await pick();
     }
     await state('done'); await capture('done'); await pick(); await state('intro');
+    const moved = await page.evaluate(async () => {
+      const r = await import('./src/rooms/03-change/room.js'), place = document.querySelector('#roomPlace');
+      r.dispose(); place.setAttribute('position', '4 0 -2'); place.setAttribute('rotation', '0 180 0');
+      r.mount(place, { number: '205' });
+      const seat = new THREE.Vector3(0, 0, 0.35); place.object3D.updateWorldMatrix(true, false); place.object3D.localToWorld(seat);
+      const rig = document.querySelector('#rig'); rig.object3D.position.copy(seat); rig.object3D.rotation.y = Math.PI;
+      rig.setAttribute('recenter', { x: seat.x, z: seat.z, yaw: 180, lift: false }); rig.emit('recentered'); r.enter(false);
+      return { id: r.ENTRY.id, number: document.title.includes('205'), state: document.documentElement.dataset.roomState };
+    });
+    assert.deepEqual(moved, { id: '03-change', number: true, state: 'intro' }); await capture('relocated-intro');
     await page.evaluate(() => document.querySelector('a-scene').enterVR());
     await page.waitForFunction(() => document.querySelector('a-scene').renderer.xr.isPresenting);
     await capture('xr-intro');
@@ -119,7 +130,7 @@ export async function playChange(browser) {
     assert.deepEqual(errors, []); assert.deepEqual(outside, []); assert.deepEqual(layouts, []);
     if (images) {
       fs.writeFileSync(path.join(images, 'checks.json'), JSON.stringify({ version: manifest.version, errors, outside, layouts, sixAspects: true }, null, 2));
-      fs.cpSync(out, path.join(images, 'game'), { recursive: true });
+      // The preceding lines check exports the same deterministic game once at the artifact root.
     }
     console.log('change smoke: real clicks, all six rendered changes, pause/repeat, completion and XR intro pass');
   } finally { await page.close(); await new Promise(resolve => server.close(resolve)); }
