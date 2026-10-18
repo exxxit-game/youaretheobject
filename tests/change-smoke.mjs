@@ -47,7 +47,7 @@ export async function playChange(browser) {
   };
   const transform = () => page.evaluate(() => {
     const world = document.querySelector('#changeWorld').object3D, cam = document.querySelector('a-scene').camera;
-    return { x: world.scale.x, y: world.position.y, pitch: world.rotation.x, grain: cam.getObjectByName('changeGrain').visible };
+    return { x: world.scale.x, y: world.position.y, pitch: world.rotation.x || 0, grain: cam.getObjectByName('changeGrain').visible };
   });
   try {
     await page.addInitScript({ path: createRequire(import.meta.url).resolve('iwer/build/iwer.min.js') });
