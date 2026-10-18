@@ -2,6 +2,11 @@
 
 Three lines each: what, why, consequence. No diary.
 
+## Second queued trial: original Drori paired-view task
+Build candidate two from Drori 2020 Experiment 1; retain all six aspects and four staircases per aspect.
+The owner rejected the shortened substitute; later author tables do not identify the original configuration.
+Consequence: the later explicit request to see and try the room permits a separately labelled adjustable preview with our strengths; no claim of the full original experiment or threshold.
+
 ## First queued trial: portable visual adjustment
 Use the two poor-context ML configurations from Cretenoud et al. (2020), pp. 3-4 and 14, for a local VR trial of catalog candidate one.
 They provide an explicit active procedure; preserve one practice and two measured adjustments per configuration, without a deadline or a guaranteed effect.

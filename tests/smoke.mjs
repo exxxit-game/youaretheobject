@@ -10,6 +10,7 @@ import { startServer } from './static-server.mjs';
 import { nearFaces } from './near-faces.mjs';
 import { playVR } from './smoke-vr.mjs';
 import { playLines } from './lines-smoke.mjs';
+import { playChange } from './change-smoke.mjs';
 import { watchOutside } from './outside.mjs';
 import { WALLS, CEIL } from '../src/app/lobby/scene.js';
 import { BOOTH, DOORWAY } from '../src/rooms/01-control/scene.js';
@@ -394,6 +395,7 @@ async function playRoom(url, playtest, { leave = false } = {}) {
 
 try {
   await playLines(browser);
+  await playChange(browser);
   await playRoom(base, false);
   console.log('smoke test: ok (normal)');
   await playRoom(`${base}&playtest=1&sign=b`, true);

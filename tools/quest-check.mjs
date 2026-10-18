@@ -8,6 +8,12 @@
 // The headset is woken and kept awake for the run, then put back to sleep (tools/headset.mjs).
 import { serveToHeadset, awake, worn, sleepNow, openUrl, page as openPage } from './headset.mjs';
 
+if (process.argv.includes('--change')) {
+  const { checkChange } = await import('./quest-change.mjs');
+  await checkChange();
+  process.exit(0);
+}
+
 // New local trial has its own bounded flow; never run the legacy proximity override for it.
 if (process.argv.includes('--lines')) {
   const { checkLines } = await import('./quest-lines.mjs');

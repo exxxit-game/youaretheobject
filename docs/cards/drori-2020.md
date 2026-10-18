@@ -15,7 +15,7 @@
 | Procedure (Exp. 1): staircases | 1-up/2-down staircases, 6 alterations × 4 = 24 staircases | "There were 6 such staircase procedures (one for each condition), which appeared four times each, thus totaling in 24 randomly intermingled staircases" | 5 |
 | Procedure (Exp. 2) | Look for a teddy bear (up to 10 s), then rate how real the room felt, 0–100 | "Each trial lasted 10 s or until participants found the object" | 6 |
 | Duration | Not stated; Exp. 2 had 200 trials of up to 10 s each | "Each participant performed 200 trials." | 6 |
-| Measure: height scale | Grow/shrink measured as a proportion of eye height | "(e.g., angle for the roll condition and percentage of height for grow)" | 11 |
+| Measure: height scale | Grow/shrink share a height scale; operational definition is in the supplement, not actual eye height | "(e.g., angle for the roll condition and percentage of height for grow)" | 11 |
 | Main result: stable thresholds | Each person's threshold was very stable across repeats | "Overall, participants showed very stable JNDs with little within-subject variability." | 7 |
 | Main result: eye height | Thresholds: grow 0.05, shrink 0.04 on the height scale; no difference | "(MGrow = 0.05, SDGrow = 0.03; MShrink = 0.04, SDShrink = 0.03" | 8 |
 | Main result: realness | Grow: rating fell from 75 (unaltered) to 9.57 at the largest change | "ratings dropped from (M = 75, SD = 13.99) in the unaltered condition to (M = 9.57, SD = 8.47)" | 9 |
@@ -23,12 +23,18 @@
 | Replication | Only within the paper; small samples, two separate groups | "both studies had low numbers of participants and thus suffered from low statistical power" | 12 |
 
 ## Fit for Object (reviewer's judgment, not facts)
-- Participant time: not stated. A game version with 2–3 alterations and one staircase each (about 6–10 steps of ~5 s) would take about 5–8 min; estimate, untested.
+- Participant time: not stated. The earlier 5-8 minute estimate described a reduced task, not the original; it is withdrawn as a basis for promising a short source-faithful room.
 - Task/tension: an explicit "did anything change?" game; the tension is the player trying hard and still missing a change.
 - Within-person reveal: yes — show the player, side by side, the change they called "same" (for example their eye height moved by a few centimetres).
 - Works if the player expects tricks: yes — the task itself tells the player to look for changes, and the thresholds were measured that way.
-- Space tier: standing (one spot, looking around 360°).
-- Quest 3 feasibility: good — head tracking and one controller answer; all six alterations are camera or scene changes, no eye tracking or force feedback. Roll (tilt) may cause discomfort; the paper notes some people tilted their heads to compensate.
+- Space tier: stationary observation through 360 degrees. Experiment 1 posture is unspecified; explicit standing instructions belong to Experiment 2.
+- Quest 3 feasibility: unresolved for faithful recreation. Retrieved supplement specifies transforms and grain parameters, but no initial staircase values or stopping rule; the main update-rule description is ambiguous. Camera/scene effects alone do not prove equivalent stimuli or a functioning short room.
 - Replication: only within this paper (15 per experiment; objective and subjective parts measured in different people); no independent replication in the text.
 - Ethics: the paper links thresholds to prodromal psychosis scores — the game must never present a result as a mental-health sign and should not use those questionnaires; allow stopping at any discomfort.
-- Verdict: first-room candidate — standing, short, measured automatically, works on a suspicious player and gives a personal side-by-side reveal; keep the clinical link out of the game.
+- Verdict: first-room candidate — retained in the owner's queue, but source-faithful implementation is blocked by missing staircase parameters; short duration and Quest equivalence unverified. Keep clinical inference out of the game.
+
+## Reproduction check
+Main article and supplementary PDF checked 18 October 2026; supplement Figure S1 inspected.
+Grow/shrink uses floor-to-ceiling position (baseline 50%; example grow 60%), not a direct
+percentage of actual eye height. See [source check and unsent author request](../research/drori-recreation.md).
+The owner's rejection of replacing the published task with a shortened invented schedule remains binding.

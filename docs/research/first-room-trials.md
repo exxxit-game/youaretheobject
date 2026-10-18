@@ -28,7 +28,7 @@ a protocol, as required by the repository new-room workflow. Do not show the exp
 | Candidate | What must be resolved before the personal trial | Current status |
 |---|---|---|
 | [Amir & Firestone 2025](../cards/amir-firestone-2025.md) | The catalog source is a review, not the primary protocol. Find/read a concrete adjustment or discrimination procedure; verify visual dimensions and rendering | Candidate; no playable build or duration measurement |
-| [Drori 2020](../cards/drori-2020.md) | Original has 24 staircases / 200 trials across separate experiments. A proposed 5-8 minute reduction is unvalidated. Check changes and comfort; no clinical questionnaire, diagnosis or health inference | Candidate; short protocol not established |
+| [Drori 2020](../cards/drori-2020.md) | Original has 24 staircases / 200 trials across separate experiments. Supplement retrieved and checked; starting values/stopping criterion missing and update rule ambiguous. No clinical inference | Candidate two; faithful implementation blocked, shortened substitute rejected; [evidence](drori-recreation.md) |
 | [Fernandez-Ruiz & Diaz 1999](../cards/fernandez-ruiz-1999.md) | Real prism glasses and physical throws are not automatically equivalent to altered virtual throws. Specify what is preserved and how actual hand/landing errors distinguish adaptation from programmed motion | Candidate; active task, VR transfer unverified |
 | [Hirschhorn 2024](../cards/hirschhorn-2024.md) | Roughly 50 rides in the original; a 5-6 ride proposal is a modified trial, not the same evidence. Quest 3 head direction is not eye gaze; moving scenery and picture choices need checks | Candidate; active task, short version unverified |
 | [Kohnstamm 1915](../cards/kohnstamm-1915.md) | Real physical setup and appropriate modern method review before instructions. Passthrough/hand recording and individual variability matter; do not improvise physical exertion advice | Candidate; no home/headset trial performed |
@@ -58,7 +58,7 @@ the same module at another placement before claiming portability. No second floo
    not prove or refute a population finding. Do not fabricate an effect, display group averages as the owner's result,
    explain failure away as the owner playing incorrectly, or present a reduced trial as a completed replication.
 
-Prepare one playable core at a time. Aim for a short first look, with the real procedure length disclosed; do not
+Prepare one playable core at a time; latest owner clarification: prepare all five sequentially, then he compares them one after another. Aim for a short first look only where the source supports it, with the real procedure length disclosed; do not
 accelerate or cut causal parts just to promise five minutes. Use the existing controls and minimal functional space.
 Only fixing unreadable instructions, broken controls, pauses or discomfort belongs before these trials; decorative
 lighting and corridor finishing are deferred. The first-room feature remains unaccepted until its actual conditions hold.
