@@ -4,18 +4,7 @@ import { eventLog } from '../../engine/log.js';
 import { analyse } from './report.js';
 import { sceneHTML } from './scene.js';
 import { T } from './texts.ru.js';
-import { ACTIONS, changeView, projection } from './view.js';
-
-function orientShape(shape) {
-  const mesh = shape.getObject3D('mesh');
-  // Start face-on so the depth becomes apparent as the object turns.
-  const normal = new THREE.Vector3().fromBufferAttribute(mesh.geometry.getAttribute('normal'), 0);
-  mesh.quaternion.setFromUnitVectors(normal.normalize(), new THREE.Vector3(0, 0, 1));
-  mesh.add(new THREE.LineSegments(
-    new THREE.EdgesGeometry(mesh.geometry),
-    new THREE.LineBasicMaterial({ color: '#d4fff2' })
-  ));
-}
+import { ACTIONS, ANGLES, changeView, projection } from './view.js';
 
 function screenControls(hint, act) {
   const title = document.createElement('b');
@@ -31,17 +20,19 @@ function screenControls(hint, act) {
   history.setAttribute('role', 'status');
   controls.append(history);
 
+  const angleButtons = [];
   for (const action of ACTIONS) {
     const button = document.createElement('button');
     button.type = 'button';
     button.dataset.viewAction = action;
     button.textContent = T.actions[action];
     button.addEventListener('click', () => act(action));
+    if (Object.hasOwn(ANGLES, action)) angleButtons.push(button);
     controls.append(button);
   }
 
   document.body.append(controls);
-  return { controls, history };
+  return { controls, history, angleButtons };
 }
 
 export async function mount() {
@@ -57,12 +48,14 @@ export async function mount() {
   if (!scene.hasLoaded) await new Promise(resolve => scene.addEventListener('loaded', resolve, { once: true }));
 
   const object = scene.querySelector('#view-object');
-  orientShape(scene.querySelector('#view-shape'));
   const xr = scene.querySelector('#view-xr');
   const xrHistory = xr.querySelector('#view-xr-history').components.panel;
   const targets = [...xr.querySelectorAll('[data-view-action]')];
+  const controllers = new Map([...scene.querySelectorAll('[data-view-hand]')]
+    .map(el => [el.dataset.viewHand, el]));
+  let session;
   const hint = document.getElementById('hint');
-  const { controls, history } = screenControls(hint, act);
+  const { controls, history, angleButtons } = screenControls(hint, act);
 
   function render(report) {
     const { position, rotation, scale } = projection(report.view);
@@ -70,29 +63,47 @@ export async function mount() {
     object.setAttribute('rotation', rotation);
     object.setAttribute('scale', scale);
 
-    const last = report.recent[report.recent.length - 1];
-    const status = last === 'return' ? T.returned : last ? '' : T.initial;
-    const recent = report.recent.map(action => T.steps[action]).join(' → ');
-    const lines = [status, T.history(report.count), recent].filter(Boolean);
+    for (const button of angleButtons) {
+      button.setAttribute('aria-pressed', ANGLES[button.dataset.viewAction] === report.view.turn);
+    }
+    const recent = report.recent.map(action => T.actions[action]).join(' → ');
+    const lines = [T.view(report.view.turn), T.memory(report.frontSeen), T.history(report.count)];
+    if (recent) lines.push(recent);
     history.textContent = lines.join(' · ');
-    xrHistory.write(lines.map(t => ({ t, size: 48, weight: 600, gap: 8 })));
+    const xrLines = [T.xrIntro, lines.slice(0, 3).join(' · '), recent].filter(Boolean);
+    xrHistory.write(xrLines.map(t => ({ t, size: 45, weight: 600, gap: 8 })), { pad: 36 });
   }
 
   function act(action) {
-    const view = changeView(analyse(eventLog.entries).view, action);
-    eventLog.add(action, view);
+    if (action === 'restart') {
+      eventLog.reset();
+      eventLog.begin();
+    } else {
+      const view = changeView(analyse(eventLog.entries).view, action);
+      eventLog.add(action, view);
+    }
     render(analyse(eventLog.entries));
   }
 
   for (const target of targets) {
     const { viewAction } = target.dataset;
     target.querySelector('[panel]').components.panel.write([{ t: T.actions[viewAction], size: 42, weight: 700 }]);
-    target.addEventListener('click', () => { if (scene.is('vr-mode')) act(viewAction); });
     target.addEventListener('mouseenter', () => target.setAttribute('material', 'color', '#375d66'));
     target.addEventListener('mouseleave', () => target.setAttribute('material', 'color', '#23424b'));
   }
 
-  function showXR(active) {
+  function selectXR({ inputSource }) {
+    // A-Frame 1.7.1 cursor clicks can fire on both rays for a single trigger press.
+    const ray = controllers.get(inputSource.handedness)?.components.raycaster;
+    const target = ray?.intersectedEls[0];
+    if (target?.classList.contains('clickable')) act(target.dataset.viewAction);
+  }
+
+  function showXR(nextSession) {
+    session?.removeEventListener('select', selectXR);
+    session = nextSession;
+    session?.addEventListener('select', selectXR);
+    const active = Boolean(session);
     hint.hidden = active;
     controls.hidden = active;
     xr.setAttribute('visible', active);
@@ -102,12 +113,16 @@ export async function mount() {
     }
   }
 
-  scene.addEventListener('enter-vr', () => showXR(scene.is('vr-mode')));
-  scene.addEventListener('exit-vr', () => showXR(false));
-  showXR(scene.is('vr-mode'));
+  const currentVRSession = () => scene.is('vr-mode') ? scene.xrSession : undefined;
+  scene.addEventListener('enter-vr', () => showXR(currentVRSession()));
+  scene.addEventListener('exit-vr', () => showXR());
+  showXR(currentVRSession());
 
-  eventLog.reset();
-  eventLog.begin();
-  render(analyse(eventLog.entries));
+  // The fullscreen fallback displays only the canvas and hides the screen controls.
+  navigator.xr?.isSessionSupported('immersive-vr').then(supported => {
+    if (supported) scene.setAttribute('xr-mode-ui', 'enabled', true);
+  }, () => {});
+
+  act('restart');
   document.documentElement.dataset.roomState = 'run';
 }

@@ -44,47 +44,82 @@ try {
   const roomUrl = url + '?room=02-point-of-view';
   await page.goto(roomUrl);
   await ready(page);
-  assert.match(await history(page), /Действий: 0/);
+  assert.match(await history(page), /Вид: 0°.*Память: 0.*Действий: 0/);
   const original = await readProjection(page);
-  await button(page, 'turn').click();
-  assert.notDeepEqual((await readProjection(page)).rotation, original.rotation);
-  await button(page, 'scale').focus();
+  await button(page, 'end').click();
+  assert.deepEqual(await readProjection(page), original);
+  assert.match(await history(page), /Вид: 180°.*Память: 0.*Действий: 1/);
+  assert.equal(await button(page, 'end').getAttribute('aria-pressed'), 'true');
+
+  await button(page, 'restart').click();
+  await button(page, 'front').focus();
   await page.keyboard.press('Enter');
+  assert.notDeepEqual((await readProjection(page)).rotation, original.rotation);
+  await button(page, 'end').click();
+  assert.deepEqual(await readProjection(page), original);
+  assert.match(await history(page), /Вид: 180°.*Память: 1.*Действий: 2.*90° → 180°/);
+
+  await button(page, 'scale').click();
   assert.notDeepEqual((await readProjection(page)).scale, original.scale);
   await button(page, 'angle').click();
   assert.notDeepEqual((await readProjection(page)).position, original.position);
-  await button(page, 'return').click();
+  await button(page, 'restart').click();
   assert.deepEqual(await readProjection(page), original);
-  assert.match(await history(page), /Первый вид восстановлен.*Действий: 4.*Поворот → Размер → Ракурс → Возврат/);
+  assert.match(await history(page), /Вид: 0°.*Память: 0.*Действий: 0/);
 
-  // Check the in-scene UI wiring without requiring a physical headset in CI.
+  // Route synthetic selections to the originating ray without a headset in CI.
   const xr = page.locator('#view-xr');
   await xr.evaluate((el) => {
+    el.sceneEl.xrSession = new EventTarget();
     el.sceneEl.addState('vr-mode');
     el.sceneEl.emit('enter-vr');
   });
   assert.equal(await page.locator('#view-controls').isVisible(), false);
-  assert.equal(await xr.locator('.clickable').count(), 4);
-  await xr.locator('[data-view-action="turn"]').evaluate(el => el.emit('click'));
-  assert.notDeepEqual((await readProjection(page)).rotation, original.rotation);
+  assert.equal(await xr.locator('.clickable').count(), 6);
+  await xr.evaluate((el) => {
+    const left = el.sceneEl.querySelector('[data-view-hand="left"]').components.raycaster;
+    const right = el.sceneEl.querySelector('[data-view-hand="right"]').components.raycaster;
+    left.intersectedEls = [];
+    right.intersectedEls = [el.querySelector('[data-view-action="front"]')];
+    const select = new Event('select');
+    select.inputSource = { handedness: 'left' };
+    el.sceneEl.xrSession.dispatchEvent(select);
+  });
+  assert.match(await history(page), /Память: 0.*Действий: 0/);
+  await xr.evaluate((el) => {
+    const left = el.sceneEl.querySelector('[data-view-hand="left"]').components.raycaster;
+    const right = el.sceneEl.querySelector('[data-view-hand="right"]').components.raycaster;
+    left.intersectedEls = [el.querySelector('[data-view-action="end"]')];
+    right.intersectedEls = [el.querySelector('[data-view-action="front"]')];
+    const select = new Event('select');
+    select.inputSource = { handedness: 'right' };
+    el.sceneEl.xrSession.dispatchEvent(select);
+    select.inputSource = { handedness: 'left' };
+    el.sceneEl.xrSession.dispatchEvent(select);
+  });
+  assert.deepEqual(await readProjection(page), original);
   await xr.evaluate((el) => {
     el.sceneEl.removeState('vr-mode');
     el.sceneEl.emit('exit-vr');
   });
   assert.equal(await xr.locator('.clickable').count(), 0);
   assert.equal(await page.locator('#view-controls').isVisible(), true);
-  assert.match(await history(page), /Действий: 5/);
+  assert.match(await history(page), /Вид: 180°.*Память: 1.*Действий: 2.*90° → 180°/);
   console.log('Point of View desktop and VR interface wiring: ok');
 
-  const phone = await browser.newPage({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+  const phone = await browser.newPage({ viewport: { width: 375, height: 568 }, isMobile: true, hasTouch: true });
   watchErrors(phone);
   await phone.goto(roomUrl);
   await ready(phone);
-  await button(phone, 'angle').tap();
-  assert.notDeepEqual((await readProjection(phone)).position, original.position);
-  await button(phone, 'return').tap();
+  await button(phone, 'end').tap();
   assert.deepEqual(await readProjection(phone), original);
-  assert.match(await history(phone), /Действий: 2/);
+  assert.match(await history(phone), /Память: 0/);
+  await button(phone, 'restart').tap();
+  await button(phone, 'front').tap();
+  assert.notDeepEqual(await readProjection(phone), original);
+  await button(phone, 'end').tap();
+  assert.deepEqual(await readProjection(phone), original);
+  assert.match(await history(phone), /Память: 1.*Действий: 2/);
   console.log('Point of View mobile touch: ok');
 
   assert.deepEqual(errors, [], `page errors: ${errors.join(' | ')}`);

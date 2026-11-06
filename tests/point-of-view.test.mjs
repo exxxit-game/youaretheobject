@@ -3,42 +3,47 @@ import { analyse } from '../src/rooms/02-point-of-view/report.js';
 import { changeView, INITIAL_VIEW, projection } from '../src/rooms/02-point-of-view/view.js';
 
 const initial = projection(INITIAL_VIEW);
-assert.deepEqual(analyse([]), { view: INITIAL_VIEW, count: 0, recent: [] });
+assert.deepEqual(analyse([]), { view: INITIAL_VIEW, frontSeen: false, count: 0, recent: [] });
 
-const log = [];
-function act(k) {
-  const v = changeView(analyse(log).view, k);
-  log.push({ k, v });
-  return projection(v);
+function act(log, k) {
+  log.push({ k, v: changeView(analyse(log).view, k) });
+  return analyse(log);
 }
 
-const turned = act('turn');
-assert.notDeepEqual(turned.rotation, initial.rotation);
-assert.deepEqual(turned.position, initial.position);
-assert.deepEqual(turned.scale, initial.scale);
+const direct = act([], 'end');
+assert.equal(direct.view.turn, 180);
+assert.equal(direct.frontSeen, false);
+assert.deepEqual(projection(direct.view), initial);
 
-const scaled = act('scale');
-assert.notDeepEqual(scaled.scale, turned.scale);
-assert.deepEqual(scaled.rotation, turned.rotation);
-assert.deepEqual(scaled.position, turned.position);
+const log = [];
+const front = act(log, 'front');
+assert.equal(front.view.turn, 90);
+assert.equal(front.frontSeen, true);
+assert.notDeepEqual(projection(front.view).rotation, initial.rotation);
+assert.deepEqual(projection(front.view).position, initial.position);
+assert.deepEqual(projection(front.view).scale, initial.scale);
 
-const angled = act('angle');
-assert.notDeepEqual(angled.position, scaled.position);
-assert.deepEqual(angled.scale, scaled.scale);
-assert.deepEqual(angled.rotation, scaled.rotation);
+const viaFront = act(log, 'end');
+assert.deepEqual(viaFront.view, direct.view);
+assert.deepEqual(projection(viaFront.view), initial);
+assert.equal(viaFront.frontSeen, true);
+assert.equal(act(log, 'start').frontSeen, true);
 
-assert.deepEqual(act('return'), initial);
-assert.deepEqual(analyse(log), {
-  view: INITIAL_VIEW, count: 4, recent: ['turn', 'scale', 'angle', 'return']
-});
-assert.deepEqual(act('turn'), turned);
-assert.equal(analyse(log).count, 5);
-assert.deepEqual(analyse(log).recent, ['scale', 'angle', 'return', 'turn']);
-assert.equal(log[0].v.turn, 1);
+const scaled = projection(act(log, 'scale').view);
+assert.notDeepEqual(scaled.scale, initial.scale);
+assert.deepEqual(scaled.position, initial.position);
+const angled = act(log, 'angle');
+assert.notDeepEqual(projection(angled.view).position, scaled.position);
+assert.deepEqual(projection(angled.view).scale, scaled.scale);
+assert.deepEqual(projection(angled.view).rotation, initial.rotation);
+assert.equal(angled.frontSeen, true);
+assert.equal(angled.count, 5);
+assert.deepEqual(angled.recent, ['end', 'start', 'scale', 'angle']);
+assert.deepEqual(projection(act(log, 'end').view), projection(angled.view));
 
-for (const [action, length] of [['turn', 12], ['scale', 3], ['angle', 3]]) {
+for (const action of ['scale', 'angle']) {
   let view = INITIAL_VIEW;
-  for (let i = 0; i < length; i++) view = changeView(view, action);
+  for (let i = 0; i < 3; i++) view = changeView(view, action);
   assert.deepEqual(projection(view), initial, `${action} cycles through a fixed range`);
 }
 assert.throws(() => changeView(INITIAL_VIEW, 'unknown'), RangeError);

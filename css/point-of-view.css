@@ -20,7 +20,7 @@
   max-width: 420px;
   padding: 10px;
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
   border: 1px solid #47616a;
   border-radius: 12px;
@@ -56,6 +56,10 @@
   background: #375d66;
 }
 
+#view-controls button[aria-pressed="true"] {
+  border-color: #85e3ce;
+}
+
 #view-controls button:focus-visible {
   outline: 2px solid #85e3ce;
   outline-offset: 1px;
@@ -69,5 +73,6 @@
 
   #view-controls {
     bottom: 16px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

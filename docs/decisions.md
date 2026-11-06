@@ -19,5 +19,5 @@ Consequence: the smoke result is seen on GitHub after a push.
 
 ## Point of View uses a separate room route
 Add an open-ended geometry room at `?room=02-point-of-view` and keep `01-ono` as the default.
-The same four actions control the object on a screen and in a headset, without moving the camera.
-Returning to the starting view restores the object transform and keeps the in-memory observation log.
+The same controls work on a screen and in a headset without moving the camera.
+The slab has the same pose at 0° and 180°; each trial records whether the 90° face was opened.

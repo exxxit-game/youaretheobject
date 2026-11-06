@@ -1,19 +1,19 @@
-export const ACTIONS = ['turn', 'scale', 'angle', 'return'];
+export const ANGLES = Object.freeze({ start: 0, front: 90, end: 180 });
+export const ACTIONS = [...Object.keys(ANGLES), 'scale', 'angle', 'restart'];
 export const INITIAL_VIEW = Object.freeze({ turn: 0, scale: 0, angle: 0 });
 
-const TURN_STEP = 30;
 const SCALES = [1, 1.25, 0.75];
 const POSITIONS = [
   [0, 1.65, -2.65],
   [-0.18, 1.65, -2.05],
   [0.23, 1.65, -3.6]
 ];
-const STEPS = { turn: 360 / TURN_STEP, scale: SCALES.length, angle: POSITIONS.length };
+const STEPS = { scale: SCALES.length, angle: POSITIONS.length };
 
 export function changeView(view, action) {
-  if (!ACTIONS.includes(action)) throw new RangeError(`Unknown view action: ${action}`);
-  if (action === 'return') return INITIAL_VIEW;
-  return { ...view, [action]: (view[action] + 1) % STEPS[action] };
+  if (Object.hasOwn(ANGLES, action)) return { ...view, turn: ANGLES[action] };
+  if (Object.hasOwn(STEPS, action)) return { ...view, [action]: (view[action] + 1) % STEPS[action] };
+  throw new RangeError(`Unknown view action: ${action}`);
 }
 
 export function projection(view) {
@@ -21,7 +21,8 @@ export function projection(view) {
   const size = SCALES[view.scale];
   return {
     position: { x, y, z },
-    rotation: { x: 0, y: view.turn * TURN_STEP, z: 0 },
+    // A half turn leaves the symmetric slab in the same pose as the starting edge.
+    rotation: { x: 0, y: view.turn === ANGLES.front ? 0 : 90, z: 0 },
     scale: { x: size, y: size, z: size }
   };
 }
