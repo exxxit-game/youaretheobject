@@ -16,3 +16,8 @@ Consequence: no `window.*` globals between files.
 The smoke test needs Chromium; the owner's laptop must stay free.
 Locally only `npm test` (Node, under a second).
 Consequence: the smoke result is seen on GitHub after a push.
+
+## Point of View uses a separate room route
+Add an open-ended geometry room at `?room=02-point-of-view` and keep `01-ono` as the default.
+The same four actions control the object on a screen and in a headset, without moving the camera.
+Returning to the starting view restores the object transform and keeps the in-memory observation log.

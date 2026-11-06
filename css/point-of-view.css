@@ -1,0 +1,73 @@
+#hint.view-hint {
+  top: 16px;
+  bottom: auto;
+  right: 16px;
+  font-size: 15px;
+}
+
+#hint.view-hint b {
+  display: block;
+  margin-bottom: 2px;
+  color: #dbfff6;
+}
+
+#view-controls {
+  position: fixed;
+  z-index: 10;
+  bottom: 66px;
+  left: 16px;
+  right: 16px;
+  max-width: 420px;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  border: 1px solid #47616a;
+  border-radius: 12px;
+  background: #13272f;
+  color: #e0f4ef;
+  font: 15px/1.4 system-ui, sans-serif;
+}
+
+#view-controls[hidden] {
+  display: none;
+}
+
+#view-history {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 0 3px;
+  min-height: 2.8em;
+}
+
+#view-controls button {
+  min-height: 44px;
+  border: 1px solid #537780;
+  border-radius: 8px;
+  background: #23424b;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#view-controls button:hover,
+#view-controls button:focus-visible {
+  background: #375d66;
+}
+
+#view-controls button:focus-visible {
+  outline: 2px solid #85e3ce;
+  outline-offset: 1px;
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  #hint.view-hint, #view-controls {
+    max-width: 26%;
+    font-size: 13px;
+  }
+
+  #view-controls {
+    bottom: 16px;
+  }
+}
