@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node tests/report.test.mjs && node tests/names.test.mjs && node tests/voice.test.mjs && node tests/recenter.test.mjs",
+    "test": "node tests/report.test.mjs && node tests/names.test.mjs && node tests/voice.test.mjs && node tests/recenter.test.mjs && node tests/point-of-view.test.mjs",
     "test:smoke": "node tests/smoke.mjs",
     "serve": "node tests/static-server.mjs"
   },
