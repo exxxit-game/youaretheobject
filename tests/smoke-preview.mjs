@@ -29,15 +29,27 @@ const moved = (axis, before) => page.waitForFunction(({ axis, before }) => {
   const value = axis === 'yaw' ? c.rotation.y : axis === 'pitch' ? c.rotation.x : c.position[axis];
   return Math.abs(value-before) > 0.025;
 }, { axis, before }, { timeout: 30000 });
+const motionState = () => page.evaluate(() => {
+  const scene = document.querySelector('a-scene'), c = document.querySelector('#preview-camera').object3D;
+  return { at:performance.now(), renderedFrame:scene.renderer?.info?.render?.frame ?? null,
+    x:c.position.x,y:c.position.y,z:c.position.z,yaw:c.rotation.y,pitch:c.rotation.x,
+    visible:document.visibilityState,focus:document.activeElement?.id,
+    hint:document.querySelector('#preview-hint').textContent };
+});
 const walkAxis = async (key, axis, target) => {
   const before = (await pose())[axis], direction = Math.sign(target - before);
   if (Math.abs(target - before) < 0.03) return;
+  const start = await motionState();
   await page.keyboard.down(key);
   try {
     await page.waitForFunction(({axis,target,direction}) => {
       const p = document.querySelector('#preview-camera').object3D.position;
       return (p[axis] - target) * direction >= 0;
     }, {axis,target,direction}, {polling:'raf', timeout:60000});
+  } catch (error) {
+    console.error('corridor motion failure',JSON.stringify({key,axis,target,start,
+      end:await motionState().catch(e=>({error:e.message}))}));
+    throw error;
   } finally { await page.keyboard.up(key); }
   await settled();
   assert.ok(Math.abs((await pose())[axis] - target) < 0.24, 'keyboard walk reaches its intended area');
