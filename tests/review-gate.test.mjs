@@ -1,6 +1,6 @@
 // The owner's automatic stop (tools/review-gate.mjs) both ways: the headset tools and the test copy
-// refuse with no practice review of the current files, a review recorded by Claude Code's hook
-// (tools/project-guard.mjs, subagent-start and subagent-stop) lets them go, any change to what a
+// refuse with no practice review of the current files; a native callback records the review
+// (tools/codex-review.mjs), and any change to what a
 // person meets stops them again (the assistant's own look excepted, after a fix only of files the
 // review named), and the assistant cannot write the record or point the tools at another one.
 // Runs on a scratch checkout with its own record; nothing touches the headset.
@@ -10,7 +10,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { fingerprint, reviewOf, lookOf, REPORT_END, PAPER_END, paperOf, checkedRooms, endsWithBlock, write, reviewScope, lastReport, scan } from '../tools/review-gate.mjs';
+import { fingerprint, reviewOf, lookOf, REPORT_END, PAPER_END, paperOf, checkedRooms, endsWithBlock, write, reviewScope, lastReport, scan, roomScan } from '../tools/review-gate.mjs';
 import { handleEvent } from '../tools/codex-review.mjs';
 import crypto from 'node:crypto';
 import { withoutGitVars } from '../tools/secrets.mjs';
@@ -123,6 +123,44 @@ hook('subagent-start', { agent_id: 'paper-cut-2', agent_type: 'paper-reviewer' }
 hook('subagent-stop', { agent_id: 'paper-cut-2', agent_type: 'paper-reviewer', last_assistant_message: '',
   agent_transcript_path: transcript('paper-cut-2', [handback(`${PAPER_END} 01-x\nFindings so far, then cut short`)]) });
 assert.equal(paperOf(place, '01-x', {}, record), null, 'a handed-back report whose rooms line is not its last: no check');
+
+// Shared procedure and source changes must invalidate the room's review, not just its own code.
+const dependencies = ['src/engine/timing.js', 'src/app/input.js', 'src/main.js', 'index.html',
+  'css/room.css', 'vendor/aframe-1.8.0.min.js', 'docs/rooms/01-x.md', 'docs/rooms.md', 'docs/sources.md'];
+for (const rel of dependencies) put(rel, 'baseline\n');
+const paperPass = (id, text = 'Checked the current source and procedure.') => review(id, {
+  type: 'paper-reviewer', report: text + '\n' + PAPER_END + ' 01-x'
+});
+for (const [i, rel] of dependencies.entries()) {
+  paperPass('dependency-before-' + i);
+  const before = roomScan(place)['01-x'].print, scope = reviewScope(place);
+  put(rel, 'changed\n');
+  assert.notEqual(roomScan(place)['01-x'].print, before, rel + ' belongs to the room procedure/source');
+  assert.equal(reviewScope(place), scope, 'content changes are not infrastructure changes');
+  assert.equal(paperOf(place, '01-x', {}, record), null, rel + ' invalidates the old review');
+  assert.equal(paperOf(place, '01-x', { look: true }, record), null, 'unnamed dependency changes cannot use the own-look exception');
+  paperPass('dependency-edited-' + i); assert.ok(paperOf(place, '01-x', {}, record));
+  const unchanged = roomScan(place)['01-x'].print;
+  put(rel, 'changed\r\n');
+  assert.equal(roomScan(place)['01-x'].print, unchanged, 'line endings preserve the same dependency');
+  assert.ok(paperOf(place, '01-x', {}, record));
+  fs.unlinkSync(path.join(place, rel));
+  assert.equal(paperOf(place, '01-x', {}, record), null, 'deleting a reviewed dependency invalidates it');
+  paperPass('dependency-absent-' + i);
+  put(rel, 'created again\n');
+  assert.equal(paperOf(place, '01-x', {}, record), null, 'creating a dependency invalidates the absent-file version');
+}
+paperPass('foreign-room-baseline');
+for (const rel of ['src/rooms/02-y/room.js', 'docs/rooms/02-y.md', 'docs/unrelated.md']) {
+  put(rel, 'unrelated change\n');
+  assert.ok(paperOf(place, '01-x', {}, record), 'unrelated room/spec notes do not invalidate room 01');
+}
+paperPass('shared-named-fix', 'Fix src/engine/timing.js against the original procedure.');
+put('src/engine/timing.js', 'the named fix\n');
+assert.equal(paperOf(place, '01-x', {}, record), null);
+assert.ok(paperOf(place, '01-x', { look: true }, record), 'only the explicitly named shared fix permits own look');
+put('src/app/input.js', 'an additional unnamed change\n');
+assert.equal(paperOf(place, '01-x', { look: true }, record), null);
 
 // the tools refuse before they touch the headset or GitHub (an empty record: no review exists); run
 // with only node on the path, so a stop that ever broke could reach no adb, git or gh from here

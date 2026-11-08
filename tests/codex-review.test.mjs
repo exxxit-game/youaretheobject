@@ -96,6 +96,24 @@ try {
     'Reviewed room.\nREVIEW SCOPE: '+lp.scope+'\nREVIEW VERDICT: changes-required\nROOMS CHECKED: 01-x' });
   assert.equal(paperOf(root,'01-x',{},record),null,'an adverse paper review blocks old pass');
   put('src/rooms/01-x/room.js', 'changed'); assert.equal(paperOf(root, '01-x', {}, record), null);
+  // The actual lifecycle compares source/dependency fingerprints at start and stop.
+  for (const [i, rel] of ['src/engine/timing.js', 'src/app/input.js', 'docs/rooms/01-x.md', 'docs/sources.md'].entries()) {
+    const agent = event('dependency-' + i, 'SubagentStart', { agent_type: 'paper-reviewer' });
+    const start = send(agent);
+    put(rel, 'changed during source review\n');
+    const report = scope => 'Reviewed current source and dependencies.\nREVIEW SCOPE: ' + scope + '\nREVIEW VERDICT: pass\nROOMS CHECKED: 01-x';
+    const rejected = send({ ...agent, hook_event_name: 'SubagentStop', last_assistant_message: report(start.scope) });
+    assert.equal(rejected.status, 'review-not-recorded', rel + ' changed after the start snapshot');
+    assert.equal(paperOf(root, '01-x', {}, record), null);
+    const fresh = { ...agent, agent_id: 'dependency-fresh-' + i }, started = send(fresh);
+    assert.equal(send({ ...fresh, hook_event_name: 'SubagentStop', last_assistant_message: report(started.scope) }).status, 'completed-review-recorded');
+    assert.ok(paperOf(root, '01-x', {}, record), 'a fresh unchanged review is accepted');
+    const deletion = { ...agent, agent_id: 'dependency-delete-' + i }, deleting = send(deletion);
+    fs.unlinkSync(path.join(root, rel));
+    assert.equal(send({ ...deletion, hook_event_name: 'SubagentStop', last_assistant_message: report(deleting.scope) }).status,
+      'review-not-recorded', 'a dependency deleted during review cannot receive a receipt');
+    assert.equal(paperOf(root, '01-x', {}, record), null);
+  }
   const damaged = path.join(tmp, 'damaged.jsonl'); fs.writeFileSync(damaged, '{bad\n');
   assert.throws(() => handleEvent(event('damage'), { root, record: damaged, cwd: root }), SyntaxError);
   assert.ok(!fs.existsSync(damaged + '.codex-lock'));

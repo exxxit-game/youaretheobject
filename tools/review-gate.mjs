@@ -9,15 +9,11 @@ export const RECORD = process.env.OBJECT_REVIEW_RECORD
 export const REVIEWER = 'practice-reviewer';
 export const REPORT_END = 'FOR THE OWNER:';
 
+const fileList = (root, paths) => paths.flatMap(p => !fs.existsSync(path.join(root, p)) ? [] : p.endsWith('/')
+  ? fs.readdirSync(path.join(root, p), { recursive: true }).map(f => p + String(f).split(path.sep).join('/')) : [p])
+  .filter(p => fs.statSync(path.join(root, p)).isFile());
 export function scan(root) {
-  const names = [];
-  for (const p of PUBLIC) {
-    const abs = path.join(root, p);
-    if (!fs.existsSync(abs)) continue;
-    const found = p.endsWith('/') ? fs.readdirSync(abs, { recursive: true }).map((f) => p + String(f).split(path.sep).join('/')) : [p];
-    for (const rel of found) if (isPublic(rel) && fs.statSync(path.join(root, rel)).isFile()) names.push(rel);
-  }
-  return prints(root, names);
+  return prints(root, fileList(root, PUBLIC).filter(isPublic));
 }
 const prints = (root, names) => {
   const hash = crypto.createHash('sha256'), files = {};
@@ -31,11 +27,8 @@ const prints = (root, names) => {
 };
 export const fingerprint = (root) => scan(root).print;
 
-export const reviewScope = root => prints(root, ['tools/', 'tests/', 'package.json', '.github/workflows/', '.coderabbit.yaml',
-  'AGENTS.md','WORKFLOW.md','policy/', '.codex/', '../../.codex/']
-  .flatMap(p => !fs.existsSync(path.join(root,p)) ? [] : p.endsWith('/')
-    ? fs.readdirSync(path.join(root,p),{recursive:true}).map(f => p + String(f).split(path.sep).join('/')) : [p])
-  .filter(p => fs.statSync(path.join(root,p)).isFile())).print;
+export const reviewScope = root => prints(root, fileList(root, ['tools/', 'tests/', 'package.json', '.github/workflows/', '.coderabbit.yaml',
+  'AGENTS.md','WORKFLOW.md','policy/', '.codex/', '../../.codex/'])).print;
 const valid = (entry, root) => {
   if (!Object.hasOwn(entry, 'source')) return false;
   if (entry.source !== 'codex' || entry.root !== fs.realpathSync.native(root) ||
@@ -56,11 +49,14 @@ const valid = (entry, root) => {
 export const PAPER_REVIEWER = 'paper-reviewer';
 export const PAPER_END = 'ROOMS CHECKED:';
 const ROOMS = 'src/rooms';
+const SHARED = ['index.html', 'src/main.js', 'src/app/', 'src/engine/', 'css/', 'vendor/',
+  'docs/rooms.md', 'docs/sources.md', 'docs/methodology.md', 'docs/owner-decisions.md',
+  'docs/research/perception-corridor.md', 'docs/research/corridor-room-plan.md'];
 export function roomScan(root) {
   const dir = path.join(root, ROOMS);
   const rooms = fs.existsSync(dir) ? fs.readdirSync(dir).filter((r) => fs.statSync(path.join(dir, r)).isDirectory()) : [];
-  return Object.fromEntries(rooms.map((r) => [r, prints(root, fs.readdirSync(path.join(dir, r), { recursive: true })
-    .map((f) => `${ROOMS}/${r}/${String(f).split(path.sep).join('/')}`).filter((rel) => fs.statSync(path.join(root, rel)).isFile()))]));
+  return Object.fromEntries(rooms.map(r => [r, prints(root,
+    fileList(root, [...SHARED, `${ROOMS}/${r}/`, `docs/rooms/${r}.md`]))]));
 }
 export const endsWithBlock = (text, end) => {
   const lines = String(text).split('\n').map((l) => l.trim());

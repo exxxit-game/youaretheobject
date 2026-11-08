@@ -5,6 +5,9 @@ The newest entry is read at the start of every session, with `git log --oneline 
 feature at hand goes to the end of docs/board.md, one line each.
 Entries of 14.10 and before: docs/progress-2026-10-14.md; the earlier ones of 15.10: docs/progress-2026-10-15.md; late entry: docs/progress-2026-10-15-late.md.
 
+## 2026-11-08 — Readiness and shared source-review dependencies
+B09 timing counterexample reproduced red, then fixed in room fingerprints; shared runtime/assets/local sources and own spec invalidate old reviews, unrelated rooms do not. Local suite and lifecycle fixtures passed; live native/Quest remain separate. Capture preparation still needs its exact mode/port and a real device trial. Next: short capture preflight.
+
 ## 2026-11-08 — Unified room and device plan
 Owner clarification saved; current guidance now distinguishes science, philosophy and fictional deals. See docs/research/corridor-room-plan.md for candidates, evidence limits and desktop/mobile/Quest checks. Historical plans and acceptances preserved. Local tests passed; exact-version GitHub CI and external review remain to verify in the map/PR. No new scene or release. Next: T01g/B09.
 
