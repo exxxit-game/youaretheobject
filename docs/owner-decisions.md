@@ -11,6 +11,8 @@ a decision (his approval, 14 October).
 
 - 2026-11-08: The owner selected Codex only for this project. WORKFLOW.md, policy/ and tools/project-guard.mjs replace the active Claude paths; quoted historical decisions remain unchanged. Independently check changes before relying on them.
 
+- 2026-11-08: The owner adds scientific and philosophical rooms to the same perception corridor, retains the separate voluntary-deal/checkpoint branch and the community name Society Zero, and asks for gradual expansion through human knowledge. Synchronise the plan across GitHub, documents and agent guidance for desktop/trackpad, mobile and Quest. Details: docs/research/corridor-room-plan.md; candidate scenes are proposals, not accepted implementations.
+
 ## The process
 - The rules read at start shortened («укорачивать» 11.10): the important always in front of me, the rest read only during its task («чтобы твоя память была чистая» 11.10).
 - Bans few, thinking free, no invention in precise work («Размышлять… я вообще никогда тебе не запрещаю. Но вот додумывать, фантазировать… когда здесь точечная работа» 11.10).

@@ -1,4 +1,16 @@
-# Target architecture: the finished game
+# Target architecture: current plan and historical design
+
+Current authority: [approved foundation](research/perception-corridor.md) and
+[room/device plan](research/corridor-room-plan.md), clarified 8 November 2026.
+The app shares rig, controls, entry, pause and return. Science follows its source
+or model; philosophy follows stated premises without a fabricated correct answer;
+fictional deals use their own voluntary ledger/checkpoint rules. Data comparison
+and preregistration apply only when the method and consent require them.
+The active map selects work. Paid floors below are historical proposals/decisions,
+not the fictional checkpoint currency or a newly authorised purchase system.
+
+## Historical target, retained for context
+
 
 Purpose: every change is made knowing where it ends up, so fixing one place never breaks or
 duplicates another. This page is the picture of the end; what is built now is in

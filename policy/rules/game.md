@@ -15,6 +15,11 @@ paths:
 
 Read this file explicitly when its subject is relevant; paths metadata is a retained index, not native Codex loading.
 
+Current foundation and 8 November clarification: docs/research/perception-corridor.md
+and docs/research/corridor-room-plan.md. These govern the N corridor and room types.
+Dated decisions below describe the earlier implementation in their original words;
+apply them in that context, not as a replacement for the current owner request.
+
 - Three texts accepted as written, word for word in the history file: the manifesto, the game and Store page, the corridor's welcome (with the corridor's texts, board item 7) («Да» 10.10); where his «почти готовый текст» goes: his choice.
 - The corridor is the reference every room is built on, finished before anything else («доделать эталонный коридор, на который мы опираемся» 9.10); its order «Подпись, печать, лаборатории, картины… указатель… свет» (8.10), visuals first, texts after (9.10).
 - The building: variant A1 of the 1968 Science and Engineering Offices at Chicago Circle, both stairs on one side of our straight corridor («Да, А»; «А1 — 5 комнат»; «Да, строй» 15.10), checked against its plans and photos («чтоб ты не фантазировал» 15.10).

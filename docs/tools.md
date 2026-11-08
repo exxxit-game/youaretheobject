@@ -13,12 +13,12 @@ docs search), the W3C WebXR spec. The page read goes in the WHY comment.
 - Loading, frame rate, memory: Gregory 7, 8 and 17.4; Meta's performance docs; docs/baseline.md.
 - Controls and the menu: Gregory 9; Meta's input docs (the default mapping).
 - Data and the server: Supabase's docs (search_docs); docs/methodology.md; policy/rules/data.md.
-- Tests, GitHub, the process: Gregory 2 and 10; Claude Code's docs (the claude-code-guide helper); GitHub's docs.
+- Tests, GitHub, the process: Gregory 2 and 10; current Codex and GitHub official docs; inspect actual callbacks and runs.
 
 ## Which tool when
 - A claim about our setup: the thing itself first (the service through its connector, the vendored code, a fresh
   measure); a doc, the board or another window is a lead.
-- One narrow fact: quick-research, one question a run. A wide question: deep-research in the background.
+- One narrow question per bounded helper; wider research needs an explicit scope and source ledger.
 - A whole system (GitHub, Supabase, the app): one general helper per system, in parallel.
 - A paper: docs/library.md, its card in docs/cards, its text in objekt-files/papers; searching: Consensus, PubMed,
   the reference lookup; a PDF: PDF Tools; a page a fetch cannot read: the browser pane; Reddit: RSS by curl

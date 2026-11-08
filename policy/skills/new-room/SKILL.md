@@ -1,61 +1,53 @@
 ---
 name: new-room
-description: Build or substantially change a room of Object (a re-created psychology experiment). Use whenever a new experiment is chosen or a room's procedure, texts or measures change. Fixed order of steps; none may be skipped.
+description: Build or substantially change a sourced science, philosophy or fictional-deal room. Fixed preparation and independent verification before owner use.
 ---
 
 # New room: steps in order
 
-The owner cannot read code or papers, so every step leaves proof a machine can
-check.
+The owner cannot check code; keep observable evidence. Start from the current
+approved foundation and docs/research/corridor-room-plan.md, not the old queue.
 
-1. **Card, then the paper in full.** Start from the experiment's card (`docs/catalog.md`, `docs/cards/`): its
-   quotes are already checked against the paper text. Download the original (and the main replication) into
-   `C:\Users\admin\Documents\objekt-files\papers\` as PDF and `pdftotext` .txt. Read the
-   method and results completely. If the participant's time is
-   over about 10 min or there is no task/tension, stop and tell the owner.
-   Write a 3-line entry in `docs/decisions.md` first.
-2. **Owner decisions.** Everything the headset cannot copy (money, typing, paper
-   forms, live experimenter, personal data): a choice a source settles is mine, with the reason in a
-   line; the rest goes to the owner as real options, in pictures where it is a look.
-3. **Spec** `docs/rooms/NN-name.md`: the original procedure table with pages, the
-   results to compare with, deviations (told to player or docs only), "not in the
-   paper: our choices", flow and states, data sent, and the room recipe below filled in for this room.
-   Facts also in `docs/sources.md`.
-4. **Numbers first.** `protocol.js` (procedure) and `original.js` (results shown),
-   page in each comment, frozen; a test pins every value to the paper. Then pure
-   `schedule.js` / `report.js` with tests. Break a value on purpose once: the test
-   must go red.
-5. **Room** by the room contract and its shared parts (`docs/rooms.md`). Every part of the scene
-   follows `docs/building-standards.md`. A new look (an object, a picture, a sign) goes to the owner as pictures before it goes in. Widgets go
-   under the text (`panel.write` returns where it ends). Answer options: equal size;
-   random order where order could bias.
-6. **Words and voice.** `texts.ru.js` only; formal "вы". Record with
-   `node tools/make-voice.mjs NN-name`, then `node tools/check-voice.mjs NN-name`:
-   every line must match (a number heard as digits is fine).
-7. **Tests.** `npm test` green (structure rules included). Update `tests/smoke.mjs`
-   and `tools/quest-check.mjs` for the room's flow.
-8. **Independent review.** The `paper-reviewer` agent on the room; verify its main claims in the
-   paper yourself and fix.
-9. **See it.** First the `practice-reviewer` agent. Then a browser pass at `?speed=20` with screenshots of every new screen
-   and a comparison with the room's approved shots (`docs/rooms/NN-shots/`); in the
-   headset `node tools/quest-look.mjs` (enter VR, frames, timing of each step, frame rate,
-   `levels` for its sounds) and `node tools/quest-check.mjs` (all PASS).
-10. **Lessons.** A mistake that broke the room gets a test that catches it
-    and a row in `docs/mistakes.md`; nothing else is added. Only now report, with a frame
-    from the headset, saying what ran and what was seen.
+1. **Type and sources.** Identify the room type, clear player action and acceptance
+   criteria. Use existing cards/catalogue; read full primary sources and relevant
+   corrections. Empirical recreation additionally requires the full method,
+   results and main replication. Philosophy requires the actual question and
+   argument; fiction requires approved rules, not an invented scientific paper.
+   Record the decision and uncertainties in docs/decisions.md.
+2. **Owner choices.** Resolve technical choices from evidence. Ask about genuine
+   authorial choices after preparing reviewable options; finish preparation before
+   requesting time or headset use. A new look is shown before integration.
+3. **Spec.** docs/rooms/NN-name.md states type, sources/pages, premises, flow/states,
+   deviations, our additions, exit/reset, data and device checks. Facts also go in
+   docs/sources.md. No universal timer, answer score, comparison or hidden title.
+4. **Pure rules first.** For empirical rooms pin protocol.js/original.js values to
+   paper pages with tests and prove a changed value fails. For models pin units,
+   assumptions and reference outputs; for philosophy/fiction test choices,
+   consequences, refusal and exactly-once state/ledger transitions.
+5. **Room.** Follow docs/rooms.md shared lifecycle and docs/building-standards.md;
+   no duplicate rig, controls or session. Extend incompatible shared contracts
+   explicitly with regression checks before relying on a new room type.
+   Put widgets below text; use equal-size options and control order bias as the source permits.
+6. **Words and voice.** Player text only in texts.ru.js, formal Russian address.
+   Use tools/make-voice.mjs and tools/check-voice.mjs; every spoken line must match.
+7. **Tests.** npm test, applicable browser smoke and flow checks to the end;
+   cover pause, repeated/late input, leave and restart. No fabricated measures.
+8. **Source review.** Independent paper-reviewer for every type; verify its key
+   claims yourself against the originals, fix and recheck. Its role name remains
+   for compatibility; applicable evidence depends on the room type.
+9. **Practice and devices.** Independent practice-reviewer; a code-only review is
+   not full-practice. Use permitted served views, screenshots and applicable
+   headset tools only after exact-version gates. Verify desktop/trackpad, mobile
+   and Quest separately; no screen run proves binocular/native performance.
+10. **Result.** A meaningful defect gets a regression test and docs/mistakes.md row.
+    Report what ran, what was observed and limits; owner acceptance and release
+    are separate. Never declare completion from source review alone.
 
-## The room recipe (from docs/research; each step already tested somewhere)
-1. A "what stands for what" table: every part of the original procedure and its place in the room (Re-Search,
-   docs/research/owner-brought.md).
-2. A playable practice step first, repeatable until understood; controls taught before the measure (vrprotocols
-   "Gradual Acclimation", "Controls Training"; Oppenheimer 2009; Miura & Kobayashi 2016; Druzhinin's training series).
-3. A one-tap commitment before the measure, never a trap question before it (Geisen 2022; Hauser & Schwarz 2015).
-4. The measured moment plain: the host quiet, no game styling on what is measured, the host's style the same for
-   every player (Lumsden 2016; Portal commentary; Druzhinin).
-5. Effects that show in few trials; behaviour logged automatically; head pose only for coarse gaze.
-6. After the measure: one short block in the headset; a no-blame "did anything get in the way, did you play it
-   for real" question (Aust 2013; LabintheWild); prior VR and game experience and the run number recorded.
-7. The reveal: your result next to other players and the original study, a share button; science counts the
-   first run (LabintheWild; Moral Machine; Van den Bussche 2026; Chandler 2015).
-8. Before data count: a preregistered plan (AsPredicted), exclusions fixed in advance, sample 2.5 x the original
-   (Simonsohn 2015; Many Labs 2), ethics approval (docs/research/ethics-law.md), a separate science consent.
+## Empirical research recipe, only where applicable
+Map each original procedure element to the room. Teach controls before measuring;
+keep measured stimuli/procedure faithful and list changes. Use no-blame debriefs,
+distinguish first/repeat runs, and never infer eye gaze from head pose alone.
+Before data count as research: a sourced, preregistered analysis/sampling plan,
+ethics review and separate science consent (docs/research/ethics-law.md).
+There is no automatic sample-size multiplier or science-data collection for every
+scientific demonstration, philosophical question or fictional deal.

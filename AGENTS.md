@@ -7,6 +7,7 @@ recorded context, not proof that any check ran. If it fails, investigate the fai
 
 Read the Approved foundation section of `docs/research/perception-corridor.md`,
 the newest `docs/progress.md` entry and relevant `docs/owner-decisions.md` decisions.
+The dated clarification and linked room plan govern room types and target devices.
 Read `WORKFLOW.md` before code work. Open further originals only as the current step
 needs them. Work is Codex-only; retained historical records do not
 replace the owner's current task or this experiment's active step.

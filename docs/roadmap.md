@@ -1,5 +1,19 @@
 # Roadmap
 
+Current route, clarified 8 November 2026: [the foundation](research/perception-corridor.md)
+and [room/device stages](research/corridor-room-plan.md). One perception corridor,
+scientific and philosophical rooms, separate voluntary deals and checkpoint.
+Expand through human knowledge incrementally. Complete one connected slice;
+verify desktop/trackpad, phone and Quest separately. Follow the active map,
+not the old phase numbers. Store, paid packs and research recruitment are not
+newly authorised by this update.
+
+## Historical roadmap, October 2026
+
+The remaining sections preserve earlier reasoning and decisions. They do not
+replace the current route or establish today's device/owner acceptance.
+
+
 ## What Object is
 A living archive of classic psychology experiments that you go through yourself
 in VR. One short room per experiment. Every room follows the same arc:

@@ -15,8 +15,8 @@ These references are project notation, not a claim of native automatic imports.
 Our words, approved by him word for word («Утверждаю» 14.10 and 15.10): @docs/ten-circles.md
 His decisions load with this file: @docs/owner-decisions.md
 
-"You are the object" (the name is never translated): a browser VR game (WebXR, A-Frame as vendored in vendor/) for Meta Quest; the player is the subject of
-real psychology experiments, one room each, then sees how he was caught. Maps: ARCHITECTURE.md, docs/state.md.
+"You are the object" (never translated): a perception corridor for desktop, mobile and Quest/WebXR.
+Science, philosophy and voluntary fictional deals share the corridor; docs/research/corridor-room-plan.md defines their distinct checks. Maps: ARCHITECTURE.md, docs/state.md.
 
 ## Every session (the process: Anthropic, "Effective harnesses for long-running agents", 26.11.2025)
 1. Read the newest entry of docs/progress.md, `git log --oneline -20`, then docs/features.json. The task is his message; if it names
@@ -48,5 +48,5 @@ Repo English; Russian only where tests/structure.test.mjs allows. Who does what:
   (current owner instructions; policy/settings.json is our deny list, not provider settings).
 
 ## Rooms and code
-A room: the new-room skill (its card, its paper read in full, a clear task); the paper-reviewer checks it. No build
-step; the code's shape is held by tests/structure.test.mjs.
+A room: the new-room skill, a clear task and its full primary sources; the paper-reviewer checks claims by type.
+No build step; the code's shape is held by tests/structure.test.mjs.

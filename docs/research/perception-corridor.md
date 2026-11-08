@@ -81,6 +81,18 @@ Keep material decisions visible, without requiring a new checklist for every cli
 Continue in the current chat; the owner changes the foundation, not an assistant's
 unannounced reinterpretation. New evidence can justify a clearly explained revision.
 
+## Approved clarification, 8 November 2026
+
+The owner adds scientific experiences and philosophical questions behind the
+same perception corridor, preserving voluntary fictional deals and the cash
+checkpoint. History of human knowledge connects a gradual expansion, rather than
+requiring all history at once. Preserve the community name Society Zero.
+Desktop including trackpad, mobile and Quest are separate delivery/verification
+targets. [The room plan](corridor-room-plan.md) distinguishes these decisions from
+proposed first candidates, implementation and acceptance. Earlier single-protocol
+plans do not override this clarification. No new scene or release is approved by
+synchronising documents alone.
+
 ## Earlier purpose review and supporting research
 
 The owner clarified the working aim after the early-chat review: let a person

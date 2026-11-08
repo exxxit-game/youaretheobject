@@ -38,13 +38,14 @@ reviews:
         Plain ES modules for a WebXR game (A-Frame, three.js), no build step. Player-facing text lives only in
         texts.ru.js files and styles only in css/; the engine (src/engine) never imports a room (src/rooms).
         Every comment says why, never when or who. Files stay about 300 lines. Lights in a scene come from
-        the scene's own lamps, never a light that exists only to brighten one object. Quest 2 frame budget:
-        flag anything that adds draw calls or per-frame allocations.
+        the scene's own lamps, never a light that exists only to brighten one object. Flag added draw calls
+        or per-frame allocations; require measured Quest 3 evidence before performance claims.
     - path: "src/rooms/**"
       instructions: >-
-        Each room re-creates a published psychology experiment faithfully. A number, a procedure step or a
-        claim shown to the player must match the paper named in the room's card (docs/cards); flag any that has
-        no source in the code's WHY comments or docs/sources.md.
+        Use docs/research/corridor-room-plan.md to identify the room type. Empirical procedures must match
+        their papers with deviations disclosed; scientific models need assumptions and reference checks;
+        philosophical rooms need sourced premises without fabricated right answers. Fictional deals follow
+        owner-approved voluntary rules, not moral diagnosis. Flag unsupported player-visible claims.
     - path: "tools/**"
       instructions: >-
         Laptop tools on Windows 10 (PowerShell 5.1 and Git Bash). Flag anything that would run Playwright or
@@ -64,3 +65,5 @@ knowledge_base:
       - "WORKFLOW.md"
       - "docs/owner-decisions.md"
       - "ARCHITECTURE.md"
+      - "docs/research/perception-corridor.md"
+      - "docs/research/corridor-room-plan.md"
