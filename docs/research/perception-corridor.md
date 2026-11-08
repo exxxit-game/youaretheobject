@@ -226,7 +226,7 @@ door-start recording. Neither recording itself establishes a stored spatial mesh
 
 | ID | Detail and current state | Dimensions or source | Connection to the walk and next check |
 |---|---|---|---|
-| D01 | Entry door and handle, placeholders | Leaf 0.85 by 2.01 by 0.025 m, frame 0.94 by 2.06 m | Establish a familiar start, then recognise it after returning. Fit the old detailed door to the filmed leaf and grip. |
+| D01 | First working door; other closed placeholders | Reused engine/door.js leaf 0.914 by 2.134 by 0.045 m; not a stairwell measurement | Real opening and collision, room entry and floor-preserving return. Detailed closed copies repeat on adjacent levels to avoid a construction change at rebasing. |
 | D02 | Vestibule, beam and corner, approximate | Hall 12.9 by 1.8 m, portal near x=-3.22 | Delay the first view of the stair until the turn. Match the footage at approximately 0:08 and 0:13. |
 | D03 | Utility cabinet, visible in footage and absent from preview | Latest door-start video at approximately 0:08 | A specific memory landmark near the first scale measurement. Confirm its face and depth before modelling. |
 | D04 | Floor tiles and light patch, implemented | Provisional 0.3048 m squares, shared balanced layout | Joints can lead to a view where rail and distant contour meet. Preserve the pattern across number comparisons. Confirm physical spacing and the intended direction. |
@@ -241,6 +241,8 @@ door-start recording. Neither recording itself establishes a stored spatial mesh
 | D13 | Lift signal and spatial sound, reusable old engine | src/engine/sfx.js and src/app/lobby/opening.js | Orient attention and recognition toward a consistent world location. A new signal and playback conditions need verification. |
 | D14 | Multi-view ornament, candidate | Varini, Raetz and the world-knowledge references | Specify all intended readings and reachable target views together, solve one shared construction, then validate view pairs and transitions in sequence. |
 | D15 | Observer, implemented desktop controls | Eye height 1.1 to 1.9 m, default 1.6 m, vertical field of view 62 degrees | These are prototype settings. Record eye position, view direction, screen aspect and individual eye views. Physical VR remains pending. |
+| D16 | Extinguisher and floor-sign landmark, reusable old model | src/app/lobby/extinguisher.js and extinguisher-label.js; owner asks to retain it near the sign | Not yet placed in preview. A stable landmark can connect number, picture and route memory without itself transforming. |
+| D17 | False exterior window, new proposal | Owner's later sketch discussion; perspective-box and motion/viewpoint sources in the catalogue | Candidate only. Separate flat/animated imagery from a 3D set; test the convincing and revealing views and both-eye conditions before claiming an effect. |
 
 The current preview stores route state locally and changes three signs. It does
 not record participant explanations. Memory is the person's retained experience.

@@ -62,9 +62,9 @@ are blocked, six replacements advance each question, two answers finish; both SV
 target cells use the same rgb(120,120,120) fill. This checks state and code values,
 not rendered pixels, human perception, learning or VR. The old site was unchanged.
 The dated receipt and source hashes are indexed as corridor-room-reuse-checks.
-The current integration/review dependency gap B09 remains open. Source-review
-instructions now distinguish room types; no positive native review cycle for a new
-type has been demonstrated merely by editing those instructions.
+B09 fingerprints were fixed and checked at bde3ad6. Source-review instructions
+distinguish room types; a new room still needs its own applicable review. A change
+to instructions alone does not establish a positive native cycle for that room.
 
 ## One content system, three input surfaces
 
@@ -86,10 +86,36 @@ Head pose is not eye tracking; a conditional blur is not a validated human visua
 
 ## Stages and observable completion
 
+The owner's later sketch defines topology, not measured dimensions: a long hall,
+doors on both sides, end pictures and an up/down stair branch. A ten-floor survey
+is supporting material, not the game's objective or a dependency of this layout.
+Tonight's lighting and capture conditions are unverified. Continue the desktop
+path now; return to the prepared capture branch when it resolves an actual need.
+
+The current bounded technical slice is one real opening and adjacent empty room:
+approach, open, walk inside, inspect, walk back or restore the opening pose, then
+continue upstairs/downstairs. Reuse engine/door.js and the existing route controller;
+do not put a second movement controller on the camera. Other doors remain closed.
+No new moral prompt, payment or philosophical answer is supplied by this scaffold.
+The room footprint is a design dimension. A later survey can replace it without
+changing door identity, logical floor, choices or the return contract.
+
+The owner also retains the detailed old extinguisher near the floor sign. Reuse
+the existing shell, gauge and label; it is not yet placed in this preview. Keep
+logical floor separate from a possibly repeated visible 8 and from picture state.
+Changed pictures with an unchanged number form a proposed memory comparison.
+Picture positions still depend on the real glazing and intended views.
+
+The proposed false exterior window needs its own source-based design and test.
+A flat or animated image and a small 3D set are different candidates; do not
+silently replace the requested flat-image reveal with the latter. Define an initial
+view and reachable revealing view, then test stillness, animation and camera motion
+separately. A screenshot or correct geometry does not establish a human illusion.
+
 1. Synchronise plan, source catalogue, instructions and GitHub; preserve history and
    distinguish decisions, proposals, implementation, checks, acceptance and release.
-2. Close the current review-dependency defect T01g/B09 with the original negative
-   counterexample and positive checks; retain independent source and practice review.
+2. Retain the completed T01g/B09 dependency checks and independent source/practice
+   review. Keep the separate capture-preflight scope issue B12 open for that branch.
 3. Specify one room and a short corridor return. Check sources and old reusable
    modules before building; unresolved checker-shadow holds may require another candidate.
 4. Complete and verify the desktop slice. Then implement/test phone controls; then

@@ -1304,6 +1304,42 @@
       "purpose": "Preserve exact owner word forms and distinguish route foundation from draft question/helper/final details.",
       "reading": "Logical origin0, +/- repeated route, unpaid learning, voluntary paid fictional deals.",
       "note": "Undefined final placeholder remains undefined; authorial metaphor is not player diagnosis."
+    },
+    {
+      "id": "owner-sketch-topology",
+      "title": "Owner sketch: provisional corridor topology and supporting survey",
+      "kind": "owner-record",
+      "topics": [
+        "purpose",
+        "capture",
+        "observer"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "corridor-layout-2026-11-08/source-card.json"
+      },
+      "expected": "present",
+      "purpose": "Reach the original sketch and later spoken clarification without inventing measured dimensions or a fixed room count.",
+      "reading": "Doors on both sides, end pictures, stair branch; owner adds retained extinguisher near the number and a proposed false exterior window.",
+      "note": "Image is a source, not instructions. Game purpose is preserved; capture is supporting work, not a universal blocker."
+    },
+    {
+      "id": "false-exterior-window",
+      "title": "False exterior window: perspective-box and viewpoint leads",
+      "kind": "research-report",
+      "topics": [
+        "purpose",
+        "motion",
+        "observer"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "corridor-layout-2026-11-08/window-candidates.json"
+      },
+      "expected": "present",
+      "purpose": "Separate an animated flat-image reveal from a 3D set before selecting a future window mechanism.",
+      "reading": "Primary museum accounts read; author university abstract recorded as a lead, not full-text verification by the lead.",
+      "note": "No new illusion is implemented or established in desktop/Quest; do not promise universal deception or two-eye disclosure."
     }
   ]
 }

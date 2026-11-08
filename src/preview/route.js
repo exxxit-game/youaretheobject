@@ -1,3 +1,6 @@
+import { inside } from '../engine/locomotion-math.js';
+import { HALL, ROOM, OPEN_LEAF } from './layout.js';
+
 const steps = 8;
 const rise = 0.18;
 const run = 0.38;
@@ -5,7 +8,7 @@ const halfRise = steps * rise;
 const turnZ = -steps * run;
 
 export const PLAN = {
-  hall: { minX: -7.6, maxX: 5.3, minZ: 0, maxZ: 1.8 },
+  hall: HALL,
   right: { minX: 1.4, maxX: 2.68, minZ: turnZ, maxZ: 0 },
   left: { minX: 0, maxX: 1.24, minZ: turnZ, maxZ: 0 },
   landing: { minX: 0, maxX: 2.68, minZ: -4.42, maxZ: turnZ },
@@ -44,13 +47,24 @@ function withinLane(x, lane) {
   return x >= lane.minX + MARGIN && x <= lane.maxX - MARGIN;
 }
 
-function floorHeight(x, z, previousY) {
+function floorHeight(x, z, previousY, doorOpen) {
   const { hall, right, left, landing, floorRise } = PLAN;
   const onRight = withinLane(x, right);
   const onLeft = withinLane(x, left);
   let height;
 
-  if (z >= hall.minZ) {
+  if (doorOpen && inside(x, z, { minX: OPEN_LEAF.minX - MARGIN, maxX: OPEN_LEAF.maxX + MARGIN,
+    minZ: OPEN_LEAF.minZ - MARGIN, maxZ: OPEN_LEAF.maxZ + MARGIN })) return null;
+
+  if (doorOpen && z > hall.maxZ - MARGIN) {
+    // A narrow overlapping passage joins the two areas (locomotion-math.js).
+    // The rest of the dividing wall stays solid from either side.
+    const passage = Math.abs(x - ROOM.doorX) <= ROOM.clearWidth / 2 - MARGIN;
+    const room = { minX: ROOM.minX + MARGIN, maxX: ROOM.maxX - MARGIN,
+      minZ: ROOM.minZ + MARGIN, maxZ: ROOM.maxZ - MARGIN };
+    if (z <= room.minZ ? !passage : !inside(x, z, room)) return null;
+    height = 0;
+  } else if (z >= hall.minZ) {
     if (!withinLane(x, hall) || z > hall.maxZ - MARGIN) return null;
     if (!onRight && !onLeft && z < hall.minZ + MARGIN) return null;
     height = 0;
@@ -66,25 +80,25 @@ function floorHeight(x, z, previousY) {
   return height + Math.round((previousY - height) / floorRise) * floorRise;
 }
 
-function step(position, x, z) {
-  const y = floorHeight(x, z, position.y);
+function step(position, x, z, doorOpen) {
+  const y = floorHeight(x, z, position.y, doorOpen);
   return y !== null && Math.abs(y - position.y) <= PLAN.rise
     ? recenter({ ...position, x, y, z, floor: position.floor ?? 0 }) : position;
 }
 
-export function walk(position, dx, dz) {
+export function walk(position, dx, dz, doorOpen = false) {
   const distance = Math.hypot(dx, dz);
   if (!Number.isFinite(distance) || distance === 0) return position;
   const count = Math.ceil(distance / MAX_STEP);
   dx /= count;
   dz /= count;
   for (let i = 0; i < count; i++) {
-    const next = step(position, position.x + dx, position.z + dz);
+    const next = step(position, position.x + dx, position.z + dz, doorOpen);
     if (next !== position) {
       position = next;
     } else {
-      position = step(position, position.x + dx, position.z);
-      position = step(position, position.x, position.z + dz);
+      position = step(position, position.x + dx, position.z, doorOpen);
+      position = step(position, position.x, position.z + dz, doorOpen);
     }
   }
   return position;

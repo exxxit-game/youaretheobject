@@ -34,10 +34,11 @@ main remains the published branch; this work is not merged or released.
   B06: API cancellation unavailable; reading completed CI remains possible.
 
 ## Next dependency
-USB and cable-free Wi-Fi flat preflight passed; no XR or geometry file. A router
-restart changed the device address; current-IP retry passed. Bound the capture review before Start. The existing
-global full-practice gate cannot be granted by a capture-only walkthrough.
-Specify one connected slice. Prepare the next concrete device step before
+The owner's sketch makes the first desktop door/room/return the active slice;
+scan is supporting reference and does not block this route. Physical capture waits
+for suitable conditions and bounded B12 preflight; no XR or geometry file exists.
+Preserve the old extinguisher, separate visible numbers and picture state, and keep
+the false exterior window as a source-based future candidate. Prepare each step before
 requesting the owner's time. Acceptance, merge and publication stay separate.
 
 ## Preserved history

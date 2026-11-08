@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
 import { startServer } from './static-server.mjs';
 import { ANCHORS } from '../src/preview/route.js';
+import { ROOM } from '../src/preview/layout.js';
 import { T } from '../src/preview/texts.ru.js';
 
 if (!process.env.CI) throw Error('Run this browser check in CI; no laptop browser installation is needed.');
@@ -28,6 +29,21 @@ const moved = (axis, before) => page.waitForFunction(({ axis, before }) => {
   const value = axis === 'yaw' ? c.rotation.y : axis === 'pitch' ? c.rotation.x : c.position[axis];
   return Math.abs(value-before) > 0.025;
 }, { axis, before }, { timeout: 30000 });
+const walkAxis = async (key, axis, target) => {
+  const before = (await pose())[axis], direction = Math.sign(target - before);
+  if (Math.abs(target - before) < 0.03) return;
+  await page.keyboard.down(key);
+  try {
+    await page.waitForFunction(({axis,target,direction}) => {
+      const p = document.querySelector('#preview-camera').object3D.position;
+      return (p[axis] - target) * direction >= 0;
+    }, {axis,target,direction}, {polling:'raf', timeout:60000});
+  } finally { await page.keyboard.up(key); }
+  await settled();
+  assert.ok(Math.abs((await pose())[axis] - target) < 0.24, 'keyboard walk reaches its intended area');
+};
+const shownFloor = () => page.locator('#preview-lower-sign').getAttribute('data-number');
+const samePose = (a,b) => Object.keys(a).forEach(k => assert.ok(Math.abs(a[k]-b[k])<1e-6, 'return preserves '+k));
 try {
   server = await startServer(0, '127.0.0.1');
   base = 'http://127.0.0.1:' + server.address().port;
@@ -77,8 +93,46 @@ try {
   // Exercise the blur handler; this is not a physical window-focus or headset test.
   await page.evaluate(() => window.dispatchEvent(new Event('blur')));
   await settled(); await page.keyboard.up('ArrowUp');
+  await page.getByRole('button', { name:T.views.start, exact:true }).click();
+  await walkAxis('ArrowUp','x',ROOM.doorX - 0.05);
+  const beforeDoor = await pose();
+  // Synthetic Russian-key regression; not a claim of a physical keyboard-layout test.
+  await page.evaluate(() => window.dispatchEvent(new KeyboardEvent('keydown',
+    {code:'KeyE',key:String.fromCodePoint(0x443),bubbles:true})));
+  await page.getByRole('button',{name:T.returnDoor,exact:true}).waitFor();
+  await walkAxis('KeyA','z',ROOM.minZ+1.4);
+  await page.getByRole('status').filter({hasText:T.room}).waitFor();
+  // Returning while a movement key remains held must not restart on its auto-repeat.
+  const roomX = (await pose()).x;
+  await page.keyboard.down('KeyW'); await moved('x',roomX);
+  await page.keyboard.press('Escape');
+  await page.keyboard.down('KeyW'); await settled(); await page.keyboard.up('KeyW');
+  samePose(await pose(),beforeDoor);
+  assert.equal(await shownFloor(),'8');
+  await page.getByRole('button',{name:T.openDoor,exact:true}).waitFor();
+
+  console.log('corridor smoke: walking the stairs, not selecting a floor anchor');
+  await walkAxis('ArrowUp','x',ANCHORS.turn.x);
+  await walkAxis('KeyD','z',ANCHORS.overlap.z);
+  await walkAxis('ArrowDown','x',ANCHORS.top.x);
+  await walkAxis('KeyA','z',ANCHORS.top.z);
+  assert.equal(await shownFloor(),'9','actual ascent changes the visible floor sign');
+  await walkAxis('ArrowDown','x',ROOM.doorX - 0.05);
+  const upperDoor = await pose();
+  await page.keyboard.press('KeyE');
+  await page.getByRole('button',{name:T.returnDoor,exact:true}).waitFor();
+  await walkAxis('KeyA','z',ROOM.minZ+1.4);
+  await page.getByRole('status').filter({hasText:T.room}).waitFor();
+  await page.getByRole('button',{name:T.returnDoor,exact:true}).click();
+  await settled(); samePose(await pose(),upperDoor);
+  assert.equal(await shownFloor(),'9','room return does not reset the floor to the origin');
+  await walkAxis('ArrowUp','x',ANCHORS.top.x);
+  await walkAxis('KeyD','z',ANCHORS.overlap.z);
+  await walkAxis('ArrowUp','x',ANCHORS.turn.x);
+  await walkAxis('KeyA','z',ANCHORS.turn.z);
+  assert.equal(await shownFloor(),'8','walking back returns to the original floor');
   assert.deepEqual(failures, [], 'the corridor boots and responds without errors or outside requests');
-  console.log('corridor smoke: boot, real view/height controls, keyboard and input clearing passed; walking route/Quest untested');
+  console.log('corridor smoke: boot, controls, room entry/return, held-input stop and walked ascent/descent pass; Quest untested');
 } finally {
   try { await browser?.close(); }
   finally { if(server) { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); } }

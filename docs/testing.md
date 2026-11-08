@@ -24,6 +24,12 @@ A new rule in a pure module needs its test first (red), then the change (green).
 
 ## Source-review dependencies
 
+The desktop door slice extends `tests/perception-route.test.mjs` with closed-wall,
+opening, open-leaf, room-boundary and exact return checks on positive/negative floors.
+The CI preview test walks through the room and stairs using keys, checks the visible
+floor sign and held-input stop, and distinguishes its synthetic Russian-key case
+from a physical keyboard-layout observation. Anchor selection is not that route test.
+
 `tools/review-gate.mjs` fingerprints each room with its shared app/engine, shell,
 styles/vendor, local contract/sources and its own specification. Shared changes
 conservatively invalidate all affected room reviews; another room's code/spec does

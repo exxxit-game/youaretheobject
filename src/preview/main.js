@@ -2,6 +2,11 @@ import { FONT } from '../engine/panel.js';
 import { ANCHORS, PLAN, floorNumber, recenter, walk } from './route.js';
 import { T } from './texts.ru.js';
 import { buildWorld } from './world.js';
+import { ROOM, nearDoor, inRoom, beginVisit, returnVisit } from './layout.js';
+import { doorHTML } from '../engine/door.js';
+import '../engine/shapes.js';
+import '../engine/decal.js';
+import '../engine/merge-static.js';
 
 const STEP_SPEED = 1.5;
 const TURN_SPEED = 1.65;
@@ -9,7 +14,7 @@ const TILT_SPEED = 1.15;
 const PITCH_LIMIT = Math.PI * 0.47;
 const CONTROL_KEYS = new Set([
   'KeyW', 'KeyS', 'KeyA', 'KeyD', 'ArrowUp', 'ArrowDown',
-  'ArrowLeft', 'ArrowRight', 'KeyR', 'KeyF', 'PageUp', 'PageDown'
+  'ArrowLeft', 'ArrowRight', 'KeyR', 'KeyF', 'PageUp', 'PageDown', 'KeyE'
 ]);
 const scene = document.querySelector('a-scene');
 const camera = document.querySelector('#preview-camera');
@@ -17,9 +22,11 @@ const hint = document.querySelector('#preview-hint');
 const buttons = document.querySelector('#preview-views');
 const eye = document.querySelector('#preview-eye');
 const eyeValue = document.querySelector('#preview-eye-value');
+const doorButton = document.querySelector('#preview-door-action');
 const pressed = new Set();
 let position = ANCHORS.start;
 let eyeHeight = Number(eye.value);
+let visit = null, leaf;
 
 document.title = T.title;
 document.querySelector('#preview-title').textContent = T.title;
@@ -29,17 +36,44 @@ function moveCamera() {
   camera.object3D.position.set(position.x, position.y + eyeHeight, position.z);
 }
 
-function place(anchor) {
+function applyPose(anchor) {
   pressed.clear();
-  position = recenter({ ...anchor, floor: anchor === ANCHORS.start ? 0 : position.floor ?? 0 });
-  const yaw = THREE.MathUtils.degToRad(anchor.yaw);
-  const pitch = THREE.MathUtils.degToRad(anchor.pitch);
   const look = camera.components['look-controls'];
-  look.yawObject.rotation.y = yaw;
-  look.pitchObject.rotation.x = pitch;
-  camera.object3D.rotation.set(pitch, yaw, 0, 'YXZ');
+  look.yawObject.rotation.y = anchor.yaw;
+  look.pitchObject.rotation.x = anchor.pitch;
+  camera.object3D.rotation.set(anchor.pitch, anchor.yaw, 0, 'YXZ');
   moveCamera();
   drawSigns();
+}
+
+function place(anchor) {
+  visit = null;
+  position = recenter({ ...anchor, floor: anchor === ANCHORS.start ? 0 : position.floor ?? 0 });
+  applyPose({ yaw: THREE.MathUtils.degToRad(anchor.yaw), pitch: THREE.MathUtils.degToRad(anchor.pitch) });
+}
+
+function useDoor() {
+  if (visit) {
+    const restored = returnVisit(visit);
+    visit = null;
+    position = restored.position;
+    applyPose(restored);
+  } else {
+    visit = beginVisit(position, camera.object3D.rotation.y, camera.object3D.rotation.x);
+    pressed.clear();
+  }
+  updateDoor();
+}
+
+function updateDoor() {
+  const angle = visit ? Math.PI / 2 : 0;
+  const hidden = !visit && !nearDoor(position);
+  const label = visit ? T.returnDoor : T.openDoor;
+  const text = visit ? (inRoom(position) ? T.room : T.doorOpen) : T.instruction;
+  if (leaf.object3D.rotation.y !== angle) leaf.object3D.rotation.y = angle;
+  if (doorButton.hidden !== hidden) doorButton.hidden = hidden;
+  if (doorButton.textContent !== label) doorButton.textContent = label;
+  if (hint.textContent !== text) hint.textContent = text;
 }
 
 function drawSigns() {
@@ -48,6 +82,7 @@ function drawSigns() {
     const offset = Number(sign.dataset.floorOffset);
     sign.object3D.position.set(-0.5, offset * PLAN.floorRise + 1.66, 0.055);
     const number = floorNumber((position.floor ?? 0) + offset, location.search);
+    sign.dataset.number = number;
     const panel = sign.components.panel;
     panel.ctx.font = `600 178px ${FONT}`;
     const size = Math.min(178, 178 * panel.c.width * 0.88 / panel.ctx.measureText(number).width);
@@ -80,10 +115,11 @@ function animate() {
       const dx = (right * Math.cos(yaw) - front * Math.sin(yaw)) * distance;
       const dz = (-right * Math.sin(yaw) - front * Math.cos(yaw)) * distance;
       const previousFloor = position.floor;
-      position = walk(position, dx, dz);
-      if (position.floor !== previousFloor) drawSigns();
+      position = walk(position, dx, dz, !!visit);
+      if (position.floor !== previousFloor) { visit = null; drawSigns(); }
       moveCamera();
     }
+    updateDoor();
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
@@ -96,7 +132,18 @@ function controlKey(event) {
 
 function start() {
   buildWorld(document.querySelector('#preview-world').object3D);
+  for (const offset of [-1, 0, 1]) {
+    const frame = document.createElement('a-entity');
+    frame.id = `preview-door-frame-${offset}`;
+    frame.setAttribute('position', `0 ${offset * PLAN.floorRise} 0`);
+    frame.setAttribute('merge-static', '');
+    frame.innerHTML = doorHTML({ x: ROOM.doorX, room: ROOM.minZ + 0.1, corridor: ROOM.minZ - 0.1,
+      leaf: `id="preview-door-leaf-${offset}" data-dynamic`, inside: true });
+    document.querySelector('#preview-world').append(frame);
+  }
+  leaf = document.querySelector('#preview-door-leaf-0');
   place(ANCHORS.start);
+  doorButton.addEventListener('click', useDoor);
   for (const [id, anchor] of Object.entries(ANCHORS)) {
     const button = document.createElement('button');
     button.type = 'button';
@@ -115,11 +162,17 @@ function start() {
   eye.addEventListener('focus', () => pressed.clear());
   changeHeight();
   addEventListener('keydown', event => {
+    if (event.key === 'Escape' && visit) { event.preventDefault(); useDoor(); return; }
     if (event.target === eye) return;
     const key = controlKey(event);
+    if (key === 'KeyE' && !event.ctrlKey && !event.metaKey && !event.altKey) {
+      event.preventDefault();
+      if (!event.repeat && (visit || nearDoor(position))) useDoor();
+      return;
+    }
     if (!CONTROL_KEYS.has(key) || event.ctrlKey || event.metaKey || event.altKey) return;
     event.preventDefault();
-    pressed.add(key);
+    if (!event.repeat) pressed.add(key);
   });
   addEventListener('keyup', event => pressed.delete(controlKey(event)));
   addEventListener('blur', () => pressed.clear());

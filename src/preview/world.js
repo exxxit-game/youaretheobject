@@ -1,5 +1,6 @@
 import { PLAN } from './route.js';
 import { GRID, jointOrigin } from '../engine/tile-math.js';
+import { DOORS, ROOM } from './layout.js';
 
 const { hall, left, right, landing, steps, rise, run, halfRise, floorRise } = PLAN;
 const mid = (a, b) => (a + b) / 2;
@@ -97,16 +98,30 @@ export function buildWorld(root) {
     root.add(mesh);
   }
 
-  function entryDoor(x, y) {
-    box(x, y + 1.03, 1.749, 0.94, 2.06, 0.042, trim);
-    box(x, y + 1.02, 1.719, 0.85, 2.01, 0.025, door);
-    box(x + 0.28, y + 1.02, 1.67, 0.105, 0.023, 0.05, metal);
+  function entryDoor(x, y, south) {
+    const z = south ? hall.maxZ - 0.05 : 0.05, facing = south ? -1 : 1;
+    box(x, y + 1.03, z, 0.94, 2.06, 0.042, trim);
+    box(x, y + 1.02, z + facing * 0.03, 0.85, 2.01, 0.025, door);
+    box(x + 0.28, y + 1.02, z + facing * 0.08, 0.105, 0.023, 0.05, metal);
+  }
+
+  function roomLevel(y, top) {
+    const x = mid(ROOM.minX, ROOM.maxX), z = mid(ROOM.minZ, ROOM.maxZ);
+    box(x, y - 0.065, z, ROOM.maxX - ROOM.minX, 0.13, ROOM.maxZ - ROOM.minZ, concrete);
+    box(x, top, z, ROOM.maxX - ROOM.minX, 0.13, ROOM.maxZ - ROOM.minZ, plaster);
+    wallX(ROOM.minX, ROOM.maxX, y, top, ROOM.maxZ);
+    for (const edge of [ROOM.minX, ROOM.maxX]) box(edge, mid(y, top), z, 0.08, top - y, ROOM.maxZ - ROOM.minZ, plaster);
+    lamp(x, top - 0.08, z, 2.2);
   }
 
   function hallLevel(y) {
     const top = y + floorRise - 0.13;
     floor(y);
-    wallX(hall.minX, hall.maxX, y, top, hall.maxZ);
+    const a = ROOM.doorX - ROOM.doorWidth / 2, b = ROOM.doorX + ROOM.doorWidth / 2;
+    wallX(hall.minX, a, y, top, hall.maxZ);
+    wallX(b, hall.maxX, y, top, hall.maxZ);
+    wallX(a, b, y + ROOM.doorHeight, top, hall.maxZ);
+    roomLevel(y, top);
     wallX(hall.minX, 0, y, top, 0);
     wallX(right.maxX, hall.maxX, y, top, 0);
     wallX(hall.minX, 0, y, y + 0.085, 0.045, trim);
@@ -114,7 +129,7 @@ export function buildWorld(root) {
     box(hall.minX, mid(y, top), 0.9, 0.08, top - y, 1.8, plaster);
     box(hall.maxX, mid(y, top), 0.9, 0.08, top - y, 1.8, plaster);
     box(mid(hall.minX, hall.maxX), top, 0.9, hall.maxX - hall.minX, 0.13, 1.8, plaster);
-    for (const x of [-6.5, -2.7, 2.97]) entryDoor(x, y);
+    for (const d of DOORS) if (!d.working) entryDoor(d.x, y, d.side === 'south');
     for (const x of [-5.6, -2.4, 1.7, 4.1]) lamp(x, top - 0.08, 0.9, 2.2);
     // A shallow beam and side pier reveal the stairwell after the turn.
     box(-3.22, y + 2.4, 0.9, 0.22, 0.43, 1.8, plaster);
