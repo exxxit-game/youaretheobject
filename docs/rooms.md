@@ -70,6 +70,6 @@ the wall inside: the experiment's name would tell the player what is studied bef
 (`tests/plaque.test.mjs`). The number comes from the corridor plan (`src/app/lobby/plan.js`):
 the room imports it for its texts and its own sign; the lobby writes the corridor's signs and door 1's.
 
-Add a room: read the paper in full first (CLAUDE.md: the paper read in full), write the spec, then
+Add a room: read the paper in full first (WORKFLOW.md: the paper read in full), write the spec, then
 `protocol.js` and its test, then the rest. File names must not look like tracking
 (see `tests/names.test.mjs`): ad blockers block them.

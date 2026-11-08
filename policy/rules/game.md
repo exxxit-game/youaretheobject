@@ -9,11 +9,11 @@ paths:
   - "docs/cards/**"
   - "docs/building-standards.md"
   - "docs/vr-checklist.md"
-  - ".claude/skills/new-room/**"
+  - "policy/skills/new-room/**"
 ---
 # The owner's decisions on the game: the corridor, the rooms, the film, light, art, voice, controls
 
-Claude Code loads this file when a file of the paths above is read or edited.
+Read this file explicitly when its subject is relevant; paths metadata is a retained index, not native Codex loading.
 
 - Three texts accepted as written, word for word in the history file: the manifesto, the game and Store page, the corridor's welcome (with the corridor's texts, board item 7) («Да» 10.10); where his «почти готовый текст» goes: his choice.
 - The corridor is the reference every room is built on, finished before anything else («доделать эталонный коридор, на который мы опираемся» 9.10); its order «Подпись, печать, лаборатории, картины… указатель… свет» (8.10), visuals first, texts after (9.10).

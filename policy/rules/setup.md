@@ -1,8 +1,8 @@
 ---
 paths:
-  - ".claude/**"
+  - "policy/**"
   - ".github/**"
-  - "tools/claude-guard.mjs"
+  - "tools/project-guard.mjs"
   - "tools/hooks/**"
   - "tools/prove-guards.mjs"
   - "tools/secrets.mjs"
@@ -13,7 +13,7 @@ paths:
 ---
 # The owner's decisions on the setup: connectors, plugins, models, GitHub, CodeRabbit, updates
 
-Claude Code loads this file when a file of the paths above is read or edited.
+Read this file explicitly when its subject is relevant; paths metadata is a retained index, not native Codex loading.
 
 - Two empty PATH entries in Windows stay («Вообще не хочу туда лезть» 10.10).
 - Google Drive is the papers' cloud copy; the old Dropbox files stay («мы выбираем Google Driver» 10.10).

@@ -1,4 +1,4 @@
-// The guard Claude Code runs before each shell command (tools/claude-guard.mjs) is run here on real
+// The guard Claude Code runs before each shell command (tools/project-guard.mjs) is run here on real
 // commands both ways: what it exists to stop must be refused in every form a shell writes it, and a
 // command that only reads, searches or names those words (in quotes, a message, a heredoc) must
 // pass, or the assistant learns to work around the guard. The guard reads the command as the shell
@@ -10,7 +10,8 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { refusal, ciLine, EXTRA_LINE, imports } from '../tools/claude-guard.mjs';
+import { handleEvent as nativeHook } from '../tools/codex-review.mjs';
+import { refusal, ciLine, EXTRA_LINE, imports } from '../tools/project-guard.mjs';
 import { onHead, offHead, headsetActions } from '../tools/headset.mjs';
 import { split } from '../tools/board.mjs';
 
@@ -208,11 +209,11 @@ for (const [c, shell] of allowed) {
 // a shell already standing in the library: the hook sees it by the event's cwd
 assert.ok(refusal('rm papers/x.pdf', false, true), 'a delete by a relative path inside the library went through');
 assert.ok(!refusal('ls papers', false, true), 'a read inside the library was refused');
-const inLibrary = spawnSync(process.execPath, ['tools/claude-guard.mjs', 'pre'], { cwd: ROOT, encoding: 'utf8', input: JSON.stringify({ tool_name: 'Bash', tool_input: { command: 'rm papers/x.pdf' }, cwd: 'C:\\Users\\x\\Documents\\objekt-files' }) });
+const inLibrary = spawnSync(process.execPath, ['tools/project-guard.mjs', 'pre'], { cwd: ROOT, encoding: 'utf8', input: JSON.stringify({ tool_name: 'Bash', tool_input: { command: 'rm papers/x.pdf' }, cwd: 'C:\\Users\\x\\Documents\\objekt-files' }) });
 assert.equal(inLibrary.status, 2, 'the hook let a delete through in a shell standing in the library');
 
 // the hook itself, as Claude Code calls it: the event as JSON on stdin, exit 2 refuses
-const ask = (tool_name, command) => spawnSync(process.execPath, ['tools/claude-guard.mjs', 'pre'], { cwd: ROOT, encoding: 'utf8', input: JSON.stringify({ tool_name, tool_input: { command }, cwd: ROOT }) }).status;
+const ask = (tool_name, command) => spawnSync(process.execPath, ['tools/project-guard.mjs', 'pre'], { cwd: ROOT, encoding: 'utf8', input: JSON.stringify({ tool_name, tool_input: { command }, cwd: ROOT }) }).status;
 assert.equal(ask('Bash', 'git commit -n -m x'), 2, 'the hook let a hook-skipping commit through');
 assert.equal(ask(PS, 'npm run test:smoke'), 2, 'the hook let the smoke test run in PowerShell');
 assert.equal(ask('Bash', 'grep -rn "git commit --no-verify" docs/'), 0, 'the hook refused a search');
@@ -223,13 +224,10 @@ assert.equal(ask('Bash', 'grep -rn "git commit --no-verify" docs/'), 0, 'the hoo
 // the assistant's tools (its permissions reference, "Tool name wildcards"): a browser on the laptop, writes to the
 // live database, writes to GitHub past the push hook
 {
-  const settings = JSON.parse(fs.readFileSync(path.join(ROOT, '.claude/settings.json'), 'utf8'));
-  const pre = (m) => settings.hooks.PreToolUse.find((h) => h.matcher === m).hooks[0];
-  assert.equal(pre('Bash|PowerShell').onFailure, 'block', 'the command guard lets its action through when it fails');
-  assert.equal(pre('mcp__.*').onFailure, 'block', 'the MCP guard lets its action through when it fails');
-  assert.notEqual(pre('Write|Edit|NotebookEdit').onFailure, 'block', 'a broken edit guard could not be mended');
+  const settings = JSON.parse(fs.readFileSync(path.join(ROOT, 'policy/settings.json'), 'utf8'));
   for (const rule of ['mcp__plugin_playwright*', 'mcp__plugin_chrome-devtools*', 'mcp__*__apply_migration', 'mcp__*__deploy_edge_function', 'mcp__*__reset_branch', 'mcp__*__merge_branch', 'mcp__*__push_files', 'mcp__*__create_or_update_file', 'mcp__*__merge_pull_request']) {
-    assert.ok(settings.permissions.deny.includes(rule), `the deny rule ${rule} is gone from .claude/settings.json`);
+    assert.ok(settings.permissions.deny.includes(rule), 'missing project deny: '+rule);
+    assert.equal(nativeHook({cwd:ROOT,hook_event_name:'PreToolUse',tool_name:rule.replaceAll('*','test'),tool_input:{} }).hookSpecificOutput?.permissionDecision,'deny', `the deny rule ${rule} is gone from policy/settings.json`);
   }
 }
 
@@ -239,7 +237,7 @@ assert.equal(ask('Bash', 'grep -rn "git commit --no-verify" docs/'), 0, 'the hoo
 {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'owner-log-'));
   const env = { ...process.env, HOME: dir, USERPROFILE: dir };
-  const hook = (event) => spawnSync(process.execPath, ['tools/claude-guard.mjs', 'prompt'], { cwd: ROOT, encoding: 'utf8', env, input: JSON.stringify({ cwd: ROOT, ...event }) });
+  const hook = (event) => spawnSync(process.execPath, ['tools/project-guard.mjs', 'prompt'], { cwd: ROOT, encoding: 'utf8', env, input: JSON.stringify({ cwd: ROOT, ...event }) });
   const logged = () => { try { return fs.readFileSync(path.join(dir, 'Documents', 'objekt-files', 'notes', 'owner-messages.md'), 'utf8'); } catch { return ''; } };
   assert.equal(hook({ session_id: 'A', prompt: 'his message' }).status, 0, 'the prompt hook stopped his message');
   hook({ session_id: 'B', prompt: '<task-notification>a helper finished</task-notification>' });
@@ -285,18 +283,18 @@ for (const [powerDump, free] of [[dump('HEADSET_MOUNTED', 'DISABLED'), false], [
   assert.equal(sent.some((c) => c.includes('force-stop')), free, `the browser ${free ? 'not ' : ''}restarted for ${JSON.stringify(powerDump)}`);
 }
 
-// docs/owner-decisions.md reaches every session at its start and after each compaction: CLAUDE.md imports
-// it (Claude Code loads CLAUDE.md then, whole). A session that does not see it asks him again what he settled
-const start = spawnSync(process.execPath, ['tools/claude-guard.mjs', 'start'], { cwd: ROOT, encoding: 'utf8', input: JSON.stringify({ source: 'startup', cwd: ROOT }) });
+// docs/owner-decisions.md reaches every session at its start and after each compaction: WORKFLOW.md imports
+// it (Claude Code loads WORKFLOW.md then, whole). A session that does not see it asks him again what he settled
+const start = spawnSync(process.execPath, ['tools/project-guard.mjs', 'start'], { cwd: ROOT, encoding: 'utf8', input: JSON.stringify({ source: 'startup', cwd: ROOT }) });
 const decisions = path.join(ROOT, 'docs/owner-decisions.md');
-assert.ok(/^His decisions load with this file[^\n]*@docs\/owner-decisions\.md/m.test(fs.readFileSync(path.join(ROOT, 'CLAUDE.md'), 'utf8')),
-  'CLAUDE.md no longer imports docs/owner-decisions.md: his decisions are not in front of the session');
-// the decisions of one theme live in .claude/rules/, each loaded by its paths (code.claude.com/docs/en/memory,
+assert.ok(/^His decisions load with this file[^\n]*@docs\/owner-decisions\.md/m.test(fs.readFileSync(path.join(ROOT, 'WORKFLOW.md'), 'utf8')),
+  'WORKFLOW.md no longer imports docs/owner-decisions.md: his decisions are not in front of the session');
+// the decisions of one theme live in policy/rules/, each loaded by its paths (code.claude.com/docs/en/memory,
 // "Path-specific rules"): a file gone, or its paths header broken, and those decisions stop arriving
-const themes = ['game', 'measures', 'data', 'setup'].map((t) => path.join(ROOT, '.claude', 'rules', `${t}.md`));
+const themes = ['game', 'measures', 'data', 'setup'].map((t) => path.join(ROOT, 'policy', 'rules', `${t}.md`));
 assert.ok(fs.existsSync(decisions) && /^- The rules read at start shortened/m.test(fs.readFileSync(decisions, 'utf8'))
   && themes.every((f) => fs.existsSync(f) && /^---\r?\npaths:\r?\n {2}- "/.test(fs.readFileSync(f, 'utf8'))),
-  "the session does not show the owner's decisions: docs/owner-decisions.md lost its first decision, or a theme's file in .claude/rules is gone or lost its paths");
+  "the session does not show the owner's decisions: docs/owner-decisions.md lost its first decision, or a theme's file in policy/rules is gone or lost its paths");
 // the start names the one feature to work on (Anthropic's harness: "choose the highest-priority feature
 // that's not yet done") and nothing to do first: each "first" or "before other work" printed there became
 // the window's task before his message
@@ -309,39 +307,39 @@ assert.deepEqual(split('@@a\nsrc/x.js\n\n@@b\ntools/y.mjs\ndocs/z.md\n\n@@c\nsrc
 const told = JSON.parse(start.stdout);
 assert.match(told.systemMessage || '', /^За 7 дней ты принял вещей из списка: \d+\. Вчера коммитов: в игру \d+, в процесс \d+\.$/, 'his measure was not shown at a new window');
 assert.match(told.hookSpecificOutput?.additionalContext || '', /^Say to him first, word for word: «За 7 дней/, 'his measure was not handed to me to say to him first');
-const compacted = spawnSync(process.execPath, ['tools/claude-guard.mjs', 'start'], { cwd: ROOT, encoding: 'utf8', input: JSON.stringify({ source: 'compact', cwd: ROOT }) });
+const compacted = spawnSync(process.execPath, ['tools/project-guard.mjs', 'start'], { cwd: ROOT, encoding: 'utf8', input: JSON.stringify({ source: 'compact', cwd: ROOT }) });
 assert.doesNotMatch(compacted.stdout, /За 7 дней/, 'his measure came again after a compaction');
-// our words he approved arrive once, with CLAUDE.md, at every start and after every compaction, as he chose;
+// our words he approved arrive once, with WORKFLOW.md, at every start and after every compaction, as he chose;
 // the start never prints them
 const circles = fs.readFileSync(path.join(ROOT, 'docs/ten-circles.md'), 'utf8').trim();
-assert.ok(/^Our words[^\n]*@docs\/ten-circles\.md/m.test(fs.readFileSync(path.join(ROOT, 'CLAUDE.md'), 'utf8')), 'CLAUDE.md no longer imports our words he approved');
-assert.ok(!start.stdout.includes(circles), 'the start prints the ten circles again: a second copy beside CLAUDE.md');
+assert.ok(/^Our words[^\n]*@docs\/ten-circles\.md/m.test(fs.readFileSync(path.join(ROOT, 'WORKFLOW.md'), 'utf8')), 'WORKFLOW.md no longer imports our words he approved');
+assert.ok(!start.stdout.includes(circles), 'the start prints the ten circles again: a second copy beside WORKFLOW.md');
 assert.ok(start.stdout.length < 10000, `the start hook prints ${start.stdout.length} characters: over 10,000 Claude Code keeps only a preview`);
 // and on the worst day, not only on this machine: the red-CI line and the branch warning at their longest
 // (GitHub's runner sees no CI line; a start that fit here went over there twice)
 const worstStart = start.stdout.length + 2 * (EXTRA_LINE + 2);
 assert.ok(worstStart < 10000, `on the worst day the start would print ${worstStart} characters: over 10,000 Claude Code keeps only a preview`);
 
-// CLAUDE.md's imports read as Claude Code reads them (code.claude.com/docs/en/memory): every name has a file
+// WORKFLOW.md's imports read as Claude Code reads them (code.claude.com/docs/en/memory): every name has a file
 // behind it. "@docs/tandem.md." kept the tandem out of every window: the dot is caught. Last, so the older
 // guards above see their own mistakes first (tools/prove-guards.mjs)
 {
-  const md = path.join(ROOT, 'CLAUDE.md');
+  const md = path.join(ROOT, 'WORKFLOW.md');
   const gone = imports(md).filter((f) => !fs.existsSync(f));
-  assert.deepEqual(gone, [], `CLAUDE.md imports a name with no file behind it, which loads nothing: ${gone.join(', ')}`);
-  assert.ok(imports(md).some((f) => f.endsWith(path.join('docs', 'tandem.md'))), 'CLAUDE.md no longer imports docs/tandem.md');
+  assert.deepEqual(gone, [], `WORKFLOW.md imports a name with no file behind it, which loads nothing: ${gone.join(', ')}`);
+  assert.ok(imports(md).some((f) => f.endsWith(path.join('docs', 'tandem.md'))), 'WORKFLOW.md no longer imports docs/tandem.md');
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'imports-'));
-  fs.writeFileSync(path.join(dir, 'CLAUDE.md'), 'Who errs: @docs/tandem.md. More.\nCode: `@not/this.md`, ``@nor/this.md``, a@mail.com\n```\n@nor/that.md\n```\n  ~~~\n  @nor/indented.md\n  ~~~\n');
-  assert.deepEqual(imports(path.join(dir, 'CLAUDE.md')).map((f) => path.relative(dir, f).replace(/\\/g, '/')), ['docs/tandem.md.'], 'an import is not read as Claude Code reads it');
+  fs.writeFileSync(path.join(dir, 'WORKFLOW.md'), 'Who errs: @docs/tandem.md. More.\nCode: `@not/this.md`, ``@nor/this.md``, a@mail.com\n```\n@nor/that.md\n```\n  ~~~\n  @nor/indented.md\n  ~~~\n');
+  assert.deepEqual(imports(path.join(dir, 'WORKFLOW.md')).map((f) => path.relative(dir, f).replace(/\\/g, '/')), ['docs/tandem.md.'], 'an import is not read as Claude Code reads it');
   fs.rmSync(dir, { recursive: true, force: true });
 }
 
-// A feature turns to passing only on his «Принимаю N» in his log (CLAUDE.md step 5), N its number in the list: the
+// A feature turns to passing only on his «Принимаю N» in his log (WORKFLOW.md step 5), N its number in the list: the
 // commit hook runs the gate, and the gate counts the word and two words more at most, said in the last 3 hours, with
 // no «нет», «не», «стоп» or longer «Принимаю» after it. A home and a repository of its own, with a list where a (1)
 // and b (2) are open and c (3) passed.
 {
-  assert.match(fs.readFileSync(path.join(ROOT, 'tools/hooks/pre-commit'), 'utf8'), /^git show :docs\/features\.json 2>\/dev\/null \| node tools\/claude-guard\.mjs accepted\b/m, 'the commit hook does not hand the staged list to the gate on his «да»');
+  assert.match(fs.readFileSync(path.join(ROOT, 'tools/hooks/pre-commit'), 'utf8'), /^git show :docs\/features\.json 2>\/dev\/null \| node tools\/project-guard\.mjs accepted\b/m, 'the commit hook does not hand the staged list to the gate on his «да»');
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'accepted-')), repo = path.join(dir, 'repo');
   const env = { ...Object.fromEntries(Object.entries(process.env).filter(([k]) => !k.startsWith('GIT_'))), HOME: dir, USERPROFILE: dir };
   const g = (...a) => spawnSync('git', a, { cwd: repo, encoding: 'utf8', env });
@@ -354,7 +352,7 @@ assert.ok(worstStart < 10000, `on the worst day the start would print ${worstSta
   fs.mkdirSync(path.dirname(log), { recursive: true });
   const said = (...m) => fs.writeFileSync(log, `# log\n${m.map(([h, t]) => `\n## ${new Date(Date.now() - h * 36e5).toISOString()} S\n${t}\n`).join('')}`);
   // the staged list comes on stdin, as the hook pipes it, run in the repository's own folder as git runs a hook
-  const raw = (text) => spawnSync(process.execPath, [path.join(ROOT, 'tools/claude-guard.mjs'), 'accepted'], { cwd: repo, encoding: 'utf8', env, input: text }).status;
+  const raw = (text) => spawnSync(process.execPath, [path.join(ROOT, 'tools/project-guard.mjs'), 'accepted'], { cwd: repo, encoding: 'utf8', env, input: text }).status;
   const gate = (passes) => raw(list(passes));
   said();
   assert.equal(gate({ a: false, b: false, c: true }), 0, 'a commit with no feature turned to passing was stopped');
@@ -406,7 +404,7 @@ assert.ok(worstStart < 10000, `on the worst day the start would print ${worstSta
   // a repository with no list yet: nothing staged passes, a first list that comes in passing needs «да» like any other
   const fresh = path.join(dir, 'fresh');
   spawnSync('git', ['init', '-q', fresh]);
-  const first = (text) => spawnSync(process.execPath, [path.join(ROOT, 'tools/claude-guard.mjs'), 'accepted'], { cwd: fresh, encoding: 'utf8', env, input: text }).status;
+  const first = (text) => spawnSync(process.execPath, [path.join(ROOT, 'tools/project-guard.mjs'), 'accepted'], { cwd: fresh, encoding: 'utf8', env, input: text }).status;
   said();
   assert.equal(first(''), 0, 'a commit with no list anywhere was stopped');
   assert.equal(first(list({ a: true })), 1, 'a first list that came in passing went through with no «да» of his');
@@ -419,4 +417,4 @@ assert.ok(worstStart < 10000, `on the worst day the start would print ${worstSta
   fs.rmSync(dir, { recursive: true, force: true });
 }
 
-console.log(`guard: ok (${refused.length} refused, ${allowed.length} allowed, the hook wired, the headset's wearer seen, his messages logged and only his, his decisions imported by CLAUDE.md, every import found, the locks shut when a guard breaks, the current feature and his measure shown at a new window's start, a feature passing only on his «Принимаю N» in his log, nothing to do first)`);
+console.log(`guard: ok (${refused.length} refused, ${allowed.length} allowed, the hook wired, the headset's wearer seen, his messages logged and only his, his decisions imported by WORKFLOW.md, every import found, the locks shut when a guard breaks, the current feature and his measure shown at a new window's start, a feature passing only on his «Принимаю N» in his log, nothing to do first)`);

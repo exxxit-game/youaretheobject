@@ -1,9 +1,115 @@
 # Progress
 
 The newest entry is read at the start of every session, with `git log --oneline -20` and docs/features.json
-(CLAUDE.md, "Every session"). Newest entry on top. Each entry: done, not done and why, next. Anything outside the
+(WORKFLOW.md, "Every session"). Newest entry on top. Each entry: done, not done and why, next. Anything outside the
 feature at hand goes to the end of docs/board.md, one line each.
 Entries of 14.10 and before: docs/progress-2026-10-14.md; the earlier ones of 15.10: docs/progress-2026-10-15.md.
+
+## 2026-11-08 — Corridor branch and version-bound CI preparation
+
+T01c adds push CI for experiment/perception-corridor and codex work branches,
+keeps PR merge-ref checks, and extends smoke to the real preview page in CI only.
+The host-only rules allocation remains reserved without its laptop files; the
+process ceiling shrinks with retired provider settings and callbacks. Git uses tools/hooks.
+Read-only finish check binds local/remote/PR heads, actual test steps, a completed
+CodeRabbit review and status, all threads and two stable evidence snapshots.
+It sends no push, PR comment or publication. Unknown/incomplete state stays false.
+Independent review found skipped bot states, same-SHA races and legacy trigger
+gaps; fixes have regressions. Codex-only WORKFLOW/policy/project-guard replaces active legacy paths.
+Limited code review cannot authorise the full served surface. Native parsing accepts trailing
+whitespace without changing the report bytes or scope value.
+Implementation checks and live CI outcomes are recorded by SHA in the existing
+F project map; later runtime observations do not replace the checked commit.
+See docs/research/ci-readiness.md. Scene/Quest acceptance and release are separate.
+Earlier T01a/T01b library and native-delivery evidence remain in the same map.
+B01 local map rendering remains open; T01d real visible route is a later step.
+
+## 2026-11-07 — Methods and delivery-readiness review
+
+The owner asked how to reach the approved goal using earlier project experience,
+human knowledge and suitable tools. The approved foundation remains unchanged.
+The source catalogue entry `corridor-execution-route` now locates the Russian
+execution-route report and its adjacent evidence ledger F1-F14 on F. It maps
+reusable material, knowledge gaps, a short connected playthrough, device checks,
+player observation and staged expansion. These are proposed methods, not new
+owner-approved room prompts or evidence of a completed system.
+
+Verified readiness gaps: finish.mjs accepts claude/* and targets room-polish; CI
+filters pushes/PR bases to room-polish/main; the old smoke targets lobby/room-01;
+the content review record is written by a Claude Code hook, with no proven Codex
+equivalent. Static inspection also found no explicit completed-CodeRabbit-review
+requirement for the current SHA in finish's readiness path; no live false-ready
+failure was reproduced. GitHub/Context7 read calls worked. PR27 contains a real
+coderabbitai review dated 16 October; that does not review today's local changes.
+
+Fresh npm test passed through route, geometry, knowledge, masonry and structure,
+then failed library.test.mjs on comachio-2025 and
+datasets/ansur2/ansur2-percentiles. Tests after that point did not run. No
+browser/device performance or human outcome check ran in this review. Tools,
+workflow configuration, game code and publication were not changed. Next technical
+step: restore the full baseline and a version-bound review path for this branch;
+next design step: the short connected route and room details within the foundation.
+
+## 2026-11-07 — Owner approval of the corridor foundation
+
+The owner explicitly approved the overall plan and requested a durable reference,
+the think-before-acting principle and continuation in this same chat. The approved
+section of [the design record](research/perception-corridor.md#approved-foundation-7-november-2026)
+now joins the Flatland purpose, ordinary floor N and continued up/down route,
+connected perception, gradual text offers, valid refusal, the money checkpoint,
+surviving continuation and buried-character restart. Earlier purpose-review labels
+are marked historical. Room prompts, the fictional meaning of yes, cash volume
+and threshold, and persistence between attempts remain design details to develop.
+
+The owner-decisions entry and state/board point to that foundation. The task-root
+AGENTS.md points to the existing records and requires source-based reasoning,
+benefit/cost and future-consequence assessment, a concrete check, and preparation
+before requesting the owner's time. The owner-facing Russian record and approval
+source are stored with the existing F-drive research materials. This is design
+approval and documentation only; no gameplay, feature acceptance, capture, commit
+or publication is claimed. Next: develop the room details within this foundation.
+
+Validation: structure and knowledge checks passed after the documentation update.
+SHA-256 comparison found no changes in the 217 pre-existing source, style, tool,
+test, package, feature-state, CLAUDE and process-limit files checked for this step.
+The F-drive manifest hashes match the saved plan and updated continuation; all
+61,938 bytes of the earlier continuation remain intact inside the history.
+
+## 2026-11-07 — Corridor purpose, repeated route and capture preparation
+
+Later motion study: the owner added motion-dependent depth, aftereffects and intentional two-copy viewing. The source-wide samples, dense intervals, approximate motion measurements, literature and limits are in docs/research/perception-motion.md and the F: study folder reached from the source catalogue. An explicitly geometric two-copy illustration was requested and checked in Chrome at 736 and 320 pixels. It starts paused and preserves the pose on pause. No eye mechanism, spiritual outcome or Quest transfer is claimed by this illustration, and no new player scene was added.
+
+Latest owner clarification after the original ChatGPT history was read earlier than the cached preview: the aim is a Flatland-like expansion of viewpoint and understanding. The source-based recheck is in the current design. A new scientific law is not a prerequisite for that meaning. The owner further specified that the corridor itself is our Flatland: wordless walking, ascent/descent and return reveal connected readings. Scene expansion was paused for this recheck; the prototype and capture preparation are retained, with this clarification guiding the next layout calculations.
+
+The owner requested one convenient source catalogue. Selected references now connect to the existing paper registry, world knowledge indexes, Cosmogram history, website research and old VR modules through docs/research/perception-knowledge.md and tools/knowledge.mjs. No source corpus was copied or moved. Precise title/author retrieval and Russian word-boundary regressions were checked. Offline HTML is generated from the same index; browser policy blocked local-file visual inspection, so no visual-QA pass is claimed. The memory extension records the entry point and the two permanent principles.
+
+Later owner clarification: document all ten physical floors as a source atlas and prepare capture decisions before requesting the owner's time. The capture record now specifies one verified pilot area, a common floor card, present/absent/uninspected inventory, per-floor variations, provenance and device-estimated dimensions. The ten-floor registration and metric accuracy remain unverified. No device work was requested for this clarification.
+
+The owner explicitly made the working principle permanent. The shortened CLAUDE.md step 3 now puts goal, consequences and verification before action, with preparation completed before requesting his time. The same preference was saved in a memory extension for future chats. Hardware preparation continues under that principle.
+
+Later preparation: read the expanded art research, including multi-view construction and viewing-condition limits, and indexed the new 5m15s Quest video video_2026-11-07_09-35-05.mp4. All intended views are now specified together in the design, with sequential validation. The permanent rule now explicitly joins accumulated human knowledge and primary sources with goal/consequence/verification planning.
+
+The capture page now preloads fonts before enabling Start, handles initialization cleanup, reports nonempty posed geometry, and ends a visible empty-data wait after 12 seconds. It commits and reads back captures in IndexedDB before ending XR, and labels restored snapshots. A real-Quest flat-page preflight passed AR-support detection, isolated synthetic device storage and transfer to a verified laptop file. No XR session or real scan was started in that test. The handset screenshot was black while off the head, so wearer-visible rendering is still pending. Default sensor handling was restored after preflight.
+
+The owner clarified that ordinary floor N and continued ascent/descent support a connected sequence of discoveries through movement. The current design, 15 detail families and checks are in [the corridor record](research/perception-corridor.md), linked from state, architecture and board. Two independent research chats completed the artist/source review and the history of the owner's intent. Their reports support the perception direction, with no claim that all wider former goals have been realised.
+
+The route now permits continued ascent/descent, with local coordinate rebasing and logical floor state. Three signs support ordinary numbering or repeated 8. Fixed neighbour geometry is allocated once. The old balanced tile layout is reused with a shared texture. Desktop eye height is adjustable from 1.1 to 1.9 m. Route checks cover 4000 transitions, reversal, half landings and boundaries. The finite distant shaft and lighting require a visual seam check before claiming the walk is visually continuous. Phone and physical VR remain pending.
+
+The complete npm run found and led to fixing unsupported left/right arrow glyphs in the hint. It then passed the route, tiles, font and structure groups and stopped at the old missing library files comachio-2025 and datasets/ansur2/ansur2-percentiles. The later protocol, schedule, report, reveal, result, guard and review-gate groups were run separately and passed. There is no complete green suite or release claim.
+
+The owner chose Quest to obtain geometry. Added a stationary capture mode to the existing room page, an atomic unrounded mesh/plane/pose snapshot, and verified laptop file export. [The capture record](research/perception-capture.md) states what is measured, native Space Setup versus export, coverage checks and the next device trial. Snapshot tests pass through serialization and verified disk write, and reject an overwrite retry. Two source reviewers checked the short mode. The legacy walking runner remains separate.
+
+The real Quest was connected and its flat capture page was read successfully, with secure context and XR available. I had prematurely said the first launch succeeded while the store stayed visible. No new geometry snapshot was obtained. The owner disconnected during a power outage and went out. At that interruption the server was stopped to save battery; the later preflight above used it again. Current work is saved locally. Next: refine the transition against the clarified purpose and use a verified real capture when the owner is available.
+
+## 2026-11-06 — Desktop stairwell preview
+
+Owner approved starting the stairwell route. The isolated branch `experiment/perception-corridor` starts at `435e6d2`. The preview at `/src/preview/` uses the vendored renderer and shared sign panel. One ascent and its return share the same route geometry. `?upper=8` changes only the upper number from 9 to 8.
+
+Route and structure checks passed. Chrome showed the start, stairs, the shift of foreground rails relative to the background, and both numbers from the same upper view. The keyboard was checked on a portion of the route. The full return was checked in route tests. The full npm suite stopped at the unchanged library check because `comachio-2025` and `ansur2-percentiles` are absent from the local library.
+
+After the owner's touchpad feedback, the arrow keys now walk and turn, R/F tilt the view, and A/D still move sideways. R/F avoid the laptop's shared arrow and Page Up/Down keys. Checked keyboard turning, tilt in both directions and walking toward the first flight in Chrome. Dragging remains available on the same camera.
+
+Next: compare the first route to the recordings and refine the alignment of the handrail and stair edges. Dimensions are provisional. The picture placement, phone and physical Quest checks are pending. For a desktop review, run the existing preview server on loopback and open the preview path above.
 
 ## 2026-10-16, evening — the delivery chain published; Codex's review checked and its first fixes
 Same window (his «do it here» to the proposed next window), on a new branch from room-polish 3084b40.

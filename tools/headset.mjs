@@ -22,11 +22,11 @@ export const adb = (...args) => run(args[0] === 'devices' || !device() ? args : 
 export const screencap = () => execFileSync('adb', [...(device() ? ['-s', device()] : []), 'exec-out', 'screencap', '-p'],
   { env: { ...process.env, MSYS_NO_PATHCONV: '1' }, maxBuffer: 64 * 1024 * 1024 });
 
-// The laptop's server: the port the app's preview starts it on (.claude/launch.json), else the
+// The laptop's server: the port the app's preview starts it on (policy/launch.json), else the
 // port of `npm run serve`.
 export function localPort() {
   try {
-    const launch = JSON.parse(fs.readFileSync(new URL('../.claude/launch.json', import.meta.url), 'utf8'));
+    const launch = JSON.parse(fs.readFileSync(new URL('../policy/launch.json', import.meta.url), 'utf8'));
     return launch.configurations.find((c) => c.name === 'objekt').port;
   } catch (e) { return 3000; }
 }
@@ -190,7 +190,7 @@ export async function page(match, { noAnswerMs = 120000 } = {}) {
 }
 
 // The owner's next step, inside the headset, so he does not take it off to read the chat (his
-// practice, .claude/rules/measures.md). The input probe's panel and type as they were reviewed
+// practice, policy/rules/measures.md). The input probe's panel and type as they were reviewed
 // (tools/xr-probe-input.html, objekt-files/notes/archive/docs/audit/probe-review.md), cut to its two lines, and placed as Meta
 // places captions: at the edge of the view, not over what he looks at ("at the top or bottom of their
 // 40-degree field of view", developers.meta.com/horizon/design/accessibility), here 15 degrees above

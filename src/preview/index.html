@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../../css/base.css">
+  <link rel="stylesheet" href="../../css/fonts.css">
+  <link rel="stylesheet" href="../../css/preview.css">
+  <script src="../../vendor/aframe-1.8.0.min.js"></script>
+  <script type="module" src="./main.js"></script>
+</head>
+<body>
+  <main id="preview-ui">
+    <div class="preview-title">
+      <h1 id="preview-title"></h1>
+      <p id="preview-hint" role="status"></p>
+    </div>
+    <div class="preview-controls">
+      <label class="preview-eye">
+        <span id="preview-eye-label"></span>
+        <input id="preview-eye" type="range" min="1.1" max="1.9" step="0.05" value="1.6" aria-labelledby="preview-eye-label">
+        <output id="preview-eye-value" for="preview-eye"></output>
+      </label>
+      <div id="preview-views" class="preview-buttons"></div>
+    </div>
+  </main>
+  <a-scene loading-screen="enabled: false" xr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false"
+    inspector="url: ../../vendor/aframe-inspector/aframe-inspector-1.8.0.min.js"
+    renderer="antialias: true; colorManagement: true" background="color: #202226">
+    <a-entity id="preview-camera" camera="near: 0.055; far: 42; fov: 62"
+      look-controls="magicWindowTrackingEnabled: false; touchEnabled: false"></a-entity>
+    <a-entity id="preview-world"></a-entity>
+    <a-entity id="preview-below-sign" data-floor-offset="-1" panel="w: 0.20; h: 0.21; px: 256; bg: #c8c2b5"></a-entity>
+    <a-entity id="preview-lower-sign" data-floor-offset="0" panel="w: 0.20; h: 0.21; px: 256; bg: #c8c2b5"></a-entity>
+    <a-entity id="preview-upper-sign" data-floor-offset="1" panel="w: 0.20; h: 0.21; px: 256; bg: #c8c2b5"></a-entity>
+  </a-scene>
+</body>
+</html>

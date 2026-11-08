@@ -1,5 +1,5 @@
 // The measure with the headset on a stand, unworn: first a two-minute trial that proves the tools, then the
-// 45-minute run (.claude/rules/measures.md, "Quality measures before polishing old numbers"; the plan:
+// 45-minute run (policy/rules/measures.md, "Quality measures before polishing old numbers"; the plan:
 // docs/research/long-measure.md).
 // No reading is trusted before its tool has shown a change made on purpose whose size is known beforehand
 // (long-measure.md, "Known-change proofs"): the trial makes each such change once and writes whether each tool saw
@@ -68,7 +68,7 @@ async function main() {
     /guardian/.test(inFront) && 'the headset cannot find its place in the room (its tracking or boundary window is in front): switch on travel mode in its quick settings (no position tracking, which a still stand does not need; it made the run of 14.10 go), or face the stand to furniture, not a bare wall or a door'
   ].filter(Boolean); };
   if (mode === 'check') { const b = await blockers(); const f = front(); metavr('device', 'proximity', '--enable'); console.log(b.length ? `not ready: ${b.join('; ')}` : `ready (in front: ${f})`); process.exit(b.length ? 1 : 0); }
-  // two runs in a row that failed: a third waits for a look at what the headset shows (CLAUDE.md: "Two or three failed
+  // two runs in a row that failed: a third waits for a look at what the headset shows (WORKFLOW.md: "Two or three failed
   // tries at one problem: measure first"; five tries went round one cause before this was held by the tool)
   const last = fs.existsSync(RUNS) ? fs.readdirSync(RUNS).filter((d) => /^stand-(trial|long|flow)-/.test(d)).sort().slice(-2) : [];
   const failed = (d) => { try { return /"step":"failed"/.test(fs.readFileSync(path.join(RUNS, d, 'log.jsonl'), 'utf8')); } catch (e) { return false; } };

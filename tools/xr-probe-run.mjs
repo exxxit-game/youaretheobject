@@ -11,7 +11,7 @@ import { fileURLToPath } from 'node:url';
 import { serveToHeadset, worn, sleepNow, openUrl, page, wornByPerson } from './headset.mjs';
 import { requireReview } from './review-gate.mjs';
 
-// the laptop's server: the preview's port from .claude/launch.json, or OBJECT_PORT when the preview
+// the laptop's server: the preview's port from policy/launch.json, or OBJECT_PORT when the preview
 // took another (autoPort)
 const steps = process.argv.slice(2).length ? process.argv.slice(2) : ['vr', 'ar', 'mic'];
 // the owner's automatic stop: the probe's VR and MR steps meet a person; the microphone alone does not

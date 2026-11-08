@@ -27,7 +27,7 @@ import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
 const HOME = os.homedir();
-const PROJECTS = path.join(HOME, '.claude', 'projects');
+const PROJECTS = path.join(HOME, 'policy', 'projects');
 // Claude Desktop's own record of the plan's percentages, read as found (version 2): samples {t, org, u}
 // where u.fh is the five-hour percent and u.sd the seven-day one (sd falls to 0 at each weekly reset)
 const HISTORY = path.join(process.env.APPDATA || path.join(HOME, 'AppData', 'Roaming'), 'Claude', 'plan-usage-history.json');

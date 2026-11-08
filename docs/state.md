@@ -1,10 +1,11 @@
 # Where things are (the work itself: docs/features.json and docs/board.md)
+The owner approved [the corridor foundation](research/perception-corridor.md#approved-foundation-7-november-2026) on 7 November. Continue in the same chat; next develop room details. Stairwell work on experiment/perception-corridor follows that record, [source catalogue](research/perception-knowledge.md) and the newest progress entry. Older room-polish history below does not replace this scope.
 
 ## Where things are
 - Repo `exxxit-game/youaretheobject` (folder `C:\Users\admin\Documents\GitHub\objekt`). Site:
   https://youaretheobject.com (registered 7.10.2026 at Namecheap to 7.10.2027; a spare, youaretheobject.top, bought by him 14.10, to 13.10.2027, pointed nowhere yet) (GitHub Pages from `main`; `main` is an OLD package; since 12.10, his yes, main takes changes only by a pull request with the test check green, no bypass: ruleset 24770045, the test check pinned to GitHub Actions). The Supabase connector since 13.10: the custom «Supabase чтение», https://mcp.supabase.com/mcp?project_ref=rkvdwzlymmewsxjysgma&read_only=true (one project, a read-only Postgres user); the full one removed. Read 13.10 through it: current_user supabase_read_only_user, transaction_read_only on, no INSERT or DELETE on app.runs, no CREATE in public or app, rolbypassrls true (it reads every row). My GitHub access since 12.10: one fine-grained key he made (this repo and object-preview; contents, pull requests, workflows write; actions, statuses read; no administration, no deployments; expires in 90 days), git through gh; the old logins removed. Work: `room-polish`.
   Each session: one visible thing for him plus internal work (the board). Each session works in its own worktree, made from the main
-  folder's HEAD (`.claude/settings.json` worktree.baseRef head; the default was old main). At a step's end the session branch goes into room-polish through a pull request CodeRabbit reviews (trial to 23.10, no card entered; then its free plan for open projects, where a repository under 10 stars calls a review by the comment `@coderabbitai review`, which I post: docs.coderabbit.ai/management/plans, read 16.10), then the main folder pulls; main only on his word.
+  folder's HEAD (`policy/settings.json` worktree.baseRef head; the default was old main). At a step's end the session branch goes into room-polish through a pull request CodeRabbit reviews (trial to 23.10, no card entered; then its free plan for open projects, where a repository under 10 stars calls a review by the comment `@coderabbitai review`, which I post: docs.coderabbit.ai/management/plans, read 16.10), then the main folder pulls; main only on his word.
 - Room 01 = illusion of control (Alloy & Abramson 1979), `src/rooms/01-control/`: SET ASIDE 08.10 as a lab
   room (16–20 min of waiting, owner found it unbearably boring). Playtest `?playtest=1`, speed `?speed=N`.
 - Migrations 0009 (date only, random key, consent version, room 01 JSON Schema, keyed IP limit) and 0010 (known consent
@@ -42,16 +43,16 @@
 - ChatGPT Plus: his, bought 15.10 («Чат GTP, да, сегодня купил»); set up as the second checker from outside in its own window, after this one is merged (his rule: one window at a time); its row in docs/tandem.md comes with that job.
 
 ## Skills and tools, and when to use them
-- docs/tools.md: named in CLAUDE.md (not imported, so not loaded by itself), read at a task's start. Everything available, used or not, with its recorded reason: the inventory of 15.10 (objekt-files/notes/others-2026-10-15/inventory-2026-10-15.md).
+- docs/tools.md: named in WORKFLOW.md (not imported, so not loaded by itself), read at a task's start. Everything available, used or not, with its recorded reason: the inventory of 15.10 (objekt-files/notes/others-2026-10-15/inventory-2026-10-15.md).
 
 ## Decisions with the owner
-One line each: for every window in `docs/owner-decisions.md` (loaded at every start), for one theme in `.claude/rules/` (game, measures, data, setup; loaded when a file of that theme is read or edited); all his words in `docs/owner-decisions-history.md` (read for a task).
+One line each: for every window in `docs/owner-decisions.md` (loaded at every start), for one theme in `policy/rules/` (game, measures, data, setup; loaded when a file of that theme is read or edited); all his words in `docs/owner-decisions-history.md` (read for a task).
 
 ## How errors are caught (the owner cannot read code)
 - `new-room` skill; `paper-reviewer` agent; `docs/mistakes.md` (a mistake that broke the game, with the test that now catches it); facts in one place
   with a test; `tests/structure.test.mjs` (sizes, imports, no Russian outside texts, this file ≤ 80 lines).
 - Machine stops: tools/hooks (commits by command only: the app's own git buttons skip repository hooks since app 2.42304.0, its notes of 15.10; no commit while the quick tests fail, no push without the secret check, main only on
-  his word); Claude Code hooks, `tools/claude-guard.mjs` (state at start and after compaction, owner messages
+  his word); Claude Code hooks, `tools/project-guard.mjs` (state at start and after compaction, owner messages
   logged, no skipping hooks, no browser on the laptop, no GitHub connector writes); their refusals asserted in tests/guard.test.mjs and tests/review-gate.test.mjs, the planted mistakes of `tools/prove-guards.mjs` run on GitHub when a guard file changed.
 
 ## Lessons (do not repeat)
@@ -71,7 +72,7 @@ One line each: for every window in `docs/owner-decisions.md` (loaded at every st
   (metavr device, perf, vrc-local); the meta-vr plugin's MCP server gave 0 tools (started through npx it answered
   Claude Code's protocol probe late and then refused the tool list), so the CLI is the way in. Supabase: the plugin's server is not signed
   in; the claude.ai connector reads as supabase_read_only_user, so the server refuses its writes, and its write tools
-  are denied in .claude/settings.json (the guard's own SQL check was removed on 15.10, 7a25902). The process rebuild of 10.10 and its audits' findings: objekt-files/notes/archive/docs/audit/process-rebuild.md.
+  are denied in policy/settings.json (the guard's own SQL check was removed on 15.10, 7a25902). The process rebuild of 10.10 and its audits' findings: objekt-files/notes/archive/docs/audit/process-rebuild.md.
 - Earlier causes and audits: objekt-files/notes/archive/docs/audit/README.md. Corridor: finished item by item on the board; approved shots in docs/rooms/corridor-shots/.
   Style book: https://claude.ai/artifact/DKDDa4sH1BG9TF24MJyQaH. How to use Claude Code, his memo: https://claude.ai/artifact/V4HzbgVtK8HGqczZ3zyfS9.
 - Process review 11.10: https://claude.ai/artifact/NMfbi3vWaZQX8oR9t39mTC, measures in objekt-files\notes\process-review-2026-10-11;

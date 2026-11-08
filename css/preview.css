@@ -1,0 +1,88 @@
+#preview-ui {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  pointer-events: none;
+  padding: clamp(12px, 3vw, 28px);
+  font-family: Inter, "Segoe UI", sans-serif;
+}
+
+.preview-title {
+  max-width: min(560px, 100%);
+  background: rgba(13, 15, 18, .88);
+  padding: 12px 16px;
+}
+
+.preview-title h1 {
+  margin: 0;
+  font-size: clamp(16px, 3vw, 22px);
+  font-weight: 600;
+}
+
+.preview-title p {
+  margin: 5px 0 0;
+  color: #dfdedb;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.preview-controls {
+  display: grid;
+  gap: 8px;
+  max-width: 100%;
+  pointer-events: auto;
+}
+
+.preview-eye {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  padding: 8px 12px;
+  background: rgba(13, 15, 18, .88);
+  color: #f4f2ec;
+  font-size: 14px;
+}
+
+.preview-eye input {
+  width: 150px;
+  min-height: 28px;
+  accent-color: #e1c48b;
+}
+
+.preview-eye output {
+  min-width: 4em;
+  font-variant-numeric: tabular-nums;
+}
+
+.preview-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  pointer-events: auto;
+}
+
+.preview-buttons button {
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid #76766f;
+  background: #22262c;
+  color: #f4f2ec;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.preview-buttons button:hover {
+  background: #363d45;
+}
+
+.preview-buttons button:focus-visible {
+  outline: 2px solid #f0cf8c;
+  outline-offset: 2px;
+}

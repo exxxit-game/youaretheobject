@@ -1,0 +1,1139 @@
+{
+  "version": 1,
+  "roots": {
+    "repo": ".",
+    "papers": "F:/objekt-files",
+    "world": "F:/база знаний мира",
+    "site": "F:/claude-work/codex-fixes-20261026",
+    "cosmogramHistory": "F:/AI/claude/projects/C--Users-admin-Documents-GitHub-cosmogram-app",
+    "cosmogramFormer": "C:/Users/admin/Documents/GitHub/cosmogram-app",
+    "artStudy": "C:/Users/admin/Documents/Codex/2026-11-07/perception-corridor-art-research/outputs",
+    "intentStudy": "C:/Users/admin/Documents/Codex/2026-11-07/perception-corridor-intent-review/outputs",
+    "media": "C:/Users/admin/Downloads/Telegram Desktop",
+    "currentOutputs": "../../outputs",
+    "motionStudy": "F:/AI/work/perception-video-9o8SyXH0vVo",
+    "inlineVisual": "C:/Users/admin/.codex/visualizations/2026/11/06/01a1b20e-bec1-7183-b9d7-f36470b48a05"
+  },
+  "topics": [
+    {
+      "id": "purpose",
+      "label": "Замысел и способ работы",
+      "terms": [
+        "замысел",
+        "цель",
+        "смысл",
+        "шахматное мышление",
+        "Хаякава",
+        "Чейз",
+        "семантика",
+        "purpose",
+        "intent",
+        "semantics",
+        "workflow"
+      ]
+    },
+    {
+      "id": "2d3d",
+      "label": "Объём на плоскости и несколько видов",
+      "terms": [
+        "2D",
+        "3D",
+        "2D-3D",
+        "2д",
+        "3д",
+        "плоскость",
+        "объём",
+        "объем",
+        "анаморфоз",
+        "аноморфоз",
+        "анаморфоза",
+        "перспектива",
+        "анаморфизм",
+        "projection",
+        "perspective",
+        "anamorphosis",
+        "stereo",
+        "parallax",
+        "multi-view",
+        "параллакс"
+      ]
+    },
+    {
+      "id": "geometry",
+      "label": "Геометрия, узоры и симметрия",
+      "terms": [
+        "геометрия",
+        "узоры",
+        "симметрия",
+        "фракталы",
+        "муар",
+        "moire",
+        "symmetry",
+        "geometry",
+        "fractals",
+        "ornament",
+        "Glass patterns"
+      ]
+    },
+    {
+      "id": "building",
+      "label": "Настоящий подъезд и готовые детали",
+      "terms": [
+        "подъезд",
+        "коридор",
+        "дверь",
+        "ручка",
+        "лифт",
+        "лестница",
+        "ступени",
+        "перила",
+        "плитка",
+        "окно",
+        "смета",
+        "размеры",
+        "stairs",
+        "door",
+        "tiles",
+        "elevator",
+        "building",
+        "dimensions"
+      ]
+    },
+    {
+      "id": "light",
+      "label": "Свет, тени и цвет",
+      "terms": [
+        "свет",
+        "тень",
+        "светотень",
+        "лампа",
+        "блик",
+        "цвет",
+        "кристалл",
+        "light",
+        "shadow",
+        "colour",
+        "color",
+        "illumination",
+        "crystal"
+      ]
+    },
+    {
+      "id": "sound",
+      "label": "Звук и межчувственные связи",
+      "terms": [
+        "звук",
+        "слух",
+        "сигнал лифта",
+        "Шепард",
+        "Риссе",
+        "буба",
+        "кики",
+        "sound",
+        "auditory",
+        "audio",
+        "Shepard",
+        "Risset",
+        "bouba",
+        "kiki",
+        "multisensory"
+      ]
+    },
+    {
+      "id": "memory",
+      "label": "Память, внимание и путь",
+      "terms": [
+        "память",
+        "внимание",
+        "возврат",
+        "узнавание",
+        "ориентир",
+        "memory",
+        "attention",
+        "viewpoint",
+        "landmark",
+        "spatial updating",
+        "change blindness"
+      ]
+    },
+    {
+      "id": "observer",
+      "label": "Наблюдатель и устройства",
+      "terms": [
+        "рост",
+        "высота глаз",
+        "глаза",
+        "два глаза",
+        "межзрачковое",
+        "очки",
+        "Quest",
+        "WebXR",
+        "eye height",
+        "interpupillary",
+        "anthropometry",
+        "passthrough",
+        "VR",
+        "MR"
+      ]
+    },
+    {
+      "id": "capture",
+      "label": "Съёмка и карта десяти этажей",
+      "terms": [
+        "съёмка",
+        "съемка",
+        "скан",
+        "оцифровка",
+        "обмер",
+        "видео",
+        "десять этажей",
+        "capture",
+        "scan",
+        "mesh",
+        "scene data",
+        "survey",
+        "Space Setup"
+      ]
+    },
+    {
+      "id": "cosmogram",
+      "label": "Опыт Cosmogram",
+      "terms": [
+        "космограм",
+        "космограмма",
+        "космохрам",
+        "Cosmogram",
+        "приближение",
+        "вращение",
+        "конструктор эффектов",
+        "zoom",
+        "rotate",
+        "effects constructor"
+      ]
+    },
+    {
+      "id": "motion",
+      "label": "Движение, глубина и две копии",
+      "terms": [
+        "движение",
+        "вращение",
+        "приближение",
+        "масштаб",
+        "стереокинетический",
+        "послеэффект",
+        "двоение",
+        "две копии",
+        "слияние",
+        "стереокинетика",
+        "stereokinetic",
+        "motion aftereffect",
+        "structure from motion",
+        "diplopia",
+        "fusion",
+        "vergence"
+      ]
+    }
+  ],
+  "entries": [
+    {
+      "id": "early-purpose-review",
+      "title": "От простых миров к коридору: проверка смысла и уточнение владельца",
+      "kind": "purpose-review",
+      "topics": [
+        "purpose",
+        "memory",
+        "2d3d"
+      ],
+      "location": {
+        "root": "currentOutputs",
+        "path": "От простых миров к коридору — проверка смысла.txt"
+      },
+      "source": "https://chatgpt.com/share/6aeedc7a-5904-83eb-a543-ea8f586a4910",
+      "expected": "present",
+      "purpose": "Сверять каждое действие с выходом за привычный способ видеть и возвращением с более широким пониманием.",
+      "reading": "Прочитаны более ранние сообщения оригинального чата через Chrome, затем учтено новое прямое уточнение владельца.",
+      "note": "Общая ссылка показывает поздний фрагмент; более ранние реплики прочитаны в оригинале по ссылке из боковой панели. Исследовательская новизна композиции пока не установлена."
+    },
+    {
+      "id": "corridor-purpose",
+      "title": "Замысел коридора N и опись деталей",
+      "kind": "design-record",
+      "topics": [
+        "purpose",
+        "building",
+        "memory"
+      ],
+      "location": {
+        "root": "repo",
+        "path": "docs/research/perception-corridor.md"
+      },
+      "expected": "present",
+      "purpose": "Начать с цели, текущего состава, связей деталей и очереди работ.",
+      "reading": "Сверены текущие требования владельца и состав проекта.",
+      "note": "Предлагаемые композиции и предварительные размеры отмечены отдельно."
+    },
+    {
+      "id": "capture-method",
+      "title": "Quest: предмет съёмки, экспорт и проверка",
+      "kind": "method-record",
+      "topics": [
+        "capture",
+        "observer",
+        "building"
+      ],
+      "location": {
+        "root": "repo",
+        "path": "docs/research/perception-capture.md"
+      },
+      "expected": "present",
+      "purpose": "Подготовить один проверенный обмер и затем атлас десяти этажей.",
+      "reading": "Проверены источники и порядок работы.",
+      "note": "Передача искусственного примера с Quest в файл проверена. Настоящая геометрия подъезда ещё не получена."
+    },
+    {
+      "id": "observer-checks",
+      "title": "Рост, высота глаз и два глаза",
+      "kind": "design-checks",
+      "topics": [
+        "observer",
+        "2d3d"
+      ],
+      "location": {
+        "root": "repo",
+        "path": "docs/research/perception-corridor.md"
+      },
+      "expected": "present",
+      "purpose": "Согласовать рост человека, высоту взгляда, область обзора и расчёт общей композиции.",
+      "reading": "Просмотрены условия наблюдателя и таблица проверок текущего проекта.",
+      "note": "Ползунок 1,1–1,9 м в черновике ещё не подтверждает устойчивость эффекта для разных людей или двух глаз в Quest."
+    },
+    {
+      "id": "papers-index",
+      "title": "Существующая библиотека исследований",
+      "kind": "index",
+      "topics": [
+        "2d3d",
+        "memory",
+        "observer",
+        "sound"
+      ],
+      "location": {
+        "root": "repo",
+        "path": "docs/library.md"
+      },
+      "expected": "present",
+      "purpose": "Найти карточку, запись и местный полный текст статьи.",
+      "reading": "Проверены устройство указателя и реестр статей.",
+      "note": "Реестр подключается напрямую. Запись о статье не означает, что её полный текст заново прочитан."
+    },
+    {
+      "id": "experiment-cards",
+      "title": "Существующие карточки опытов Objekt",
+      "kind": "index",
+      "topics": [
+        "memory",
+        "sound",
+        "observer"
+      ],
+      "location": {
+        "root": "repo",
+        "path": "docs/catalog.md"
+      },
+      "expected": "present",
+      "purpose": "Найти разбор исходной процедуры, условий и пригодности для VR.",
+      "reading": "Просмотрен каталог карточек.",
+      "note": "Наличие карточки ещё не означает готовый и проверенный опыт в коридоре."
+    },
+    {
+      "id": "building-standards",
+      "title": "Прежние строительные размеры и источники",
+      "kind": "reference-record",
+      "topics": [
+        "building",
+        "light"
+      ],
+      "location": {
+        "root": "repo",
+        "path": "docs/building-standards.md"
+      },
+      "expected": "present",
+      "purpose": "Взять обоснованное устройство дверей, отделки и светильников.",
+      "reading": "Проверены разделы о дверях, поле и светильниках.",
+      "note": "Это прежние справочные размеры университетской лаборатории. Размеры вашего подъезда из них не следуют."
+    },
+    {
+      "id": "door-code",
+      "title": "Готовая дверь с рамой, порогом и ручкой",
+      "kind": "reusable-code",
+      "topics": [
+        "building"
+      ],
+      "location": {
+        "root": "repo",
+        "path": "src/engine/door.js"
+      },
+      "expected": "present",
+      "purpose": "Подогнать существующую подробную дверь под видео.",
+      "reading": "Проверено устройство модуля.",
+      "note": "Нужно подогнать внешний вид и размеры по материалам нынешнего подъезда."
+    },
+    {
+      "id": "tile-layout",
+      "title": "Общая раскладка плитки и подрезки",
+      "kind": "reusable-code",
+      "topics": [
+        "building",
+        "geometry"
+      ],
+      "location": {
+        "root": "repo",
+        "path": "src/engine/tile-math.js"
+      },
+      "expected": "present",
+      "purpose": "Согласовать швы и повтор пола с единой геометрией.",
+      "reading": "Прочитан расчёт и выполнены существующие проверки плитки.",
+      "note": "Размер плитки пока предварительный и требует подтверждения."
+    },
+    {
+      "id": "lift-code",
+      "title": "Готовая ниша лифта и кнопка",
+      "kind": "reusable-code",
+      "topics": [
+        "building",
+        "sound"
+      ],
+      "location": {
+        "root": "repo",
+        "path": "src/app/lobby/hall.js"
+      },
+      "expected": "present",
+      "purpose": "Переиспользовать конструкцию лифта и привязать её к снятому месту.",
+      "reading": "Просмотрено устройство модуля.",
+      "note": "В нынешний черновик подъезда ещё не включён. Готового опыта со звуком лифта эта запись не подтверждает."
+    },
+    {
+      "id": "spatial-sound-code",
+      "title": "Звук из точки пространства",
+      "kind": "reusable-code",
+      "topics": [
+        "sound",
+        "building",
+        "observer"
+      ],
+      "location": {
+        "root": "repo",
+        "path": "src/engine/sfx.js"
+      },
+      "expected": "present",
+      "purpose": "Сохранить положение звукового ориентира при повороте и движении.",
+      "reading": "Проверено отслеживание слушателя и источника.",
+      "note": "Новая звуковая композиция для лифта пока не проверена."
+    },
+    {
+      "id": "light-sound-link",
+      "title": "Прежняя связь света и звука вывески",
+      "kind": "reusable-code",
+      "topics": [
+        "light",
+        "sound"
+      ],
+      "location": {
+        "root": "repo",
+        "path": "src/app/lobby/opening.js"
+      },
+      "expected": "present",
+      "purpose": "Взять существующий способ связать событие со светом и источником звука.",
+      "reading": "Просмотрен исходный код.",
+      "note": "Пример относится к световой вывеске и её звукам."
+    },
+    {
+      "id": "arcimboldo-source",
+      "title": "Арчимбольдо: файл и происхождение картины",
+      "kind": "asset-record",
+      "topics": [
+        "memory",
+        "2d3d",
+        "building"
+      ],
+      "location": {
+        "root": "repo",
+        "path": "docs/art/credits.md"
+      },
+      "expected": "present",
+      "purpose": "Переиспользовать обратимое изображение с указанным источником.",
+      "reading": "Проверены запись происхождения и прежняя сцена.",
+      "note": "Новое положение картины и её ориентация ещё проектируются."
+    },
+    {
+      "id": "art-research",
+      "title": "Анаморфоз и художники: расчёт нескольких прочтений",
+      "kind": "research-report",
+      "topics": [
+        "2d3d",
+        "light",
+        "geometry",
+        "observer"
+      ],
+      "location": {
+        "root": "artStudy",
+        "path": "Коридор восприятия — художники, геометрия и проверка.html"
+      },
+      "expected": "present",
+      "purpose": "Найти методы анаморфоза, Varini, Raetz, Turrell, Sugihara, Wire Art, Pozzo и ограничения их переноса.",
+      "reading": "Прочитан расширенный отчёт, выборочные первоисточники независимо сверены.",
+      "note": "Для переноса нужны отдельные проверки движения и восприятия двумя глазами."
+    },
+    {
+      "id": "intent-history",
+      "title": "Проверка пути замысла от Cosmogram к подъезду",
+      "kind": "history-review",
+      "topics": [
+        "purpose",
+        "cosmogram",
+        "memory"
+      ],
+      "location": {
+        "root": "intentStudy",
+        "path": "Проверка замысла — вывод и источники.txt"
+      },
+      "expected": "present",
+      "purpose": "Различать слова владельца, предложения помощников и реально сделанное.",
+      "reading": "Прочитан отчёт. Повторная сверка по документам завершена и учтена в каталоге.",
+      "note": "Часть ранних сообщений и исходных файлов остаётся неполной."
+    },
+    {
+      "id": "world-geometry",
+      "title": "База знаний мира: геометрия и узоры",
+      "kind": "index",
+      "topics": [
+        "geometry",
+        "2d3d"
+      ],
+      "location": {
+        "root": "world",
+        "path": "pictures/geometriya-uzory/INDEX.md"
+      },
+      "expected": "present",
+      "purpose": "Войти в существующие подборки геометрических изображений.",
+      "reading": "Просмотрено начало указателя.",
+      "note": "Опись не является проверкой происхождения и прав на каждое изображение."
+    },
+    {
+      "id": "world-op-art",
+      "title": "Оп-арт, муар и глубина на плоскости",
+      "kind": "visual-index",
+      "topics": [
+        "geometry",
+        "2d3d",
+        "light"
+      ],
+      "location": {
+        "root": "world",
+        "path": "pictures/geometriya-uzory/abstraktnye-uzory-tekstury/INDEX.md"
+      },
+      "expected": "present",
+      "purpose": "Найти рисунки размера, перспективного тоннеля, муара и Васарели.",
+      "reading": "Просмотрены указатель и три выбранных изображения.",
+      "note": "Для выбранной работы отдельно проверяем авторство, права и механизм эффекта."
+    },
+    {
+      "id": "world-constructions",
+      "title": "Построение симметричных орнаментов",
+      "kind": "visual-index",
+      "topics": [
+        "geometry",
+        "2d3d"
+      ],
+      "location": {
+        "root": "world",
+        "path": "pictures/geometriya-uzory/sakralnaya-geometriya-postroenie/INDEX.md"
+      },
+      "expected": "present",
+      "purpose": "Найти стадии построения гириха, звёзд и розеток.",
+      "reading": "Просмотрено начало указателя.",
+      "note": "Математическое содержание и культурные толкования нужно различать."
+    },
+    {
+      "id": "world-fractals",
+      "title": "Математические формы и фракталы",
+      "kind": "visual-index",
+      "topics": [
+        "geometry",
+        "cosmogram"
+      ],
+      "location": {
+        "root": "world",
+        "path": "pictures/geometriya-uzory/matematika-fraktaly-teoremy/INDEX.md"
+      },
+      "expected": "present",
+      "purpose": "Найти проекции, самоподобие и повторяющиеся формы.",
+      "reading": "Просмотрено начало указателя.",
+      "note": "Мозаика Пенроуза и невозможная лестница относятся к разным задачам."
+    },
+    {
+      "id": "world-structural-colour",
+      "title": "Структурный цвет и зависимость от взгляда",
+      "kind": "visual-index",
+      "topics": [
+        "light",
+        "observer",
+        "cosmogram"
+      ],
+      "location": {
+        "root": "world",
+        "path": "pictures/biologiya-priroda/strukturny-cvet-fotonika/INDEX.md"
+      },
+      "expected": "present",
+      "purpose": "Найти материалы по изменению цвета и отражения с углом.",
+      "reading": "Просмотрено начало указателя.",
+      "note": "Изображение цветового эффекта не воспроизводит физическую микроструктуру материала."
+    },
+    {
+      "id": "world-crystals",
+      "title": "Кристаллы, огранка и блики",
+      "kind": "visual-index",
+      "topics": [
+        "light",
+        "cosmogram",
+        "2d3d"
+      ],
+      "location": {
+        "root": "world",
+        "path": "pictures/kristally-mineraly/INDEX.md"
+      },
+      "expected": "present",
+      "purpose": "Вернуться к реальным образцам грани, блика и перелива.",
+      "reading": "Просмотрено начало указателя.",
+      "note": "Перед применением нужно проверить источник и поведение выбранного материала."
+    },
+    {
+      "id": "chase-book",
+      "title": "Стюарт Чейз — Тирания слов",
+      "kind": "book",
+      "topics": [
+        "purpose"
+      ],
+      "location": {
+        "root": "world",
+        "path": "knigi/Tirania_slov (1).pdf"
+      },
+      "expected": "present",
+      "purpose": "Чётко различать наблюдение, описание, предположение и оценку.",
+      "reading": "Автор и название подтверждены по первым страницам. Всю книгу в этой проверке не читали.",
+      "note": "Это книга Чейза. Местная копия книги Хаякавы «Язык в действии» по названию пока не найдена."
+    },
+    {
+      "id": "rendering-book",
+      "title": "Lengyel: математические основы рендеринга",
+      "kind": "book-text",
+      "topics": [
+        "2d3d",
+        "light",
+        "observer"
+      ],
+      "location": {
+        "root": "papers",
+        "path": "books/lengyel-2019-vol2-rendering.txt"
+      },
+      "expected": "present",
+      "purpose": "Найти проекцию, освещение и расчёт отображения сцены.",
+      "reading": "Наличие файла проверено. Раздел выбирается по текущей задаче.",
+      "note": "Наличие книги не означает, что она целиком прочитана в этой проверке."
+    },
+    {
+      "id": "geometry-book",
+      "title": "Lengyel: математика игровых движков",
+      "kind": "book-text",
+      "topics": [
+        "2d3d",
+        "geometry"
+      ],
+      "location": {
+        "root": "papers",
+        "path": "books/lengyel-2016-vol1-mathematics.txt"
+      },
+      "expected": "present",
+      "purpose": "Расчёт преобразований, направлений и пересечений.",
+      "reading": "Наличие файла проверено.",
+      "note": "Перед новым расчётом нужно прочитать соответствующий вывод формулы."
+    },
+    {
+      "id": "engine-book",
+      "title": "Gregory: архитектура игровых движков",
+      "kind": "book-text",
+      "topics": [
+        "building",
+        "observer",
+        "purpose"
+      ],
+      "location": {
+        "root": "papers",
+        "path": "books/gregory-2026-4th-vol1.txt"
+      },
+      "expected": "present",
+      "purpose": "Взять существующие решения по сцене, ресурсам и работе движка.",
+      "reading": "Проверены файл и существующий маршрут чтения проекта.",
+      "note": "Для каждого изменения выбирается соответствующая глава."
+    },
+    {
+      "id": "cosmogram-effects",
+      "title": "Cosmogram: приближение, вращение и конструктор",
+      "kind": "archive-summary",
+      "topics": [
+        "cosmogram",
+        "2d3d",
+        "light"
+      ],
+      "location": {
+        "root": "world",
+        "path": "proverka/cosmogram-ai-rules-and-lessons.md"
+      },
+      "anchor": "7617, 9034",
+      "expected": "present",
+      "purpose": "Восстановить сочетания приёмов и назначение двух макетов.",
+      "reading": "Соответствующие разделы просмотрены и сопоставлены с репликами владельца.",
+      "note": "Это архив помощника. Он не является действующим исходным кодом или подтверждением публикации."
+    },
+    {
+      "id": "cosmogram-owner",
+      "title": "Cosmogram: исходные реплики владельца",
+      "kind": "owner-excerpts",
+      "topics": [
+        "cosmogram",
+        "purpose"
+      ],
+      "location": {
+        "root": "cosmogramHistory",
+        "path": "owner-msgs.json"
+      },
+      "anchor": "1042-1050",
+      "expected": "present",
+      "purpose": "Проверить, что владелец просил 8 сентября о комбинациях и макетах.",
+      "reading": "Просмотрены указанные записи.",
+      "note": "Поля t содержат выдержки и могут обрывать длинные сообщения."
+    },
+    {
+      "id": "zoom-original-missing",
+      "title": "Макет приближения и вращения — оригинал не найден",
+      "kind": "missing-original",
+      "topics": [
+        "cosmogram",
+        "2d3d"
+      ],
+      "location": {
+        "root": "cosmogramFormer",
+        "path": ".knowledge/macets/zoom-rotate-tehniki-08-09-2026.html"
+      },
+      "expected": "missing",
+      "purpose": "Сохранять точное прежнее имя и не выдавать пересказ за рабочий макет.",
+      "reading": "Название и назначение восстановлены по архиву.",
+      "note": "Раздел архива 9034 доступен. Сам исходный HTML не найден в проверенных местах."
+    },
+    {
+      "id": "constructor-original-missing",
+      "title": "Конструктор эффектов — оригинал не найден",
+      "kind": "missing-original",
+      "topics": [
+        "cosmogram",
+        "2d3d",
+        "light"
+      ],
+      "location": {
+        "root": "cosmogramFormer",
+        "path": ".knowledge/macets/konstruktor-effektov-08-09-2026.html"
+      },
+      "expected": "missing",
+      "purpose": "Отслеживать пропуск оригинала конструктора слоёв и настроек.",
+      "reading": "Точное название сверено с репликами владельца и разделом 7617 архива.",
+      "note": "Пересказ устройства не восстанавливает исходный HTML."
+    },
+    {
+      "id": "site-map",
+      "title": "Существующая карта проекта сайта опытов",
+      "kind": "index",
+      "topics": [
+        "purpose",
+        "memory",
+        "sound",
+        "geometry"
+      ],
+      "location": {
+        "root": "site",
+        "path": "docs/map/index.json"
+      },
+      "expected": "present",
+      "purpose": "Открыть уже созданные разделы и их документы.",
+      "reading": "Наличие указателя проверено.",
+      "note": "Каталог даёт вход в существующую карту сайта."
+    },
+    {
+      "id": "site-collection",
+      "title": "Сводная коллекция кандидатов сайта",
+      "kind": "candidate-index",
+      "topics": [
+        "geometry",
+        "memory",
+        "sound",
+        "observer"
+      ],
+      "location": {
+        "root": "site",
+        "path": "docs/research/collection-master-index-20261031.json"
+      },
+      "expected": "present",
+      "purpose": "Найти прежние направления исследования и их указатели.",
+      "reading": "Просмотрены устройство индекса и выбранные записи.",
+      "note": "1514 записей — исторические указатели. Их статусы не подтверждают нынешнюю научную и техническую готовность."
+    },
+    {
+      "id": "moire-method",
+      "title": "Два слоя — новый узор: проверка метода",
+      "kind": "method-review",
+      "topics": [
+        "geometry",
+        "2d3d"
+      ],
+      "location": {
+        "root": "site",
+        "path": "docs/research/moire-method-record-20261030.md"
+      },
+      "expected": "present",
+      "purpose": "Использовать раздельную и совместную проверку слоёв.",
+      "reading": "Просмотрена запись сопоставления с исходным методом.",
+      "note": "Простое совмещение нескольких перил ещё не означает муар."
+    },
+    {
+      "id": "glass-patterns",
+      "title": "Муар и узоры Гласса: продолжение исследования",
+      "kind": "source-review",
+      "topics": [
+        "geometry",
+        "2d3d",
+        "memory"
+      ],
+      "location": {
+        "root": "site",
+        "path": "docs/research/followups/moire-followups-20261031.md"
+      },
+      "expected": "present",
+      "purpose": "Найти связь локальных элементов с общей видимой формой.",
+      "reading": "Просмотрена исследовательская запись.",
+      "note": "Возможный материал для стены. В первом участке подъезда ещё не проверен."
+    },
+    {
+      "id": "symmetry-research",
+      "title": "Симметрия: прежняя проверка источников",
+      "kind": "source-review",
+      "topics": [
+        "geometry",
+        "2d3d"
+      ],
+      "location": {
+        "root": "site",
+        "path": "docs/research/followups/symmetry-followups-20261031.md"
+      },
+      "expected": "present",
+      "purpose": "Подобрать проверяемые виды симметрии и узнавания узора.",
+      "reading": "Проверены файл и его назначение.",
+      "note": "Перед переносом процедуры нужно прочитать выбранный источник."
+    },
+    {
+      "id": "shepard-method",
+      "title": "Звуковая лестница: Шепард и Риссе",
+      "kind": "method-review",
+      "topics": [
+        "sound",
+        "memory"
+      ],
+      "location": {
+        "root": "site",
+        "path": "docs/research/shepard-stairs-method-record-20261031.md"
+      },
+      "expected": "present",
+      "purpose": "Найти источник и параметры циклического изменения высоты тона.",
+      "reading": "Просмотрены метод и уточнение исторических записей.",
+      "note": "Изменение высоты тона отличается от положения звука. Окончание записи не доказывает услышанный эффект. В коридоре этот опыт ещё не создан."
+    },
+    {
+      "id": "change-blindness-review",
+      "title": "Что изменилось: сопоставление с исходным опытом",
+      "kind": "method-review",
+      "topics": [
+        "memory",
+        "observer"
+      ],
+      "location": {
+        "root": "site",
+        "path": "docs/research/passport-change-blindness-20261106.md"
+      },
+      "expected": "present",
+      "purpose": "Проверить требования к материалу и вниманию до переноса изменения сцены.",
+      "reading": "Просмотрен отчёт проверки.",
+      "note": "Отмечены отличия от оригинала и отсутствие окончательного одобрения. Материал не становится готовым только из-за наличия файла."
+    },
+    {
+      "id": "sound-shape-pack",
+      "title": "Звук и форма: буба и кики",
+      "kind": "source-pack",
+      "topics": [
+        "sound",
+        "geometry"
+      ],
+      "location": {
+        "root": "site",
+        "path": "docs/research/source-packs-20261105/sound-shape.md"
+      },
+      "expected": "present",
+      "purpose": "Найти первоисточник, стимулы и условия межчувственного соответствия.",
+      "reading": "Проверено положение пакета и прочитан отдельный разбор.",
+      "note": "Отмечены вопросы звуковых файлов, прав и метода. Новое условие коридора этой записью не одобрено."
+    },
+    {
+      "id": "quest-old-probe",
+      "title": "Старая проба возможностей Quest",
+      "kind": "hardware-summary",
+      "topics": [
+        "capture",
+        "observer"
+      ],
+      "location": {
+        "root": "papers",
+        "path": "notes/headset/run-2/room-result.json"
+      },
+      "expected": "present",
+      "purpose": "Проверить, что именно сохранил предыдущий инструмент.",
+      "reading": "Независимо проверены количества и прежний экспортёр.",
+      "note": "57 плоскостей и 22 сводки сеток. Полные вершины для восстановления помещения тогда не экспортировали."
+    },
+    {
+      "id": "stairwell-video-20261107",
+      "title": "Новое подробное видео подъезда",
+      "kind": "source-media",
+      "topics": [
+        "capture",
+        "building",
+        "light",
+        "2d3d"
+      ],
+      "location": {
+        "root": "media",
+        "path": "video_2026-11-07_09-35-05.mp4"
+      },
+      "expected": "present",
+      "purpose": "Сверять профиль ступеней, перекрытия перил, окно и солнечные тени.",
+      "reading": "Выборочно просмотрены 66 кадров и сведения о файле. Речь не расшифрована.",
+      "note": "5 минут 14,62 секунды видео и звука. Порядок этажей и точный масштаб пока не подтверждены."
+    },
+    {
+      "id": "owner-primary-messages",
+      "title": "Слова владельца о прежнем проекте Objekt",
+      "kind": "owner-record",
+      "topics": [
+        "purpose",
+        "memory"
+      ],
+      "location": {
+        "root": "papers",
+        "path": "notes/owner-messages.md"
+      },
+      "expected": "present",
+      "purpose": "Проверять прежний замысел по словам владельца и датам.",
+      "reading": "Проверены заголовок и начало. Тематические выдержки изучены в отдельной проверке замысла.",
+      "note": "Частная история, хранится за пределами репозитория. Не содержит всех разговоров ChatGPT и всех сентябрьских сообщений."
+    },
+    {
+      "id": "attention-reveals",
+      "title": "Направление внимания звуком, светом и движением",
+      "kind": "research-summary",
+      "topics": [
+        "sound",
+        "light",
+        "observer",
+        "memory"
+      ],
+      "location": {
+        "root": "repo",
+        "path": "docs/research/vr/05b-attention-reveals.md"
+      },
+      "expected": "present",
+      "purpose": "Связать подсказки и раскрытие глубины с добровольным движением игрока.",
+      "reading": "Просмотрено начало. Разделы 3 и 5 выборочно сверены отдельным исследователем.",
+      "note": "В сводке смешаны исследования и опыт разработчиков. Старое verified yes не является новой независимой проверкой."
+    },
+    {
+      "id": "source-pack-method",
+      "title": "Как готовили источники до создания опыта",
+      "kind": "method-record",
+      "topics": [
+        "purpose"
+      ],
+      "location": {
+        "root": "site",
+        "path": "docs/research/source-packs-20261105/README.md"
+      },
+      "expected": "present",
+      "purpose": "Использовать прежнюю подготовку: оригинал, поздние проверки, хорошие реализации, ограничения и слова владельца.",
+      "reading": "Прочитан весь документ.",
+      "note": "Авторская композиция коридора требует собственной проверки. Она не становится повторением исследования только из-за использования его элементов."
+    },
+    {
+      "id": "change-blindness-pack",
+      "title": "Слепота к изменениям: пакет исходных условий",
+      "kind": "source-pack",
+      "topics": [
+        "memory",
+        "observer"
+      ],
+      "location": {
+        "root": "site",
+        "path": "docs/research/source-packs-20261105/change-blindness.md"
+      },
+      "expected": "present",
+      "purpose": "Различить изменение мира, память о нём и раскрытие неизменной геометрии.",
+      "reading": "Метод, происхождение версий и ограничения просмотрены исследователем повторной сверки.",
+      "note": "Условия исходного фотографического опыта и нынешней демонстрации различаются. Полная процедура не переносится в коридор автоматически."
+    },
+    {
+      "id": "video-spiritual-purpose",
+      "title": "Что хочет Бог: художественный источник и авторская цель",
+      "kind": "artistic-reference",
+      "topics": [
+        "purpose",
+        "geometry",
+        "2d3d"
+      ],
+      "location": {
+        "root": "currentOutputs",
+        "path": "От простых миров к коридору — проверка смысла.txt"
+      },
+      "source": "https://www.youtube.com/watch?v=9o8SyXH0vVo",
+      "expected": "present",
+      "purpose": "Сопоставить замысел возвращения к Богу через личный опыт с выбранными образами симметрии, глубины и красоты.",
+      "reading": "Прочитана доступная расшифровка; изображения просмотрены выборочно. Подтверждены подготовленные владельцем вкладка и панель текста.",
+      "note": "Автоматические субтитры содержат ошибки. Это художественный источник. Изображения и музыка не включены в игру."
+    },
+    {
+      "id": "motion-research-record",
+      "title": "Стереокинетический эффект, движение, послеэффекты и двоение",
+      "kind": "research-record",
+      "topics": [
+        "motion",
+        "2d3d",
+        "observer",
+        "memory"
+      ],
+      "location": {
+        "root": "repo",
+        "path": "docs/research/perception-motion.md"
+      },
+      "expected": "present",
+      "purpose": "Различать движение файла, ощущение объёма, послеэффект и восприятие двух копий.",
+      "reading": "Проверены все обзорные листы, плотные выборки, расчёт движения и первичные источники с указанными границами чтения.",
+      "note": "Механизм личного наблюдения и перенос на Quest не установлены. В игре новый опыт не реализован."
+    },
+    {
+      "id": "motion-study-report",
+      "title": "Подробный разбор видео и наблюдений 7 ноября",
+      "kind": "research-report",
+      "topics": [
+        "motion",
+        "2d3d",
+        "observer"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "motion-review-2026-11-07.txt"
+      },
+      "source": "https://www.youtube.com/watch?v=9o8SyXH0vVo",
+      "expected": "present",
+      "purpose": "Найти временные отметки, данные анализа, научные объяснения и ограничения.",
+      "reading": "Составлен по видеодорожке, 180 обзорным кадрам, плотным фрагментам и первичным исследованиям.",
+      "note": "Это выборочный разбор всего диапазона, а не просмотр каждого кадра. Количество уникальных исходных картинок не подсчитано."
+    },
+    {
+      "id": "two-copy-geometric-model",
+      "title": "Две пересекающиеся копии: геометрическая схема",
+      "kind": "illustration",
+      "topics": [
+        "motion",
+        "geometry",
+        "2d3d"
+      ],
+      "location": {
+        "root": "inlineVisual",
+        "path": "overlapping-patterns.html"
+      },
+      "expected": "present",
+      "purpose": "Сопоставить описанный образ с расстоянием, углом и наложением двух нарисованных копий.",
+      "reading": "Проверены вращение, пауза, ползунок угла, круг/квадрат, одна/две копии и раскладка при ширине 736 и 320.",
+      "note": "Копии и прозрачность заданы в схеме. Работа глаз и субъективный опыт этим не измеряются."
+    },
+    {
+      "id": "corridor-execution-route",
+      "title": "Путь выполнения: знания, разработка, проверки, CodeRabbit",
+      "kind": "research-report",
+      "topics": [
+        "purpose",
+        "building"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "execution-route-2026-11-07.txt"
+      },
+      "expected": "present",
+      "purpose": "Связать утверждённую цель с источниками, пробелами знаний, средствами и проверяемыми этапами работы.",
+      "reading": "Проверены текущий процесс, каталог, GitHub, официальные документы и выбранные источники разработки игр; npm test остановился на двух библиотечных записях.",
+      "note": "Основа утверждена; способ выполнения предложен. Реестр F1–F14 и ограничения находятся рядом в execution-evidence-2026-11-07.json. Настройки и игра этим разбором не исправлялись."
+    },
+    {
+      "id": "corridor-project-map",
+      "title": "Рабочая карта-картотека: цель, коридор, комнаты, N±1, помощники и результаты",
+      "kind": "research-report",
+      "topics": [
+        "purpose",
+        "building",
+        "observer"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "project-map.html"
+      },
+      "expected": "present",
+      "purpose": "Единая отправная точка: зачем, что подтверждено, следующий результат, средства, источники и проверка владельцем.",
+      "reading": "Собрана по утверждённой основе, маршруту выполнения и трём узким проверкам помощников; ссылки и структура проверяются отдельно от отображения в браузере.",
+      "note": "Содержит 10 карточек, очередь T01 и явные статусы. Карта не меняет утверждённый смысл и не подменяет проверку игры. Ведущий обновляет её после результата; помощники выполняют ограниченные задачи."
+    },
+    {
+      "id": "corridor-codex-review",
+      "title": "Native Codex review: adapter, verified failures and runtime limits",
+      "kind": "research-report",
+      "topics": [
+        "purpose"
+      ],
+      "location": {
+        "root": "repo",
+        "path": "docs/research/codex-review.md"
+      },
+      "expected": "present",
+      "purpose": "Continue T01b from the actual code, tests and native hook prerequisites.",
+      "reading": "Code and disposable-journal tests checked; owner-authorised native trust and actual practice-review start/finish observed. Saved final response matches the hook report.",
+      "note": "The bounded review is unverified for the full scene; release and own-look gates remain closed. Native paper-review delivery was not exercised. T01b delivery is complete; T01c branch/CI is next."
+    },
+    {
+      "id": "corridor-ci-readiness",
+      "title": "Corridor branch, CI and exact-version review evidence",
+      "kind": "research-report",
+      "topics": [
+        "purpose"
+      ],
+      "location": {
+        "root": "repo",
+        "path": "docs/research/ci-readiness.md"
+      },
+      "expected": "present",
+      "purpose": "Continue T01c from the actual branch/workflow/checker implementation and versioned runtime evidence.",
+      "reading": "Workflow, status collector and browser coverage reviewed; runtime outcomes are separate records by SHA.",
+      "note": "No merge, owner acceptance or game publication is implied. Full walking route and Quest remain separate."
+    }
+  ]
+}

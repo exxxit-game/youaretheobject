@@ -1,7 +1,5 @@
-// Yesterday's commits by what they touched, for his brake line at a new window's start
-// (tools/claude-guard.mjs, start): when the process takes more commits than the game, he sees it first
 const GAME = /^(src\/|css\/|index\.html$|vendor\/)/;
-const PROCESS = /^(tools\/|tests\/|docs\/|\.claude\/|\.github\/|CLAUDE\.md$|package\.json$)/;
+const PROCESS = /^(tools\/|tests\/|docs\/|policy\/|\.github\/|WORKFLOW\.md$|package\.json$)/;
 export function split(log) {
   let game = 0, process = 0;
   for (const commit of String(log).split(/\n(?=@@)/)) {

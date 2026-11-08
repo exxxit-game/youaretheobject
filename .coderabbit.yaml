@@ -59,6 +59,8 @@ chat:
 knowledge_base:
   code_guidelines:
     enabled: true
-    filePatterns:                    # CLAUDE.md is read by default; its import is not followed
+    filePatterns:                    # Explicit project guidance; imports are not followed.
+      - "AGENTS.md"
+      - "WORKFLOW.md"
       - "docs/owner-decisions.md"
       - "ARCHITECTURE.md"

@@ -12,7 +12,7 @@ docs search), the W3C WebXR spec. The page read goes in the WHY comment.
 - A room: Gregory 17.8, 17.10, 9 and 15.
 - Loading, frame rate, memory: Gregory 7, 8 and 17.4; Meta's performance docs; docs/baseline.md.
 - Controls and the menu: Gregory 9; Meta's input docs (the default mapping).
-- Data and the server: Supabase's docs (search_docs); docs/methodology.md; .claude/rules/data.md.
+- Data and the server: Supabase's docs (search_docs); docs/methodology.md; policy/rules/data.md.
 - Tests, GitHub, the process: Gregory 2 and 10; Claude Code's docs (the claude-code-guide helper); GitHub's docs.
 
 ## Which tool when
