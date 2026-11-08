@@ -68,7 +68,7 @@ mainSource = mainSource.replace("await import('./headset.mjs')", 'headset')
   .replace("await import('./review-gate.mjs')", 'gates')
   .replaceAll('import.meta.url', JSON.stringify(new URL('../tools/stand-measure.mjs', import.meta.url).href));
 async function standMain({ mode = 'check', initial = power(), fault, args = [] } = {}) {
-  let state = initial; const calls = [];
+  let state = initial; const calls = [], messages = [];
   const headset = { standOff, withStandProximity, restoreStandProximity,
     connected: () => true, localPort: () => 3217,
     adb: (...a) => {
@@ -81,7 +81,8 @@ async function standMain({ mode = 'check', initial = power(), fault, args = [] }
     },
     serveToHeadset: () => 'http://fixture/', openGame: async () => {},
     page: async () => ({ run: async () => ({ error: 'fixture page failure' }), close: () => { throw Error('fixture close failure'); } }),
-    restartBrowser: () => calls.push('restart'), sleepNow: () => calls.push('sleep')
+    restartBrowser: () => calls.push('restart'),
+    sleepNow: () => { calls.push('sleep'); return fault !== 'sleep-refused'; }
   };
   const gates = Object.fromEntries(['requireReview', 'requirePaper'].map(name => [name, () => {
     calls.push(name); if (fault === name) throw Error('fixture gate refused');
@@ -91,7 +92,7 @@ async function standMain({ mode = 'check', initial = power(), fault, args = [] }
   const fakeFs = { existsSync: () => false, mkdirSync: () => { if (fault === 'mkdir') throw Error('fixture mkdir failure'); },
     appendFileSync: () => {}, writeFileSync: () => {}, readFileSync: () => '{"step":"fixture"}' };
   const context = { headset, gates, fs: fakeFs, path, fileURLToPath, process: fakeProcess,
-    console: { log: () => {} }, fetch: async () => ({ ok: fault !== 'server' }),
+    console: { log: text => messages.push(text) }, fetch: async () => ({ ok: fault !== 'server' }),
     setTimeout: fn => { fn(); }, gpuIds: () => ({}), thermalOf, heatStop, proximityOf, verdicts, MARKS,
     execFileSync: (command, a) => {
       if (command !== 'metavr' || !a.includes('proximity')) return '';
@@ -103,7 +104,7 @@ async function standMain({ mode = 'check', initial = power(), fault, args = [] }
     } };
   let error;
   try { await vm.runInNewContext(mainSource + '\nmain();', context); } catch (e) { error = e; }
-  return { calls, error, exitCode: fakeProcess.exitCode };
+  return { calls, messages, error, exitCode: fakeProcess.exitCode };
 }
 for (const initial of [power('HEADSET_MOUNTED'), '', power('HEADSET_MOUNTED', 'CLOSE')]) {
   for (const mode of ['check', 'trial', 'long', 'flow']) {
@@ -131,6 +132,8 @@ const returnedWorn = await standMain({ mode: 'trial', fault: 'worn-on-return' })
 assert.ok(!returnedWorn.calls.some(x => ['sleep', 'restart'].includes(x)), 'idle actions ran after a worn restoration');
 const restoredWorn = await standMain({ mode: 'restore', initial: power('HEADSET_MOUNTED', 'CLOSE'), fault: 'worn-on-return' });
 assert.deepEqual(restoredWorn.calls.filter(x => ['disable', 'enable', 'sleep', 'restart'].includes(x)), ['enable']);
+const refusedSleep = await standMain({ mode: 'restore', fault: 'sleep-refused' });
+assert.equal(JSON.parse(refusedSleep.messages.at(-1)).slept, false, 'a refused sleep was reported as performed');
 for (const mode of ['look', 'judge']) {
   const r = await standMain({ mode });
   assert.ok(!r.calls.some(x => ['disable', 'enable'].includes(x)), `${mode} unexpectedly changed proximity`);

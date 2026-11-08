@@ -11,7 +11,8 @@ T01f rejects worn, unknown and already overridden states before any proximity ac
 The entire attempt is scoped, including preflight, setup failures and early returns;
 restoration is read back before idle actions. Explicit restore returns the real sensor
 first; worn/unknown states cannot restart or sleep the headset. Arguments and review
-gates remain before a measurement's effects. The real main body is exercised with
+gates precede mutation; cleanup logs the actual sleep result, including refusal.
+The real main body is exercised with
 stubbed IO, alongside the pure helper and the original saved Quest dumps.
 No headset command ran. Physical validation and T01g's paper dependency fix remain open.
 Current results and owner participation are recorded in the single F map.

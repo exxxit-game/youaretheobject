@@ -62,10 +62,11 @@ async function main() {
   // Called only after the override has been restored. Read the real sensor again before idle actions.
   const giveBack = (why) => {
     const power = proximity.readPower();
-    if (!standOff(power)) return { after: proximityOf(power), idleActions: false };
-    if (why === 'restart') restartBrowser(PREVIEW);
-    sleepNow();
-    return { after: proximityOf(proximity.readPower()), idleActions: true };
+    if (!standOff(power)) return { after: proximityOf(power), restarted: false, slept: false };
+    let restarted = false;
+    if (why === 'restart') { restartBrowser(PREVIEW); restarted = true; }
+    const slept = sleepNow();
+    return { after: proximityOf(proximity.readPower()), restarted, slept };
   };
   if (mode === 'restore') {
     console.log(JSON.stringify({ ...await restoreStandProximity(proximity), ...giveBack('restart') }));
