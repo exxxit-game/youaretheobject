@@ -216,6 +216,7 @@ preparation and used five vidIQ credits. No image or soundtrack was copied into 
 All dimensions in this table describe the current code, pending measurement of the
 owner's building. Standard sizes from the older campus corridor remain references.
 The footage establishes appearance and sequence, with no recovered metric scan.
+Owner clarification, 8 November: these are possible variants, not a requirement to change every detail on every floor. The window stays at the previously discussed idea, without new design work now.
 
 Source update: video_2026-11-07_09-35-05.mp4 is 5m14.62s with video/audio tracks.
 Review sampled 66 frames. Useful intervals are 1:44-1:50 for the step profile,
@@ -226,23 +227,23 @@ door-start recording. Neither recording itself establishes a stored spatial mesh
 
 | ID | Detail and current state | Dimensions or source | Connection to the walk and next check |
 |---|---|---|---|
-| D01 | First working door; other closed placeholders | Reused engine/door.js leaf 0.914 by 2.134 by 0.045 m; not a stairwell measurement | Real opening and collision, room entry and floor-preserving return. Detailed closed copies repeat on adjacent levels to avoid a construction change at rebasing. |
+| D01 | First working door; other closed placeholders | Reused engine/door.js leaf 0.914 by 2.134 by 0.045 m; not a stairwell measurement | Real opening/collision and floor-preserving return. Future variants: surface pattern, illumination, handles and a moving geometric spiral as a visual reference, not a hypnosis claim. |
 | D02 | Vestibule, beam and corner, approximate | Hall 12.9 by 1.8 m, portal near x=-3.22 | Delay the first view of the stair until the turn. Match the footage at approximately 0:08 and 0:13. |
 | D03 | Utility cabinet, visible in footage and absent from preview | Latest door-start video at approximately 0:08 | A specific memory landmark near the first scale measurement. Confirm its face and depth before modelling. |
-| D04 | Floor tiles and light patch, implemented | Provisional 0.3048 m squares, shared balanced layout | Joints can lead to a view where rail and distant contour meet. Preserve the pattern across number comparisons. Confirm physical spacing and the intended direction. |
-| D05 | Walls, ceiling and baseboards, placeholders | Wall 0.08 m, ceiling slab 0.13 m, baseboard height 0.085 m | Supply stable boundaries and occlusion. Deliberate distortion follows a measured ordinary reference. |
+| D04 | Floor tiles and light patch, implemented | Provisional 0.3048 m squares, shared balanced layout | Joints can meet rail/distant contours in a view. Pattern and lighting are variant candidates; preserve comparison conditions and verify spacing/direction. |
+| D05 | Walls, ceiling and baseboards, placeholders | Wall 0.08 m, ceiling slab 0.13 m, baseboard height 0.085 m | Walls and ceiling are separate composition surfaces. Future shape/light/colour variants retain valid movement boundaries; distortion follows an ordinary reference. |
 | D06 | Steps and half landing, implemented | 8+8 steps, rise 0.18 m, tread 0.38 m, floor rise 2.88 m. Landing 2.68 by 1.38 m | Give actual ascent and descent while landmarks repeat. Measure count, rise, tread and landing, then verify the continuous return. |
-| D07 | Rails and pale stair edges, implemented | Lane widths 1.28 and 1.24 m, gap 0.16 m | Near/far contours can combine and separate through displacement. Compute error for two eyes and varied height, then check visibility and recognition. |
-| D08 | Window and sill, placeholders | Frame 1.25 by 1.70 m, opaque dark pane 1.12 by 1.57 m | A distant contour against near rails, and a recurring landmark. Match frame placement and brightness to footage. |
-| D09 | Lamp faces and direct lights, implemented | Four hall fixtures per level, stair lights, hemisphere light | Light can support or change a reading of form. The preview currently has no cast shadows. Verify light consistency through a floor rebase before adding a shadow composition. |
-| D10 | Floor numbers, implemented | Ordinary numbering, or repeated 8 via ?upper=8 | Compare explicit labels with memory of movement on the same geometry. Number repetition alone is one diagnostic. |
-| D11 | Lift recess, panels and call station, absent from preview | Door-start video approximately 0:17 to 0:22, old hall.js module | A credible destination and later sound source. Fit the existing lift construction to the filmed view. |
-| D12 | Reversible picture and frame, reusable old asset | Arcimboldo in old lobby scene and docs/art/credits.md | Connect recognition to a later reinterpretation. Placement and orientation are candidates. Keep them equal across a number-only comparison. |
-| D13 | Lift signal and spatial sound, reusable old engine | src/engine/sfx.js and src/app/lobby/opening.js | Orient attention and recognition toward a consistent world location. A new signal and playback conditions need verification. |
+| D07 | Rails, grid and pale stair edges, implemented | Lane widths 1.28 and 1.24 m, gap 0.16 m | Near/far contours can combine through displacement. Grid/composition variants are candidates; verify two-eye/height conditions and movement bounds. |
+| D08 | Window and sill, placeholders | Frame 1.25 by 1.70 m, opaque dark pane 1.12 by 1.57 m | Existing window idea only; owner holds further window development. Its relationship to rails/light remains in the earlier record. |
+| D09 | Lamp faces and direct lights, implemented | Four hall fixtures per level, stair lights, hemisphere light | Fixtures and their light may vary deliberately. No cast shadows in the preview yet; verify rebase consistency before a shadow composition. |
+| D10 | Floor numbers, implemented | Ordinary numbering, or repeated 8 via ?upper=8 | Visible plate/number variants compare labels with movement memory. Logical N remains separate from both the sign and story state. |
+| D11 | Lift recess, panels and call station, absent from preview | Door-start video approximately 0:17 to 0:22, old hall.js module | Lift and buttons are separate future controls/landmarks. Working transport is later scope and must share route/story state. |
+| D12 | Pictures at both ends and frames, reusable old asset | Arcimboldo in old lobby scene and docs/art/credits.md | Owner variants: same picture, reversed readings, different pictures, or absence. Changes are authored events, not automatic on every visit/floor. |
+| D13 | Lift signal and spatial sound, reusable old engine | src/engine/sfx.js and src/app/lobby/opening.js | Sound location/timing and relation to lift buttons are composition candidates. Their conditions and actual playback need verification. |
 | D14 | Multi-view ornament, candidate | Varini, Raetz and the world-knowledge references | Specify all intended readings and reachable target views together, solve one shared construction, then validate view pairs and transitions in sequence. |
 | D15 | Observer, implemented desktop controls | Eye height 1.1 to 1.9 m, default 1.6 m, vertical field of view 62 degrees | These are prototype settings. Record eye position, view direction, screen aspect and individual eye views. Physical VR remains pending. |
-| D16 | Extinguisher and floor-sign landmark, reusable old model | src/app/lobby/extinguisher.js and extinguisher-label.js; owner asks to retain it near the sign | Not yet placed in preview. A stable landmark can connect number, picture and route memory without itself transforming. |
-| D17 | False exterior window, new proposal | Owner's later sketch discussion; perspective-box and motion/viewpoint sources in the catalogue | Candidate only. Separate flat/animated imagery from a 3D set; test the convincing and revealing views and both-eye conditions before claiming an effect. |
+| D16 | Extinguisher and floor-sign landmark, reusable old model | src/app/lobby/extinguisher.js and extinguisher-label.js; retain the detailed model near the sign | Not yet placed. Owner allows presence/absence on different floors; retaining the model does not require it on every floor. Record each intended state. |
+| D17 | False exterior window, earlier proposal on hold | Owner's earlier sketch discussion and source leads in the catalogue | Retain the previous flat/animated-image versus 3D-set distinction and verification gaps. No new window ideas requested now. |
 
 The current preview stores route state locally and changes three signs. It does
 not record participant explanations. Memory is the person's retained experience.

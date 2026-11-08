@@ -86,6 +86,14 @@ Head pose is not eye tracking; a conditional blur is not a validated human visua
 
 ## Stages and observable completion
 
+The owner-readable scenario0.1 is indexed as `corridor-scenario-draft`. It proposes
+guided walking, the book deal, an unpaid observation and a purposeful return before
+free exploration; helper/lift/extra episodes remain proposals. Two scene rooms mean
+two actual doorways, not silently replacing the first room's content. The newer
+owner inventory allows authored variants of pictures, extinguisher presence, doors,
+rails, tiles, ceiling, walls, lamps, lift/buttons/sound and signs; see D01-D17.
+The owner holds the window at the previously discussed idea; do not expand it now.
+
 The owner's later sketch defines topology, not measured dimensions: a long hall,
 doors on both sides, end pictures and an up/down stair branch. A ten-floor survey
 is supporting material, not the game's objective or a dependency of this layout.

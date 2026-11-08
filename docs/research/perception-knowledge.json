@@ -1340,6 +1340,25 @@
       "purpose": "Separate an animated flat-image reveal from a 3D set before selecting a future window mechanism.",
       "reading": "Primary museum accounts read; author university abstract recorded as a lead, not full-text verification by the lead.",
       "note": "No new illusion is implemented or established in desktop/Quest; do not promise universal deception or two-eye disclosure."
+    },
+    {
+      "id": "corridor-scenario-draft",
+      "title": "Сценарий вступления и дальнейшего прохождения, черновик0.1",
+      "kind": "scenario-draft",
+      "topics": [
+        "purpose",
+        "memory",
+        "building"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "scenario-2026-11-08-v01.html"
+      },
+      "expected": "present",
+      "purpose": "Читаемый сценарий от появления до свободного исследования и денежного checkpoint; отдельная граница малого прототипа.",
+      "reading": "Основной текст независимо прочитан; структура/ссылки проверены. Не реализован и не принят владельцем.",
+      "note": "Новые сцены, помощник и лифт — предложения; опись вариантов не требует менять всё на каждом этаже. Окно без новых дополнений.",
+      "curated": true
     }
   ]
 }
