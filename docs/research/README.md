@@ -7,6 +7,9 @@ refuses a mismatched visible task, and reports evidence without executing the pa
 
 Current stairwell: [design and detail inventory](perception-corridor.md), [capture](perception-capture.md),
 and [one entry point into existing materials](perception-knowledge.md).
+Catalogue entries `corridor-knowledge-lineage` and `site-zero-society-draft` connect
+the owner's Society Zero name, earlier experiences and the historical inquiry;
+their proposals do not replace the approved corridor foundation.
 The [moving-pattern study](perception-motion.md) extends this with motion, aftereffects and two-copy viewing.
 The source catalogue entry `corridor-execution-route` holds the 7 November methods
 review, verified readiness gaps and proposed delivery stages on the F drive.

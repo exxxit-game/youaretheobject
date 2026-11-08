@@ -1165,6 +1165,28 @@
       "purpose": "Reach the exact shipped engine, three upstream fixes, reproducible patch and verification boundaries.",
       "reading": "Issue27 comment and upstream commits read; current bundle checked. Test results are versioned separately.",
       "note": "Source regressions and ordinary WebGL2 grammar controls do not prove native OCULUS_multiview."
+    },
+    {
+      "id": "corridor-knowledge-lineage",
+      "title": "Общество 0 / Общество ноль: история знания, прежний сайт и коридор",
+      "kind": "research-report",
+      "topics": ["purpose", "geometry", "light", "observer"],
+      "location": { "root": "motionStudy", "path": "society-zero-knowledge-lineage-2026-11-08.json" },
+      "expected": "present",
+      "purpose": "Восстановить авторское название и проверить связь вопросов, геометрии, оптики, записи и передачи опыта.",
+      "reading": "Доступные сообщения двух чатов, прежние решения и три опыта сайта, выбранные исторические первоисточники и научные справочные работы прочитаны. Границы и открытые вопросы записаны.",
+      "note": "0/1 — авторская метафора, не оценка достоинства людей и не историческое совпадение с границей эр. Игровая связь предложена, новые сцены не реализованы."
+    },
+    {
+      "id": "site-zero-society-draft",
+      "title": "Общество ноль: прежнее решение о названии и неопубликованный черновик",
+      "kind": "research-report",
+      "topics": ["purpose"],
+      "location": { "root": "site", "path": "docs/archive/research/zero-society-20261026.md" },
+      "expected": "present",
+      "purpose": "Не потерять прежний выбор названия сообщества и отделить его от личного «Объекта 0».",
+      "reading": "Прочитан существующий документ и относящиеся записи owner-decisions.md. Версия прежнего сайта не проверена как live.",
+      "note": "Название выбрал владелец; длинные сторонние цитаты и наш черновик не являются утверждённым текстом сайта. Старый путь без docs/ был неточным."
     }
   ]
 }

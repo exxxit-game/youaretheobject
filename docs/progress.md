@@ -5,6 +5,15 @@ The newest entry is read at the start of every session, with `git log --oneline 
 feature at hand goes to the end of docs/board.md, one line each.
 Entries of 14.10 and before: docs/progress-2026-10-14.md; the earlier ones of 15.10: docs/progress-2026-10-15.md; late entry: docs/progress-2026-10-15-late.md.
 
+## 2026-11-08 — Society Zero and the transmission of knowledge
+
+The owner asks to preserve the Society Zero name and research its connection to
+earlier experiences, symbols, mathematics and optics. The catalogue now reaches
+the earlier naming record and the bounded historical inquiry on F. Historical
+facts, authorial meaning and suggested game actions remain distinct. No new
+scene, branding, collection, publication or change to the foundation was made.
+T01g remains open; this request concerns the meaning and research.
+
 ## 2026-11-08 — Stand preparation before requesting the owner's time
 
 T01f rejects worn, unknown and already overridden states before any proximity action.
