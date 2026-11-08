@@ -24,16 +24,18 @@ main remains the published branch; this work is not merged or released.
   belong in docs/progress.md, the map and GitHub CI; this paragraph is not a fresh test.
 - The r184 multiview candidate has bounded source/WebGL2 checks, not native Quest proof.
 - Stand preparation has offline failure-path checks; no new worn-headset run is claimed.
-- B09 / T01g: shared app/engine changes can leave source-review fingerprints stale;
-  a reproduced counterexample remains open. Typed review wording alone does not fix it.
-- B01: map file-protocol visual inspection denied. B07: Chrome automation runtime fails.
+- B09 / T01g: shared runtime/assets/local-source and own-spec fingerprints now
+  invalidate stale source reviews. Red/green and lifecycle fixtures passed; actual
+  native delivery and device observations remain separate evidence.
+- B01: map file-protocol visual inspection remains denied. B07 did not recur in
+  the fresh Chrome binding/navigation/AX check; the cause of recovery is unknown.
   No alternative surface may bypass the denial. File/source/CLI work remains available.
 - B05: the authorised CodeRabbit command was posted once; completion is unconfirmed.
   B06: API cancellation unavailable; reading completed CI remains possible.
 
 ## Next dependency
-After document synchronisation, fix T01g against its original counterexample, then
-specify and verify one connected slice. Prepare a concrete device probe before
+Complete the short capture preflight and the first USB/device observation, then
+specify one connected slice. Prepare the next concrete device step before
 requesting the owner's time. Acceptance, merge and publication stay separate.
 
 ## Preserved history

@@ -63,8 +63,9 @@ active session ID when one exists. File receipt still requires coverage inspecti
 1. Check page syntax, public-module delivery and mode selection. Check a reference
    snapshot through capture, serialization, file write and readback with no headset.
 2. Read the current method, identify the target area and name the output destination
-   under F:\AI\work. Use the static server on the configured local port, currently
-   3217, and forward Quest localhost:3000 to it. Do not silently fall back to port 3100.
+   under F:\AI\work. Read the local port from policy/launch.json (3100 at this
+   checkpoint), verify this server serves the current files, then forward Quest
+   localhost:3000 to that verified port. Do not substitute a remembered port.
 3. During the agreed device trial verify USB state and the loaded capture URL. A
    successful Android launch command alone does not prove that the page is visible.
 4. Prepare the flat page before the owner waits in the headset. If a check is made
@@ -73,6 +74,24 @@ active session ID when one exists. File receipt still requires coverage inspecti
 5. Perform the first trial at a fixed position on a flat area. Save and inspect that
    result before planning a building capture. Treat areas and stair flights as
    separate acquisition targets according to what the native scan actually covers.
+
+## First connection and flat-page preparation
+
+Use the existing server and headset link helpers; the legacy walking runner is
+not the preparation command. Verify /tools/xr-room.html?capture=1 and its two
+modules against local file bytes and JavaScript MIME before opening that exact
+URL on Quest localhost:3000. Confirm window.__roomState().mode is capture,
+secure context, XR/AR support, and label any restored snapshot as previous data.
+Opening the flat page and reading capabilities do not start an immersive session.
+No proximity override, forced XR entry, browser restart or walking is needed.
+Applicable independent review still precedes an immersive trial; preparation is
+not that review, a fresh capture, owner acceptance or survey calibration.
+
+First owner action, after this preparation: connect USB, leave the headset off.
+The operator checks the actual link and loaded page; only then give the next
+single action. Use one already captured, stationary area for the first export,
+with a separate capture card naming the intended area and unknown scan time.
+Save a new file and inspect coverage before asking for a stairwell scan.
 
 ## Acceptance of a real capture
 

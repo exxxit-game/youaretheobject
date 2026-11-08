@@ -1235,6 +1235,25 @@
       "purpose": "Reach source hashes, deterministic state and source-value checks without claiming human or VR validation.",
       "reading": "Pure module imports and exact inspected SVG fills; old files unchanged.",
       "note": "Checker-shadow remains held; no pixel-render or new-room acceptance."
+    },
+    {
+      "id": "corridor-readiness",
+      "title": "Readiness matrix: source-review dependencies, capture preflight and real-device gaps",
+      "kind": "research-report",
+      "topics": [
+        "purpose",
+        "capture",
+        "engine",
+        "observer"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "corridor-readiness-2026-11-08.json"
+      },
+      "expected": "present",
+      "purpose": "Start from current evidence, separate immediate preparation from later content/platform/release work, and request only the next necessary owner action.",
+      "reading": "Current code and baseline receipts, B09 red/green/lifecycle regressions, native code-only provenance, official hooks/WebXR/mesh/scene-data sources, live Chrome capture page and ADB checked.",
+      "note": "No total readiness percentage, real stairwell mesh, fresh full-practice gate or native acceptance claimed. Old snapshots are not current evidence."
     }
   ]
 }
