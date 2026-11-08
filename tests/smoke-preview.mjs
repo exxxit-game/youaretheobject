@@ -60,7 +60,10 @@ try {
   server = await startServer(0, '127.0.0.1');
   base = 'http://127.0.0.1:' + server.address().port;
   browser = await chromium.launch({ args: ['--use-gl=swiftshader', '--enable-unsafe-swiftshader'] });
-  page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
+  // Software rendering covers the full camera route at reduced raster density.
+  // Keep CSS layout/FOV; this is not a readability or hardware-performance test.
+  // https://playwright.dev/docs/api/class-browser#browser-new-page-option-device-scale-factor
+  page = await browser.newPage({ viewport: { width: 1280, height: 800 }, deviceScaleFactor:0.25 });
   page.setDefaultTimeout(60000); page.setDefaultNavigationTimeout(60000);
   page.on('pageerror', e => failures.push(e.message));
   page.on('console', m => { if (m.type() === 'error') failures.push(m.text()); });
@@ -74,6 +77,10 @@ try {
   await page.waitForFunction(() => document.querySelector('a-scene')?.hasLoaded &&
     document.querySelector('#preview-world')?.object3D.children.length > 0, null, {timeout:120000});
   await page.getByRole('status').filter({ hasText: T.instruction }).waitFor();
+  console.log('corridor smoke: software route raster (not hardware FPS)',await page.evaluate(() => {
+    const canvas=document.querySelector('a-scene').canvas;
+    return {width:canvas.width,height:canvas.height,cssWidth:innerWidth,cssHeight:innerHeight,dpr:devicePixelRatio};
+  }));
   assert.equal(await page.title(), T.title);
   for (const id of ['top','below','start']) {
     await page.getByRole('button', { name: T.views[id], exact: true }).click();
@@ -112,7 +119,7 @@ try {
   await page.evaluate(() => window.dispatchEvent(new KeyboardEvent('keydown',
     {code:'KeyE',key:String.fromCodePoint(0x443),bubbles:true})));
   await page.getByRole('button',{name:T.returnDoor,exact:true}).waitFor();
-  await walkAxis('KeyA','z',ROOM.minZ+1.4);
+  await walkAxis('KeyD','z',ROOM.minZ+1.4);
   await page.getByRole('status').filter({hasText:T.room}).waitFor();
   // Returning while a movement key remains held must not restart on its auto-repeat.
   const roomX = (await pose()).x;
@@ -125,23 +132,23 @@ try {
 
   console.log('corridor smoke: walking the stairs, not selecting a floor anchor');
   await walkAxis('ArrowUp','x',ANCHORS.turn.x);
-  await walkAxis('KeyD','z',ANCHORS.overlap.z);
+  await walkAxis('KeyA','z',ANCHORS.overlap.z);
   await walkAxis('ArrowDown','x',ANCHORS.top.x);
-  await walkAxis('KeyA','z',ANCHORS.top.z);
+  await walkAxis('KeyD','z',ANCHORS.top.z);
   assert.equal(await shownFloor(),'9','actual ascent changes the visible floor sign');
   await walkAxis('ArrowDown','x',ROOM.doorX - 0.05);
   const upperDoor = await pose();
   await page.keyboard.press('KeyE');
   await page.getByRole('button',{name:T.returnDoor,exact:true}).waitFor();
-  await walkAxis('KeyA','z',ROOM.minZ+1.4);
+  await walkAxis('KeyD','z',ROOM.minZ+1.4);
   await page.getByRole('status').filter({hasText:T.room}).waitFor();
   await page.getByRole('button',{name:T.returnDoor,exact:true}).click();
   await settled(); samePose(await pose(),upperDoor);
   assert.equal(await shownFloor(),'9','room return does not reset the floor to the origin');
   await walkAxis('ArrowUp','x',ANCHORS.top.x);
-  await walkAxis('KeyD','z',ANCHORS.overlap.z);
+  await walkAxis('KeyA','z',ANCHORS.overlap.z);
   await walkAxis('ArrowUp','x',ANCHORS.turn.x);
-  await walkAxis('KeyA','z',ANCHORS.turn.z);
+  await walkAxis('KeyD','z',ANCHORS.turn.z);
   assert.equal(await shownFloor(),'8','walking back returns to the original floor');
   assert.deepEqual(failures, [], 'the corridor boots and responds without errors or outside requests');
   console.log('corridor smoke: boot, controls, room entry/return, held-input stop and walked ascent/descent pass; Quest untested');

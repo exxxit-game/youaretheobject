@@ -29,6 +29,9 @@ opening, open-leaf, room-boundary and exact return checks on positive/negative f
 The CI preview test walks through the room and stairs using keys, checks the visible
 floor sign and held-input stop, and distinguishes its synthetic Russian-key case
 from a physical keyboard-layout observation. Anchor selection is not that route test.
+The software-rendered route keeps 1280x800 CSS layout/FOV at DPR 0.25 and logs the
+actual canvas raster. It checks controls/geometry, not full-resolution readability
+or laptop/Quest performance; those need separate real-device observation.
 
 `tools/review-gate.mjs` fingerprints each room with its shared app/engine, shell,
 styles/vendor, local contract/sources and its own specification. Shared changes
