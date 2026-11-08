@@ -17,6 +17,7 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with:
@@ -43,4 +44,7 @@ jobs:
         run: node tools/prove-guards.mjs --lf   # every guard must go red on its own mistake
       - if: steps.guards.outputs.changed == 'true'
         run: node tools/prove-guards.mjs        # and with Windows line ends, as on the laptop
+      - run: npm run test:smoke:preview
+        timeout-minutes: 8
       - run: npm run test:smoke
+        timeout-minutes: 15

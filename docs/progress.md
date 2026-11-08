@@ -18,8 +18,8 @@ Independent review found skipped bot states, same-SHA races and legacy trigger
 gaps; fixes have regressions. Codex-only WORKFLOW/policy/project-guard replaces active legacy paths.
 Limited code review cannot authorise the full served surface. Native parsing accepts trailing
 whitespace without changing the report bytes or scope value.
-Implementation checks and live CI outcomes are recorded by SHA in the existing
-F project map; later runtime observations do not replace the checked commit.
+Live CI7bceabe passed all checks in17m37s (preview4m25s); cancellation had returned HTTP403.
+Separate bounded browser steps and outcomes stay in the F map by SHA; the limits follow observed times.
 See docs/research/ci-readiness.md. Scene/Quest acceptance and release are separate.
 Earlier T01a/T01b library and native-delivery evidence remain in the same map.
 B01 local map rendering remains open; T01d real visible route is a later step.

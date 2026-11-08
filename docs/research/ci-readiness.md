@@ -41,6 +41,14 @@ The expected test job and unit/browser steps must actually finish. CodeRabbit
 also needs a recognised submitted review of the same SHA, a positive completed
 status/check and no unresolved threads. The observed review-body/status format
 was checked against historical PR 27; that old review is not current approval.
+
+The preview has its own required browser step before the original room smoke.
+Actions limits these steps to 8 and 15 minutes and the job to 30 minutes; timeout
+is failure, not readiness. Preview waits and frame samples have explicit bounds.
+Setup and cleanup retain resource handling; the external deadline also bounds a
+stuck browser close. See [Actions step limits](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#jobsjob_idstepstimeout-minutes).
+The first successful combined CI took 17m37s: the original smoke took about 9m25s
+and preview 4m25s. Limits leave margin above these observed software-renderer times.
 [CodeRabbit configuration](https://docs.coderabbit.ai/reference/configuration)
 explains why a successful commit status alone can still represent a skip/error.
 Unknown formats remain unverified. Drafts are not auto-reviewed by the existing
