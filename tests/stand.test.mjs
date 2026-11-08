@@ -4,6 +4,10 @@
 // judges live apart from the headset in tools/stand-judge.mjs.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import vm from 'node:vm';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { standOff, withStandProximity, restoreStandProximity } from '../tools/headset.mjs';
 import { sandboxedPids, pssOf, proximityOf, verdicts, MARKS, longSummary, flowSummary, heatStop, SURFACE_STOP_C } from '../tools/stand-judge.mjs';
 import { thermalOf } from '../tools/measure.mjs';
 
@@ -12,6 +16,125 @@ assert.deepEqual(sandboxedPids(read('meminfo-whole.txt')), [11822, 11665], 'the 
 assert.equal(pssOf(read('meminfo-sandboxed.txt')), 285204, 'a process\'s own TOTAL PSS in kB');
 assert.equal(proximityOf(read('vrpowermanager.txt')), 'DISABLED', 'the proximity override as the power service prints it');
 assert.equal(proximityOf(''), null);
+
+// Execute the real scoped helper with no device. A previous CLOSE is not physical evidence.
+const power = (state = 'HEADSET_UNMOUNTED', virtual = 'DISABLED') =>
+  `State: ${state}\nVirtual proximity state: ${virtual}\n`;
+assert.equal(standOff(read('vrpowermanager.txt')), true);
+for (const dump of [power('HEADSET_MOUNTED'), power('HEADSET_MOUNTED', 'CLOSE'),
+  power('HEADSET_UNMOUNTED', 'CLOSE'), '', 'State: STANDBY\n', power('UNKNOWN')]) {
+  const calls = [];
+  await assert.rejects(withStandProximity({ readPower: () => dump,
+    setProximity: on => calls.push(on) }, () => calls.push('work')), /sensor was not changed/);
+  assert.deepEqual(calls, [], 'worn, unread and existing overrides must not cause any sensor action');
+}
+const scoped = async (fault) => {
+  const calls = []; let state = power();
+  const io = {
+    readPower: () => { calls.push('read'); return state; },
+    setProximity: on => {
+      calls.push(on ? 'enable' : 'disable');
+      state = power('HEADSET_MOUNTED', on && fault !== 'restore-stuck' ? 'DISABLED' : 'CLOSE');
+      if (!on && fault === 'partial-acquire') throw new Error('acquisition failed after changing the signal');
+    }
+  };
+  try {
+    const value = await withStandProximity(io, async () => {
+      calls.push('work'); if (fault === 'work') throw new Error('work failed'); return 42;
+    });
+    return { calls, value };
+  } catch (error) { return { calls, error }; }
+};
+const successfulScope = await scoped();
+assert.equal(successfulScope.value, 42);
+assert.deepEqual(successfulScope.calls, ['read', 'disable', 'read', 'work', 'enable', 'read']);
+for (const fault of ['partial-acquire', 'work', 'restore-stuck']) {
+  const result = await scoped(fault);
+  assert.ok(result.error, `${fault} reported success`);
+  assert.equal(result.calls.at(-2), 'enable', `${fault} skipped restoration`);
+  assert.equal(result.calls.at(-1), 'read', `${fault} did not verify restoration`);
+}
+const restoration = [];
+await assert.rejects(restoreStandProximity({ setProximity: () => restoration.push('enable'),
+  readPower: () => power('HEADSET_MOUNTED', 'CLOSE') }), /not proven restored/);
+assert.deepEqual(restoration, ['enable']);
+
+// Exercise the real main body with only its device/gate/OS adapters replaced. No tool or device runs.
+const standSource = fs.readFileSync(new URL('../tools/stand-measure.mjs', import.meta.url), 'utf8');
+let mainSource = standSource.slice(standSource.indexOf('async function main()'));
+assert.equal((mainSource.match(/await import\('\.\/headset\.mjs'\)/g) || []).length, 1);
+assert.equal((mainSource.match(/await import\('\.\/review-gate\.mjs'\)/g) || []).length, 1);
+mainSource = mainSource.replace("await import('./headset.mjs')", 'headset')
+  .replace("await import('./review-gate.mjs')", 'gates')
+  .replaceAll('import.meta.url', JSON.stringify(new URL('../tools/stand-measure.mjs', import.meta.url).href));
+async function standMain({ mode = 'check', initial = power(), fault, args = [] } = {}) {
+  let state = initial; const calls = [];
+  const headset = { standOff, withStandProximity, restoreStandProximity,
+    connected: () => true, localPort: () => 3217,
+    adb: (...a) => {
+      const command = a.join(' ');
+      if (command.includes('dumpsys vrpowermanager')) { calls.push('read'); return state; }
+      if (command.includes('topResumedActivity')) return 'topResumedActivity u0 com.oculus.browser/.Main';
+      if (command.includes('dumpsys thermalservice')) return read('thermalservice.txt');
+      if (command.includes('dumpsys battery')) return read('battery.txt');
+      return '1000';
+    },
+    serveToHeadset: () => 'http://fixture/', openGame: async () => {},
+    page: async () => ({ run: async () => ({ error: 'fixture page failure' }), close: () => { throw Error('fixture close failure'); } }),
+    restartBrowser: () => calls.push('restart'), sleepNow: () => calls.push('sleep')
+  };
+  const gates = Object.fromEntries(['requireReview', 'requirePaper'].map(name => [name, () => {
+    calls.push(name); if (fault === name) throw Error('fixture gate refused');
+  }]));
+  const fakeProcess = { argv: ['node', 'stand-measure.mjs', mode, ...args], env: { USERPROFILE: 'fixture' },
+    exit: () => { throw Error('unexpected immediate exit'); } };
+  const fakeFs = { existsSync: () => false, mkdirSync: () => { if (fault === 'mkdir') throw Error('fixture mkdir failure'); },
+    appendFileSync: () => {}, writeFileSync: () => {}, readFileSync: () => '{"step":"fixture"}' };
+  const context = { headset, gates, fs: fakeFs, path, fileURLToPath, process: fakeProcess,
+    console: { log: () => {} }, fetch: async () => ({ ok: fault !== 'server' }),
+    setTimeout: fn => { fn(); }, gpuIds: () => ({}), thermalOf, heatStop, proximityOf, verdicts, MARKS,
+    execFileSync: (command, a) => {
+      if (command !== 'metavr' || !a.includes('proximity')) return '';
+      if (a.includes('--status')) return state;
+      const enable = a.includes('--enable'); calls.push(enable ? 'enable' : 'disable');
+      state = enable ? (fault === 'restore-stuck' ? power('HEADSET_MOUNTED', 'CLOSE') :
+        power(fault === 'worn-on-return' ? 'HEADSET_MOUNTED' : 'HEADSET_UNMOUNTED')) : power('HEADSET_MOUNTED', 'CLOSE');
+      return '';
+    } };
+  let error;
+  try { await vm.runInNewContext(mainSource + '\nmain();', context); } catch (e) { error = e; }
+  return { calls, error, exitCode: fakeProcess.exitCode };
+}
+for (const initial of [power('HEADSET_MOUNTED'), '', power('HEADSET_MOUNTED', 'CLOSE')]) {
+  for (const mode of ['check', 'trial', 'long', 'flow']) {
+    const r = await standMain({ initial, mode });
+    assert.equal(r.exitCode, 1);
+    assert.ok(!r.calls.some(x => ['disable', 'enable', 'sleep', 'restart'].includes(x)), `${mode} acted on an unproven off state`);
+  }
+}
+for (const fault of ['requireReview', 'requirePaper']) {
+  const r = await standMain({ mode: 'trial', fault });
+  assert.ok(r.error); assert.ok(!r.calls.includes('disable'), 'a refused review touched the sensor');
+}
+for (const options of [{}, { fault: 'server' }, { mode: 'trial', fault: 'mkdir' }, { mode: 'trial', fault: 'close' }]) {
+  const r = await standMain(options);
+  assert.equal(r.calls.filter(x => x === 'disable').length, 1);
+  assert.equal(r.calls.filter(x => x === 'enable').length, 1, 'an early setup/close/return skipped restoration');
+  assert.ok(r.calls.indexOf('read', r.calls.indexOf('enable')) > r.calls.indexOf('enable'));
+}
+assert.equal((await standMain({ fault: 'restore-stuck' })).exitCode, 1, 'command success with CLOSE still active passed');
+for (const mode of ['check', 'long']) {
+  const r = await standMain({ mode, args: mode === 'long' ? ['--minutes=Infinity'] : [] });
+  if (mode === 'long') { assert.ok(r.error); assert.deepEqual(r.calls, [], 'invalid arguments touched the device'); }
+}
+const returnedWorn = await standMain({ mode: 'trial', fault: 'worn-on-return' });
+assert.ok(!returnedWorn.calls.some(x => ['sleep', 'restart'].includes(x)), 'idle actions ran after a worn restoration');
+const restoredWorn = await standMain({ mode: 'restore', initial: power('HEADSET_MOUNTED', 'CLOSE'), fault: 'worn-on-return' });
+assert.deepEqual(restoredWorn.calls.filter(x => ['disable', 'enable', 'sleep', 'restart'].includes(x)), ['enable']);
+for (const mode of ['look', 'judge']) {
+  const r = await standMain({ mode });
+  assert.ok(!r.calls.some(x => ['disable', 'enable'].includes(x)), `${mode} unexpectedly changed proximity`);
+}
 
 // a run as the tools should see it: 90, then 72, then 90 frames a second; a box adds one call and 12 triangles;
 // ten stalled frames are late; the session visible and the override on throughout

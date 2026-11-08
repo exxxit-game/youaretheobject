@@ -1,24 +1,23 @@
 // The A-Frame build the game ships (vendor/aframe-1.8.0.min.js) is npm aframe@1.8.0's
-// dist/aframe-v1.8.0.min.js with its source-map line dropped and one call put back: after a scene is
-// drawn, the textures deferred during a multiview frame are uploaded (textures.runDeferredUploads(), as
-// in super-three 0.181; lost in 0.184, supermedium/three.js PR #25). Without it canvas text first drawn
-// in VR stays black with multiview on (src/app/stage.js). A new A-Frame must be patched again.
+// dist/aframe-v1.8.0.min.js with its source-map line dropped and the documented multiview
+// backports (docs/research/multiview-maintenance.md). Reverse them to verify the official bytes.
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import crypto from 'node:crypto';
+import { assertPatched, priorVendor } from '../tools/multiview-vendor.mjs';
 
 const build = fs.readFileSync(new URL('../vendor/aframe-1.8.0.min.js', import.meta.url), 'utf8');
 const html = fs.readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 assert.ok(html.includes('<script src="vendor/aframe-1.8.0.min.js"></script>'), 'the game page does not load vendor/aframe-1.8.0.min.js');
 assert.ok(/three\.js r184|"184"/.test(build), 'the build is not A-Frame 1.8.0 with three.js r184');
 assert.ok(build.includes('Tt.enabled&&Tt.isMultiview)ot.setDeferTextureUploads(!0)'), 'the multiview frame no longer defers texture uploads as expected');
-assert.equal(build.split('t.onAfterRender(M,t,e),ot.runDeferredUploads(),_t.resetDefaultState()').length - 1, 1,
-  'the deferred texture uploads are not run after the scene is drawn: multiview leaves new textures black');
+assertPatched(build);
+const prior = priorVendor(build);
 // and nothing else differs: the put-back call taken out again and the source-map line given back, the
 // build is byte for byte the official file (SHA-256 and size from jsDelivr's index of npm aframe@1.8.0,
 // data.jsdelivr.com/v1/packages/npm/aframe@1.8.0, /dist/aframe-v1.8.0.min.js)
-const PUT_BACK = 'ot.runDeferredUploads(),', at = build.indexOf('t.onAfterRender(M,t,e),' + PUT_BACK) + 't.onAfterRender(M,t,e),'.length;
-const official = build.slice(0, at) + build.slice(at + PUT_BACK.length) + '\n//# sourceMappingURL=aframe-v1.8.0.min.js.map';
+const PUT_BACK = 'ot.runDeferredUploads(),', at = prior.indexOf('t.onAfterRender(M,t,e),' + PUT_BACK) + 't.onAfterRender(M,t,e),'.length;
+const official = prior.slice(0, at) + prior.slice(at + PUT_BACK.length) + '\n//# sourceMappingURL=aframe-v1.8.0.min.js.map';
 assert.equal(Buffer.byteLength(official), 1323403, 'the A-Frame build differs from the official one in more than the put-back call');
 assert.equal(crypto.createHash('sha256').update(official).digest('hex'), '40d5a4d63c67d8c50842bf3c36a06995cad712d0675c8e5d2eb4dbae38b7481f',
   'the A-Frame build differs from npm aframe@1.8.0\'s dist/aframe-v1.8.0.min.js in more than the put-back call');

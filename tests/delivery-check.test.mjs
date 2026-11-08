@@ -9,7 +9,7 @@ const good=()=>({
  prAfter:{state:'OPEN',baseRefName:'room-polish',isDraft:false,headRefOid:sha},
  runs:[{id:1,created_at:'2026-11-08T00:00:00Z',head_sha:sha,head_branch:branch,event:'push',path:'.github/workflows/test.yml',status:'completed',conclusion:'success'}],
  jobs:[{id:1,name:'test',run_id:1,head_sha:sha,status:'completed',conclusion:'success',steps:[
-  {name:'Run npm test',conclusion:'success'},{name:'Run npm run test:smoke',conclusion:'success'},{name:'Run npm run test:smoke:preview',conclusion:'success'}]}],
+  {name:'Run npm test',conclusion:'success'},{name:'Run npm run test:smoke',conclusion:'success'},{name:'Run npm run test:smoke:preview',conclusion:'success'},{name:'Run npm run test:smoke:shaders',conclusion:'success'}]}],
  reviews:[{id:1,user:{login:'coderabbitai[bot]'},commit_id:sha,state:'COMMENTED',submitted_at:'2026-11-08T00:00:00Z',body:'**Actionable comments posted: 0**'}],
  statuses:[{id:1,context:'CodeRabbit',state:'success',description:'Review completed',created_at:'2026-11-08T00:00:00Z'}],checkRuns:[],threads:[],threadsReadComplete:true
 });

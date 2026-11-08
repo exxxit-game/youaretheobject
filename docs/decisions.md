@@ -8,7 +8,7 @@ Use the existing renderer and shared geometry to check sightlines against record
 Geometry remains provisional. Source matching, stereo and perception checks establish each detail's contribution to the connected experience.
 
 ## No build step, A-Frame vendored
-Plain ES modules and `vendor/aframe-1.8.0.min.js` (one line put back for multiview: tests/vendor.test.mjs), served as static files.
+Plain ES modules and `vendor/aframe-1.8.0.min.js` (bounded multiview backports: docs/research/multiview-maintenance.md), served as static files.
 Fewer moving parts for a non-programmer owner and for AI sessions.
 Consequence: no bundler, no npm runtime dependencies.
 

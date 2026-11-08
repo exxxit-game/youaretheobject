@@ -62,6 +62,39 @@ export const onHead = (powerDump) => headState(powerDump) === true;
 export const offHead = (powerDump) => headState(powerDump) === false;
 export const wornByPerson = () => onHead(adb('shell', 'dumpsys', 'vrpowermanager'));
 export const takenOff = () => offHead(adb('shell', 'dumpsys', 'vrpowermanager'));
+// A forced CLOSE cannot establish whether someone wears the headset. A stand starts only
+// from a readable, unmounted state with the real sensor enabled; no override is cleared on refusal.
+export const standOff = dump => headState(dump) === false &&
+  /Virtual proximity state: DISABLED\b/.test(dump);
+export async function restoreStandProximity({ readPower, setProximity }) {
+  const out = await setProximity(true);
+  const after = await readPower();
+  if (!/Virtual proximity state: DISABLED\b/.test(after)) {
+    throw new Error('the stand proximity override was not proven restored');
+  }
+  return { out, after: 'DISABLED' };
+}
+export async function withStandProximity(io, work) {
+  if (!standOff(await io.readPower())) {
+    throw new Error('stand not started: worn, unread, or already overridden; the sensor was not changed');
+  }
+  let failure;
+  try {
+    // The command can partly act and then fail: restoration covers that attempt too.
+    await io.setProximity(false);
+    if (!/Virtual proximity state: CLOSE\b/.test(await io.readPower())) {
+      throw new Error('the stand proximity override was not proven active');
+    }
+    return await work();
+  } catch (e) { failure = e; throw e; }
+  finally {
+    try { await restoreStandProximity(io); }
+    catch (e) {
+      if (failure) throw new AggregateError([failure, e], `${failure.message}; ${e.message}`);
+      throw e;
+    }
+  }
+}
 // Sleep and a browser restart act only on a headset proven off a person's head (headState above), here in the
 // one place every tool reaches the headset through, so no tool can put to sleep or restart a headset he wears.
 // Built on any adb runner, so tests drive them with the power dumps the headset printed.

@@ -23,7 +23,7 @@ export function assessDelivery(s) {
     run.path?.split('@')[0] === WORKFLOW && run.status === 'completed' && run.conclusion === 'success', 'Latest test workflow did not succeed on this branch SHA.');
   const job = newest((s.jobs || []).filter(j => j.name === 'test' && j.run_id === run?.id));
   need(job && job.head_sha === sha && job.status === 'completed' && job.conclusion === 'success', 'Expected test job is missing, skipped or not successful.');
-  for (const name of ['Run npm test','Run npm run test:smoke:preview','Run npm run test:smoke'])
+  for (const name of ['Run npm test','Run npm run test:smoke:shaders','Run npm run test:smoke:preview','Run npm run test:smoke'])
     need(job?.steps?.some(step => step.name === name && step.conclusion === 'success'), 'Required step not completed: ' + name);
   const review = newest((s.reviews || []).filter(r => bot(r.user?.login)));
   need(review && review.commit_id === sha && ['COMMENTED','APPROVED'].includes(review.state) && review.submitted_at &&

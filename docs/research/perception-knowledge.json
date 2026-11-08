@@ -232,6 +232,21 @@
         "fusion",
         "vergence"
       ]
+    },
+    {
+      "id": "engine",
+      "label": "Engine and rendering",
+      "terms": [
+        "aframe",
+        "a-frame",
+        "three.js",
+        "three",
+        "multiview",
+        "engine",
+        "движок",
+        "афрейм",
+        "мультивью"
+      ]
     }
   ],
   "entries": [
@@ -1134,6 +1149,22 @@
       "purpose": "Continue T01c from the actual branch/workflow/checker implementation and versioned runtime evidence.",
       "reading": "Workflow, status collector and browser coverage reviewed; runtime outcomes are separate records by SHA.",
       "note": "No merge, owner acceptance or game publication is implied. Full walking route and Quest remain separate."
+    },
+    {
+      "id": "corridor-multiview-maintenance",
+      "title": "A-Frame / Three multiview: bounded r184 backports and Quest limits",
+      "kind": "research-report",
+      "topics": [
+        "engine"
+      ],
+      "location": {
+        "root": "repo",
+        "path": "docs/research/multiview-maintenance.md"
+      },
+      "expected": "present",
+      "purpose": "Reach the exact shipped engine, three upstream fixes, reproducible patch and verification boundaries.",
+      "reading": "Issue27 comment and upstream commits read; current bundle checked. Test results are versioned separately.",
+      "note": "Source regressions and ordinary WebGL2 grammar controls do not prove native OCULUS_multiview."
     }
   ]
 }

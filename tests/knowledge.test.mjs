@@ -5,6 +5,10 @@ import path from 'node:path';
 import vm from 'node:vm';
 import { buildIndex, searchIndex, validateManifest, checkIndex, renderHtml } from '../tools/knowledge.mjs';
 
+// Startup uses this real catalogue, not only the small fixtures below.
+const actualManifest=JSON.parse(fs.readFileSync(new URL('../docs/research/perception-knowledge.json',import.meta.url),'utf8'));
+assert.doesNotThrow(()=>validateManifest(actualManifest),'the shipped catalogue must validate before navigation or brief startup');
+
 const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'knowledge-tool-'));
 const write = (relative, value) => {
   const target = path.join(fixture, relative);
