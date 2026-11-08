@@ -34,8 +34,10 @@ main remains the published branch; this work is not merged or released.
   B06: API cancellation unavailable; reading completed CI remains possible.
 
 ## Next dependency
-Complete the short capture preflight and the first USB/device observation, then
-specify one connected slice. Prepare the next concrete device step before
+USB and cable-free Wi-Fi flat preflight passed; no XR or geometry file. A router
+restart changed the device address; current-IP retry passed. Bound the capture review before Start. The existing
+global full-practice gate cannot be granted by a capture-only walkthrough.
+Specify one connected slice. Prepare the next concrete device step before
 requesting the owner's time. Acceptance, merge and publication stay separate.
 
 ## Preserved history

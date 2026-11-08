@@ -104,6 +104,21 @@ independent reviews and real target-device observations. A missing effect is a v
 observation. Automated passes, owner approval and publication are separate states.
 No data collection, leaderboard, paid floors or store release is added by this plan.
 
+## Owner's later route clarification, 8 November
+
+The origin is logical floor 0; repeated corridors and stairs can represent
+unbounded positive and negative indices. This does not require that many meshes.
+The first door may contain a common introductory question sequence; reopening the
+same door with variants is a possible later extension. These details remain drafts.
+Learning gives no money; fictional harmful/regressive deals pay. Refusal stays
+valid; bargaining is voluntary. Hesitation is not a moral diagnosis. Burning a book
+and harming animals are draft text prompts, not approved new interactions.
+A previously harmed character who cannot later help is a proposed consequence.
+The learning-path outcome is an undefined placeholder; the verbatim word forms
+are retained in the owner-route-clarification source record in the catalogue.
+Do not invent its meaning. The author's soul-test wording remains a metaphor,
+not a scientific assessment of a player.
+
 ## Sources and limits
 
 - [W3C WebXR Device API](https://www.w3.org/TR/webxr/), sections 1.2, 3, 4 and 13; current draft read 8 November 2026. Specifies API conditions, not compatibility/performance of our game.

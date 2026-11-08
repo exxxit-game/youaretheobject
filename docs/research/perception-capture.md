@@ -83,15 +83,24 @@ modules against local file bytes and JavaScript MIME before opening that exact
 URL on Quest localhost:3000. Confirm window.__roomState().mode is capture,
 secure context, XR/AR support, and label any restored snapshot as previous data.
 Opening the flat page and reading capabilities do not start an immersive session.
-No proximity override, forced XR entry, browser restart or walking is needed.
+Off-head preparation may need a temporary keep-awake override. The existing
+withStandProximity helper checks the real off-head state first and restores the
+sensor in finally with readback, including failures. It does not start XR.
 Applicable independent review still precedes an immersive trial; preparation is
 not that review, a fresh capture, owner acceptance or survey calibration.
 
-First owner action, after this preparation: connect USB, leave the headset off.
-The operator checks the actual link and loaded page; only then give the next
-single action. Use one already captured, stationary area for the first export,
+USB and flat-page loading were verified on 8 November; the owner also confirmed
+the correct page briefly. Wi-Fi uses the configured laptop port, not a hardcoded
+3000. Check the explicit network transport, then recheck after USB disconnection.
+This does not prove stairwell Wi-Fi coverage. Use one stationary area for the first export,
 with a separate capture card naming the intended area and unknown scan time.
 Save a new file and inspect coverage before asking for a stairwell scan.
+
+The cable-free check later passed with Quest as the only listed device and the
+same capture page idle. The owner reported a power outage/router restart; a USB
+read proved its address changed from .11 to .12. Old-IP failures cannot isolate
+sleep. The new address answered after a power-button press. Rediscover addresses
+after router changes; this result does not guarantee link persistence or range.
 
 ## Acceptance of a real capture
 
@@ -109,15 +118,25 @@ Save a new file and inspect coverage before asking for a stairwell scan.
 
 ## Current verified state
 
-The real Quest 3 was seen over USB. The prepared capture page was subsequently read
-in its Browser with the correct mode, secure context, navigator.xr and an idle
-session. That establishes flat-page loading. No new XR snapshot or building file
-was obtained. The first launch had been reported too early while the store remained
-visible. This record retains the distinction.
+On 8 November Quest 3 answered over USB and explicitly addressed Wi-Fi. Its Browser
+loaded capture=1 at localhost:3000 forwarded to laptop port 3100: secure context,
+XR/AR support and idle state; A-Frame 1.8.0 and Three r184 loaded. No XR session,
+mesh or room file was obtained. The off-head override was restored and read back.
+This is flat preparation, not native rendering or geometry validation. An earlier
+store-visible launch report remains an error, not evidence that a page opened.
 
-The owner disconnected the headset and went out during a power outage. Device work
-has stopped. The local preview server was stopped to save laptop battery. The next
-device trial follows completed offline preparation and the owner's available time.
+The independent review found that the general practice gate covers all public
+surfaces. A capture-only walkthrough cannot honestly approve that global scope.
+Before Start, prepare a bounded diagnostic review rather than treating code-only
+evidence as full-practice or requiring a successful capture in advance.
+
+[Meta Scene Best Practices](https://developers.meta.com/vr/documentation/native/scene-best-practices/)
+warns that a loaded scene may belong to another floor. Scene Mesh is created in
+Space Setup and remains static; it is not high-precision survey geometry. A new
+export time does not establish a new scan or its location. Check a door-to-turn
+pilot against landmarks before stairs or overlapping floor captures; preserve
+session transforms separately. WebXR area, vertical coverage and step detail
+remain unverified.
 
 ## Ten-floor source atlas
 

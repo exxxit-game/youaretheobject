@@ -1254,6 +1254,56 @@
       "purpose": "Start from current evidence, separate immediate preparation from later content/platform/release work, and request only the next necessary owner action.",
       "reading": "Current code and baseline receipts, B09 red/green/lifecycle regressions, native code-only provenance, official hooks/WebXR/mesh/scene-data sources, live Chrome capture page and ADB checked.",
       "note": "No total readiness percentage, real stairwell mesh, fresh full-practice gate or native acceptance claimed. Old snapshots are not current evidence."
+    },
+    {
+      "id": "capture-pilot-receipts",
+      "title": "Real Quest USB, cable-free Wi-Fi and capture readiness",
+      "kind": "research-report",
+      "topics": [
+        "capture",
+        "engine"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "capture-pilot-2026-11-08/capture-card.json"
+      },
+      "expected": "present",
+      "purpose": "Reach exact device receipts and the next prepared action without confusing export with a new native scan.",
+      "reading": "Read actual USB/network-only metadata, router IP change, raw-file absence and scoped-review limit.",
+      "note": "No XR session, stairwell scan, precision or native multiview acceptance."
+    },
+    {
+      "id": "capture-review-scope",
+      "title": "Bounded capture preflight versus global practice approval",
+      "kind": "research-report",
+      "topics": [
+        "capture",
+        "purpose"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "capture-review-scope-2026-11-08.json"
+      },
+      "expected": "present",
+      "purpose": "Resolve the global gate scope before asking the owner to Start a diagnostic capture.",
+      "reading": "Independent source walkthrough plus actual native callback readback; source-only coverage.",
+      "note": "Proposed narrow review is not implemented or granted; no manual journal writes."
+    },
+    {
+      "id": "owner-route-clarification",
+      "title": "Later owner route and learning-path placeholders",
+      "kind": "owner-record",
+      "topics": [
+        "purpose"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "owner-route-clarification-2026-11-08.json"
+      },
+      "expected": "present",
+      "purpose": "Preserve exact owner word forms and distinguish route foundation from draft question/helper/final details.",
+      "reading": "Logical origin0, +/- repeated route, unpaid learning, voluntary paid fictional deals.",
+      "note": "Undefined final placeholder remains undefined; authorial metaphor is not player diagnosis."
     }
   ]
 }

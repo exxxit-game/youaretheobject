@@ -6,7 +6,7 @@ feature at hand goes to the end of docs/board.md, one line each.
 Entries of 14.10 and before: docs/progress-2026-10-14.md; the earlier ones of 15.10: docs/progress-2026-10-15.md; late entry: docs/progress-2026-10-15-late.md.
 
 ## 2026-11-08 — Readiness and shared source-review dependencies
-B09 timing counterexample reproduced red, then fixed in room fingerprints; shared runtime/assets/local sources and own spec invalidate old reviews, unrelated rooms do not. Local suite and lifecycle fixtures passed; live native/Quest remain separate. Short capture URL/port/module delivery and Chrome view verified; native code-only receipt grants no scene. Real device trial and full-practice remain separate. Next: USB/flat preflight.
+B09 timing counterexample reproduced red, then fixed in room fingerprints; offline suite/lifecycle fixtures passed. USB and cable-free Wi-Fi read capture=1, secure/idle; temporary keep-awake restored. Fixed Wi-Fi forwarding to policy3100 and unsupported sleep diagnosis. Router restart was reported; USB proved IP .11→.12, new-IP network-only read passed after wake. No XR/geometry. Native code-only grants no scene; capture walkthrough exposed global gate scope. Owner drafts preserved in room plan. Next: bounded capture review, no stairwell trip yet.
 
 ## 2026-11-08 — Unified room and device plan
 Owner clarification saved; current guidance now distinguishes science, philosophy and fictional deals. See docs/research/corridor-room-plan.md for candidates, evidence limits and desktop/mobile/Quest checks. Historical plans and acceptances preserved. Local tests passed; exact-version GitHub CI and external review remain to verify in the map/PR. No new scene or release. Next: T01g/B09.

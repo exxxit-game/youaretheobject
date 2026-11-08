@@ -2,9 +2,11 @@
 // untethered (an external battery strap powers the headset). After it reports success
 // and the cable is unplugged, quest-check.mjs and the probe work over Wi-Fi unchanged.
 // The Wi-Fi link does not survive a headset restart: then reconnect by address.
+// A router restart may change that address: with USB connected, rerun without an IP to read it again.
 // Usage: node tools/quest-wifi.mjs         cable plugged in: switch to Wi-Fi
 //        node tools/quest-wifi.mjs <ip>    no cable: reconnect to a known address
 import { execFileSync } from 'node:child_process';
+import { localPort } from './headset.mjs';
 
 const PORT = 5555;
 const adb = (...args) => execFileSync('adb', args, { encoding: 'utf8' }).trim();
@@ -33,13 +35,13 @@ console.log(adb('connect', target));
 if (!ready().includes(target)) {
   const asleep = listed().some(([id, state]) => id === target && state === 'offline');
   console.log(asleep
-    ? 'The headset is asleep (its Wi-Fi sleeps too): wake it with the power button or put it on, then run this again.'
-    : 'No Wi-Fi link: the laptop and the headset must be on the same network.');
+    ? 'The network target is offline; its power, current address and connection still need checking.'
+    : 'No Wi-Fi link. Check the current device address and shared network; a remembered address may have changed.');
   process.exit(1);
 }
-adb('-s', target, 'reverse', 'tcp:3000', 'tcp:3000'); // the game at localhost:3000 in the headset
+adb('-s', target, 'reverse', 'tcp:3000', `tcp:${localPort()}`); // the configured local server port through this network transport
 // The headset is not held "worn" here: the link is for the owner's own walk, and a headset kept
 // awake on a table shows the boundary window, under which a VR request leaves the browser unable
 // to enter VR (tools/quest-look.mjs, vr). It wakes on his head and the link comes back with it.
-console.log(`Headset on Wi-Fi at ${target}. Unplug the cable now.`);
+console.log(`ADB on Wi-Fi at ${target}; localhost:3000 forwards to laptop port ${localPort()}. Verify this network transport before unplugging.`);
 console.log(`After a headset restart: node tools/quest-wifi.mjs ${ip}`);
