@@ -2301,6 +2301,46 @@
       "purpose": "Применять приёмы среды, невербального обучения, отклика и сквозного теста к одному коридору и общей комнате.",
       "reading": "Выбранные первичные интервью/авторские статьи в creatorInterviews; ведущий и помощники, точные границы разделены. Слайды Valve28страниц локально. Fireproof в theRoomReference.",
       "note": "Проверена связь авторов: Carlsen/Schmid — Geometric, Olsen/Patti — Somerville/Jumpship; Playdead не распалась на этих двух авторов. Свободный взгляд и устройства требуют собственных проверок; это не готовая сцена."
+    },
+    {
+      "id": "connected-interaction-map",
+      "title": "Единый макет: детали, связи, семь маршрутов и изменения N±",
+      "kind": "design-reference",
+      "topics": [
+        "purpose",
+        "building",
+        "observer",
+        "memory",
+        "light",
+        "sound"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/blueprint.html"
+      },
+      "expected": "present",
+      "source": "https://www.w3.org/WAI/tutorials/images/complex/",
+      "purpose": "Выбирать следующий сквозной опыт на том же плане: деталь → действие → ответ → возврат, с условиями и границами.",
+      "reading": "Ведущий: 31 узел, 51 связь, семь маршрутов и восемь вариантов; исходный код книги, карта и PDF. Два помощника сверили код/маршруты и источники, третий проверил представление.",
+      "note": "Данные/проверки в revision-02/interaction-map.json и interaction-verification.json. Владелец сообщил, что макет закрыт; нативные нажатия не подтверждены. B19/B17 открыты; это не новый игровой код."
+    },
+    {
+      "id": "audiovisual-localisation-2004",
+      "title": "Alais и Burr2004: где воспринимается совместный зрительный и звуковой сигнал",
+      "kind": "research-source",
+      "topics": [
+        "sound",
+        "observer"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research-sources/alais-burr-ventriloquist-2004.pdf"
+      },
+      "expected": "present",
+      "source": "https://win.pisavisionlab.org/Downloads/AlaisBurr_Ventril.pdf",
+      "purpose": "Обосновать отдельное сравнение изображения, звука и согласованной пары перед аудиовизуальным конфликтом у окна/двери/лифта.",
+      "reading": "Помощник: процедуры, результаты и обсуждение257–261; ведущий проверил PDF и выборочно метод, результаты, оговорки. Не все графики проверены.6страниц, DOI10.1016/j.cub.2004.01.029.",
+      "note": "Краткие пятна/щелчки, бинокулярный экран40см, обучение и ограниченные слуховые признаки. Перенос на естественное слушание условный; угол/размытие для Quest не установлен."
     }
   ]
 }

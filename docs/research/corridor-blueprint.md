@@ -136,6 +136,10 @@ The first book deal and its existing receipts remain unchanged and separate.
 
 ## Whole-space research, 9 November 2026
 
+[The connected interaction layer](corridor-interaction-map.md) now uses the same
+plan for selectable details, directed relations, seven routes and N variants.
+Planning relationships does not close the unresolved base-section checks below.
+
 The same blueprint page links `revision-02/research.html` and its JSON ledger:
 45 bounded source records, six design questions and six connected surface groups.
 Architecture, multi-viewpoint construction, image/material/light, attention, route

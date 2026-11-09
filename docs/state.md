@@ -34,13 +34,19 @@ main remains the published branch; this work is not merged or released.
 - B05: the authorised CodeRabbit command was posted once; completion is unconfirmed.
   B06: API cancellation unavailable; reading completed CI remains possible.
 
-## Next dependency
+## Current planning step and next dependency
+
+[The connected interaction map](research/corridor-interaction-map.md) adds details,
+relationships, seven routes and candidate N variants to the existing blueprint.
+It preserves a concise working digest, originals and the approved foundation;
+it does not clear this chat or implement the proposed game interactions.
 [The B0-02 working layout](research/corridor-blueprint.md) records the centre start,
 old sign, clockwise door labels and full ascent. It is not an accepted building
 solution or implemented new geometry. B19: close the base section, joints, guards
 and body/low-obstacle clearance; B17 frame/wall and B16 automatic game viewing remain.
 Scanning supports this work; it does not block the current drawing. No new capture,
-device acceptance, merge or release. N variants come after the consistent base.
+device acceptance, merge or release. Planning N variants is allowed; implementing
+geometric variants requires the consistent base.
 
 ## Preserved history
 [Pre-sync state at 2ea4496](https://github.com/exxxit-game/youaretheobject/blob/2ea4496e0e3cc6f4b0c4e39df89e69747cbc7a2e/docs/state.md)
