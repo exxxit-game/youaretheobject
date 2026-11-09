@@ -70,7 +70,7 @@ Keep one discoverable main action at first. The owner adds The Room as a design
 reference: a readable object/action/response chain and purposeful use of a small
 space. Fireproof describes real puzzle-box inspiration, touch/camera co-design
 and iteration from simple working puzzles. Sources and transfer limits are in the
-catalogue's `the-room-design-reference`, not a prescription to copy its puzzles.
+catalogue's `the-room-design-reference` and `creator-interview-references`; they do not prescribe copying puzzles.
 A detail may support action, attention, orientation, memory or atmosphere. Check
 its role across reachable views, departure, return and interruption on each device.
 Our valid refusals and scientific/philosophical branches need their own progression;
@@ -208,7 +208,8 @@ No new moral prompt, payment or philosophical answer is supplied by this scaffol
 The room footprint is a design dimension. A later survey can replace it without
 changing door identity, logical floor, choices or the return contract.
 
-The owner also retains the detailed old extinguisher near the floor sign. Reuse
+The owner retains the old extinguisher. The floor number now shares the central
+You are the object panel, retained as an ongoing landmark; remove its separate plate. Reuse
 the existing shell, gauge and label; it is not yet placed in this preview. Keep
 logical floor separate from a possibly repeated visible 8 and from picture state.
 Changed pictures with an unchanged number form a proposed memory comparison.

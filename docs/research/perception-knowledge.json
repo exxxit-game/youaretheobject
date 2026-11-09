@@ -2282,6 +2282,25 @@
       "purpose": "Учитывать ориентир владельца при соединении предмета, действия, истории и управления в малом пространстве.",
       "reading": "Пять выбранных первичных страниц/интервью, границы чтения и переноса в theRoomReference; не прохождение всех частей.",
       "note": "Реальные шкатулки, сенсорное управление и развитие простых работающих вариантов. Деталь может служить памяти/атмосфере; свободный путь и допустимый отказ требуют своей проверки. Новых загадок не создано."
+    },
+    {
+      "id": "creator-interview-references",
+      "title": "Playdead, COCOON, Somerville, Little Nightmares, Valve и The Room: интервью создателей",
+      "kind": "design-reference",
+      "topics": [
+        "purpose",
+        "building",
+        "memory"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/research-ledger.json"
+      },
+      "expected": "present",
+      "source": "https://blog.playdead.com/articles/the_lighting_of_inside/lighting_of_inside.html",
+      "purpose": "Применять приёмы среды, невербального обучения, отклика и сквозного теста к одному коридору и общей комнате.",
+      "reading": "Выбранные первичные интервью/авторские статьи в creatorInterviews; ведущий и помощники, точные границы разделены. Слайды Valve28страниц локально. Fireproof в theRoomReference.",
+      "note": "Проверена связь авторов: Carlsen/Schmid — Geometric, Olsen/Patti — Somerville/Jumpship; Playdead не распалась на этих двух авторов. Свободный взгляд и устройства требуют собственных проверок; это не готовая сцена."
     }
   ]
 }

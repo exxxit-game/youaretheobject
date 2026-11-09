@@ -13,8 +13,10 @@ The latest owner clarification sets the start at the centre beside the stairs,
 facing the existing You are the object sign. Door labels run clockwise: top row
 D1-D4 left to right, bottom row D5-D8 right to left; D4 faces D5. Eight symmetric
 positions are a working arrangement, not a measured or mandatory door count.
-Show end pictures, extinguisher, floor sign, lamps, rails, window/sill, baseboard
-and a closed future lift facade with a call station. Exact positions remain proposals.
+Show end pictures, extinguisher, lamps, rails, window/sill, baseboard and a closed
+future lift facade. Latest owner amendment: floor number T1 shares the central
+You are the object panel V1, which remains present; remove the separate plate above
+the extinguisher. The larger panel/lettering dimensions remain proposals.
 
 Floor 0 is the reference. N+ and N- may alter geometry and dimensions as well as
 details, with changed connections, clearance and viewpoints checked anew. A
@@ -81,7 +83,7 @@ our model: resolve boundaries and a consistent section before recalculating it.
 
 The current preview camera uses vertical FOV 62 degrees and zoom 1. At aspect
 9:16, the old sign width 0.94 m at distance 0.89 m does not fit. A candidate
-0.50 x 0.0851 panel at centre height 1.56 m fits the tested level-camera views
+0.50 x 0.16 combined brand/floor panel at centre height 1.54 m fits the tested level-camera views
 for eye heights 1.1, 1.6 and 1.9 m. This proves framing only, not occlusion,
 legibility, notice or the actual per-eye Quest projections.
 The 1.25 m window also fails the same portrait framing from 0.69 m away; an
