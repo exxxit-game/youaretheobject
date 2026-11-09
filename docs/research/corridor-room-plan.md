@@ -99,8 +99,8 @@ to instructions alone does not establish a positive native cycle for that room.
 
 ## One content system, three input surfaces
 
-Share room state, source facts, consequences and pause/leave semantics. Device
-adapters supply movement, looking and selection; do not maintain three diverging games.
+Share room state, facts and consequences; adapters supply input and presentation.
+[The transfer audit](corridor-device-transfer.md) recommends phone direct entry and PC/VR travel; this is not yet an accepted mode change.
 
 The interaction design is still a draft, not an implemented room. A script can
 describe a decision without specifying how a person discovers or performs it.
@@ -173,8 +173,9 @@ episode. Only choose literal one-instance pooling after the visibility test.
 | Target | Present in inspected code | Next implementation / acceptance evidence |
 |---|---|---|
 | Laptop, keyboard and trackpad | Preview walking, turn/tilt keys, view buttons, eye-height slider; held keys clear on blur | Provide keyboard and pointer equivalents for inspecting/rotating/confirming, with readable focus and pause. Looking or moving must not also accept a deal. Check the actual trackpad. |
-| Phone browser | Preview HTML view buttons and height slider; touch-look and motion disabled | Provide touch navigation and large separated controls, without compulsory device motion. Preserve progress across interruptions; essential information has text when sound is unavailable. Test both orientations and actual browsers. |
+| Phone browser | Preview HTML view buttons and height slider; touch-look and motion disabled | Direct experience entry is the current recommendation; corridor navigation is a separate candidate. Test touch/cancellation, rotation, interruptions and actual stimulus conditions. |
 | Quest 3 / WebXR | Main laboratory has XR UI, controllers and recenter; preview XR UI is disabled | Integrate the route with controller selection and accessible near/distant controls; support seated reach, recenter and pause. Head movement is not eye tracking. Verify both-eye appearance and performance in Quest. |
+| TV | No verified TV profile | Distinguish a PC display, casting and the TV's own browser. Model/year, remote focus, readability and controls require actual checks; universal support is not established. |
 
 W3C WebXR defines secure-context access and user-initiated immersive entry;
 capability detection alone cannot guarantee session creation. Session visibility

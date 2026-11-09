@@ -36,6 +36,10 @@ main remains the published branch; this work is not merged or released.
 
 ## Current planning step and next dependency
 
+[The device-transfer study](research/corridor-device-transfer.md) inspects existing
+website reuse, proposed phone/PC/Quest/TV profiles and new building/painting media.
+Recommendations are not implemented modes or new owner acceptances.
+
 [The connected interaction map](research/corridor-interaction-map.md) adds details,
 relationships, seven routes and candidate N variants to the existing blueprint.
 It preserves a concise working digest, originals and the approved foundation;
