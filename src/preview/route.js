@@ -1,5 +1,5 @@
 import { inside } from '../engine/locomotion-math.js';
-import { HALL, ROOM, OPEN_LEAF } from './layout.js';
+import { HALL, ROOM, OPEN_LEAF, BOOK_STAND } from './layout.js';
 
 const steps = 8;
 const rise = 0.18;
@@ -57,6 +57,9 @@ function floorHeight(x, z, previousY, doorOpen) {
     minZ: OPEN_LEAF.minZ - MARGIN, maxZ: OPEN_LEAF.maxZ + MARGIN })) return null;
 
   if (doorOpen && z > hall.maxZ - MARGIN) {
+    const b = BOOK_STAND;
+    if (inside(x, z, { minX: b.x - b.width / 2 - MARGIN, maxX: b.x + b.width / 2 + MARGIN,
+      minZ: b.z - b.depth / 2 - MARGIN, maxZ: b.z + b.depth / 2 + MARGIN })) return null;
     // A narrow overlapping passage joins the two areas (locomotion-math.js).
     // The rest of the dividing wall stays solid from either side.
     const passage = Math.abs(x - ROOM.doorX) <= ROOM.clearWidth / 2 - MARGIN;

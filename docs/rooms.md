@@ -3,6 +3,9 @@
 The lifecycle below describes the existing `01-control` integration. The target
 science/philosophy/deal types and device checks are in [the room plan](research/corridor-room-plan.md).
 Shared lifecycle and independent review stay; a new type may need a tested adapter.
+The first fictional deal uses the existing desktop preview's door/camera lifecycle;
+its bounded adapter and persistence are specified in [the book slice](rooms/book-deal-preview.md).
+It does not inherit room 01's measured trials, consent or restart semantics.
 
 A room is a folder `src/rooms/NN-name/` and stands behind a door of the corridor. The app holds
 the scene, the player (the rig, the camera, both controllers) and the corridor with every door for

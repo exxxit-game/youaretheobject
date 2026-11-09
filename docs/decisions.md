@@ -2,6 +2,11 @@
 
 Three lines each: what, why, consequence. No diary.
 
+## First book slice
+The owner selected the last-copy Chase deal and 100/250/500/1000 trial offers; pictures remain in the corridor.
+Use the existing preview lifecycle with one stable episode record and same-origin write lock; refusal and unpaid exit differ.
+See docs/rooms/book-deal-preview.md; original typography/charred remains are provisional, not final visual acceptance or a released room.
+
 ## Local stairwell study
 The owner's N floor, continued ascent/descent and connected discoveries follow [the current design and inventory](research/perception-corridor.md).
 Use the existing renderer and shared geometry to check sightlines against recordings. The ordinary/repeated floor number is a diagnostic inside the wider walk.

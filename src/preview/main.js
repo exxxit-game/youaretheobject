@@ -2,8 +2,9 @@ import { FONT } from '../engine/panel.js';
 import { ANCHORS, PLAN, floorNumber, recenter, walk } from './route.js';
 import { T } from './texts.ru.js';
 import { buildWorld } from './world.js';
-import { ROOM, nearDoor, inRoom, beginVisit, returnVisit } from './layout.js';
+import { ROOM, BOOK_STAND, nearDoor, inRoom, beginVisit, returnVisit } from './layout.js';
 import { doorHTML } from '../engine/door.js';
+import { mountDeal } from './deal-view.js';
 import '../engine/shapes.js';
 import '../engine/decal.js';
 import '../engine/merge-static.js';
@@ -23,10 +24,11 @@ const buttons = document.querySelector('#preview-views');
 const eye = document.querySelector('#preview-eye');
 const eyeValue = document.querySelector('#preview-eye-value');
 const doorButton = document.querySelector('#preview-door-action');
+const bookLook = document.querySelector('#preview-book-look');
 const pressed = new Set();
 let position = ANCHORS.start;
 let eyeHeight = Number(eye.value);
-let visit = null, leaf;
+let visit = null, leaf, deal;
 
 document.title = T.title;
 document.querySelector('#preview-title').textContent = T.title;
@@ -47,12 +49,14 @@ function applyPose(anchor) {
 }
 
 function place(anchor) {
+  deal?.leave();
   visit = null;
   position = recenter({ ...anchor, floor: anchor === ANCHORS.start ? 0 : position.floor ?? 0 });
   applyPose({ yaw: THREE.MathUtils.degToRad(anchor.yaw), pitch: THREE.MathUtils.degToRad(anchor.pitch) });
 }
 
 function useDoor() {
+  deal?.leave();
   if (visit) {
     const restored = returnVisit(visit);
     visit = null;
@@ -74,6 +78,8 @@ function updateDoor() {
   if (doorButton.hidden !== hidden) doorButton.hidden = hidden;
   if (doorButton.textContent !== label) doorButton.textContent = label;
   if (hint.textContent !== text) hint.textContent = text;
+  bookLook.hidden = !visit || !inRoom(position);
+  deal?.update();
 }
 
 function drawSigns() {
@@ -142,8 +148,17 @@ function start() {
     document.querySelector('#preview-world').append(frame);
   }
   leaf = document.querySelector('#preview-door-leaf-0');
+  deal = mountDeal(document.querySelector('#preview-world').object3D,
+    () => !!visit && inRoom(position), () => !!visit, () => pressed.clear());
   place(ANCHORS.start);
   doorButton.addEventListener('click', useDoor);
+  bookLook.textContent = T.inspectBook;
+  bookLook.addEventListener('click', () => {
+    if (!visit || !inRoom(position)) return;
+    const dx = BOOK_STAND.x - position.x, dz = BOOK_STAND.z - position.z;
+    applyPose({ yaw: Math.atan2(-dx, -dz),
+      pitch: Math.atan2(1.35 - position.y - eyeHeight, Math.hypot(dx, dz)) });
+  });
   for (const [id, anchor] of Object.entries(ANCHORS)) {
     const button = document.createElement('button');
     button.type = 'button';
@@ -184,7 +199,7 @@ function start() {
 async function ready() {
   try {
     // Match the main entry point: draw the numbered plates in the vendored font.
-    const font = document.fonts.load('600 16px Inter', '0123456789-').catch(() => []);
+    const font = document.fonts.load('600 16px Inter', '0123456789-' + T.bookAuthor + T.bookTitle.join('')).catch(() => []);
     await Promise.race([font, new Promise(resolve => setTimeout(resolve, 6000))]);
     start();
   } catch (error) {

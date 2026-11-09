@@ -14,9 +14,22 @@
     <div class="preview-title">
       <h1 id="preview-title"></h1>
       <p id="preview-hint" role="status"></p>
+      <p id="preview-balance"></p>
     </div>
     <div class="preview-controls">
-      <div class="preview-buttons"><button id="preview-door-action" type="button" hidden></button></div>
+      <section id="preview-deal" class="preview-deal" hidden aria-labelledby="preview-deal-prompt">
+        <p id="preview-deal-prompt"></p>
+        <p id="preview-deal-result" role="status"></p>
+        <div class="preview-buttons">
+          <button id="preview-deal-accept" type="button"></button>
+          <button id="preview-deal-refuse" type="button"></button>
+          <button id="preview-deal-bargain" type="button"></button>
+        </div>
+      </section>
+      <div class="preview-buttons">
+        <button id="preview-book-look" type="button" hidden></button>
+        <button id="preview-door-action" type="button" hidden></button>
+      </div>
       <label class="preview-eye">
         <span id="preview-eye-label"></span>
         <input id="preview-eye" type="range" min="1.1" max="1.9" step="0.05" value="1.6" aria-labelledby="preview-eye-label">

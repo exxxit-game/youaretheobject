@@ -1216,8 +1216,8 @@
       },
       "expected": "present",
       "purpose": "One subordinate room/device plan under the approved foundation; distinguish owner decisions, candidates and acceptance.",
-      "reading": "Owner clarification, current code and old-site reuse checked;9November adds full room interaction, device/context differences and primary design/accessibility sources.",
-      "note": "Room cycle and picture-rotation probe are proposals, not implemented or accepted. B09 dependency checks completed; separate B12 capture scope remains open."
+      "reading": "Current foundation, owner book/price replies, code/source reviews and single-record persistence; pictures remain in corridor.",
+      "note": "Owner selected the book deal first and trial offers100/250/500/1000. Desktop candidate implemented; checks and visual denial scoped separately. B12 remains open for capture."
     },
     {
       "id": "corridor-room-reuse-checks",
@@ -1364,7 +1364,11 @@
       "id": "corridor-cinema-library",
       "title": "Кино: полная коллекция Кинориума, исходный замысел и сценарные связи",
       "kind": "source-catalogue",
-      "topics": ["purpose", "memory", "building"],
+      "topics": [
+        "purpose",
+        "memory",
+        "building"
+      ],
       "location": {
         "root": "motionStudy",
         "path": "cinema-library-2026-11-09/atlas.html"
@@ -1379,7 +1383,10 @@
       "id": "charles-bukowski-author",
       "title": "Чарльз Буковски / Charles Bukowski — автор для сценарного исследования",
       "kind": "author-reference",
-      "topics": ["purpose", "memory"],
+      "topics": [
+        "purpose",
+        "memory"
+      ],
       "location": {
         "root": "motionStudy",
         "path": "author-charles-bukowski-2026-11-09.json"
@@ -1390,6 +1397,42 @@
       "note": "Добавлен автор по просьбе владельца. Хлеб с ветчиной / Ham on Rye и Почтамт / Post Office — отправные названия; общего тезиса обо всех книгах и доказанного влияния игры на жизнь нет.",
       "source": "https://www.huntington.org/watch-read-listen/verso/charles-bukowski-100",
       "curated": true
+    },
+    {
+      "id": "book-deal-preview",
+      "title": "Первая сделка с книгой: состояние, торг и возврат",
+      "kind": "implementation-spec",
+      "topics": [
+        "purpose",
+        "memory",
+        "building"
+      ],
+      "location": {
+        "root": "repo",
+        "path": "docs/rooms/book-deal-preview.md"
+      },
+      "expected": "present",
+      "purpose": "Связать выбранный сюжет с действием, видимым последствием и одной выплатой.",
+      "reading": "Правила владельца, код и источники хранения прочитаны; независимые ограниченные проверки получены.",
+      "note": "Кандидат desktop. Рендер, принятие, телефон и Quest не подтверждены."
+    },
+    {
+      "id": "owner-stair-gap-20261109",
+      "title": "Новые фото: просвет между лестничными маршами",
+      "kind": "asset-record",
+      "topics": [
+        "building",
+        "2d3d",
+        "memory"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "stair-gap-2026-11-09/sources.json"
+      },
+      "expected": "present",
+      "purpose": "Проверять вид вверх/вниз и взаимное расположение кромок и перил.",
+      "reading": "Три подходящих фото найдены помощником; первое отдельно просмотрено ведущим.",
+      "note": "Размер16см относится к модели, не к замеру; замечание детали человеком не доказано."
     }
   ]
 }

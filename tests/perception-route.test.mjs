@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import './book-deal.test.mjs';
 import { ANCHORS, PLAN, floorNumber, upperNumber, walk } from '../src/preview/route.js';
 import { ROOM, DOORS, OPEN_LEAF, nearDoor, inRoom, beginVisit, returnVisit } from '../src/preview/layout.js';
 

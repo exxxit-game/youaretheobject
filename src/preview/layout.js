@@ -27,6 +27,10 @@ export function nearDoor(p) {
 export const inRoom = p => p.z > ROOM.minZ + 0.14 &&
   p.x >= ROOM.minX && p.x <= ROOM.maxX && p.z <= ROOM.maxZ;
 
+export const BOOK_STAND = {
+  x: ROOM.maxX - 0.43, z: ROOM.minZ + 1.9, width: 0.48, depth: 0.68
+};
+
 export function beginVisit(position, yaw, pitch) {
   if (!nearDoor(position) || !Number.isFinite(yaw) || !Number.isFinite(pitch)) return null;
   return { position: { ...position }, yaw, pitch };

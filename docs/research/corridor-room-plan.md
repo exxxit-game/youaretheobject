@@ -53,18 +53,18 @@ door-lock proposal. The paper-or-cross image is explicitly undefined. The catalo
 entry `corridor-cinema-library` resolves the fresh private film index, source cards
 and bounded research assignment; an indexed title is not a studied story.
 
-## Proposed first connected route
+## First connected slice
 
-This is a bounded proposal, not approval of exact room content or a new scene.
-Guiding question: did the object change, the viewing conditions, or my explanation?
+The owner selected the book deal as the first room, superseding the earlier
+science-first route proposal. Pictures remain part of the corridor's own play.
+The trial ladder is100,250,500,1000, with three voluntary raises and a finite cap.
 
-1. Leave the ordinary door on N; follow the simple request to go up one floor.
-   One reachable composition changes its reading through movement; return remains possible.
-2. Enter one scientific room, vary one condition, compare and repeat.
-3. Return to the recognisable corridor; the same details can now be re-examined.
-4. Enter one philosophical room and compare two accounts of the same object.
-5. Return and continue. The deal branch and checkpoint are a later connected slice,
-   retained in the foundation, not silently removed from the game.
+1. Open the nearby door and enter the existing small room.
+2. Inspect the last-copy premise; accept the exact act/price, refuse or bargain.
+3. Observe the intact book or charred result and the recorded fictional balance.
+4. Leave and re-enter, including after reload; retain quote/decision/payment.
+5. Later connect an unpaid observation and purposeful corridor return. Neither
+   the full economy/checkpoint nor all proposed chapter scenes are built at once.
 
 Keep one discoverable main action at first. Details support connected observations;
 additional controls, decoration and simultaneous effects must justify their cost.
@@ -121,12 +121,12 @@ A fictional deal records the confirmed action and payout once; unfinished viewin
 or price discussion is not consent. A philosophical comparison need not award a
 correctness score. Save meaningful transitions, not only an unload callback.
 
-Proposed first interaction probe: the already drafted picture rotation. Enter,
-inspect one image, rotate it and reverse the change, compare, leave and return.
-Keep a visible control equivalent to the spatial handle; no fast precision input
-is needed. State whether its orientation resumes and provide an explicit reset.
-The proposed outcome is a discoverable change and comparison, not mandatory face
-recognition. This tests a room cycle, not the whole chapter, economy or physiology.
+The selected first interaction is the book deal; picture rotation is no longer
+the proposed first room. Its persistent choice differs from a reversible viewing
+condition. The bounded desktop adapter is in docs/rooms/book-deal-preview.md.
+The new stair photos support checking the narrow inter-flight void and views up/down.
+Floor/ceiling reversal is a later composition idea, not implemented locomotion.
+An element in the camera view does not establish that a person noticed it.
 
 The later script chapter is a candidate: cat relationships and reconciliation fit
 the purpose, but its eleven scenes are not the next mandatory build scope. Its quiet
@@ -224,7 +224,7 @@ separately. A screenshot or correct geometry does not establish a human illusion
    integrate and verify Quest. Early bounded compatibility probes may precede full
    content work when they resolve a dependency; prepare them before asking for headset use.
 5. Owner sees a functioning slice and decides acceptance. Expand one room or one
-   relationship at a time; add the deal/checkpoint slice with its own state tests.
+   relationship at a time; the later checkpoint needs its own state tests.
 
 For each slice require a complete enter/action/compare/stop/return path, truthful
 source explanation, repeat/late-input and reset checks, exact-version CI, applicable
@@ -246,8 +246,8 @@ unbounded positive and negative indices. This does not require that many meshes.
 The first door may contain a common introductory question sequence; reopening the
 same door with variants is a possible later extension. These details remain drafts.
 Learning gives no money; fictional harmful/regressive deals pay. Refusal stays
-valid; bargaining is voluntary. Hesitation is not a moral diagnosis. Burning a book
-and harming animals are draft text prompts, not approved new interactions.
+valid; bargaining is voluntary. Hesitation is not a moral diagnosis. The owner subsequently
+selected the book deal for the first room; other harm prompts remain drafts.
 A previously harmed character who cannot later help is a proposed consequence.
 The learning-path outcome is an undefined placeholder; the verbatim word forms
 are retained in the owner-route-clarification source record in the catalogue.
