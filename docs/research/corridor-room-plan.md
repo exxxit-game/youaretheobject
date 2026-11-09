@@ -28,6 +28,15 @@ answers do not earn money by default. Zero balance gives no bills, a small one
 few bills; a very large pile can bury the character and require restart. Exact
 thresholds, denominations, prompts and reset rules remain to be designed.
 
+Owner staging clarification, 9 November: a visible ceiling opening or pipe supplies
+the finite earned payout into an ordinary small room; its exact form is undecided.
+The dangerous branch moves from an appealing money shower to accumulation at the
+feet, growing concern and the discovery that earlier choices removed the exit.
+Specify that causal event; a high balance alone must not silently lock a door.
+Zero/small payouts stay nonlethal and lead toward the owner's still-undefined bonus.
+Denominations, pile volume, delivery rate, early exit/stop rules and the older
+helper proposal still need to fit this staging. No money physics is implemented.
+
 ## Proposed first connected route
 
 This is a bounded proposal, not approval of exact room content or a new scene.
