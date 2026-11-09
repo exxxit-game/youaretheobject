@@ -37,6 +37,15 @@ Zero/small payouts stay nonlethal and lead toward the owner's still-undefined bo
 Denominations, pile volume, delivery rate, early exit/stop rules and the older
 helper proposal still need to fit this staging. No money physics is implemented.
 
+The owner agrees with the three-action structure: harm for a stated reward,
+walk away with the balance unchanged, or actively help by relinquishing it.
+Later encounters can change direction within the same first attempt. A completed
+action cannot pay twice; a distinct authored follow-up can still offer a new choice.
+Keep earlier consequences; helping does not erase harm or fix all later choices.
+Balance means considering context and consequences, not requiring equal harm/help.
+The catalogue's `charles-bukowski-author` card is a literary lead for this work;
+its archival/publisher summaries are read, the underlying books are not yet read.
+
 ## Proposed first connected route
 
 This is a bounded proposal, not approval of exact room content or a new scene.
