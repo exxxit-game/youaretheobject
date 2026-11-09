@@ -37,8 +37,10 @@ main remains the published branch; this work is not merged or released.
 ## Current planning step and next dependency
 
 [The scenography study](research/corridor-scenography.md) connects theatre, found
-materials and light to the existing blueprint:141 supplied files,26 source records
-and a functional book sheet. Artistic views and exact staging remain to prepare.
+materials and light to the existing blueprint. The supplied-file collection now
+joins288files/285copies in16folders;23 additional screen/art source cards are
+linked from the same map. Pinterest expansion remains partial. The book's artistic
+views and exact staging remain to prepare; the screen room is only a proposal.
 
 [The device-transfer study](research/corridor-device-transfer.md) inspects existing
 website reuse, proposed phone/PC/Quest/TV profiles and new building/painting media.

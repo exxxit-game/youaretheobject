@@ -23,8 +23,48 @@ The detailed Russian study, source cards, gallery and functional sheet are under
 All nine contact sheets were visually screened by the lead. Group labels describe
 appearance; they do not establish artists, dates, rights or optical mechanisms.
 Symbolic/numerological diagrams remain visual references, not scientific laws.
-One Mere Phantoms pin was saved in the existing Pinterest profile; the fresh
-interface reported the saved state. This is not 141 new Pinterest saves.
+The initial study saved one Mere Phantoms pin in the existing Pinterest profile.
+That dated result is separate from the later board and supplied-file collection.
+
+## Supplied-file collection and screen-room proposal
+
+The same map and blueprint now link `art-collection-2026-11-09/collection.html`
+under the existing F collection. It joins all 288 supplied files: 50 paintings,
+141 theatre references and 97 later images. There are 285 exact-byte canonical
+copies in 16 folders; three duplicate IDs remain searchable and originals are
+unchanged. One primary purpose and surface/material/action tags avoid duplicating
+files across categories. Captions do not establish attribution, date or mechanism.
+
+Independent review found missing alias search, 79 untagged cards and six misplaced
+contemporary/symbolic images. These were corrected and rechecked. All 288 originals
+and 285 copies passed size/hash comparison; the six moved copies were rechecked.
+The public Pinterest board is named only "Theatres and materials" in Russian, as
+requested. Its interface and saved screenshot show 31 pins and 16 sections:
+30 saves by the lead and one additional owner pin. Several online sections remain
+empty; this is not completion of worldwide discovery or 285 new Pinterest saves.
+
+`screen-room.html` / `.json` add 12 technical and 11 artistic source cards using
+22 original URLs. Reading boundaries are explicit, including helper-only Sony
+reading and the lead's failed retrieval. Seventeen local responses are retained;
+five URLs returned HTTP403 twice, affecting six cards because two use SFMOMA.
+B21 preserves addresses and failures. Downloads are not full reading.
+
+The owner's six-surface and gently curved-screen ideas are research proposals.
+[The museum's Cinerama account](https://blog.scienceandmediamuseum.org.uk/cinerama-in-the-uk-the-history-of-3-strip-cinema-in-pictureville-cinema/)
+supports the cinema analogy. [WebXR Layers](https://www.w3.org/TR/webxrlayers-1/)
+defines cylinder width as radius times angle in radians; the draft does not prove
+device support. Arc, chord, sag and aspect calculations were cross-checked using
+an explicitly hypothetical example, not new base dimensions. The PNG is an
+explanatory top-view diagram, not a rendered room or approved artistic sketch.
+
+Candidate: retain the nearby book, stand and exit in 3D; use one video source for
+the expensive distant background. Six surfaces need not mean six independent
+videos. Curvature changes coverage, not the recorded objects' hidden sides.
+[Meta's video guidance](https://developers.meta.com/vr/documentation/web/browser-video/)
+supports investigating one high-quality stream, not a performance guarantee.
+Compare the same clip on a plane and cylinder with positional tracking retained,
+reachable eye positions, stereo, occlusion, playback/audio/return and device frame
+evidence. No screen room, playback test or device acceptance is implemented here.
 
 ## What the sources support
 
