@@ -201,11 +201,11 @@ is supporting material, not the game's objective or a dependency of this layout.
 Tonight's lighting and capture conditions are unverified. Continue the desktop
 path now; return to the prepared capture branch when it resolves an actual need.
 
-The current bounded technical slice is one real opening and adjacent empty room:
-approach, open, walk inside, inspect, walk back or restore the opening pose, then
+The earlier door-only scaffold now hosts the selected first book deal:
+approach, open, inspect, bargain/accept/refuse/leave, see the result, return, then
 continue upstairs/downstairs. Reuse engine/door.js and the existing route controller;
 do not put a second movement controller on the camera. Other doors remain closed.
-No new moral prompt, payment or philosophical answer is supplied by this scaffold.
+The book contract defines its fictional action/payment; this is not a general director.
 The room footprint is a design dimension. A later survey can replace it without
 changing door identity, logical floor, choices or the return contract.
 
@@ -240,8 +240,8 @@ independent reviews and real target-device observations. A missing effect is a v
 observation. Automated passes, owner approval and publication are separate states.
 No data collection, leaderboard, paid floors or store release is added by this plan.
 
-For the first room probe, observe whether a new player finds the action, can reverse
-it, locates the return, and recovers the chosen state after interruption/reload.
+For the first book probe, observe whether a new player understands the action and
+terminal decision, locates the return, and recovers the state after interruption/reload.
 Compare the intended action and consequence across devices, not identical gestures.
 Do not require reading the whole library to start a bounded probe; use the relevant
 source, assets and acceptance checks. Broader cinema work continues by experience
