@@ -1361,6 +1361,21 @@
       "curated": true
     },
     {
+      "id": "corridor-cinema-library",
+      "title": "Кино: полная коллекция Кинориума, исходный замысел и сценарные связи",
+      "kind": "source-catalogue",
+      "topics": ["purpose", "memory", "building"],
+      "location": {
+        "root": "motionStudy",
+        "path": "cinema-library-2026-11-09/atlas.html"
+      },
+      "expected": "present",
+      "purpose": "Единый поиск по свежей истории, оценкам и комментариям; отдельные карточки проверенных источников и ограниченная очередь киноисследования.",
+      "reading": "CSV сверены построчно с исходниками; сюжетное исследование отмечается по каждой карточке, отдельно от наличия записи в индексе.",
+      "note": "Местная личная коллекция, не опубликована. catalogue.json, research.json, import-check.json и research-brief.md лежат рядом. Старые выгрузки отдельно; неизвестный образ креста не расшифрован.",
+      "curated": true
+    },
+    {
       "id": "charles-bukowski-author",
       "title": "Чарльз Буковски / Charles Bukowski — автор для сценарного исследования",
       "kind": "author-reference",

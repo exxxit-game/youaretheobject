@@ -46,6 +46,13 @@ Balance means considering context and consequences, not requiring equal harm/hel
 The catalogue's `charles-bukowski-author` card is a literary lead for this work;
 its archival/publisher summaries are read, the underlying books are not yet read.
 
+The owner's collected messages clarify a small life from A to B, with ethical
+reflection as an authorial aim, not a demonstrated transfer to life outside play.
+The original bread/future-helper image remains a candidate alongside the later
+door-lock proposal. The paper-or-cross image is explicitly undefined. The catalogue
+entry `corridor-cinema-library` resolves the fresh private film index, source cards
+and bounded research assignment; an indexed title is not a studied story.
+
 ## Proposed first connected route
 
 This is a bounded proposal, not approval of exact room content or a new scene.
