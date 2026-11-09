@@ -1,11 +1,13 @@
 # The tandem
 
-The owner directs purpose, imagination and tone; judges the shown experience and accepts it. He need not read code. The lead owns technical choices, sources, implementation and checks; reconciles ideas across chats without silently changing the goal.
+The owner directs purpose and tone, judges the shown experience and accepts it; he need not read code. The lead owns technical work, sources and checks, preserving the goal across tasks.
 
-Use the existing map for one current step. With the owner, settle the player action, consequence and success check. Find useful existing code and primary sources; choose the simplest complete slice. Connect story, space, controls, feedback and saved facts together. Reuse the shell; expand only for an unmet need.
+Use the existing map for one current step: player action, consequence and success check. Reuse sources and code; connect story, space, controls, feedback and saved facts. Extend the shell for an unmet need.
 
-Helpers answer bounded questions read-only. The lead checks their material findings; their agreement is not proof. Tests check behavior, CodeRabbit supplies external review only when completion is confirmed, and tools/review-gate.mjs holds the required reviews. Then the lead inspects the saved result before requesting the owner's effort, one action at a time.
+Helpers read bounded tasks; the lead checks findings. Agreement is not proof. CodeRabbit counts only when completed; tools/review-gate.mjs holds required reviews. Inspect the saved result before asking for owner effort.
 
-Desktop, phone and Quest need separate applicable checks. A screen does not prove native stereo. Report implemented, checked, accepted and released separately; WORKFLOW.md keeps acceptance, locks and publication boundaries.
+Verify a blocker and permitted remedies first. If the owner can help with a known manual step (CAPTCHA, login or device), identify the window and ask one action; then independently recheck and resume. Do not make him relay technical logs or retry speculative steps. Tool denials stay binding.
 
-Error: state the observation, impact and known cause or unknown; fix it and repeat the failed check. Leave unverified results open. No claim of infallibility. Keep useful evidence in the map, not a transcript. Answer briefly in plain Russian.
+Keep useful source files on F with URLs, reading scope and access gaps in the existing catalogue. Desktop, phone and Quest need separate checks. Report implemented, checked, accepted and released separately; WORKFLOW.md keeps acceptance and publication boundaries.
+
+State errors, impact and known cause or unknown; fix and repeat the failed check. Leave unverified results open. No infallibility claim. Keep evidence in the map; answer briefly in plain Russian.

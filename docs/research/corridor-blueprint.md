@@ -67,6 +67,16 @@ The lift uses the old 1.1684 m opening; cabin, shaft and travel are unspecified.
 The old sign artwork is reusable, but a proposed smaller/lower panel is needed
 for the new start under the tested framing assumptions.
 
+The inherited 0.18/0.38 pair gives `2h+b=0.74 m`, outside the saved VBG guide's
+0.60-0.66 m range. It is not yet a professionally justified stair proportion.
+Current code has eight rises/boxes per flight, seven separate goings between the
+first and last rise (2.66 m), and a final 0.38 m strip at landing height. The allocated
+flight strip remains 3.04 m; this does not widen the entire landing by 0.38 m.
+Demina/Elchishcheva, section 5.4 and figure 5.6 (PDF 54-55), were read and the
+figure visually inspected after the owner saved the complete 106-page PDF.
+Their example distinguishes ten rises from nine goings. Do not silently shorten
+our model: resolve boundaries and a consistent section before recalculating it.
+
 ## Calculations that expose design work
 
 The current preview camera uses vertical FOV 62 degrees and zoom 1. At aspect
@@ -121,3 +131,27 @@ top-down plan alone do not prove passage. B16 still blocks automatic game viewin
 no alternate surface, port or settings workaround was attempted. No phone/Quest
 acceptance, owner acceptance, code geometry change, moral-effect proof or release.
 The first book deal and its existing receipts remain unchanged and separate.
+
+## Whole-space research, 9 November 2026
+
+The same blueprint page links `revision-02/research.html` and its JSON ledger:
+45 bounded source records, six design questions and six connected surface groups.
+Architecture, multi-viewpoint construction, image/material/light, attention, route
+memory and sound are separate mechanisms. Reading scope distinguishes the lead,
+bounded helpers, unviewed illustrations and unavailable local copies. Existing
+Glennerster 2006, Suma 2011, Klatzky 1998 and McFadyen 2021 entries are reused.
+The collection is a targeted multilingual inquiry, not exhaustive world coverage.
+
+The lead checked Doerschner/Pont 2026 methods, results and 3D limitation: printed
+images on a corridor wall under changing-colour lamps are relevant, but their
+reported appearance changes do not establish our screen/Quest result. The two
+2025/2026 texts contain a colour-model inconsistency; the helper verified the
+2025 PDF typography. No official erratum or complete numerical audit is claimed.
+Do not import that model blindly. Likewise, head direction is not gaze or notice,
+and a doorway does not guarantee forgetting. See the ledger for primary links,
+methods, limitations, local files and the surface-by-surface verification plan.
+
+The owner selected Chrome-only Browsec. System proxy settings were absent and a
+direct TSTU request still timed out. Manual download solved file availability,
+not that network failure. Browser automation separately stopped because it could
+not confidently identify the current URL; do not route around this restriction.

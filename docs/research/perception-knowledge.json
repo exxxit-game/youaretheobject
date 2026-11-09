@@ -1489,6 +1489,780 @@
       "purpose": "Связать новые примеры владельца с действием, пространством и существующими вопросами/опытами.",
       "reading": "Описание производителя Fear Factor, авторская страница и карточка книги Primitive Technology; не все выпуски или полный текст книги.",
       "note": "Драматургические ориентиры. Не научное доказательство исправления души; животная программа и платное шоу опознаны не полностью."
+    },
+    {
+      "id": "corridor-whole-space-research",
+      "title": "Основа 0: архитектура, все поверхности, свет, взгляд, маршрут и звук",
+      "kind": "source-ledger",
+      "topics": [
+        "building",
+        "2d3d",
+        "memory",
+        "purpose"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research.html"
+      },
+      "expected": "present",
+      "purpose": "Связать размеры и условия наблюдения всей среды с одной целью и повторно находить первичные источники.",
+      "reading": "45 записей; точные разделы ведущего и помощников, неполученные файлы и непросмотренные изображения разделены в каждой записи.",
+      "note": "Целевой подбор на шести языках. Механизмы и переносы в PC/телефон/Quest ещё требуют проверки; не утверждённая архитектура и не полный мировой обзор."
+    },
+    {
+      "id": "floor0-source:A01",
+      "title": "Витрувий, Об архитектуре III.4.4–5",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research.html"
+      },
+      "expected": "present",
+      "source": "https://lexundria.com/vitr/3.4.5/cf",
+      "purpose": "Историческая связь архитектуры и зрительного впечатления.",
+      "reading": "Ведущий прочитал оба раздела в двух переводах.",
+      "note": "Автор обсуждает и размеры храмовых ступеней, и зрительную поправку к стилобату. Нечётное число и храмовые размеры не выбирают нашу современную лестницу; это не экспериментальная проверка эффекта. Элементы: лестница, пол. Запись A01 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:A02",
+      "title": "Франсуа Блондель, Cours d’architecture, часть V, книга III",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research-sources/blondel-book5-stairs-671-702.pdf"
+      },
+      "expected": "present",
+      "source": "https://www.e-rara.ch/doi/10.3931/e-rara-4106",
+      "purpose": "Проверять не один размер, а связанные шаг, площадку, свет и подход.",
+      "reading": "Прочитаны главы IX–XIV, печатные 687–693; скан 693 просмотрен. Не весь труд.",
+      "note": "Связывает место лестницы, освещение, пропорции шага и масштабы здания; глава XIV формулирует правило двойной высоты плюс проступь в исторических единицах. Исторические единицы и суждения не заменяют современную эргономику. Другая скачанная глава 703–726 пока не прочитана. Элементы: лестница, свет, проход. Запись A02 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:A03",
+      "title": "VBG: Treppen – Stufenabmessungen und -gestaltung",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research-sources/vbg-stair-dimensions-2021.pdf"
+      },
+      "expected": "present",
+      "source": "https://www.vbg.de/cms/_Resources/Persistent/6/0/6/d/606dd904a6352b72055123c58e63db8986b1da2e/fi_trepp_stufen.pdf",
+      "purpose": "Пересмотреть унаследованную пару подъём/проступь; не объявлять её профессионально подобранной.",
+      "reading": "Обе страницы прочитаны; схема первой страницы просмотрена.",
+      "note": "Приведена связь a+2s=0,63±0,03 м; размеры и их равномерность рассматриваются вместе. Наши 0,18/0,38 дают 0,74 м. Руководство по реальным лестницам в своём контексте; не местный закон виртуальной игры и не доказательство удобства Quest. Элементы: лестница. Запись A03 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:A04",
+      "title": "Raumpilot Grundlagen — двухмаршевая лестница и свободный профиль",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research-sources/raumpilot-grundlagen-2016.pdf"
+      },
+      "expected": "present",
+      "source": "https://www.wuestenrot-stiftung.de/wp-content/uploads/2016/05/Raumpilot-Grundlagen.pdf",
+      "purpose": "Замкнуть один согласованный разрез двух соседних узлов; различать габарит, чистый проход и ограждение.",
+      "reading": "Ведущий просмотрел печатную 64 / PDF 66 в Chrome; затем прочитал локально печатные 56–62 и 64. Проверен выходной лист ©2012.",
+      "note": "Варианты A–D показывают зависимость нижнего сопряжения, площадки, смещения подступенков и поручня. Полезная ширина измеряется по стенам/поручням; проход ограничивают также лампы и балки. Нормативные ссылки в книге относятся к своему времени и юрисдикции. Книга не даёт готового смешанного обычного/зеркального узла. Элементы: лестница, перила, площадка, потолок. Запись A04 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:A05",
+      "title": "Lücking Produkthandbuch — план, разрез и развёртка",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research-sources/luecking-turned-stairs-2024.pdf"
+      },
+      "expected": "present",
+      "source": "https://www.luecking.de/wp-content/uploads/2024/01/Gewendelte-Treppen-24.pdf",
+      "purpose": "Разделить чистовой подъём и толщину коробов; считать отверстие и покрытия вместе.",
+      "reading": "Весь текст трёх страниц прочитан; ведущий и помощник просмотрели PDF 2 / печатную 89.",
+      "note": "В одном примере совместно размерены чистовые уровни, конструктивное пространство, покрытия, начало и конец лестницы и опоры. Забежная лестница другого производителя, а не наша обычная U-лестница; размеры не переносятся. Элементы: лестница, пол, перекрытие. Запись A05 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:A06",
+      "title": "Mauges Escaliers — пример с высотой 2880 мм",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research-sources/mauges-halfturn-example.pdf"
+      },
+      "expected": "present",
+      "source": "https://www.mauges-escaliers.fr/wp-content/uploads/2022/04/Demi-tour_sans_cloison_centrale_au_rdc.pdf",
+      "purpose": "Проверять проём и полный путь, не только совпадение 2,88 м.",
+      "reading": "Прочитан текст обеих страниц, ведущий просмотрел план первой.",
+      "note": "При 16×180=2880 отдельно заданы проём, плита и рассчитанный просвет. Одинаковая высота этажа не задаёт одинаковое пространство прохода. Забежная схема, не наш узел; заявленные 1997,5 мм не являются нашим просветом. Элементы: лестница, перекрытие. Запись A06 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:A07",
+      "title": "Дёмина, Ельчищева — Малоэтажное жилое здание, §5.4",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research-sources/tstu-demina-design-2010.pdf"
+      },
+      "expected": "present",
+      "source": "https://www.tstu.ru/book/elib/pdf/2010/demina.pdf",
+      "purpose": "Проверить определение верхней полосы в нашей модели: 8 коробов не следует автоматически называть 8 независимыми проступями между площадками.",
+      "reading": "Ведущий прочитал §5.4 и продолжение на PDF 54–55; рисунок 5.6 на PDF 54 отдельно отрисован и просмотрен. Проверены название, 2010 год и 106 страниц.",
+      "note": "В указанном примере последняя проступь включается в площадку: число отдельных проступей меньше числа подъёмов на один. Пример 10 подъёмов / 9 проступей при высоте этажа 3 м. Это не наши размеры. Границу восьмой плоской полосы в коде ещё требуется определить; нельзя молча сократить марш. Элементы: лестница, площадка. Запись A07 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:A08",
+      "title": "Suva — Sichere Treppen im Betrieb",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research.html"
+      },
+      "expected": "present",
+      "source": "https://www.suva.ch/de-ch/praevention/nach-branchen/baustellen-sicher-machen/sichere-treppen-fuer-sichere-betriebe",
+      "purpose": "Не смешивать разные назначения лестниц в одной таблице и не выбирать число из другого класса строений.",
+      "reading": "Прочитано описание обычных лестниц и отдельно раздел машинных лестниц.",
+      "note": "Соотношение шага, поручни, изменение направления и площадки связаны. Требования машинного доступа вынесены отдельно. Справочные размеры не становятся юридическими требованиями к игре или наблюдённым комфортом пользователя. Элементы: лестница, площадка. Запись A08 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:I01",
+      "title": "Шамбор — две реальные лестничные спирали",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research.html"
+      },
+      "expected": "present",
+      "source": "https://www.chambord.org/le-domaine/le-chateau-et-ses-abords/le-chateau/les-incontournables",
+      "purpose": "Использовать просвет как связь видимого места и реально доступного маршрута.",
+      "reading": "Ведущий и помощник прочитали официальное описание. PDF плана не скачался:403; схема не заявлена просмотренной.",
+      "note": "Разные пути позволяют видеть другого человека через центральное пространство, не встречаясь на том же марше. Это настоящая двойная спираль; не бесконечная лестница и не основание копировать её в маленький U-узел. Элементы: лестница, просвет, маршрут. Запись I01 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:I02",
+      "title": "Leandro Erlich — The Staircase",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research.html"
+      },
+      "expected": "present",
+      "source": "https://www.biennial.com/artists/leandro-erlich/",
+      "purpose": "Разделить реальную опору и признаки, по которым пространство читается как лестница.",
+      "reading": "Помощник прочитал описание организатора и отчёт музея. Повторная загрузка ведущим страницы организатора дала timeout.",
+      "note": "Привычный вертикальный вид лестничного колодца повёрнут в горизонтальное физически проходимое пространство. Это объёмная установка, не наклон камеры и не исследование реакции наших игроков. Открытая лицензия игровой модели не установлена. Элементы: лестница, стены, пол, перила. Запись I02 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:I03",
+      "title": "Erlich / ShowTex — Dalston House",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research.html"
+      },
+      "expected": "present",
+      "source": "https://www.showtex.cn/fr/projets/dalstonhouse",
+      "purpose": "Одна поверхность может получить другое пространственное чтение через согласованное отражение.",
+      "reading": "Ведущий и помощник прочитали описание изготовителя.",
+      "note": "Фасад лежит на полу; наклонное зеркало под45° создаёт вид вертикального фасада с людьми на нём. Не изменение тяжести. Для стерео нужны согласованные отражения обеих глазных камер, а не один общий заранее нарисованный кадр. Элементы: пол, стена, отражение, окно. Запись I03 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:I04",
+      "title": "M.C. Escher — Relativity, объяснение автора",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research.html"
+      },
+      "expected": "present",
+      "source": "https://www.escherinhetpaleis.nl/en/about-escher/escher-today/relativity-part-ii",
+      "purpose": "Сопоставлять привычные кромки и поверхности при смене прочтения.",
+      "reading": "Ведущий прочитал музейную статью с авторской цитатой, помощник — также карточку работы.",
+      "note": "Одни лестничные детали связывают три взаимно перпендикулярные системы ориентации изображения. Это графическая конструкция; не единый физически проходимый маршрут при одной тяжести. Авторские изображения защищены. Элементы: лестница, пол, потолок, проёмы. Запись I04 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:I05",
+      "title": "Olafur Eliasson — Your sun machine",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research.html"
+      },
+      "expected": "present",
+      "source": "https://olafureliasson.net/artwork/your-sun-machine-1997/",
+      "purpose": "Связать потолок, стены и пол одним прослеживаемым источником и его перекрытиями.",
+      "reading": "Ведущий и помощник прочитали описание студии.",
+      "note": "Дневной свет через круглое отверстие перемещается по полу и стенам реальной галереи. Перенос в игру, ускорение времени и параметры источника — новые авторские решения; переворот пола этим не доказан. Элементы: свет, потолок, стены, пол. Запись I05 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:P01",
+      "title": "Van Ee, van Dam, Erkelens — конфликт перспективы и стерео",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research.html"
+      },
+      "expected": "present",
+      "source": "https://repository.essex.ac.uk/17305/1/jov-2-9-2.pdf",
+      "purpose": "Два глаза не запрещают неоднозначность; нужна конкретная конструкция сигналов и проверка участников.",
+      "reading": "Помощник прочитал метод и результаты 599–604; ведущий сверил устройство и отбор, чтение полного текста доступно через web. Локальная загрузка пока timeout.",
+      "note": "7 наблюдателей, 5 отобраны по двустабильности; при конфликте перспективы и диспаратности возможны два воспринимаемых наклона. Неподвижная голова, анаглифическая сетка, обучение и отбор. Не свободная ходьба среди реальных ступеней. Элементы: узор, стена, плоскость. Запись P01 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:P03",
+      "title": "Suma et al. — Impossible Spaces",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d",
+        "memory"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research-sources/suma-impossible-spaces-2012.pdf"
+      },
+      "expected": "present",
+      "source": "https://illusioneering.cs.umn.edu/papers/suma-vr2012.pdf",
+      "purpose": "Переиспользовать пространство там, где меняемые части действительно закрыты от обеих глазных камер и доступного движения головы.",
+      "reading": "Методы и результаты прочитаны помощником; ведущий сверил557–560 и численные пороги в сохранённом PDF.",
+      "note": "В опыте1 19 человек ходили среди двух перекрывающихся комнат; смена пространства скрывалась стенами коридора. Пороги 50% ответов «невозможно» различались для фиксированных и расширяемых комнат. 55,57%/31,06% не гарантированные невидимые пределы для нашей игры. Лестничный просвет может раскрыть замену. Это не существующая suma-2011. Элементы: комната, дверь, маршрут, перекрытия. Запись P03 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:P04",
+      "title": "O’Regan et al. — Looking without seeing",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d",
+        "memory"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research-sources/oregan-change-blindness-2000.pdf"
+      },
+      "expected": "present",
+      "source": "https://www.cs.ubc.ca/~rensink/publications/download/VisCog-ODCR.pdf",
+      "purpose": "Разделить доступность взгляду, направление головы, фиксацию, замечание и понимание.",
+      "reading": "Помощник прочитал методы/результаты193–203; ведущий проверяет локальные фрагменты, PDF сохранён.",
+      "note": "Изменения фотографий во время моргания могли остаться незамеченными даже рядом с фиксацией глаза. Не универсальный процент пропусков в VR. Фото, моргание, eye tracker и поисковая задача отличаются от нашего опыта. Элементы: взгляд, картина, память. Запись P04 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:P05",
+      "title": "Hoffman & Singh — Salience of visual parts, опыт1",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research-sources/hoffman-singh-parts-1997.pdf"
+      },
+      "expected": "present",
+      "source": "https://sites.socsci.uci.edu/~ddhoff/1997-41-Salience.pdf",
+      "purpose": "Точная форма контура — проверяемая переменная рисунка и его нового прочтения.",
+      "reading": "Помощник прочитал34–35 и63–66; ведущий сверил метод, кодировку результатов и ограничения.",
+      "note": "У10 участников модификации контуров лестницы Шрёдера смещали доли ответов о границах ступеней при50мс показе на мониторе. 65,8/67,9/48,3% — доли кодированных ответов, не людей, увидевших потолок, и не время переворота; ходьба и отдельный стереорежим не исследовались. Элементы: узор, лестничный рисунок, пол, стена. Запись P05 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:P06",
+      "title": "Tsuinashi — The study of skewed staircase illusion",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research.html"
+      },
+      "expected": "present",
+      "source": "https://www.jstage.jst.go.jp/article/jjpsy1926/76/2/76_2_139/_pdf",
+      "purpose": "Очередь для чтения конкретной геометрии и режима наблюдения.",
+      "reading": "Найдена страница FREE ACCESS; полный PDF пока не получен: reset/неполная передача. Метод не прочитан.",
+      "note": "Пока только близкий по теме первичный источник. Нельзя восстанавливать метод и результат по одной аннотации. Элементы: лестничный рисунок. Запись P06 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:I11",
+      "title": "Exploratorium — Distorted Room",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d",
+        "memory"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research.html"
+      },
+      "expected": "present",
+      "source": "https://annex.exploratorium.edu/xref/exhibits/distorted_room.html",
+      "purpose": "Рассчитывать признаки глубины нескольких поверхностей вместе.",
+      "reading": "Помощник: вся карточка и небольшое фото. Ведущий отдельно сверил полный текст и непараллельность стен.",
+      "note": "Реальная искажённая форма комнаты и пропорции плитки, оконных рам и потолочных деталей согласованы для одного глаза у отверстия. Условия фиксированного одноглазного показа не подтверждают свободную прогулку двумя глазами. Элементы: пол, стены, потолок, окно. Запись I11 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:I12",
+      "title": "Palazzo Ducale — Camera Picta Мантеньи",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d",
+        "memory"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research.html"
+      },
+      "expected": "present",
+      "source": "https://mantovaducale.cultura.gov.it/camera-picta/",
+      "purpose": "Связать стены и потолок общей архитектурной композицией.",
+      "reading": "Помощник: содержательный музейный текст; изображение не получено.",
+      "note": "Роспись продолжает цоколь и пилястры в свод и ложный окулюс; лучший обзор указан из центра. Точные координаты глаз и стереоскопические условия не опубликованы. Элементы: стены, потолок. Запись I12 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:I13",
+      "title": "Trinità dei Monti — Emmanuel Maignan",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d",
+        "memory"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research.html"
+      },
+      "expected": "present",
+      "source": "https://trinitadeimonti.net/emmanuel-maignan/",
+      "purpose": "Смену содержания можно связывать с положением наблюдателя.",
+      "reading": "Помощник: биография и раздел анаморфозы, без просмотра изображений.",
+      "note": "Одна коридорная роспись читается как святой либо пейзаж при смене позиции. Страница не даёт готовых координат наблюдения или условий для двух глаз. Элементы: стены. Запись I13 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:I14",
+      "title": "Papathomas & Hughes — перспектива на неплоских поверхностях",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d",
+        "memory"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research.html"
+      },
+      "expected": "present",
+      "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6969905/",
+      "purpose": "Согласовать нарисованные признаки с физическими гранями и несколькими дистанциями.",
+      "reading": "Помощник: весь основной текст через PubMed/PMC, без отдельного просмотра иллюстраций.",
+      "note": "Разобраны обычная, ускоренная и обратная перспектива; движение может поддержать инверсию глубины либо раскрыть рельеф. Авторский теоретический разбор, не новый контролируемый опыт Quest. Элементы: стены, пол, потолок. Запись I14 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:I15",
+      "title": "FreelandBuck — Parallax Gap",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d",
+        "memory"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research.html"
+      },
+      "expected": "present",
+      "source": "https://freelandbuck.com/projects/parallax-gap",
+      "purpose": "Проектировать последовательность видов вдоль маршрута.",
+      "reading": "Помощник: авторский текст, план и разрез; ведущий отдельно сверил текст.",
+      "note": "Потолочная композиция разделена по слоям и нескольким позициям; промежуточные несовпадения входят в замысел. Ни одна позиция не объявлена правильной для всей конструкции; наш объём ещё не проверен. Элементы: потолок. Запись I15 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:I16",
+      "title": "Fabric Images — изготовление Parallax Gap",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d",
+        "memory"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research.html"
+      },
+      "expected": "present",
+      "source": "https://www.fabricimages.com/share/fi-case-studies/parallax-gap",
+      "purpose": "Отдельно учитывать рисунок, реальные слои и технологию сборки.",
+      "reading": "Помощник: производственный текст, материал и последовательность изготовления.",
+      "note": "Шесть перекрывающихся слоёв подготовлены в Rhino/Grasshopper, напечатаны, вырезаны и подвешены. Производственный пример не задаёт размеры или эффект нашего коридора. Элементы: потолок. Запись I16 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:I17",
+      "title": "Fotoreklame — анаморфоза Ernst Leitz Museum",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d",
+        "memory"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research.html"
+      },
+      "expected": "present",
+      "source": "https://www.fotoreklame.com/projekte/anamorphose-im-ernst-leitz-museum/",
+      "purpose": "Проверять собранное пространство контрольной проекцией, а не только замыслом.",
+      "reading": "Помощник: раздел Ausführung, общий и боковой виды.",
+      "note": "Обмер и 3D-модель дополнялись совмещением через веб-камеру с эталоном; линия обзора отмечена на полу. Линия обзора зависит от роста. Свободное движение и Quest не исследованы. Элементы: пол, стены, потолок. Запись I17 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:I18",
+      "title": "Met — Dan Graham, Double Exposure",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d",
+        "memory"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research.html"
+      },
+      "expected": "present",
+      "source": "https://www.metmuseum.org/exhibitions/listings/2014/dan-graham",
+      "purpose": "Разделить отражение, живой вид и изображение внутри оконной рамки.",
+      "reading": "Помощник: Exhibition Overview и Related Installation.",
+      "note": "Прозрачное отражающее стекло и прозрачная фотография пейзажа дают разные способы совместить сохранённый и текущий вид. Страница не задаёт точных параметров стекла и совпадения. Элементы: окно, стены. Запись I18 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:I19",
+      "title": "Mori — Erlich: Classroom и The View",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d",
+        "memory"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research.html"
+      },
+      "expected": "present",
+      "source": "https://www.mori.art.museum/en/news/2018/02/976/",
+      "purpose": "Проверять отражение, видимый объём и видеовид как разные механизмы.",
+      "reading": "Помощник: оба описания, фото Classroom; фото The View не просмотрено.",
+      "note": "Classroom совмещает отражение посетителя с другим помещением; The View использует видеосцены в оконном оформлении. Они по-разному отвечают на движение головы; Quest не проверен. Элементы: окно, стены. Запись I19 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:I20",
+      "title": "Mori — Erlich: Changing Rooms и Elevator",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d",
+        "memory"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research.html"
+      },
+      "expected": "present",
+      "source": "https://www.mori.art.museum/jp/news/2018/03/980/index.html",
+      "purpose": "Повторно использовать рамы, отдельно задавая настоящие соединения.",
+      "reading": "Помощник: JA и EN описания, фото Changing Rooms.",
+      "note": "Зеркала и соединённые помещения создают неоднозначные продолжения; лифт меняет прочтение внутреннего и наружного. Фотография не восстанавливает топологию; точный план не опубликован. Элементы: дверь, стены, лифт. Запись I20 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:R01",
+      "title": "Strickrodt et al. — неоднозначные ориентиры маршрута",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d",
+        "memory"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research.html"
+      },
+      "expected": "present",
+      "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4689859/",
+      "purpose": "Связать смену картин и табличек с последовательностью поворотов.",
+      "reading": "Помощник: методы, результаты и обсуждение обоих опытов.",
+      "note": "Повторяющиеся ориентиры хуже поддерживали разные действия; предшествующий поворот помогал различать похожие места. Два опыта с пассивным экранным маршрутом и обучением, не свободная прогулка Quest. Элементы: коридор, картины, таблички. Запись R01 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:R03",
+      "title": "Miyasike-daSilva & McIlroy — взгляд при подъёме по лестнице",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d",
+        "memory"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research.html"
+      },
+      "expected": "present",
+      "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3435292/",
+      "purpose": "Не путать отсутствие фиксации с отсутствием периферического использования информации.",
+      "reading": "Помощник: Methods, Results, Discussion и Conclusions.",
+      "note": "У 15 взрослых дополнительная зрительная задача сократила фиксации ступеней; подъём сохранялся и замедлялся. Подъём по семи настоящим ступеням со страховкой, не необычная виртуальная лестница. Элементы: ступени, площадка, перила. Запись R03 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:R06",
+      "title": "Rothe & Hußmann — Diegetic Cues in Cinematic VR",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d",
+        "memory"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research-sources/rothe-guiding-2018.pdf"
+      },
+      "expected": "present",
+      "source": "https://www.medien.ifi.lmu.de/pubdb/publications/pub/rothe2018AVRdiegeticguiding/rothe2018AVRdiegeticguiding.pdf",
+      "purpose": "Привлекать внимание к существующим предметам звуком и движением.",
+      "reading": "Помощник: авторский PDF 4–16, методы–ограничения.",
+      "note": "Звук и движущиеся объекты направляли голову зрителя, включая звук вне текущего поля зрения. Из 27 участников один исключён. Измерена голова, не глаза или понимание. Порядок сцен и свойства объектов смешаны. Элементы: звук, лампы, комната, дверь. Запись R06 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:R07",
+      "title": "McAnally & Martin — Sound Localization with Head Movement",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d",
+        "memory"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research-sources/mcanally-sound-2014.pdf"
+      },
+      "expected": "present",
+      "source": "https://www.frontiersin.org/journals/neuroscience/articles/10.3389/fnins.2014.00210/pdf",
+      "purpose": "Проверять неподвижный мировой источник при повороте головы.",
+      "reading": "Помощник: PDF 2–4, Methods, Results и таблицы.",
+      "note": "У восьми опытных слушателей больший поворот головы уменьшал путаницу впереди/сзади и ошибки высоты. Реальный динамик и безэховая камера; численные окна не являются порогами Web Audio или Quest. Элементы: звук, лифт, дверь, коридор. Запись R07 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:R08",
+      "title": "Burns — Circularity in Relative Pitch Judgments",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d",
+        "memory"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research-sources/burns-circularity-1981.pdf"
+      },
+      "expected": "present",
+      "source": "https://link.springer.com/content/pdf/10.3758/BF03204843.pdf",
+      "purpose": "Развивать повторяемый звуковой мотив подъёма отдельно от положения источника.",
+      "reading": "Помощник: печатные 468–470, PDF 2–4.",
+      "note": "Круговая высота в опыте с 21 слушателем зависела от задания и временных условий. Высота тона не означает движение лифта или источник сверху. Дискретный Shepard и непрерывный Risset различаются. Элементы: звук, лестница, лифт. Запись R08 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:L01",
+      "title": "Adelson — Perceptual Organization and Brightness",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research-sources/adelson-brightness-1993.pdf"
+      },
+      "expected": "present",
+      "source": "https://www.cns.nyu.edu/~david/courses/perceptionLab/Readings/Adelson1993.pdf",
+      "purpose": "Сравнивать рисунок поверхности с геометрическим контролем.",
+      "reading": "Помощник: все три страницы 2042–2044.",
+      "note": "Геометрия плиток и соединений границ меняла оценку яркости при сохранении оттенков и соседства. Шесть участников, калиброванный CRT, 0,5 с. Универсального размера плитки и свободного VR-показа нет. Элементы: пол, стены, потолок, дверь. Запись L01 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:L02",
+      "title": "Proulx — Shape from Shading in a New Light",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research.html"
+      },
+      "expected": "present",
+      "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4006223/",
+      "purpose": "Согласовать нарисованный рельеф с видимым направлением освещения.",
+      "reading": "Помощник: полный основной текст через PubMed/PMC.",
+      "note": "Направление внешнего света меняло прочтение выпуклости печатных дисков у части участников. Монитор намеренно исключён; индивидуальные различия не допускают правила обязательного света сверху. Элементы: стены, дверь, потолок. Запись L02 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:L03",
+      "title": "Kersten et al. — Moving Cast Shadows",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research-sources/kersten-shadows-1997.pdf"
+      },
+      "expected": "present",
+      "source": "https://www.cns.nyu.edu/csh/csh04/Articles/Kersten-etal-97.pdf",
+      "purpose": "Проверить отношение предмета и его тени, полутень и расстояние.",
+      "reading": "Помощник: разделы 2.1–3.2 и авторская страница демонстраций.",
+      "note": "Движение тени меняло воспринимаемую глубинную траекторию объекта при неизменной траектории изображения. Количественный опыт: 12 участников, монокулярно, подбородник, тёмная комната. Стерео и движение добавят подсказки. Элементы: пол, стены, перила, ручки, подоконник. Запись L03 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:L04",
+      "title": "Glass & Switkes — Pattern Recognition",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research-sources/glass-switkes-1976.pdf"
+      },
+      "expected": "present",
+      "source": "https://www.mcgill.ca/physiological-dynamics/sites/physiological-dynamics/files/glass-switkes-1976.pdf",
+      "purpose": "Сопоставить одинаковую геометрию и разный контраст с учётом углового размера.",
+      "reading": "Помощник: все шесть страниц 67–72. Ранее известная работа из коллекции.",
+      "note": "Смена знака контраста пар точек разрушала круговое прочтение при сохранении геометрических корреляций. Преимущественно демонстрационная работа. 4–5° и 7,5° не универсальные оптимальные параметры. Элементы: стены, дверь, окно. Запись L04 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:L05",
+      "title": "Fleming et al. — Illumination and Surface Reflectance",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research-sources/fleming-reflectance-2003.pdf"
+      },
+      "expected": "present",
+      "source": "https://cs.stanford.edu/people/rondror/papers/fleming_jov_03.pdf",
+      "purpose": "Проектировать блеск плитки и металла вместе с отражением окна и среды.",
+      "reading": "Помощник: разделы 2–3, 4.2.1, 5 и Appendix.",
+      "note": "Структура освещения влияла на оценку зеркальности и шероховатости изображений сфер. Четыре участника, модель Ward, калиброванный монитор. Параметры не равны roughness нашего движка. Элементы: пол, стены, перила, ручки, окно. Запись L05 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:L06",
+      "title": "Pont & Doerschner — Illusory Rotations",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research-sources/pont-doerschner-2025.pdf"
+      },
+      "expected": "present",
+      "source": "https://www.uni-giessen.de/de/fbz/fb06/psychologie/abt/allgemeine-psychologie/arbeitsgruppen/doerschner/publications/pdf/pontdoerschner2025josaa",
+      "purpose": "Связать цветной узор с переменой относительных контрастов.",
+      "reading": "Помощник: весь основной текст девяти страниц B124–B132.",
+      "note": "Смена цветного освещения печатных узоров вызывала ответы о направлении вращения. 21 участник, один исключён; монитор служил лампой для бумаги. Амплитуда движения и VR не измерены. Численная модель требует сверки. Элементы: стены, дверь, пол, потолок. Запись L06 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:L07",
+      "title": "Nishikawa & Kitaoka — Color Temperature and Illuminance",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research.html"
+      },
+      "expected": "present",
+      "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12925004/",
+      "purpose": "Рассматривать движение как зависимость узора и освещения.",
+      "reading": "Помощник: полный основной текст через PubMed/PMC.",
+      "note": "Два цветозависимых принта сравнивались при разных лампах, освещённости и адаптации. Десять участников, включая авторов; бумага и люминесцентные лампы. Кельвины и люксы не переносятся в экранную тёплую окраску. Элементы: стены, дверь, окно, лампы. Запись L07 в общем разделе исследования."
+    },
+    {
+      "id": "floor0-source:L08",
+      "title": "Doerschner & Pont — To Appear in a New Light",
+      "kind": "source-reading",
+      "topics": [
+        "building",
+        "2d3d"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/revision-02/research.html"
+      },
+      "expected": "present",
+      "source": "https://journals.sagepub.com/doi/10.1177/20416695261459972",
+      "purpose": "Объединить рисунок, изображённый рельеф и цветное освещение.",
+      "reading": "Помощник: полный текст; ведущий отдельно сверил Methods, Results, модель и ограничение 3D.",
+      "note": "В тёмном коридоре 22 посетителя описывали изменения вида 20 принтов под двумя меняющими цвет RGB-лампами. Качественная демонстрация на бумаге. 93,6% относится к любому замеченному изменению. Авторы оставляют перенос на объёмные сцены открытым. Элементы: стены, дверь, пол, потолок. Запись L08 в общем разделе исследования."
     }
   ]
 }

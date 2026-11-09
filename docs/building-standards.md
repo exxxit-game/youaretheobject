@@ -1,8 +1,10 @@
 # Building standards for the lab (walk this before building or changing any scene part)
 
-Every room and the corridor are a US university building of the late 1970s, built to trade
-standards. Values in inches and metres; sources below the table. A number
-marked "ours" is the game's rounding, with the reason.
+The table preserves the older late-1970s US university-lab reference and its component
+dimensions. It does not establish the later perception-corridor layout or measure the
+owner's stairwell. Follow docs/research/corridor-blueprint.md for the current floor-0
+proposal and unresolved joints. Values are in inches and metres; sources follow the
+table. "Ours" identifies a game rounding, with its reason.
 
 | Part | Standard | In the game |
 |---|---|---|
