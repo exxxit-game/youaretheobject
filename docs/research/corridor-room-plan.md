@@ -59,7 +59,7 @@ The owner selected the book deal as the first room, superseding the earlier
 science-first route proposal. Pictures remain part of the corridor's own play.
 The trial ladder is100,250,500,1000, with three voluntary raises and a finite cap.
 
-1. Open the nearby door and enter the existing small room.
+1. From the centre start, approach the first-room door and enter the existing small room.
 2. Inspect the last-copy premise; accept the exact act/price, refuse or bargain.
 3. Observe the intact book or charred result and the recorded fictional balance.
 4. Leave and re-enter, including after reload; retain quote/decision/payment.
@@ -253,6 +253,20 @@ The learning-path outcome is an undefined placeholder; the verbatim word forms
 are retained in the owner-route-clarification source record in the catalogue.
 Do not invent its meaning. The author's soul-test wording remains a metaphor,
 not a scientific assessment of a player.
+
+## Owner's spatial clarification, 9 November
+
+Start at the centre beside the stairs, facing the existing You are the object
+sign. Door labels follow a clockwise circuit, not row-major ordering. Door count
+and dimensions in B0-02 remain proposals; preserve the owner's requested symmetry.
+Include pictures, extinguisher, floor sign, lamps, window/sill, rails, baseboard
+and a closed future lift/call station. Do not add lift travel or a second episode.
+Floor 0 is the reference; N+ / N- may change geometry after renewed checks.
+Passive discoveries can use the corridor and stairs without a question or room.
+The book remains the first selected room. Its approach after the new centre start
+is not yet a completed tutorial. Stair swapping is a future candidate, not a
+retroactive explanation of the old drawing error. See corridor-blueprint.md for
+source footage, derived quantities, clearance findings and unresolved joints.
 
 ## Sources and limits
 

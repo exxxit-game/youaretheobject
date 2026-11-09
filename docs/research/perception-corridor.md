@@ -88,10 +88,10 @@ same perception corridor, preserving voluntary fictional deals and the cash
 checkpoint. History of human knowledge connects a gradual expansion, rather than
 requiring all history at once. Preserve the community name Society Zero.
 Desktop including trackpad, mobile and Quest are separate delivery/verification
-targets. [The room plan](corridor-room-plan.md) distinguishes these decisions from
-proposed first candidates, implementation and acceptance. Earlier single-protocol
-plans do not override this clarification. No new scene or release is approved by
-synchronising documents alone.
+targets. [The room plan](corridor-room-plan.md) records the later 9 November
+centre start, existing sign, clockwise labels and geometric N+ / N- variants.
+It separates owner decisions, proposed sizes, implementation and acceptance.
+Earlier single-protocol plans do not override these dated clarifications.
 
 ## Earlier purpose review and supporting research
 

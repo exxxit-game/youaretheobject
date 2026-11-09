@@ -1,10 +1,10 @@
-# Current state: 8 November 2026
+# Current state: 9 November 2026
 
 Current work: experiment/perception-corridor, PR #30 into room-polish.
 main remains the published branch; this work is not merged or released.
 
 ## Meaning and navigation
-- Approved foundation: [7 November plus 8 November clarification](research/perception-corridor.md).
+- Approved foundation and dated clarifications: [shared purpose](research/perception-corridor.md).
 - [Room plan and device matrix](research/corridor-room-plan.md): corridor perception,
   science, philosophy and a separate voluntary fictional-deal checkpoint branch.
 - The one active queue is the working map, read by `node tools/corridor-brief.mjs`.
@@ -14,6 +14,7 @@ main remains the published branch; this work is not merged or released.
 
 ## Implemented versus intended
 - Screen stairwell preview: walking, keyboard turn/tilt, view buttons, eye-height control.
+- First book deal: bounded bargaining, refusal, remembered outcome and one payout.
 - Existing main laboratory: room 01-control, XR UI, controllers and recenter.
 - Proposed scientific/philosophical candidates are not implemented VR rooms.
 - Phone free navigation and the new immersive N route remain to implement and test.
@@ -34,12 +35,12 @@ main remains the published branch; this work is not merged or released.
   B06: API cancellation unavailable; reading completed CI remains possible.
 
 ## Next dependency
-The owner's sketch makes the first desktop door/room/return the active slice;
-scan is supporting reference and does not block this route. Physical capture waits
-for suitable conditions and bounded B12 preflight; no XR or geometry file exists.
-Preserve the old extinguisher, separate visible numbers and picture state, and keep
-the false exterior window as a source-based future candidate. Prepare each step before
-requesting the owner's time. Acceptance, merge and publication stay separate.
+[The B0-02 working layout](research/corridor-blueprint.md) records the centre start,
+old sign, clockwise door labels and full ascent. It is not an accepted building
+solution or implemented new geometry. B19: close the base section, joints, guards
+and body/low-obstacle clearance; B17 frame/wall and B16 automatic game viewing remain.
+Scanning supports this work; it does not block the current drawing. No new capture,
+device acceptance, merge or release. N variants come after the consistent base.
 
 ## Preserved history
 [Pre-sync state at 2ea4496](https://github.com/exxxit-game/youaretheobject/blob/2ea4496e0e3cc6f4b0c4e39df89e69747cbc7a2e/docs/state.md)

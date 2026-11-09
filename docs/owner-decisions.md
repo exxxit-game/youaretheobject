@@ -15,7 +15,7 @@ a decision (his approval, 14 October).
 
 - 2026-11-08: The owner clarifies logical floor 0 and repeated +/- routes; learning is unpaid, fictional harmful deals pay. Introductory questions and a later helper remain drafts; details: docs/research/corridor-room-plan.md. The sketch defines topology; scan is supporting. Retain the old extinguisher.
 
-- 2026-11-09: Book deal first: research/corridor-room-plan.md.
+- 2026-11-09: Latest: research/corridor-room-plan.md.
 
 ## The process
 - The rules read at start shortened («укорачивать» 11.10): the important always in front of me, the rest read only during its task («чтобы твоя память была чистая» 11.10).
