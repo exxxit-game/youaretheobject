@@ -1433,6 +1433,62 @@
       "purpose": "Проверять вид вверх/вниз и взаимное расположение кромок и перил.",
       "reading": "Три подходящих фото найдены помощником; первое отдельно просмотрено ведущим.",
       "note": "Размер16см относится к модели, не к замеру; замечание детали человеком не доказано."
+    },
+    {
+      "id": "corridor-base-blueprint",
+      "title": "Этаж 0: единый чертёж, полная опись и изменения N±",
+      "kind": "engineering-drawing",
+      "topics": [
+        "building",
+        "purpose",
+        "memory",
+        "2d3d"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/blueprint.html"
+      },
+      "expected": "present",
+      "purpose": "Одна размерная основа и зависимые детали вместо отдельных моделей каждого этажа.",
+      "reading": "Исходники, расчёты количества, первичные источники; PDF отрисован и просмотрен; ограниченные независимые сверки.",
+      "note": "B0-01: условные размеры кода, не обмер. Пример N± — предложение; не игровой рендер или принятие."
+    },
+    {
+      "id": "corridor-blueprint-source-note",
+      "title": "Основа 0: параметры модели и открытые геометрические вопросы",
+      "kind": "research-note",
+      "topics": [
+        "building",
+        "purpose",
+        "2d3d"
+      ],
+      "location": {
+        "root": "repo",
+        "path": "docs/research/corridor-blueprint.md"
+      },
+      "expected": "present",
+      "purpose": "Согласовать документ, код и видимые ограничения чертежа.",
+      "reading": "Текущие layout/route/world/door/tile-math и первичные объяснения прочитаны.",
+      "note": "Рама 0,22 и стена 0,08 ещё не согласованы; гладкий ход и дискретные ступени различаются."
+    },
+    {
+      "id": "corridor-challenge-making-references",
+      "title": "Fear Factor и Primitive Technology: напряжение выбора и причинное изготовление",
+      "kind": "source-ledger",
+      "topics": [
+        "purpose",
+        "building",
+        "memory"
+      ],
+      "location": {
+        "root": "motionStudy",
+        "path": "blueprint-2026-11-09/research-ledger.json"
+      },
+      "expected": "present",
+      "source": "https://www.banijay.com/blog/2022/03/18/banijay-belgium-brings-back-fear-factor/",
+      "purpose": "Связать новые примеры владельца с действием, пространством и существующими вопросами/опытами.",
+      "reading": "Описание производителя Fear Factor, авторская страница и карточка книги Primitive Technology; не все выпуски или полный текст книги.",
+      "note": "Драматургические ориентиры. Не научное доказательство исправления души; животная программа и платное шоу опознаны не полностью."
     }
   ]
 }
