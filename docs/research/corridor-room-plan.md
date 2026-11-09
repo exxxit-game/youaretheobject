@@ -100,7 +100,7 @@ to instructions alone does not establish a positive native cycle for that room.
 ## One content system, three input surfaces
 
 Share room state, facts and consequences; adapters supply input and presentation.
-[The transfer audit](corridor-device-transfer.md) recommends phone direct entry and PC/VR travel; this is not yet an accepted mode change.
+[The transfer audit](corridor-device-transfer.md) recommends phone direct entry and PC/VR travel; this is not yet an accepted mode change. [Scenography](corridor-scenography.md) now connects theatre/material sources to a proposed first-book staging sheet; actual artistic views remain to prepare.
 
 The interaction design is still a draft, not an implemented room. A script can
 describe a decision without specifying how a person discovers or performs it.
