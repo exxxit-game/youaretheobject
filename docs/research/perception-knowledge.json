@@ -1216,8 +1216,8 @@
       },
       "expected": "present",
       "purpose": "One subordinate room/device plan under the approved foundation; distinguish owner decisions, candidates and acceptance.",
-      "reading": "Owner clarification, current code, reusable old-site modules, selected museum design research and WebXR specification checked.",
-      "note": "No new scene or device acceptance; B09 remains open."
+      "reading": "Owner clarification, current code and old-site reuse checked;9November adds full room interaction, device/context differences and primary design/accessibility sources.",
+      "note": "Room cycle and picture-rotation probe are proposals, not implemented or accepted. B09 dependency checks completed; separate B12 capture scope remains open."
     },
     {
       "id": "corridor-room-reuse-checks",
@@ -1372,7 +1372,7 @@
       "expected": "present",
       "purpose": "Единый поиск по свежей истории, оценкам и комментариям; отдельные карточки проверенных источников и ограниченная очередь киноисследования.",
       "reading": "CSV сверены построчно с исходниками; сюжетное исследование отмечается по каждой карточке, отдельно от наличия записи в индексе.",
-      "note": "Местная личная коллекция, не опубликована. catalogue.json, research.json, import-check.json и research-brief.md лежат рядом. Старые выгрузки отдельно; неизвестный образ креста не расшифрован.",
+      "note": "Местная личная коллекция, не опубликована. research.json различает карточки ведущего и новые выборочные разборы исследователя; рядом первая глава с котёнком и сверка замысла. Старые оценки не равны нынешним предпочтениям. Образ креста открыт.",
       "curated": true
     },
     {

@@ -96,11 +96,79 @@ to instructions alone does not establish a positive native cycle for that room.
 Share room state, source facts, consequences and pause/leave semantics. Device
 adapters supply movement, looking and selection; do not maintain three diverging games.
 
+The interaction design is still a draft, not an implemented room. A script can
+describe a decision without specifying how a person discovers or performs it.
+Use this complete cycle: enter -> notice -> inspect -> act -> observe -> leave -> return.
+The same intention and consequence can use different controls on each device.
+
+| Moment | What the person can do | What the room communicates |
+|---|---|---|
+| Enter and orient | Look around, locate the return route, delay or leave | The main object and an ordinary spatial landmark; no automatic consent |
+| Notice and inspect | Approach or use an accessible inspect view; request detail | An identifiable action and its current condition, without solving the observation |
+| Act | Change a reversible condition, discuss a deal or explicitly confirm it | Distinguish selecting/asking from committing; let a pointer action be cancelled |
+| Observe and compare | Revisit the earlier view, repeat or stop | A visible change with a suitable alternative cue; no required claim that an illusion occurred |
+| Interrupt or leave | Pause, switch apps, remove the headset, return to the corridor | Preserve committed story actions; an interruption is not a refusal or misconduct |
+| Return | Inspect the changed object and continue an unresolved action | The same object/visit identity and consequences, not a new payment opportunity |
+
+The room participates through a chosen dependency: changed viewpoint, object
+orientation, occlusion, light or sound can reveal a relationship. Start by making
+one dependency readable; combine it with others after its contribution is clear.
+Decorative movement and simultaneous surprises are not a substitute for a response.
+
+Persistence differs by room type. A reversible observation may offer reset and
+comparison. A protocol-based trial follows its sourced interruption/repeat rules.
+A fictional deal records the confirmed action and payout once; unfinished viewing
+or price discussion is not consent. A philosophical comparison need not award a
+correctness score. Save meaningful transitions, not only an unload callback.
+
+Proposed first interaction probe: the already drafted picture rotation. Enter,
+inspect one image, rotate it and reverse the change, compare, leave and return.
+Keep a visible control equivalent to the spatial handle; no fast precision input
+is needed. State whether its orientation resumes and provide an explicit reset.
+The proposed outcome is a discoverable change and comparison, not mandatory face
+recognition. This tests a room cycle, not the whole chapter, economy or physiology.
+
+The later script chapter is a candidate: cat relationships and reconciliation fit
+the purpose, but its eleven scenes are not the next mandatory build scope. Its quiet
+interlocutor does not replace the earlier exuberant presenter without an owner choice.
+The mechanism lesson teaches an object/skill; the owner's body-capabilities idea
+still needs a specific sourced phenomenon, an observable input and device limits.
+No current measurement of breathing, force or body temperature is established.
+Do not infer attention from head pose, dexterity from morality, or absence from neglect.
+
+### Reusable room proposal, owner clarification9November
+
+The owner proposes one adaptable room behind whichever door the player chooses.
+Use one reusable shell and authored content configurations, with story selection
+separate from rendering and saved consequences. This is a design direction under
+investigation, not a ready generator or a runtime personality inference system.
+It reduces repeated construction; each new interaction still needs design and checks.
+
+Keep three identities distinct: the logical floor/door, the selected episode
+occurrence, and the reusable visual shell. Bind an eligible episode to the visit;
+reopening restores its facts. A painted floor sign is not its logical identifier.
+A completed episode cannot pay again merely by appearing at another doorway.
+An authored later scene may change the contents with an explicit story transition;
+do not reroll a pending choice every time the player opens the door.
+
+One active physical interior is sufficient only while no other interior must remain
+visible or audible as a different place. Two visible open doors may need two instances
+of the same template; this is still reuse, not two independently built room systems.
+Prepare content outside the player's view, place its camera/collision/audio correctly,
+then expose it. Do not silently lock the return route or move a room in plain view.
+The current merged preview shell has no such lifecycle yet. The old lobby's room
+placement container/functions are a reuse lead, not an integrated proof.
+
+Bounded reuse probe: two logical doors, one shell definition, two simple content
+configurations, separate saved facts. Revisit both and reload; verify restored
+orientation/choice, no repeated payment and no leftover sound/input from the other
+episode. Only choose literal one-instance pooling after the visibility test.
+
 | Target | Present in inspected code | Next implementation / acceptance evidence |
 |---|---|---|
-| Laptop, keyboard and trackpad | Preview walking, turn/tilt keys, view buttons, eye-height slider; held keys clear on blur | Owner can look, move, stop and return without a mouse or conflicting laptop keys. Check the actual trackpad; retain accessible visible controls. |
-| Phone browser | Preview HTML view buttons and height slider; touch-look and motion disabled | Implement touch movement/looking and legible layout. Basic use must not require sensors. Test actual Android/iOS browser versions, both orientations and interruption; no blanket browser-support claim. |
-| Quest 3 / WebXR | Main laboratory has XR UI, controllers and recenter; preview XR UI is disabled | Integrate the N route; verify secure origin, session support and successful user-initiated entry, both-eye geometry, height, seated/standing use, controls, pause, return, recenter and measured performance. |
+| Laptop, keyboard and trackpad | Preview walking, turn/tilt keys, view buttons, eye-height slider; held keys clear on blur | Provide keyboard and pointer equivalents for inspecting/rotating/confirming, with readable focus and pause. Looking or moving must not also accept a deal. Check the actual trackpad. |
+| Phone browser | Preview HTML view buttons and height slider; touch-look and motion disabled | Provide touch navigation and large separated controls, without compulsory device motion. Preserve progress across interruptions; essential information has text when sound is unavailable. Test both orientations and actual browsers. |
+| Quest 3 / WebXR | Main laboratory has XR UI, controllers and recenter; preview XR UI is disabled | Integrate the route with controller selection and accessible near/distant controls; support seated reach, recenter and pause. Head movement is not eye tracking. Verify both-eye appearance and performance in Quest. |
 
 W3C WebXR defines secure-context access and user-initiated immersive entry;
 capability detection alone cannot guarantee session creation. Session visibility
@@ -114,7 +182,8 @@ Head pose is not eye tracking; a conditional blur is not a validated human visua
 The owner-readable scenario0.1 is indexed as `corridor-scenario-draft`. It proposes
 guided walking, the book deal, an unpaid observation and a purposeful return before
 free exploration; helper/lift/extra episodes remain proposals. Two scene rooms mean
-two actual doorways, not silently replacing the first room's content. The newer
+two logical doorway bindings and histories; they may share the reusable shell.
+Do not silently replace the first room's history. The newer
 owner inventory allows authored variants of pictures, extinguisher presence, doors,
 rails, tiles, ceiling, walls, lamps, lift/buttons/sound and signs; see D01-D17.
 The owner holds the window at the previously discussed idea; do not expand it now.
@@ -163,6 +232,13 @@ independent reviews and real target-device observations. A missing effect is a v
 observation. Automated passes, owner approval and publication are separate states.
 No data collection, leaderboard, paid floors or store release is added by this plan.
 
+For the first room probe, observe whether a new player finds the action, can reverse
+it, locates the return, and recovers the chosen state after interruption/reload.
+Compare the intended action and consequence across devices, not identical gestures.
+Do not require reading the whole library to start a bounded probe; use the relevant
+source, assets and acceptance checks. Broader cinema work continues by experience
+function, with current owner remarks, comments, favourites and older ratings kept distinct.
+
 ## Owner's later route clarification, 8 November
 
 The origin is logical floor 0; repeated corridors and stairs can represent
@@ -180,6 +256,13 @@ not a scientific assessment of a player.
 
 ## Sources and limits
 
+- [Liz England, The Door Problem](https://lizengland.com/blog/the-door-problem/): the opening design questions were read; distinguish available actions, cues, locking and return conditions.
+- [Worch and Smith, GDC2010](https://www.worch.com/2010/03/11/gdc-2010/): author overview read, not the full lecture; environment and reactive systems can carry information for the player to interpret.
+- [W3C XAUR](https://www.w3.org/TR/xaur/), sections3.9,4.1-4.4,4.11,4.13,4.15-4.19: accessibility needs, input alternatives, orientation and stopping; an informative note, not proof of our compatibility or a compliance certificate.
+- [W3C pointer cancellation](https://www.w3.org/WAI/WCAG22/Understanding/pointer-cancellation.html) and [target size](https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum.html): cancellation/spacing guidance; CSS-pixel targets are not world-space VR dimensions.
+- [MDN Page Visibility](https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API): visibility differs from focus; event handling can support pause, not guarantee durable saved progress.
+- [A-Frame pool](https://aframe.io/docs/1.8.0/components/pool.html): entity reuse is available; a pool does not save episode state or decide narrative/visibility rules.
+- [Failbetter narrative structures](https://www.failbettergames.com/news/echo-bazaar-narrative-structures-part-two): state-controlled storylets and completion markers; relevant to authored selection, not a ready room generator.
 - [W3C WebXR Device API](https://www.w3.org/TR/webxr/), sections 1.2, 3, 4 and 13; current draft read 8 November 2026. Specifies API conditions, not compatibility/performance of our game.
 - A-Frame 1.8.0 local documentation, look-controls and xr-mode-ui; compare to `src/preview/index.html`, `src/preview/main.js`, `src/app/stage.js` and `src/engine/recenter.js`. Online pages failed in the root's browser fetch; local docs and code are the versioned basis.
 - [Allen, Designs for Learning (2004)](https://www.exploratorium.edu/sites/default/files/pdfs/S.Allen-Science%20Museums%20that%20do%20more%20than%20Entertain.pdf), selected design discussion; not evidence of an effect in our game.
