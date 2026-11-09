@@ -66,12 +66,18 @@ The trial ladder is100,250,500,1000, with three voluntary raises and a finite ca
 5. Later connect an unpaid observation and purposeful corridor return. Neither
    the full economy/checkpoint nor all proposed chapter scenes are built at once.
 
-Keep one discoverable main action at first. Details support connected observations;
-additional controls, decoration and simultaneous effects must justify their cost.
-Sources can be offered after the experience without forcing a lecture first.
-Allen's museum design account and Allen/Gutwill's case studies support conceptual
-coherence and caution about competing interactions. Their museum findings do not
-establish learning effects in our browser or VR implementation.
+Keep one discoverable main action at first. The owner adds The Room as a design
+reference: a readable object/action/response chain and purposeful use of a small
+space. Fireproof describes real puzzle-box inspiration, touch/camera co-design
+and iteration from simple working puzzles. Sources and transfer limits are in the
+catalogue's `the-room-design-reference`, not a prescription to copy its puzzles.
+A detail may support action, attention, orientation, memory or atmosphere. Check
+its role across reachable views, departure, return and interruption on each device.
+Our valid refusals and scientific/philosophical branches need their own progression;
+they do not become a single correct-solution puzzle path. Story consequences must
+follow the actual saved action. Sources may follow the experience without a lecture.
+Allen/Gutwill's museum cases also support coherence and caution about competing
+interactions; neither those cases nor The Room establish our learning effects.
 
 ## Reuse inventory, checked 8 November
 
