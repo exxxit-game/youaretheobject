@@ -1,5 +1,5 @@
 // The measure with the headset on a stand, unworn: first a two-minute trial that proves the tools, then the
-// 45-minute run (.claude/rules/measures.md, "Quality measures before polishing old numbers"; the plan:
+// 45-minute run (policy/rules/measures.md, "Quality measures before polishing old numbers"; the plan:
 // docs/research/long-measure.md).
 // No reading is trusted before its tool has shown a change made on purpose whose size is known beforehand
 // (long-measure.md, "Known-change proofs"): the trial makes each such change once and writes whether each tool saw
@@ -15,13 +15,14 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { fileURLToPath } from 'node:url';
+import { isMain } from './is-main.mjs';
 import { thermalOf, gpuIds, gpuSamples, mean } from './measure.mjs';
 import { sandboxedPids, pssOf, proximityOf, verdicts, longSummary, flowSummary, heatStop, MARKS } from './stand-judge.mjs';
 import { player } from './stand-flow.mjs';
 
 
-if (import.meta.url === pathToFileURL(process.argv[1] || '').href) await main();
+if (isMain(import.meta.url)) await main();
 
 async function main() {
   const mode = process.argv[2];
@@ -32,7 +33,13 @@ async function main() {
     console.log(JSON.stringify(verdicts(lines.filter((l) => l.step === 'sample'), MARKS), null, 1));
     return;
   }
-  const { adb, serveToHeadset, localPort, openGame, page, takenOff, connected, sleepNow, restartBrowser, screencap } = await import('./headset.mjs');
+  const given = process.argv.find(a => a.startsWith('--minutes='));
+  const minutes = given ? Number(given.split('=')[1]) : 45;
+  if (['long', 'flow'].includes(mode) && !(Number.isFinite(minutes) && minutes > 0)) {
+    throw new Error(`not measured: --minutes must be finite and above 0, not ${given?.split('=')[1]}`);
+  }
+  const { adb, serveToHeadset, localPort, openGame, page, standOff, withStandProximity, restoreStandProximity,
+    connected, sleepNow, restartBrowser, screencap } = await import('./headset.mjs');
   const PREVIEW = 'https://exxxit-game.github.io/object-preview/';
   const { requireReview, requirePaper } = await import('./review-gate.mjs');
   const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -41,18 +48,29 @@ async function main() {
   const pause = (ms) => new Promise((r) => setTimeout(r, ms));
   const metavr = (...a) => { try { return execFileSync('metavr', a, { encoding: 'utf8', shell: true }); } catch (e) { return `error: ${e.message}`; } };
   const git = (...a) => execFileSync('git', a, { cwd: ROOT, encoding: 'utf8' }).trim();
+  let proximityAttempted = false;
+  const proximity = {
+    readPower: () => sh('dumpsys vrpowermanager'),
+    setProximity: on => {
+      if (!on) proximityAttempted = true;
+      const out = metavr('device', 'proximity', on ? '--enable' : '--disable');
+      if (out.startsWith('error:')) throw new Error(out);
+      return out;
+    }
+  };
 
   if (!connected()) { console.log('the headset is not on the cable'); process.exit(1); }
-  // Meta: "Re-enable any disabled properties after your test" (ts-scriptable-testing); read back, not assumed
+  // Called only after the override has been restored. Read the real sensor again before idle actions.
   const giveBack = (why) => {
-    const out = metavr('device', 'proximity', '--enable');
-    if (why === 'restart') restartBrowser(PREVIEW);
-    sleepNow();
-    return { out, after: proximityOf(sh('dumpsys vrpowermanager')) };
+    const power = proximity.readPower();
+    if (!standOff(power)) return { after: proximityOf(power), restarted: false, slept: false };
+    let restarted = false;
+    if (why === 'restart') { restartBrowser(PREVIEW); restarted = true; }
+    const slept = sleepNow();
+    return { after: proximityOf(proximity.readPower()), restarted, slept };
   };
   if (mode === 'restore') {
-    if (!takenOff()) { console.log('not now: the owner wears the headset, or its state did not read'); process.exit(1); }
-    console.log(JSON.stringify(giveBack('restart')));
+    console.log(JSON.stringify({ ...await restoreStandProximity(proximity), ...giveBack('restart') }));
     return;
   }
   // What has stopped runs before they measured anything, checked in one go before he is asked to do anything: the
@@ -61,14 +79,20 @@ async function main() {
   const RUNS = path.join(process.env.USERPROFILE || process.env.HOME, 'Documents', 'objekt-files', 'notes', 'headset');
   const front = () => (sh('dumpsys activity activities | grep topResumedActivity | head -1').match(/u0 ([\w.]+)\//) || [])[1] || 'none';
   // read awake: asleep, the headset shows nothing in front; a wake key would open its quick menu instead
-  const awakeFront = async () => { metavr('device', 'proximity', '--disable'); await pause(10000); return front(); };
+  const awakeFront = async () => { await pause(10000); return front(); };
   const blockers = async () => { const inFront = await awakeFront(); return [
     !(await fetch(`http://localhost:${localPort()}/`).then((r) => r.ok, () => false)) && `the game server is not running on port ${localPort()}: start the preview "objekt"`,
-    !takenOff() && 'the headset is worn, or its state did not read: this measure is for the stand',
     /guardian/.test(inFront) && 'the headset cannot find its place in the room (its tracking or boundary window is in front): switch on travel mode in its quick settings (no position tracking, which a still stand does not need; it made the run of 14.10 go), or face the stand to furniture, not a bare wall or a door'
   ].filter(Boolean); };
-  if (mode === 'check') { const b = await blockers(); const f = front(); metavr('device', 'proximity', '--enable'); console.log(b.length ? `not ready: ${b.join('; ')}` : `ready (in front: ${f})`); process.exit(b.length ? 1 : 0); }
-  // two runs in a row that failed: a third waits for a look at what the headset shows (CLAUDE.md: "Two or three failed
+  if (mode === 'check') {
+    try {
+      const result = await withStandProximity(proximity, async () => ({ blockers: await blockers(), front: front() }));
+      console.log(result.blockers.length ? `not ready: ${result.blockers.join('; ')}` : `ready (in front: ${result.front})`);
+      if (result.blockers.length) process.exitCode = 1;
+    } catch (e) { console.log(`not ready: ${e.message}`); process.exitCode = 1; }
+    return;
+  }
+  // two runs in a row that failed: a third waits for a look at what the headset shows (WORKFLOW.md: "Two or three failed
   // tries at one problem: measure first"; five tries went round one cause before this was held by the tool)
   const last = fs.existsSync(RUNS) ? fs.readdirSync(RUNS).filter((d) => /^stand-(trial|long|flow)-/.test(d)).sort().slice(-2) : [];
   const failed = (d) => { try { return /"step":"failed"/.test(fs.readFileSync(path.join(RUNS, d, 'log.jsonl'), 'utf8')); } catch (e) { return false; } };
@@ -84,12 +108,10 @@ async function main() {
   // would leave the proximity sensor overridden
   requireReview(ROOT, 'VR in the headset', { look: true });
   requirePaper(ROOT, 'VR in the headset', { look: true });
+  let held = false, logBack = data => console.log(JSON.stringify({ givenBack: data }));
+  try { await withStandProximity(proximity, async () => {
   const b = await blockers();
-  // the check above left the proximity sensor overridden: given back on every way out, the headset put to sleep
-  // only when nobody wears it
-  if (b.length) { console.log(`not ready: ${b.join('; ')}`); metavr('device', 'proximity', '--enable'); if (takenOff()) sleepNow(); process.exit(1); }
-  // this run is for a headset nobody wears: on a person it would hold frames and rates against him
-  if (!takenOff()) { console.log('not now: the owner wears the headset, or its state did not read; this measure is for the stand'); metavr('device', 'proximity', '--enable'); process.exit(1); }
+  if (b.length) throw new Error(`not ready: ${b.join('; ')}`);
   const ids = gpuIds(sh('ovrgpuprofiler -m'), ['GPU Frequency', 'GPU % Utilization']);
 
   const stamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
@@ -97,6 +119,7 @@ async function main() {
   fs.mkdirSync(DIR, { recursive: true });
   const LOG = path.join(DIR, 'log.jsonl');
   const log = (step, data = {}) => { const e = { at: now(), step, ...data }; fs.appendFileSync(LOG, JSON.stringify(e) + '\n'); return e; };
+  logBack = data => log('given back', data);
   const keep = (name, text) => fs.writeFileSync(path.join(DIR, name), String(text));
   // every heat read is also the stop check (heatStop): the trial throws, the long run ends and keeps what it gathered
   let stoppedFor = null;
@@ -105,7 +128,7 @@ async function main() {
   const sandboxPss = (tag) => { const all = sh('dumpsys meminfo'); keep(`meminfo-${tag}.txt`, all);
     return Object.fromEntries(sandboxedPids(all).map((pid) => [pid, pssOf(sh(`dumpsys meminfo ${pid}`))])); };
 
-  let game = null, run = null, held = false;
+  let game = null, run = null;
   try {
     // the conditions, and proof that no debug override of levels or foveation is active (a forced level would make
     // the heat and the frames something no player gets: long-measure.md, Part 2)
@@ -114,9 +137,8 @@ async function main() {
       dirty: git('status', '--porcelain').length > 0, vrruntime: metavr('device', 'vrruntime', 'get'), proximity: metavr('device', 'proximity', '--status'),
       gpuIds: ids, thermal: thermal('start') });
     if (stoppedFor) throw new Error(`not started: ${stoppedFor}`);
-    // Meta's own command keeps an unworn headset awake and re-enables the sensor by itself after 2 hours
-    // (metavr device proximity --disable; its binary passes "prox_close --ei duration 7200000")
-    log('proximity off', { out: metavr('device', 'proximity', '--disable') });
+    // The scoped preflight activated the override; do not acquire it again mid-run.
+    log('proximity off', { state: proximityOf(proximity.readPower()) });
     // OVR Metrics' overlay costs GPU time of its own (docs/baseline.md): off for the measure
     sh('am broadcast -n com.oculus.ovrmonitormetricsservice/.SettingsBroadcastReceiver -a com.oculus.ovrmonitormetricsservice.DISABLE_OVERLAY');
 
@@ -169,9 +191,6 @@ async function main() {
       // stands on; the view turned 45° a minute, so a standing player's look round repeats every 8 minutes. Frames every
       // 10 s, heat every 30 s, the page's memory every minute, the GPU every 5 minutes; whether the session stays
       // visible is read with every sample (Meta's safety page: standby after about 15 minutes with no interaction)
-      const given = process.argv.find((a) => a.startsWith('--minutes='));
-      const minutes = given ? Number(given.split('=')[1]) : 45;
-      if (!(minutes > 0)) { console.log(`not measured: --minutes must be a number above 0, not ${given.split('=')[1]}`); process.exit(1); }
       // a headset just woken drew nothing for 38 s in VR while "visible" (the long run's first try): its place being found,
       // so the run begins at the first frames; none in 3 minutes is no link to the VR system: restarted, as a held entry
       // the heat is watched in the wait too (every 30 s), so a hot headset stops the run before it begins
@@ -299,10 +318,14 @@ async function main() {
     console.log(`failed: ${e.message || e} (log: ${LOG})`);
     process.exitCode = 1;
   } finally {
-    // the sensor given back and the headset asleep, whatever happened (quest-look.mjs sleep)
+    // End XR before the enclosing scope restores the real proximity sensor.
     try { if (run) await run('document.querySelector("a-scene").xrSession?.end()'); } catch (e) { /* no session */ }
     if (game) game.close();
-    // a held entry leaves the browser unable to enter VR until it restarts (docs/mistakes.md): restarted first
-    log('given back', giveBack(held ? 'restart' : 'sleep'));
+  }
+  }); } catch (e) { console.log(`failed: ${e.message}`); process.exitCode = 1; }
+  finally {
+    // Even setup/log creation errors restore proximity. Idle actions require a fresh unoverridden off state.
+    try { if (proximityAttempted) logBack(giveBack(held ? 'restart' : 'sleep')); }
+    catch (e) { console.log(`cleanup failed: ${e.message}`); process.exitCode = 1; }
   }
 }

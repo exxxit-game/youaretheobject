@@ -1,5 +1,25 @@
 # Research notes
 
+Current working map: source catalogue entry `corridor-project-map` opens the single
+F-drive card index with the goal, dependencies, next task, helper roles and evidence.
+For a compact restart, run `node tools/corridor-brief.mjs`: it reads that same map,
+refuses a mismatched visible task, and reports evidence without executing the page.
+
+Current stairwell: [design and detail inventory](perception-corridor.md), [capture](perception-capture.md),
+and [one entry point into existing materials](perception-knowledge.md).
+The [base-floor drawing record](corridor-blueprint.md) separates one dimensional
+model, finite render buffer and proposed N+ / N- variations.
+Catalogue entries `corridor-knowledge-lineage` and `site-zero-society-draft` connect
+the owner's Society Zero name, earlier experiences and the historical inquiry;
+their proposals do not replace the approved corridor foundation.
+The [moving-pattern study](perception-motion.md) extends this with motion, aftereffects and two-copy viewing.
+The source catalogue entry `corridor-execution-route` holds the 7 November methods
+review, verified readiness gaps and proposed delivery stages on the F drive.
+The [native Codex review record](codex-review.md) records the tested adapter and
+observed native delivery, separately from scene verification or release approval.
+
+The [CI and version evidence contract](ci-readiness.md) describes T01c without treating preparation as a live result.
+
 Each note is named from the code, the room or the doc that uses it. These are named nowhere else since the history
 of the process moved to objekt-files/notes/archive:
 
@@ -20,3 +40,5 @@ of the process moved to objekt-files/notes/archive:
 - `docs/research/trial-places.md`: where VR players can try one room first.
 - `docs/research/vr/menu-button.md`: the left Menu button and the Meta button, Meta's rules.
 - `docs/research/why-people-stop-trying.md`: why people stop trying, and whether a short opening message changes it.
+
+- [Multiview engine maintenance and verification limits](multiview-maintenance.md)

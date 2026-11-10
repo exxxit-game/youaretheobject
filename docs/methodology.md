@@ -1,7 +1,11 @@
-# Methodology: running rooms the way experimental psychologists run studies
+# Methodology for empirical research rooms
 
-Each room is a replication of a published study. These are the practices it
-follows, with the reason and the concrete implementation.
+Scope: empirical recreations and proposed research, including the existing room 01.
+Running a recreation does not establish a successful replication. The table records
+that laboratory's method and earlier research proposals, not universal requirements
+for science demonstrations, models, philosophy or fiction. Those use the evidence
+appropriate to [their room type](research/corridor-room-plan.md). Research collection
+still requires its own method, ethics review and consent; no sample plan is approved here.
 
 | Practice | Why | In the game |
 |---|---|---|
@@ -15,7 +19,8 @@ follows, with the reason and the concrete implementation.
 | **VR reporting** (Kennedy et al. 1993 SSQ) | Reviewers expect sickness, presence and hardware | A player's run does not carry device, browser or frame rate (a tester's run carries the device, a problem report the device and browser); optional short sickness check |
 
 ## Deviations from the original
-Every room lists how it differs from its paper, openly, in the reveal and in the preregistration:
+An empirical recreation lists deviations from its paper; proposed research discloses
+them in its debrief and preregistration:
 room 01 in `docs/rooms/01-control.md`.
 
 Sources: Brandt et al. 2014 (Replication Recipe); Simons 2014; Blackhart et al. 2012

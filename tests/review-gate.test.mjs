@@ -1,6 +1,6 @@
 // The owner's automatic stop (tools/review-gate.mjs) both ways: the headset tools and the test copy
-// refuse with no practice review of the current files, a review recorded by Claude Code's hook
-// (tools/claude-guard.mjs, subagent-start and subagent-stop) lets them go, any change to what a
+// refuse with no practice review of the current files; a native callback records the review
+// (tools/codex-review.mjs), and any change to what a
 // person meets stops them again (the assistant's own look excepted, after a fix only of files the
 // review named), and the assistant cannot write the record or point the tools at another one.
 // Runs on a scratch checkout with its own record; nothing touches the headset.
@@ -10,7 +10,9 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { fingerprint, reviewOf, lookOf, REPORT_END, PAPER_END, paperOf, checkedRooms, endsWithBlock, write } from '../tools/review-gate.mjs';
+import { fingerprint, reviewOf, lookOf, REPORT_END, PAPER_END, paperOf, checkedRooms, endsWithBlock, write, reviewScope, lastReport, scan, roomScan } from '../tools/review-gate.mjs';
+import { handleEvent } from '../tools/codex-review.mjs';
+import crypto from 'node:crypto';
 import { withoutGitVars } from '../tools/secrets.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -20,6 +22,7 @@ const record = path.join(tmp, 'reviews.jsonl');
 const put = (rel, text) => { fs.mkdirSync(path.dirname(path.join(place, rel)), { recursive: true }); fs.writeFileSync(path.join(place, rel), text); };
 put('index.html', '<html></html>\n');
 put('src/a.js', 'export const a = 1;\n');
+put('src/rooms/01-x/room.js', 'export const n = 1;\n');
 put('tools/xr-probe.html', '<p>probe</p>\n');
 put('docs/note.md', 'not met by anyone\n');
 execFileSync('git', ['init', '-q'], { cwd: place, env: withoutGitVars() });
@@ -33,13 +36,22 @@ assert.equal(fingerprint(place), first, 'a file nobody meets does not change the
 put('src/a.js', 'export const a = 2;\n');
 assert.notEqual(fingerprint(place), first, 'a changed game file changes the print');
 
-// Claude Code hands its hook the event as JSON on stdin (code.claude.com/docs/en/hooks)
-const hook = (mode, event) => spawnSync(process.execPath, [path.join(ROOT, 'tools/claude-guard.mjs'), mode],
-  { cwd: ROOT, encoding: 'utf8', env: { ...withoutGitVars(), OBJECT_REVIEW_RECORD: record }, input: JSON.stringify({ cwd: place, ...event }) });
-const review = (agent, { type = 'practice-reviewer', report = `Findings…\n${REPORT_END} none`, between } = {}) => {
-  hook('subagent-start', { agent_id: agent, agent_type: type });
-  if (between) between();
-  hook('subagent-stop', { agent_id: agent, agent_type: type, last_assistant_message: report, agent_transcript_path: path.join(tmp, `${agent}.jsonl`) });
+// Native callback fixtures; no live record or headset is touched.
+const hook = (mode, event) => {
+  const value = {...event,cwd:place,hook_event_name:mode==='subagent-start'?'SubagentStart':'SubagentStop',session_id:'fixture-parent',turn_id:'fixture-turn'};
+  if(value.hook_event_name==='SubagentStop') {
+    let report=value.last_assistant_message || (value.agent_transcript_path && fs.existsSync(value.agent_transcript_path) ? lastReport(value.agent_transcript_path) : '');
+    const end=value.agent_type==='paper-reviewer'?PAPER_END:REPORT_END;
+    const meta='REVIEW SCOPE: '+reviewScope(place)+'\nREVIEW COVERAGE: full-practice\nREVIEW VERDICT: pass\n';
+    const at=report.lastIndexOf(end);
+    value.last_assistant_message=at>=0?report.slice(0,at)+meta+report.slice(at):meta+report;
+  }
+  return handleEvent(value,{root:place,record,cwd:place});
+};
+const review = (agent,{type='practice-reviewer',report='Findings…\n'+REPORT_END+' none',between}={}) => {
+  hook('subagent-start',{agent_id:agent,agent_type:type});
+  if(between)between();
+  hook('subagent-stop',{agent_id:agent,agent_type:type,last_assistant_message:report});
 };
 
 assert.equal(reviewOf(place, record), null, 'no review yet: the stop holds');
@@ -112,6 +124,44 @@ hook('subagent-stop', { agent_id: 'paper-cut-2', agent_type: 'paper-reviewer', l
   agent_transcript_path: transcript('paper-cut-2', [handback(`${PAPER_END} 01-x\nFindings so far, then cut short`)]) });
 assert.equal(paperOf(place, '01-x', {}, record), null, 'a handed-back report whose rooms line is not its last: no check');
 
+// Shared procedure and source changes must invalidate the room's review, not just its own code.
+const dependencies = ['src/engine/timing.js', 'src/app/input.js', 'src/main.js', 'index.html',
+  'css/room.css', 'vendor/aframe-1.8.0.min.js', 'docs/rooms/01-x.md', 'docs/rooms.md', 'docs/sources.md'];
+for (const rel of dependencies) put(rel, 'baseline\n');
+const paperPass = (id, text = 'Checked the current source and procedure.') => review(id, {
+  type: 'paper-reviewer', report: text + '\n' + PAPER_END + ' 01-x'
+});
+for (const [i, rel] of dependencies.entries()) {
+  paperPass('dependency-before-' + i);
+  const before = roomScan(place)['01-x'].print, scope = reviewScope(place);
+  put(rel, 'changed\n');
+  assert.notEqual(roomScan(place)['01-x'].print, before, rel + ' belongs to the room procedure/source');
+  assert.equal(reviewScope(place), scope, 'content changes are not infrastructure changes');
+  assert.equal(paperOf(place, '01-x', {}, record), null, rel + ' invalidates the old review');
+  assert.equal(paperOf(place, '01-x', { look: true }, record), null, 'unnamed dependency changes cannot use the own-look exception');
+  paperPass('dependency-edited-' + i); assert.ok(paperOf(place, '01-x', {}, record));
+  const unchanged = roomScan(place)['01-x'].print;
+  put(rel, 'changed\r\n');
+  assert.equal(roomScan(place)['01-x'].print, unchanged, 'line endings preserve the same dependency');
+  assert.ok(paperOf(place, '01-x', {}, record));
+  fs.unlinkSync(path.join(place, rel));
+  assert.equal(paperOf(place, '01-x', {}, record), null, 'deleting a reviewed dependency invalidates it');
+  paperPass('dependency-absent-' + i);
+  put(rel, 'created again\n');
+  assert.equal(paperOf(place, '01-x', {}, record), null, 'creating a dependency invalidates the absent-file version');
+}
+paperPass('foreign-room-baseline');
+for (const rel of ['src/rooms/02-y/room.js', 'docs/rooms/02-y.md', 'docs/unrelated.md']) {
+  put(rel, 'unrelated change\n');
+  assert.ok(paperOf(place, '01-x', {}, record), 'unrelated room/spec notes do not invalidate room 01');
+}
+paperPass('shared-named-fix', 'Fix src/engine/timing.js against the original procedure.');
+put('src/engine/timing.js', 'the named fix\n');
+assert.equal(paperOf(place, '01-x', {}, record), null);
+assert.ok(paperOf(place, '01-x', { look: true }, record), 'only the explicitly named shared fix permits own look');
+put('src/app/input.js', 'an additional unnamed change\n');
+assert.equal(paperOf(place, '01-x', { look: true }, record), null);
+
 // the tools refuse before they touch the headset or GitHub (an empty record: no review exists); run
 // with only node on the path, so a stop that ever broke could reach no adb, git or gh from here
 const empty = path.join(tmp, 'empty.jsonl');
@@ -124,14 +174,15 @@ for (const args of [['tools/quest-look.mjs', 'vr'], ['tools/quest-look.mjs', 'ev
 // and with a practice review of these very files but no paper check of the room, the headset and the
 // test copy still wait (the probe shows no room, so it does not)
 const practiced = path.join(tmp, 'practiced.jsonl');
-write({ kind: 'review', agent: 'test', print: fingerprint(ROOT) }, practiced);
+const report='Fixture findings.\nREVIEW SCOPE: '+reviewScope(ROOT)+'\nREVIEW COVERAGE: full-practice\nREVIEW VERDICT: pass\nFOR THE OWNER: none';
+write({kind:'review',source:'codex',root:fs.realpathSync.native(ROOT),agent:'fixture-reviewer',session:'fixture-parent',agent_type:'practice-reviewer',scope:reviewScope(ROOT),verdict:'pass',report,report_sha256:crypto.createHash('sha256').update(report).digest('hex'),...scan(ROOT)},practiced);
 for (const args of [['tools/quest-look.mjs', 'vr'], ['tools/publish-preview.mjs', '--anyway']]) {
   const r = spawnSync(process.execPath, args, { cwd: ROOT, encoding: 'utf8', env: { ...bare, OBJECT_REVIEW_RECORD: practiced }, timeout: 20000 });
   assert.ok(r.status === 1 && r.stdout.includes('waits for the paper check of 01-control'), `${args.join(' ')} went ahead with no paper check:\n${r.stdout}${r.stderr}`);
 }
 
 // the assistant cannot write the record or point the tools at another one; reading and the tools pass
-const pre = (tool_name, tool_input) => spawnSync(process.execPath, ['tools/claude-guard.mjs', 'pre'], { cwd: ROOT, encoding: 'utf8', input: JSON.stringify({ tool_name, tool_input, cwd: ROOT }) }).status === 2;
+const pre = (tool_name, tool_input) => spawnSync(process.execPath, ['tools/project-guard.mjs', 'pre'], { cwd: ROOT, encoding: 'utf8', input: JSON.stringify({ tool_name, tool_input, cwd: ROOT }) }).status === 2;
 const at = 'C:\\Users\\x\\Documents\\objekt-files\\notes\\practice-reviews.jsonl';
 assert.ok(pre('Write', { file_path: at, content: '{}' }), 'Write to the record refused');
 assert.ok(pre('Edit', { file_path: at, old_string: 'a', new_string: 'b' }), 'Edit of the record refused');

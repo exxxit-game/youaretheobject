@@ -2,8 +2,18 @@
 
 Three lines each: what, why, consequence. No diary.
 
+## First book slice
+The owner selected the last-copy Chase deal and 100/250/500/1000 trial offers; pictures remain in the corridor.
+Use the existing preview lifecycle with one stable episode record and same-origin write lock; refusal and unpaid exit differ.
+See docs/rooms/book-deal-preview.md; original typography/charred remains are provisional, not final visual acceptance or a released room.
+
+## Local stairwell study
+The owner's N floor, continued ascent/descent and connected discoveries follow [the current design and inventory](research/perception-corridor.md).
+Use the existing renderer and shared geometry to check sightlines against recordings. The ordinary/repeated floor number is a diagnostic inside the wider walk.
+Geometry remains provisional. Source matching, stereo and perception checks establish each detail's contribution to the connected experience.
+
 ## No build step, A-Frame vendored
-Plain ES modules and `vendor/aframe-1.8.0.min.js` (one line put back for multiview: tests/vendor.test.mjs), served as static files.
+Plain ES modules and `vendor/aframe-1.8.0.min.js` (bounded multiview backports: docs/research/multiview-maintenance.md), served as static files.
 Fewer moving parts for a non-programmer owner and for AI sessions.
 Consequence: no bundler, no npm runtime dependencies.
 
@@ -120,7 +130,7 @@ Why: a real experiment's consent is signed; the owner signed it in the headset a
 Consequence: tests/smoke.mjs signs both pages and fails a form that moves on unsigned or a field the rays cannot hit; the pen lifts on any let-go, exit or slip off the field (docs/mistakes.md).
 
 ## Control that does not rest on my memory
-The owner cannot see when I am wrong ("я не знаю, что мы пошли в разнос"), so mistakes are stopped by machines and by checkers that do not share my reasoning, at fixed moments, not when I remember. Machine stops: no commit while the quick tests fail (tools/hooks/pre-commit; the full npm test runs on GitHub); nothing private leaves, from any folder (tools/secrets.mjs); main, the live site, only on the owner's word: on GitHub it takes changes only by a pull request with the test check green and can be neither deleted nor rewritten (the ruleset "main is the live site", on the owner's yes), and the command guard refuses a merge into it (tools/claude-guard.mjs). Independent checks: every claim in the plan and the docs ("done", "checked", a number, a name, a source) can be checked against its evidence by the fact-checker agent (.claude/agents/fact-checker.md), run on demand in two runs that do not see each other; a disagreement is settled by reading the source again (CLAUDE.md, "Truth").
+The owner cannot see when I am wrong ("я не знаю, что мы пошли в разнос"), so mistakes are stopped by machines and by checkers that do not share my reasoning, at fixed moments, not when I remember. Machine stops: no commit while the quick tests fail (tools/hooks/pre-commit; the full npm test runs on GitHub); nothing private leaves, from any folder (tools/secrets.mjs); main, the live site, only on the owner's word: on GitHub it takes changes only by a pull request with the test check green and can be neither deleted nor rewritten (the ruleset "main is the live site", on the owner's yes), and the command guard refuses a merge into it (tools/project-guard.mjs). Independent checks: every claim in the plan and the docs ("done", "checked", a number, a name, a source) can be checked against its evidence by the fact-checker agent (policy/agents/fact-checker.md), run on demand in two runs that do not see each other; a disagreement is settled by reading the source again (WORKFLOW.md, "Truth").
 Why: Chain-of-Verification (Dhuliawala et al. 2023, arXiv 2309.11495): a model's errors fall when the checks are answered apart from the draft that made them, so the checker gets the claim and the sources, never my reasoning; the premortem (Klein 2007, Harvard Business Review 85(9)) finds a plan's failures before they happen by assuming it has failed and asking why.
 Consequence: a status without its proof (a test, a commit, a file, a frame, a quote) is written "не проверено"; the plan gets a premortem before it is relied on.
 
@@ -150,17 +160,17 @@ Why: the paper's observation is kept in words in the reveal (p. 450), with no cl
 Consequence: no transparent surface and no observation room behind it; raising the blinds to show something is his to decide later.
 
 ## Every helper stops at a turn limit the machine holds
-Each agent in .claude/agents sets maxTurns (Claude Code's subagent field: at the limit it stops and returns its output marked partial): deep-research 200, quick-research 40, fact-checker, practice-reviewer and paper-reviewer 150, request-auditor 80.
+Each agent in policy/agents sets maxTurns (Claude Code's subagent field: at the limit it stops and returns its output marked partial): deep-research 200, quick-research 40, fact-checker, practice-reviewer and paper-reviewer 150, request-auditor 80.
 Why: the owner's worry that a search runs for hours (11.10); the limits were prose only. The numbers sit above the longest runs measured on 11.10 (deep-research 138 turns, fact-checker 107, request-auditor 31, quick-research 16) and above deep-research's own budget of 60 searches and 80 page reads.
 Consequence: a run cut at its limit comes back partial and says so. tests/structure.test.mjs holds that every agent has a limit.
 
 ## The headset and the test copy also wait for each room's check against its paper
 VR in the headset (`tools/quest-look.mjs` vr) and the test copy (`tools/publish-preview.mjs`) refuse until the paper reviewer checked each room in `src/rooms/` as its folder now stands (`requirePaper` in `tools/review-gate.mjs`); its report's last line lists the rooms it checked, and Claude Code's subagent hooks record the run room by room, as they record the practice review. The own look in the headset goes after a fix of only the files its report named. The headset probe shows no room and does not wait.
-Why: the owner's «Сделать сейчас» (12.10) to the divergences page, card 5: «тестовая копия и очки ждут сверки со статьёй после последней правки комнаты — как сейчас ждут проверки перед очками»; a ban, by his rule, where a mistake costs him time: an unchecked room in the headset. Room 101 had changed 7 times since 11.10 with no paper check. It replaces the recipe's words «then run it again on the fixes» (`.claude/skills/new-room/SKILL.md`, step 8).
+Why: the owner's «Сделать сейчас» (12.10) to the divergences page, card 5: «тестовая копия и очки ждут сверки со статьёй после последней правки комнаты — как сейчас ждут проверки перед очками»; a ban, by his rule, where a mistake costs him time: an unchecked room in the headset. Room 101 had changed 7 times since 11.10 with no paper check. It replaces the recipe's words «then run it again on the fixes» (`policy/skills/new-room/SKILL.md`, step 8).
 Consequence: a room changed since its paper check stops the headset until the paper reviewer runs on it (`tests/review-gate.test.mjs`).
 
 ## The search helpers stay on the session's model
-No helper in .claude/agents sets its own model, so each runs on the session's model (Opus 5.5).
+No helper in policy/agents sets its own model, so each runs on the session's model (Opus 5.5).
 Why: the measure of 12.10 (https://claude.ai/artifact/REVKLNJQavWbus8Fk1S6ZB): the same four questions on Sonnet 5.5 and Opus 5.5, one run each; the three narrow ones came out equally right, but on the wide one each model missed a source the other found (Opus: the bHaptics vest on an audio cable; Sonnet: Web Serial in Chrome 148 on Android), and Sonnet costs half per token. He first chose Sonnet for the two search helpers, then, told of the wide question, «вернуть Opus» (12.10).
 Consequence: tests/structure.test.mjs fails if any helper sets a model.
 
@@ -191,7 +201,7 @@ kept while it serves, changed by facts, with one line to him.
 - The shown average of "you and other players" is recomputed only in batches of at least 10 new players («да» 12.10).
 - Room 101 keeps the chosen answer's place and its 40 trials as 40 marks, without times, with the next change of the database («да» 12.10).
 - The database's remaining doors closed: the chat's Supabase connector read only, an explicit deny on the tables, the IP-hash key changed daily; his «encryption later» stays his.
-- Connectors off: Notion, Jam, Adobe, Figma, the GitHub connector, Claude in Chrome, computer use, Minutes, privacy-legal; kept: Claude Docs, the browser pane, Consensus, PubMed, reference lookup, PDF Tools, Dropbox (not connected on 15.10; Google Drive is the papers' copy, .claude/rules/setup.md), one Supabase; the superpowers plugin off («да» 10.10).
+- Connectors off: Notion, Jam, Adobe, Figma, the GitHub connector, Claude in Chrome, computer use, Minutes, privacy-legal; kept: Claude Docs, the browser pane, Consensus, PubMed, reference lookup, PDF Tools, Dropbox (not connected on 15.10; Google Drive is the papers' copy, policy/rules/setup.md), one Supabase; the superpowers plugin off («да» 10.10).
 - Plugins for every project: CodeRabbit and the TypeScript language server («ставь» 9.10), the CodeRabbit plugin off for this project since 15.10 (a2bf36f, his «Подтверждаю»; its review of pull requests on GitHub stays); main protected on GitHub («Да» 9.10).
 - main held by the simple guard against my slips, the forms chasing a deliberate bypass taken off (my choice after his no to a second account).
 - The seven things the studio lacks, each on its shelf (https://claude.ai/artifact/J1VB6ay99JRuS9Zd6niJhg).

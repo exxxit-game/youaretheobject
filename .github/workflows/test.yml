@@ -1,11 +1,12 @@
 name: test
 
 on:
-  # on each push to room-polish and main, and on each pull request into either, so a window's work is
+  # Test the corridor branch on push too; PR filters below still select the target branch.
+  # On each push to room-polish and main, and on each pull request into either, so a window's work is
   # tested before it is merged; main's ruleset requires this run, and a run skipped by a branch filter
   # stays pending and blocks the merge (GitHub, "Troubleshooting required status checks")
   push:
-    branches: [room-polish, main]
+    branches: [room-polish, main, 'codex/**', experiment/perception-corridor]
   pull_request:
     branches: [room-polish, main]
 
@@ -16,6 +17,7 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with:
@@ -35,11 +37,16 @@ jobs:
           BEFORE: ${{ github.event.before }}
         run: |
           if [ -z "$BEFORE" ] || ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null \
-            || git diff --name-only "$BEFORE" HEAD | grep -qE '^(tools/(claude-guard|prove-guards|review-gate|secrets|owner-links|board)\.mjs|tools/hooks/|tests/(guard|structure|review-gate|secrets)\.test\.mjs|\.claude/settings\.json|docs/mistakes\.md|\.github/workflows/test\.yml)'; then
+            || git diff --name-only "$BEFORE" HEAD | grep -qE '^(tools/(project-guard|codex-review|is-main|prove-guards|review-gate|secrets|owner-links|board)\.mjs|tools/hooks/|tests/(guard|codex-review|structure|review-gate|secrets)\.test\.mjs|\policy/(settings|process-size)\.json|docs/mistakes\.md|\.github/workflows/test\.yml)'; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
       - if: steps.guards.outputs.changed == 'true'
         run: node tools/prove-guards.mjs --lf   # every guard must go red on its own mistake
       - if: steps.guards.outputs.changed == 'true'
         run: node tools/prove-guards.mjs        # and with Windows line ends, as on the laptop
+      - run: npm run test:smoke:shaders
+        timeout-minutes: 2
+      - run: npm run test:smoke:preview
+        timeout-minutes: 8
       - run: npm run test:smoke
+        timeout-minutes: 15

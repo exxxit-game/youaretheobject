@@ -5,6 +5,12 @@ Status is `verified` (checked against the full text) or `UNVERIFIED` (do not sho
 Abstracts are not enough: room 01 once removed a true fact because only the
 abstract had been read.
 
+## First book deal (fiction)
+Verified owner instructions: last copy within the fiction; Stuart Chase's The Tyranny of Words;
+trial offers100,250,500,1000; refusal ends the deal, unanswered exit preserves it,
+one confirmed act receives one payment. No claim that a real book disappears or
+that an answer measures a person's morality. See docs/rooms/book-deal-preview.md.
+
 The Ono (1987) room that once was room 01 is gone from the game; its sources stay with it in
 commit 005c92a on GitHub (the git tag ono-room-final marks it on the owner's laptop).
 

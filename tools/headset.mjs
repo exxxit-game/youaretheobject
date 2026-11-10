@@ -22,11 +22,11 @@ export const adb = (...args) => run(args[0] === 'devices' || !device() ? args : 
 export const screencap = () => execFileSync('adb', [...(device() ? ['-s', device()] : []), 'exec-out', 'screencap', '-p'],
   { env: { ...process.env, MSYS_NO_PATHCONV: '1' }, maxBuffer: 64 * 1024 * 1024 });
 
-// The laptop's server: the port the app's preview starts it on (.claude/launch.json), else the
+// The laptop's server: the port the app's preview starts it on (policy/launch.json), else the
 // port of `npm run serve`.
 export function localPort() {
   try {
-    const launch = JSON.parse(fs.readFileSync(new URL('../.claude/launch.json', import.meta.url), 'utf8'));
+    const launch = JSON.parse(fs.readFileSync(new URL('../policy/launch.json', import.meta.url), 'utf8'));
     return launch.configurations.find((c) => c.name === 'objekt').port;
   } catch (e) { return 3000; }
 }
@@ -62,6 +62,39 @@ export const onHead = (powerDump) => headState(powerDump) === true;
 export const offHead = (powerDump) => headState(powerDump) === false;
 export const wornByPerson = () => onHead(adb('shell', 'dumpsys', 'vrpowermanager'));
 export const takenOff = () => offHead(adb('shell', 'dumpsys', 'vrpowermanager'));
+// A forced CLOSE cannot establish whether someone wears the headset. A stand starts only
+// from a readable, unmounted state with the real sensor enabled; no override is cleared on refusal.
+export const standOff = dump => headState(dump) === false &&
+  /Virtual proximity state: DISABLED\b/.test(dump);
+export async function restoreStandProximity({ readPower, setProximity }) {
+  const out = await setProximity(true);
+  const after = await readPower();
+  if (!/Virtual proximity state: DISABLED\b/.test(after)) {
+    throw new Error('the stand proximity override was not proven restored');
+  }
+  return { out, after: 'DISABLED' };
+}
+export async function withStandProximity(io, work) {
+  if (!standOff(await io.readPower())) {
+    throw new Error('stand not started: worn, unread, or already overridden; the sensor was not changed');
+  }
+  let failure;
+  try {
+    // The command can partly act and then fail: restoration covers that attempt too.
+    await io.setProximity(false);
+    if (!/Virtual proximity state: CLOSE\b/.test(await io.readPower())) {
+      throw new Error('the stand proximity override was not proven active');
+    }
+    return await work();
+  } catch (e) { failure = e; throw e; }
+  finally {
+    try { await restoreStandProximity(io); }
+    catch (e) {
+      if (failure) throw new AggregateError([failure, e], `${failure.message}; ${e.message}`);
+      throw e;
+    }
+  }
+}
 // Sleep and a browser restart act only on a headset proven off a person's head (headState above), here in the
 // one place every tool reaches the headset through, so no tool can put to sleep or restart a headset he wears.
 // Built on any adb runner, so tests drive them with the power dumps the headset printed.
@@ -190,7 +223,7 @@ export async function page(match, { noAnswerMs = 120000 } = {}) {
 }
 
 // The owner's next step, inside the headset, so he does not take it off to read the chat (his
-// practice, .claude/rules/measures.md). The input probe's panel and type as they were reviewed
+// practice, policy/rules/measures.md). The input probe's panel and type as they were reviewed
 // (tools/xr-probe-input.html, objekt-files/notes/archive/docs/audit/probe-review.md), cut to its two lines, and placed as Meta
 // places captions: at the edge of the view, not over what he looks at ("at the top or bottom of their
 // 40-degree field of view", developers.meta.com/horizon/design/accessibility), here 15 degrees above

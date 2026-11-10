@@ -1,15 +1,13 @@
-# The tandem: who does what, and what each does not do
+# The tandem
 
-| Who | Does | Does not |
-|---|---|---|
-| He | what the game should be; looks in the headset; his accept word with the number (CLAUDE.md step 5), "not", "stop"; money and logins | read code, judge rules |
-| I | code, texts, search; one thing a window; my look in the headset first; open the next window from room-polish | write rules for myself, say "done" unchecked, give my advice as his decision |
-| GitHub (tests) | green or red on every commit | decide what to build |
-| CodeRabbit | reviews the code from outside on every pull request | decide for him |
-| Checkers (AI) | check the facts in what he will read | write code |
-| Locks | stop the irreversible: the live database, the live site, the headset on his head, keys, the papers library | watch my words |
-| The headset | the one place the game is seen as it is | |
+The owner directs purpose/tone and accepts the shown experience. Summarise purpose, result, elapsed time, blocker and next in Russian. The lead owns sources, technical work and checks; documents stay available.
 
-The chain: he says what is needed, I build, tests, CodeRabbit, the reviewers (tools/review-gate.mjs), my look, his
-look, his accept word. What he pastes
-from other AIs is a lead, checked before use. Answer him in Russian, plain words, short.
+One map step: action, consequence, success check. Reuse sources/code; join space, story, controls and memory. Show finished batches; recheck changed or unclear evidence. Reassess routine methods after five minutes without progress.
+
+Helpers handle substantial independent questions. Give goal/inputs/evidence; check start on the next independent action. One writer verifies and integrates. CodeRabbit counts when complete; tools/review-gate.mjs holds reviews.
+
+Show blockers in chat immediately: failure, impact, help; map details. Try permitted remedies. Before owner effort check saved results and the manual action; name its window, recheck and resume. Respect denials.
+
+Pinterest is primary: bulk-sort owner saves first. Match local files when needed; catalogue repair and unrelated tests must not delay a batch. Preserve pin/source links and gaps. Check desktop, phone and Quest separately.
+
+State errors, impact and cause/unknown; fix and repeat the failed check. Separate implementation, checks, acceptance and release (WORKFLOW.md).

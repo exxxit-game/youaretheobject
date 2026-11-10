@@ -9,7 +9,7 @@ import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { isMain } from './is-main.mjs';
 
 export const PRIVATE_EMAIL = '311935850+exxxit-game@users.noreply.github.com';
 // addresses GitHub itself writes into merges made on its site
@@ -67,7 +67,7 @@ export function checkStaged(cwd) {
 export const notPushed =() => 'HEAD --not --remotes=origin';
 export const configEmailOk = () => git('config', 'user.email') === PRIVATE_EMAIL;
 
-if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
+if (isMain(import.meta.url)) {
   const problems = process.argv[2] === '--staged' ? checkStaged() : check(process.argv[2] || notPushed());
   if (!configEmailOk()) problems.unshift(`git's user.email is not the private address (${PRIVATE_EMAIL})`);
   for (const p of problems) console.log('STOP ', p);

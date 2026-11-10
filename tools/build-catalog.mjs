@@ -74,6 +74,7 @@ const out = [
   '# Experiment catalog',
   '',
   'Generated from `docs/cards/` by `node tools/build-catalog.mjs`. Do not edit by hand.',
+  'Scientific literature and earlier research candidates; this index does not exclude separately sourced philosophical rooms. Current types: docs/research/corridor-room-plan.md.',
   'Every row links to a card written from the paper\'s full text with checked quotes.',
   'Space: seated · standing · roomscale (1.8 × 1.8 m) · large (more than 1.8 × 1.8 m, offered only',
   'to players with that space). Reality: VR, MR (mixed reality fits the original better),',

@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "deny": [
+      "mcp__*__update_ref",
+      "mcp__*__create_blob",
+      "mcp__*__create_tree",
+      "mcp__*__create_commit",
+      "mcp__plugin_playwright*",
+      "mcp__plugin_chrome-devtools*",
+      "mcp__*__apply_migration",
+      "mcp__*__deploy_edge_function",
+      "mcp__*__pause_project",
+      "mcp__*__restore_project",
+      "mcp__*__create_project",
+      "mcp__*__delete_branch",
+      "mcp__*__merge_branch",
+      "mcp__*__reset_branch",
+      "mcp__*__rebase_branch",
+      "mcp__*__confirm_cost",
+      "mcp__*__push_files",
+      "mcp__*__create_or_update_file",
+      "mcp__*__delete_file",
+      "mcp__*__merge_pull_request",
+      "mcp__*__update_pull_request_branch",
+      "mcp__*__create_repository",
+      "mcp__*__fork_repository"
+    ]
+  }
+}

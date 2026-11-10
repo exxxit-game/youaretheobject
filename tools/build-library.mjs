@@ -7,7 +7,8 @@
 // Usage: node tools/build-library.mjs [--check]
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { fileURLToPath } from 'node:url';
+import { isMain } from './is-main.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 export const JSON_PATH = 'docs/library/papers.json';
@@ -194,7 +195,7 @@ export function staleFiles(out, root = ROOT) {
     .map((f) => `docs/library/${f}`).filter((f) => !(f in out));
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+if (isMain(import.meta.url)) {
   const out = render(loadLibrary());
   const read = (f) => (fs.existsSync(path.join(ROOT, f)) ? fs.readFileSync(path.join(ROOT, f), 'utf8').replace(/\r\n/g, '\n') : null);
   if (process.argv.includes('--check')) {

@@ -1,5 +1,12 @@
 # Room contract
 
+The lifecycle below describes the existing `01-control` integration. The target
+science/philosophy/deal types and device checks are in [the room plan](research/corridor-room-plan.md).
+Shared lifecycle and independent review stay; a new type may need a tested adapter.
+The first fictional deal uses the existing desktop preview's door/camera lifecycle;
+its bounded adapter and persistence are specified in [the book slice](rooms/book-deal-preview.md).
+It does not inherit room 01's measured trials, consent or restart semantics.
+
 A room is a folder `src/rooms/NN-name/` and stands behind a door of the corridor. The app holds
 the scene, the player (the rig, the camera, both controllers) and the corridor with every door for
 the whole visit (`src/app/lab.js`, `src/app/stage.js`); the room is only what is behind its door.
@@ -14,7 +21,7 @@ report.js       export function analyse(log) → report   pure: no DOM, no texts
 texts.ru.js     every word the player sees
 voice-lines.js  every spoken line and its recording
 sound-list.js   every sound effect and its prompt
-docs/rooms/NN-name.md   the spec: original procedure with pages, deviations, our choices
+docs/rooms/NN-name.md   the spec: room type, primary sources, flow, limits, our choices
 ```
 A room built from a paper also has `protocol.js` (every number, with pages) and a
 test that pins those numbers to the paper.
@@ -54,8 +61,8 @@ What room.js exports:
    not counted), lets nothing be pressed and no new button come up, and pauses its sound.
 6. `leave()`: the player left the room through the menu, just before the fade to black. The run ends there:
    every step still waiting goes nowhere, the widgets are hidden and the state is `idle`, so `enter()` can
-   start the room again from its beginning. Results go only once the debrief's truth has been shown.
-7. `running()`: whether the player is inside a run, before the debrief's truth. The menu asks before
+   start the room again from its beginning. Room 01 sends results after its debrief.
+7. `running()`: whether the player is inside a run, before its debrief. The menu asks before
    leaving either way; after leaving a run the corridor offers what a player who left early may learn
    (`src/app/left-early.js` texts), and door 1 takes them in again.
 
@@ -64,12 +71,14 @@ Shared parts a room must not re-implement: arrival (corridor), consent, session,
 (`src/engine/ui/scale.js`), voice, sound, doors (`src/engine/door.js`, built by the corridor),
 door plaques (`writePlaque` in `src/app/brand.js`).
 
-A door sign shows the room's number only, on the door's corridor face (`doorHTML({ sign })`) and on
+A door sign in the existing laboratory shows its number only, on the corridor face (`doorHTML({ sign })`) and on
 the wall inside: the experiment's name would tell the player what is studied before they do it
 (demand characteristics); the name comes in the reveal, and on the door once the room is done
 (`tests/plaque.test.mjs`). The number comes from the corridor plan (`src/app/lobby/plan.js`):
 the room imports it for its texts and its own sign; the lobby writes the corridor's signs and door 1's.
 
-Add a room: read the paper in full first (CLAUDE.md: the paper read in full), write the spec, then
-`protocol.js` and its test, then the rest. File names must not look like tracking
+Add a room: read its primary sources in full and specify its type before code.
+For empirical rooms, pin the paper's procedure in `protocol.js` and tests first;
+for other types, test the applicable model or choice/state rules. A philosophical
+question need not have a timer, right answer or concealed title. File names must not look like tracking
 (see `tests/names.test.mjs`): ad blockers block them.

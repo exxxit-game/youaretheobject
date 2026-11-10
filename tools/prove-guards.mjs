@@ -1,7 +1,3 @@
-// A test that passes says only that nothing broke the rule
-// OR that the test cannot see it; the way to tell them apart is to plant the mistake and watch the
-// guard go red (mutation testing). Each case below plants exactly the mistake one guard exists
-// for, in a throwaway clone of the last commit, runs that guard, and puts the clone back.
 import { execFileSync, spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -35,15 +31,10 @@ const run = (cmd, args, extra = {}) => {
 };
 const test = (file) => () => run(process.execPath, [`tests/${file}`]);
 const structure = test('structure.test.mjs');
-// player's words built from their codes: Russian letters belong only in the texts files
 const ru = (...codes) => String.fromCharCode(...codes);
-// The guards read every tool, this one too: a planted name written out here whole would count as
-// "imported" or "in the code" and hide the mistake, so it is joined only when planted.
 const PLANTED = ['plan', 'ted', 'zq'].join('');
-// built from parts so this file holds no token of its own
 const token = 'ghp' + '_' + 'Zx9Q'.repeat(9);
 
-// [guard, the rule it keeps, the mistake planted, plant, run, words the failure must name]
 const CASES = [
   ['structure 1', 'files about 300 lines', 'a code file over 300 lines', () => append('src/engine/ui/choice.js', `\n${many(300, '// x')}\n`), structure, 'files over 300 lines'],
   ['structure 1', 'files about 300 lines', 'a doc over 300 lines', () => append('docs/roadmap.md', `\n${many(300, 'x')}\n`), structure, 'docs over 300 lines'],
@@ -80,17 +71,14 @@ const CASES = [
     () => run('git', ['commit', '-qam', 'planted']), 'tests/names.test.mjs fails'],
   ['pre-commit hook', 'no keys', 'a commit with a token staged', () => { git('config', 'core.hooksPath', 'tools/hooks'); append('docs/roadmap.md', `\n${token}\n`); },
     () => run('git', ['commit', '-qam', 'planted']), 'something private is staged'],
-  // tools banned by name are deny rules in the settings (Claude Code applies them; no hook to ask): the
-  // mistake planted is the rule taken out, and the guard test is what sees it
-  ['settings deny', 'tests before done', 'a connected tool may start a browser on the laptop', () => swap('.claude/settings.json', '"mcp__plugin_playwright*",', ''), test('guard.test.mjs'), 'mcp__plugin_playwright*'],
-  ['settings deny', 'data: read only', 'a migration may be applied to the live database', () => swap('.claude/settings.json', '"mcp__*__apply_migration",', ''), test('guard.test.mjs'), 'mcp__*__apply_migration'],
-  ['settings deny', 'main only on the owner\'s word', 'files may be pushed to GitHub past the push hook', () => swap('.claude/settings.json', '"mcp__*__push_files",', ''), test('guard.test.mjs'), 'mcp__*__push_files'],
+  ['settings deny', 'tests before done', 'a connected tool may start a browser on the laptop', () => swap('policy/settings.json', '"mcp__plugin_playwright*",', ''), test('guard.test.mjs'), 'mcp__plugin_playwright*'],
+  ['settings deny', 'data: read only', 'a migration may be applied to the live database', () => swap('policy/settings.json', '"mcp__*__apply_migration",', ''), test('guard.test.mjs'), 'mcp__*__apply_migration'],
+  ['settings deny', 'main only on the owner\'s word', 'files may be pushed to GitHub past the push hook', () => swap('policy/settings.json', '"mcp__*__push_files",', ''), test('guard.test.mjs'), 'mcp__*__push_files'],
   ['guard test', 'the owner\'s decisions', 'a session starts without his decisions in front of it', () => fs.rmSync(at('docs/owner-decisions.md')), test('guard.test.mjs'), 'does not show the owner\'s decisions'],
-  ['CLAUDE.md imports', 'the tandem', 'an import that loads nothing', () => swap('CLAUDE.md', '@docs/tandem.md', '@docs/tandem.md.'), test('guard.test.mjs'), 'no file behind it'],
+  ['WORKFLOW.md imports', 'the tandem', 'an import that loads nothing', () => swap('WORKFLOW.md', '@docs/tandem.md', '@docs/tandem.md.'), test('guard.test.mjs'), 'no file behind it'],
 ];
 
 const restore = () => {
-  // a refused commit can leave git's lock behind; git's advice: remove a stale lock
   fs.rmSync(path.join(dir, '.git', 'index.lock'), { force: true });
   git('reset', '-q', '--hard');
   git('clean', '-qfdx', '-e', 'node_modules');

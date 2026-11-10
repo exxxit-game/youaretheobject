@@ -1,12 +1,27 @@
 # The owner's decisions
 
-Settled: never asked again; a new fact against one is told him once, with its source; only he changes it. One line a decision with
-his key words (the date he said them, UTC); loaded with CLAUDE.md at every session start and after every compaction.
-Here: what holds in every window. A decision of one theme is in .claude/rules/ (game, measures, data, setup), loaded
-when a file of that theme is read or edited («утверждаю» 14.10), settled alike. All his words, how each came, and the
-texts he accepted: docs/owner-decisions-history.md, read when a line is not enough. A new decision: its line here or
-in its theme's rule, the rest there. A risk list or a general method is no reason to reopen one. My technical advice
-once written here as his is in docs/decisions.md, "Moved from his decisions" (his «Утверждено» 14.10).
+Settled: only the owner changes a decision. Report contrary evidence once with its source.
+Read this with WORKFLOW.md at session start and compaction. One dated line per decision;
+theme decisions in policy/rules/ are read for the relevant task. Full accepted words and history:
+docs/owner-decisions-history.md. Advice is not owner approval; corrections:
+docs/decisions.md, "Moved from his decisions". A risk list or general method alone does not reopen
+a decision (his approval, 14 October).
+
+- 2026-11-07: The owner approved [the corridor foundation](research/perception-corridor.md#approved-foundation-7-november-2026). Continue in this chat; next develop room details. Think before acting: existing sources, purpose, benefit/cost, consequences and verification; prepare before requesting his effort.
+
+- 2026-11-08: The owner selected Codex only for this project. WORKFLOW.md, policy/ and tools/project-guard.mjs replace the active Claude paths; quoted historical decisions remain unchanged. Independently check changes before relying on them.
+
+- 2026-11-08: The owner adds scientific and philosophical rooms to the same perception corridor, retains the separate voluntary-deal/checkpoint branch and the community name Society Zero, and asks for gradual expansion through human knowledge. Synchronise the plan across GitHub, documents and agent guidance for desktop/trackpad, mobile and Quest. Details: docs/research/corridor-room-plan.md; candidate scenes are proposals, not accepted implementations.
+
+- 2026-11-08: The owner clarifies logical floor 0 and repeated +/- routes; learning is unpaid, fictional harmful deals pay. Introductory questions and a later helper remain drafts; details: docs/research/corridor-room-plan.md. The sketch defines topology; scan is supporting. Retain the old extinguisher.
+
+- 2026-11-09: Latest: research/corridor-room-plan.md; research/corridor-interaction-map.md.
+
+## Applying the historical decisions below
+Quotations keep their dates and meaning. WORKFLOW.md replaces Claude loading paths.
+October's button parser, headset-only quota, merge-before-new-window and 45-minute
+setup gate are historical mechanisms, not overrides of current work or authorised
+helpers. Game acceptance still requires an explicit decision on the shown result.
 
 ## The process
 - The rules read at start shortened («укорачивать» 11.10): the important always in front of me, the rest read only during its task («чтобы твоя память была чистая» 11.10).

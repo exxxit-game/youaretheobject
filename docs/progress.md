@@ -1,9 +1,168 @@
 # Progress
 
-The newest entry is read at the start of every session, with `git log --oneline -20` and docs/features.json
-(CLAUDE.md, "Every session"). Newest entry on top. Each entry: done, not done and why, next. Anything outside the
+The newest entry is read at the start of every session, with `git log --oneline -20`; docs/features.json is read for acceptance work
+(WORKFLOW.md, "Every session"). Newest entry on top. Each entry: done, not done and why, next. Anything outside the
 feature at hand goes to the end of docs/board.md, one line each.
-Entries of 14.10 and before: docs/progress-2026-10-14.md; the earlier ones of 15.10: docs/progress-2026-10-15.md.
+Entries of 14.10 and before: docs/progress-2026-10-14.md; the earlier ones of 15.10: docs/progress-2026-10-15.md; late entry: docs/progress-2026-10-15-late.md.
+
+## 2026-11-10 — Verify the actual project entry after relocation
+The selected F:/youaretheobject god love folder now resolves to the existing F workspace; old C access also remains a junction. File-hash migration receipts and the SSD/HDD explanation are in the existing map/storage guide. Twelve related chats are verified project members; the active audit chat still loses its membership after successful move responses. Runtime checking reproduced silent exit0 through junctions: CLI main detection compared textual paths. The shared canonical-path check now covers affected tools and the test server; real TEMP alias regressions, direct/F/C brief output checks and the full npm test passed. Tools guidance uses current connector roles. Real SubagentStart/Stop delivered a code-only pass at unchanged scope a16dfaf8; its stored report hash was checked. Startup context and user-prompt logging remain unobserved after the fix; no live synthetic callbacks were written. The shared entrypoint helper is included in the CI guard-mutation trigger. Approved ordinary-context ADB listing now starts normally and returns no devices. No game, device trial, acceptance or release change. Next: finish code verification/delivery, then observe the real app hooks; current artistic task remains T02h.
+
+## 2026-11-10 — Recover experience and reconcile current state
+The disk/GitHub audit and its reading boundaries are in perception-knowledge.md; both distinct owner journals and the verified Claude relocation are indexed. Current map/state fields now derive from one record and reject drift; the book contract owns trial rules, dated alternatives remain history. Native exact-prompt logging and read-only startup/compaction context are implemented and registered. Full npm test, live catalogue/brief checks and a fresh reader's recovery of purpose/T02h passed. Original-chat native hook trust/delivery remains unverified: the supported server connection failed (Windows 10050); no synthetic callbacks or acceptance records were created. Desktop Settings > Hooks is the documented inspection route. The original chat has read the brief in its new host discussion; its proposed TV-first choice is not owner approval. No device, acceptance or release result. Next: finish exact-version delivery, verify native hook activation, then the currently requested game work/T02h; preparation belongs to Codex.
+
+## 2026-11-10 — Preserve the wider purpose on continuation
+The brief now displays and checks the existing author's purpose; T02h's reason connects choice and consequence to it. Three catalogue entries reuse world-library originals. Research and its limits are in perception-knowledge.md. Full npm test, live brief/catalogue checks and independent review passed. No foundation, game or acceptance change. Original-chat continuation, human impact and improved pace remain untested. Next: T02h's three artistic views; show the result and blockers in chat.
+
+## 2026-11-10 — Independent repair of context and routine work
+The owner requests efficient work after the independent audit. Brief now requires explicit obstacle states, checks only the current receipt's integrity and exposes historical source reviews. B18 is closed; three older reviews keep their original hashes and do not cover today's text. Existing rules use native batches, visible results, checked helper starts and reassessment after five minutes without routine progress. Narrow regressions and full npm test passed; independent reading found two wording issues, corrected. No game or acceptance change. Next: T02h; external review and device limits remain open.
+
+## 2026-11-10 — Tandem clarification and original owner saves
+The owner reads short Russian summaries and may open documents; code is not his duty. Existing AGENTS/tandem wording now requires immediate chat blockers and checked helper starts/results. Two read-only helpers completed after their first tasks stayed pending_init; cause unknown, not evidence of 48 simultaneous workers. The lead rechecked the diff and image matches; review caught two omitted reminders, restored before shortening repeated wording to satisfy the existing process-size limit. No new guard/configuration. Pinterest is the primary visual art collection:25 original owner saves were visually matched, moved to six sections and linked to existing local IDs. Board 56/16, three empty sections; other profile saves remain unreviewed. F retains selected copies, sources and evidence. The catalogue builder preserves pin links. No game code, foundation, acceptance or release change. Exact checks/delivery: art-collection-2026-11-09/verification.json. Next remains T02h's entrance/close/return artistic book views; this organisational repair does not fulfil that criterion.
+
+## 2026-11-09 — Base layout, sources and connected interaction map
+T02h joins all 288 supplied images in one 285-copy, 16-folder library; originals and copies were hash-checked. The public Pinterest board has 31 pins (30 lead saves plus one owner pin); online expansion remains partial. Twelve technical and eleven artistic cards use 22 URLs: 17 local responses saved, five URLs returned403 twice, affecting six cards (B21). Screen curvature is only a proposal; its formula example and explanatory PNG do not establish a working room. An owner-facing audit of all 30 original visible map sections and the room contract found conflicting current tasks, an outdated unapproved price ladder, an obsolete empty-room/undo description, and overconfident reusable-director/device wording. These were corrected; historical CI/tasks are labelled by stage, the three-view artistic criterion is explicitly unmet, and a current state/consequence table plus actual image overview was shown directly in chat. Independent text rechecks confirmed the distinctions; no game code or acceptance changed. The selected book trial remains finite and terminal, with unfinished departure preserved. Its artistic views, B19/B17 geometry, B01/B16, original B20 and device work remain open. Checks and exact delivery belong in art-collection-2026-11-09/verification.json. Next visible result: one coherent book-scene sketch from entrance, close and return views; video and phone direct entry remain separate proposals.
+
+## 2026-11-08 — Unified room and device plan
+Owner clarification saved; current guidance now distinguishes science, philosophy and fictional deals. See docs/research/corridor-room-plan.md for candidates, evidence limits and desktop/mobile/Quest checks. Historical plans and acceptances preserved. Local tests passed; exact-version GitHub CI and external review remain to verify in the map/PR. No new scene or release. Next: T01g/B09.
+
+## 2026-11-08 — Society Zero and the transmission of knowledge
+
+The owner asks to preserve the Society Zero name and research its connection to
+earlier experiences, symbols, mathematics and optics. The catalogue now reaches
+the earlier naming record and the bounded historical inquiry on F. Historical
+facts, authorial meaning and suggested game actions remain distinct. No new
+scene, branding, collection, publication or change to the foundation was made.
+T01g remains open; this request concerns the meaning and research.
+
+## 2026-11-08 — Stand preparation before requesting the owner's time
+
+T01f rejects worn, unknown and already overridden states before any proximity action.
+The entire attempt is scoped, including preflight, setup failures and early returns;
+restoration is read back before idle actions. Explicit restore returns the real sensor
+first; worn/unknown states cannot restart or sleep the headset. Arguments and review
+gates precede mutation; cleanup logs the actual sleep result, including refusal.
+The real main body is exercised with
+stubbed IO, alongside the pure helper and the original saved Quest dumps.
+No headset command ran. Physical validation and T01g's paper dependency fix remain open.
+Current results and owner participation are recorded in the single F map.
+
+## 2026-11-08 — Bounded multiview backports
+
+The owner supplied Vincent Fretin's issue27 comment. Source/registry and local r184
+checks found a missing deferral reset and two conditional shader defects.
+Three exact backports preserve A-Frame1.8.0/r184; the disputed r187 DataTexture
+exception is excluded. Patch tool reverses to the previous known SHA and npm dist.
+Old-code negative controls cover the queue and shader construction; ordinary
+WebGL2 grammar checks and native Quest verification remain separate.
+See docs/research/multiview-maintenance.md. Current version/results are in the F map.
+No owner acceptance, Quest success or publication is implied.
+
+## 2026-11-08 — Corridor branch and version-bound CI preparation
+
+T01c adds push CI for experiment/perception-corridor and codex work branches,
+keeps PR merge-ref checks, and extends smoke to the real preview page in CI only.
+The host-only rules allocation remains reserved without its laptop files; the
+process ceiling shrinks with retired provider settings and callbacks. Git uses tools/hooks.
+Read-only finish check binds local/remote/PR heads, actual test steps, a completed
+CodeRabbit review and status, all threads and two stable evidence snapshots.
+It sends no push, PR comment or publication. Unknown/incomplete state stays false.
+Independent review found skipped bot states, same-SHA races and legacy trigger
+gaps; fixes have regressions. Codex-only WORKFLOW/policy/project-guard replaces active legacy paths.
+Limited code review cannot authorise the full served surface. Native parsing accepts trailing
+whitespace without changing the report bytes or scope value.
+Live CI7bceabe passed all checks in17m37s (preview4m25s); cancellation had returned HTTP403.
+Separate bounded browser steps and outcomes stay in the F map by SHA; the limits follow observed times.
+See docs/research/ci-readiness.md. Scene/Quest acceptance and release are separate.
+Earlier T01a/T01b library and native-delivery evidence remain in the same map.
+B01 local map rendering remains open; T01d real visible route is a later step.
+
+## 2026-11-07 — Methods and delivery-readiness review
+
+The owner asked how to reach the approved goal using earlier project experience,
+human knowledge and suitable tools. The approved foundation remains unchanged.
+The source catalogue entry `corridor-execution-route` now locates the Russian
+execution-route report and its adjacent evidence ledger F1-F14 on F. It maps
+reusable material, knowledge gaps, a short connected playthrough, device checks,
+player observation and staged expansion. These are proposed methods, not new
+owner-approved room prompts or evidence of a completed system.
+
+Verified readiness gaps: finish.mjs accepts claude/* and targets room-polish; CI
+filters pushes/PR bases to room-polish/main; the old smoke targets lobby/room-01;
+the content review record is written by a Claude Code hook, with no proven Codex
+equivalent. Static inspection also found no explicit completed-CodeRabbit-review
+requirement for the current SHA in finish's readiness path; no live false-ready
+failure was reproduced. GitHub/Context7 read calls worked. PR27 contains a real
+coderabbitai review dated 16 October; that does not review today's local changes.
+
+Fresh npm test passed through route, geometry, knowledge, masonry and structure,
+then failed library.test.mjs on comachio-2025 and
+datasets/ansur2/ansur2-percentiles. Tests after that point did not run. No
+browser/device performance or human outcome check ran in this review. Tools,
+workflow configuration, game code and publication were not changed. Next technical
+step: restore the full baseline and a version-bound review path for this branch;
+next design step: the short connected route and room details within the foundation.
+
+## 2026-11-07 — Owner approval of the corridor foundation
+
+The owner explicitly approved the overall plan and requested a durable reference,
+the think-before-acting principle and continuation in this same chat. The approved
+section of [the design record](research/perception-corridor.md#approved-foundation-7-november-2026)
+now joins the Flatland purpose, ordinary floor N and continued up/down route,
+connected perception, gradual text offers, valid refusal, the money checkpoint,
+surviving continuation and buried-character restart. Earlier purpose-review labels
+are marked historical. Room prompts, the fictional meaning of yes, cash volume
+and threshold, and persistence between attempts remain design details to develop.
+
+The owner-decisions entry and state/board point to that foundation. The task-root
+AGENTS.md points to the existing records and requires source-based reasoning,
+benefit/cost and future-consequence assessment, a concrete check, and preparation
+before requesting the owner's time. The owner-facing Russian record and approval
+source are stored with the existing F-drive research materials. This is design
+approval and documentation only; no gameplay, feature acceptance, capture, commit
+or publication is claimed. Next: develop the room details within this foundation.
+
+Validation: structure and knowledge checks passed after the documentation update.
+SHA-256 comparison found no changes in the 217 pre-existing source, style, tool,
+test, package, feature-state, CLAUDE and process-limit files checked for this step.
+The F-drive manifest hashes match the saved plan and updated continuation; all
+61,938 bytes of the earlier continuation remain intact inside the history.
+
+## 2026-11-07 — Corridor purpose, repeated route and capture preparation
+
+Later motion study: the owner added motion-dependent depth, aftereffects and intentional two-copy viewing. The source-wide samples, dense intervals, approximate motion measurements, literature and limits are in docs/research/perception-motion.md and the F: study folder reached from the source catalogue. An explicitly geometric two-copy illustration was requested and checked in Chrome at 736 and 320 pixels. It starts paused and preserves the pose on pause. No eye mechanism, spiritual outcome or Quest transfer is claimed by this illustration, and no new player scene was added.
+
+Latest owner clarification after the original ChatGPT history was read earlier than the cached preview: the aim is a Flatland-like expansion of viewpoint and understanding. The source-based recheck is in the current design. A new scientific law is not a prerequisite for that meaning. The owner further specified that the corridor itself is our Flatland: wordless walking, ascent/descent and return reveal connected readings. Scene expansion was paused for this recheck; the prototype and capture preparation are retained, with this clarification guiding the next layout calculations.
+
+The owner requested one convenient source catalogue. Selected references now connect to the existing paper registry, world knowledge indexes, Cosmogram history, website research and old VR modules through docs/research/perception-knowledge.md and tools/knowledge.mjs. No source corpus was copied or moved. Precise title/author retrieval and Russian word-boundary regressions were checked. Offline HTML is generated from the same index; browser policy blocked local-file visual inspection, so no visual-QA pass is claimed. The memory extension records the entry point and the two permanent principles.
+
+Later owner clarification: document all ten physical floors as a source atlas and prepare capture decisions before requesting the owner's time. The capture record now specifies one verified pilot area, a common floor card, present/absent/uninspected inventory, per-floor variations, provenance and device-estimated dimensions. The ten-floor registration and metric accuracy remain unverified. No device work was requested for this clarification.
+
+The owner explicitly made the working principle permanent. The shortened CLAUDE.md step 3 now puts goal, consequences and verification before action, with preparation completed before requesting his time. The same preference was saved in a memory extension for future chats. Hardware preparation continues under that principle.
+
+Later preparation: read the expanded art research, including multi-view construction and viewing-condition limits, and indexed the new 5m15s Quest video video_2026-11-07_09-35-05.mp4. All intended views are now specified together in the design, with sequential validation. The permanent rule now explicitly joins accumulated human knowledge and primary sources with goal/consequence/verification planning.
+
+The capture page now preloads fonts before enabling Start, handles initialization cleanup, reports nonempty posed geometry, and ends a visible empty-data wait after 12 seconds. It commits and reads back captures in IndexedDB before ending XR, and labels restored snapshots. A real-Quest flat-page preflight passed AR-support detection, isolated synthetic device storage and transfer to a verified laptop file. No XR session or real scan was started in that test. The handset screenshot was black while off the head, so wearer-visible rendering is still pending. Default sensor handling was restored after preflight.
+
+The owner clarified that ordinary floor N and continued ascent/descent support a connected sequence of discoveries through movement. The current design, 15 detail families and checks are in [the corridor record](research/perception-corridor.md), linked from state, architecture and board. Two independent research chats completed the artist/source review and the history of the owner's intent. Their reports support the perception direction, with no claim that all wider former goals have been realised.
+
+The route now permits continued ascent/descent, with local coordinate rebasing and logical floor state. Three signs support ordinary numbering or repeated 8. Fixed neighbour geometry is allocated once. The old balanced tile layout is reused with a shared texture. Desktop eye height is adjustable from 1.1 to 1.9 m. Route checks cover 4000 transitions, reversal, half landings and boundaries. The finite distant shaft and lighting require a visual seam check before claiming the walk is visually continuous. Phone and physical VR remain pending.
+
+The complete npm run found and led to fixing unsupported left/right arrow glyphs in the hint. It then passed the route, tiles, font and structure groups and stopped at the old missing library files comachio-2025 and datasets/ansur2/ansur2-percentiles. The later protocol, schedule, report, reveal, result, guard and review-gate groups were run separately and passed. There is no complete green suite or release claim.
+
+The owner chose Quest to obtain geometry. Added a stationary capture mode to the existing room page, an atomic unrounded mesh/plane/pose snapshot, and verified laptop file export. [The capture record](research/perception-capture.md) states what is measured, native Space Setup versus export, coverage checks and the next device trial. Snapshot tests pass through serialization and verified disk write, and reject an overwrite retry. Two source reviewers checked the short mode. The legacy walking runner remains separate.
+
+The real Quest was connected and its flat capture page was read successfully, with secure context and XR available. I had prematurely said the first launch succeeded while the store stayed visible. No new geometry snapshot was obtained. The owner disconnected during a power outage and went out. At that interruption the server was stopped to save battery; the later preflight above used it again. Current work is saved locally. Next: refine the transition against the clarified purpose and use a verified real capture when the owner is available.
+
+## 2026-11-06 — Desktop stairwell preview
+
+Owner approved starting the stairwell route. The isolated branch `experiment/perception-corridor` starts at `435e6d2`. The preview at `/src/preview/` uses the vendored renderer and shared sign panel. One ascent and its return share the same route geometry. `?upper=8` changes only the upper number from 9 to 8.
+
+Route and structure checks passed. Chrome showed the start, stairs, the shift of foreground rails relative to the background, and both numbers from the same upper view. The keyboard was checked on a portion of the route. The full return was checked in route tests. The full npm suite stopped at the unchanged library check because `comachio-2025` and `ansur2-percentiles` are absent from the local library.
+
+After the owner's touchpad feedback, the arrow keys now walk and turn, R/F tilt the view, and A/D still move sideways. R/F avoid the laptop's shared arrow and Page Up/Down keys. Checked keyboard turning, tilt in both directions and walking toward the first flight in Chrome. Dragging remains available on the same camera.
+
+Next: compare the first route to the recordings and refine the alignment of the handrail and stair edges. Dimensions are provisional. The picture placement, phone and physical Quest checks are pending. For a desktop review, run the existing preview server on loopback and open the preview path above.
 
 ## 2026-10-16, evening — the delivery chain published; Codex's review checked and its first fixes
 Same window (his «do it here» to the proposed next window), on a new branch from room-polish 3084b40.
@@ -119,74 +278,3 @@ called unverified (CodeRabbit on #24; corrected).
 Next (a new window, his choice): the whole building from a real university building of the period (outside photos,
 plans, stairs, elevators, entrance) and the fire rules of the time, shown to him as pictures with options; then the
 directories in their places (the main one at the entrance, a floor one at the stairs and elevators); feature 3.
-
-## 2026-10-15, night — the counted process files one by one
-A window opened by "Old problems one by one" (step 3 of its brief); his order here: the process files, then the floor
-directory, then every other link one by one (the board's end).
-Done:
-- His measure came to me at this window's start; his screenshot shows no line from the machine, only my repeat
-  (row 69: the desktop checked, the phone not).
-- His approval: the monthly update check gone, the scheduled task and two setup lines (58631a0); he reminds me.
-- Four read-only helpers reviewed every counted file (notes: the shared notes folder, review-*.md). The guard refused
-  47 real calls since 09.10: 2 right, 2 arguable, 38 false, 5 from a removed mode.
-- Cuts, one change a commit, each with its expected effect: the prover's 9 cases that only repeated the tests
-  (62b5848); stale comments in the gate, prover and hooks (4ab897c); two false-stop kinds of the guard, a raw -f
-  "@" field (c780fea) and one-liners naming review-gate (1c93161); the guard's stale text and dead code (052bc1c);
-  the helpers and the skill (10d299b); CLAUDE.md, the tools page, settings (c889c07); stale CLAUDE.md citations
-  (016ab5c). On his yes: the guard's SQL check, after the connector was read as supabase_read_only_user with no
-  write grants (7a25902); database changes stay a file he pastes and runs. His approval of 1, 2 and 3: three stale lines
-  of his rules (e52f656). Process size 129 981 to 116 872.
-- His doc: rows 21, 39, 40, 42, 43, 52 closed with their commits; 69 and 74 noted as checked.
-Kept on purpose: the start's feature line (a machine bringing it beats a text telling me to fetch it); imports() not
-moved into the test (text moved where the limit does not count, row 22); the library guard's wide path match
-(narrowing adds code); systemMessage until the phone is checked; the deny rules as the spare lock.
-Checked: npm test green after every commit; tools/prove-guards.mjs CRLF and LF: 39 of 39 after the first cut, 37 of
-37 at e52f656.
-- PR #23: CodeRabbit's two findings: the record rule narrowed, not dropped (ea41abd, it agreed); assets/ shown never
-  to have existed (it withdrew). The app's auto-mode classifier refused my fast-forward push to room-polish ("CI
-  Bypass"), so he merged with the button (15a7615); the main folder pulled.
-Not checked: the start without its first line (the next window's start shows it).
-Errors of mine: a node one-liner of mine was stopped by the guard's false rule (fixed in 1c93161); a script of mine
-failed on CRLF lines in docs/tools.md (nothing written there; redone); the allow rule for a push to room-polish
-removed as unused (c889c07), then my push refused (whether the two are linked: not checked); the LoC link held back
-"for the end" instead of given to him at once.
-For him later: "never advised against" in his decisions (row 34); the circles' header said twice; rare setup lines
-out of what loads, by his principle of this window.
-Next: the floor directory (the entry above).
-
-## 2026-10-15, late evening — old problems one by one: the one list, the cleanup, four cuts
-A window opened by the evening window (its brief: one list of the old problems from the analyses already made, the
-cleanup he confirmed, then each counted file, then the floor directory).
-Done:
-- The cleanup, chosen by him here ("remove all three"; asked again because the app's auto-mode classifier stopped
-  the removal of oversight resting on the earlier window's confirmation): the thermometer (InstructionsLoaded hook,
-  its record, the not-loaded lines), the end-of-turn reminders (Stop hook, tools/leftovers.mjs), the laptop health
-  check (tools/health*.mjs, its test, the YAML copy only it used). His measure moved to the start hook (source
-  startup or fork). The lock checks of the health test (deny rules, onFailure block) moved to tests/guard.test.mjs,
-  the helpers' turn limit and model to tests/structure.test.mjs; docs made true.
-- Four cuts he confirmed after a study of what could hold our text better (none holds a judgement rule more firmly
-  than text: Claude Code's features overview, "make it a hook"; hooks see only what a tool's input shows, issue
-  anthropics/claude-code#70420): the research helpers load no CLAUDE.md and mark each source's date and fit for now;
-  step 1 reads the newest progress entry; the CodeRabbit plugin in the app off (the GitHub app reviews as before);
-  CLAUDE.md's code-shape lines cut to a pointer to the structure test. Process size 176 026 to 129 981.
-- One list of the old problems: six helpers read every analysis (his 16 uploaded pages, 22 published pages, the
-  errors by kind, the self and stack studies, the audit, the board and the log of 15.10): 599 entries; 209 closed
-  or superseded before, 5 closed here, 385 merged into 247 problems; two independent checks, about 15 lines fixed.
-  His doc, a state per line to tick off: https://claude.ai/code/artifact/aeffd195-fe5e-4c4d-b9a1-b50a56a92612. The
-  lists and the merge map: the side-session notes folder (one-list.md, one-list-map.md, problems-A to F).
-- Studies on his questions: Cosmogram's records (what held: removing the risky path, a deny at the act; what did
-  not: text rules, warn or ask hooks); human methods untried (the hierarchy of controls; Deming on tampering: one
-  planned change with a written prediction, not a rule per error); the update to app 2.42304.0 with Claude Code
-  2.1.299 (nothing in our files to change; open Windows issue #102351 on edits in auto mode).
-Checked: npm test green; tools/prove-guards.mjs on the laptop, all 48 guards saw their mistake (one was blind, found
-by GitHub's run, fixed in 1f8e6ff); GitHub's test green; CodeRabbit on #22: four findings fixed, one kept with a reason.
-Not checked: the hooks act only after the merge and the main folder's pull; whether his measure reaches him at a
-new window's start; the update's three checks (an edit passes in auto mode, the guard refuses a commit that skips
-the hooks, the measure shows). Checked on 16.10 (the window that finished the forgotten items): edits pass in auto mode (every edit of that window landed); the refusal of a commit that skips the hooks is asserted by tests/guard.test.mjs (npm test green); the measure line was printed at that window's start and said to him; on his screen: not checked.
-Errors of mine: I began removing the watchers on the earlier window's confirmation, not on his word here; a mistake
-planted into a file the acceptance gate imports left a guard blind; a node one-liner wrote literal line breaks into a
-test (restored, redone with Edit); the list's first form copied "his choice" onto technical items and turned "not
-checked" into "absent" (both caught by the checks); one doc write over the doc service's 64-chip limit.
-Next: merge #22 and pull the main folder; the update, then its three checks; the counted process files one by one,
-sorted by the hierarchy of controls (a text rule goes where a machine holds the same); then the floor directory
-(features.json number 3) to his accept word.
