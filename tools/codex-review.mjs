@@ -1,10 +1,13 @@
-// Native Codex hook adapter, adapted from the earlier codex-trial-migration implementation.
-// https://learn.chatgpt.com/docs/hooks . Only real callbacks may write the live journal.
+// Native lifecycle adapter; only real callbacks may write live journals.
+// https://learn.chatgpt.com/docs/hooks
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { OWNER_LOG, recordOwnerPrompt } from './owner-links.mjs';
+import { readBrief, formatBrief } from './corridor-brief.mjs';
+import { refusal } from './project-guard.mjs';
 import { RECORD, scan, roomScan, reviewScope, entries, write, named, endsWithBlock,
   checkedRooms, REVIEWER, REPORT_END, PAPER_REVIEWER, PAPER_END } from './review-gate.mjs';
 
@@ -16,9 +19,15 @@ const id = value => typeof value === 'string' && /^[\w-]{1,160}$/.test(value);
 export const inScope = (event, root = ROOT, cwd = process.cwd()) => {
   try { return [root, context(root)].some(p => same(p, cwd) && same(p, event.cwd)); } catch { return false; }
 };
+function callback(code, file = '', mode) {
+  const executable = code.replace(/(['"`])(?:\\[\s\S]|(?!\1)[\s\S])*\1|\/\*[\s\S]*?\*\/|\/\/[^\n]*/g,
+    text => text[0] === '`' && text.includes('${') ? text : '');
+  return /\brecordOwnerPrompt\s*\(/.test(executable) || /codex-review\.mjs/.test(code) && /\bhandleEvent\s*\(/.test(executable)
+    || /(^|[\\/])codex-review\.mjs$/i.test(file) || /(^|[\\/])project-guard\.mjs$/i.test(file) && /^(prompt|subagent-(start|stop))$/.test(mode || '');
+}
 export function preTool(event) {
   const input = event.tool_input || {}, name = event.tool_name;
-  const text = ['Bash','PowerShell','exec_command'].includes(name) ? JSON.stringify(input) : '';
+  const shell = ['Bash','PowerShell','exec_command'].includes(name);
   const deny = reason => ({ hookSpecificOutput: { hookEventName: 'PreToolUse', permissionDecision: 'deny', permissionDecisionReason: reason } });
   const policy = JSON.parse(fs.readFileSync(path.join(ROOT,'policy/settings.json'),'utf8'));
   if (!Array.isArray(policy.permissions?.deny)) return deny('Project deny policy is unavailable.');
@@ -30,8 +39,10 @@ export function preTool(event) {
   }
   if (typeof name !== 'string' || !input || typeof input !== 'object' ||
       (['Bash','PowerShell','exec_command'].includes(name) && typeof (input.command ?? input.cmd) !== 'string')) return deny('Invalid tool input.');
-  if (/(?:node(?:\.exe)?|import|require).{0,200}codex-review\.mjs/i.test(text) || /project-guard.{0,100}subagent-(start|stop)/i.test(text))
-    return deny('Reviewer callbacks cannot be invoked as an assistant tool.');
+  if (shell) {
+    const why = [false, true].map(ps => refusal(input.command ?? input.cmd, ps, false, callback)).find(Boolean);
+    if (why) return deny(why);
+  }
   const calls = name === 'apply_patch'
     ? [...String(input.command || '').matchAll(/^\*\*\* (?:(?:Add|Update|Delete) File|Move to): (.+)$/gm)].map(m => ['Write', { file_path: m[1] }])
     : ['Bash','PowerShell','exec_command'].includes(name)
@@ -44,9 +55,26 @@ export function preTool(event) {
   }
   return {};
 }
-export function handleEvent(event, { root = ROOT, cwd = process.cwd(), record = RECORD } = {}) {
+export function handleEvent(event, { root = ROOT, cwd = process.cwd(), record = RECORD, ownerLog = OWNER_LOG, readContext = readBrief } = {}) {
   if (!inScope(event, root, cwd)) return { status: 'outside-scope' };
   if (event.hook_event_name === 'PreToolUse') return preTool(event);
+  if (event.hook_event_name === 'SessionStart') {
+    let message, context;
+    try {
+      const brief = readContext(root), bad = brief.evidenceChecks.find(item => item.status !== 'matched');
+      if (bad) throw Error('Current evidence ' + bad.status + ': ' + bad.path);
+      context = formatBrief(brief);
+    } catch (error) {
+      message = 'Project context not restored: ' + error.message;
+      context = message + '\nStored task is unverified; resolve this before resuming it. No sync, tests or device actions ran.';
+    }
+    return { status: message ? 'context-not-restored' : 'context-restored', systemMessage: message,
+      hookSpecificOutput: { hookEventName: 'SessionStart', additionalContext: context } };
+  }
+  if (event.hook_event_name === 'UserPromptSubmit') {
+    try { return recordOwnerPrompt(event, ownerLog); }
+    catch (error) { return { status: 'owner-prompt-not-recorded', systemMessage: 'Owner prompt was not recorded: ' + error.message }; }
+  }
   if (!['SubagentStart', 'SubagentStop'].includes(event.hook_event_name)) return { status: 'ignored' };
   if (![REVIEWER, PAPER_REVIEWER].includes(event.agent_type)) return { status: 'ignored' };
   for (const key of ['session_id', 'agent_id', 'turn_id']) if (!id(event[key])) throw Error('Missing or invalid ' + key);
@@ -112,7 +140,9 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
       hookSpecificOutput: { hookEventName: 'SubagentStart', additionalContext:
         'Read ' + path.join(ROOT, 'policy/agents', event.agent_type + '.md') + '. Report your full review and limits. Include REVIEW SCOPE: ' +
         result.scope + ' and one REVIEW VERDICT: pass, changes-required or unverified before the required final block. For practice review also state REVIEW COVERAGE: code-only or full-practice. Use full-practice only after walking through the whole served surface; limited code review never authorises it. Completion is not owner acceptance.' }
-    } : result.status === 'review-not-recorded' ? { systemMessage: 'Review not recorded: ' + result.why } : {};
+    } : result.hookSpecificOutput ? { systemMessage: result.systemMessage, hookSpecificOutput: result.hookSpecificOutput }
+      : result.status === 'review-not-recorded' ? { systemMessage: 'Review not recorded: ' + result.why }
+      : result.status === 'owner-prompt-not-recorded' ? { systemMessage: result.systemMessage } : {};
     console.log(JSON.stringify(event.hook_event_name === 'PreToolUse' ? result : start));
   } catch (error) { console.log(JSON.stringify({ hookSpecificOutput: { hookEventName:'PreToolUse', permissionDecision:'deny', permissionDecisionReason:error.message } })); }
 }

@@ -17,6 +17,12 @@ a decision (his approval, 14 October).
 
 - 2026-11-09: Latest: research/corridor-room-plan.md; research/corridor-interaction-map.md.
 
+## Applying the historical decisions below
+Quotations keep their dates and meaning. WORKFLOW.md replaces Claude loading paths.
+October's button parser, headset-only quota, merge-before-new-window and 45-minute
+setup gate are historical mechanisms, not overrides of current work or authorised
+helpers. Game acceptance still requires an explicit decision on the shown result.
+
 ## The process
 - The rules read at start shortened («укорачивать» 11.10): the important always in front of me, the rest read only during its task («чтобы твоя память была чистая» 11.10).
 - Bans few, thinking free, no invention in precise work («Размышлять… я вообще никогда тебе не запрещаю. Но вот додумывать, фантазировать… когда здесь точечная работа» 11.10).

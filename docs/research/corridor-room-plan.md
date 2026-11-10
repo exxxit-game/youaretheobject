@@ -57,7 +57,7 @@ and bounded research assignment; an indexed title is not a studied story.
 
 The owner selected the book deal as the first room, superseding the earlier
 science-first route proposal. Pictures remain part of the corridor's own play.
-The trial ladder is100,250,500,1000, with three voluntary raises and a finite cap.
+The [book contract](../rooms/book-deal-preview.md) owns the selected trial prices and finite raises.
 
 1. From the centre start, approach the first-room door and enter the existing small room.
 2. Inspect the last-copy premise; accept the exact act/price, refuse or bargain.

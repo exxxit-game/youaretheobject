@@ -1,4 +1,4 @@
-# Current state: 9 November 2026
+# Current state: 10 November 2026
 
 Current work: experiment/perception-corridor, PR #30 into room-polish.
 main remains the published branch; this work is not merged or released.
@@ -36,11 +36,22 @@ main remains the published branch; this work is not merged or released.
 
 ## Current planning step and next dependency
 
-[The scenography study](research/corridor-scenography.md) connects theatre, found
-materials and light to the existing blueprint. The supplied-file collection now
-joins288files/285copies in16folders;23 additional screen/art source cards are
-linked from the same map. Pinterest expansion remains partial. The book's artistic
-views and exact staging remain to prepare; the screen room is only a proposal.
+<!-- corridor-current:start -->
+Generated from the working map by `node tools/corridor-brief.mjs --sync`; edit its source, not this block.
+
+**Goal:** Коридор — наша «Флатландия»: через собственное движение, наблюдение, выбор и память человек открывает знакомый мир и себя с другой стороны.
+**Author purpose:** Авторская духовная цель — возвращение к Богу через личный опыт, красоту, природу и человеческие знания.
+**Current step:** T02h — Показать первую книгу: вход, выбор и возвращение
+**Why:** Связать свободный выбор и сохраняющееся последствие с новым взглядом на себя и других. Действие, объём, свет и звук служат этому в одной комнате; личное переживание ещё предстоит проверить.
+**Result:** Один художественный эскиз книги с видами входа, вблизи и при возврате. Для видео подготовлено отдельное сравнение плоскости и изгиба; это ещё предложение, не готовая комната.
+**Completion:** Ещё не выполнено: показать владельцу три художественных вида одной сцены — вход, вблизи и возврат; различимые состояния книги и выход. Проверенная библиотека и функциональная схема этот результат не заменяют.
+**Scope:** Экраны и прямой вход с телефона остаются отдельными предложениями. До переноса новой геометрии в игру нужны B19/B17; устройства, B16 и художественное принятие открыты.
+**Owner action:** Сейчас не нужно надевать Quest, фотографировать или покупать. Можно открыть одну коллекцию и оценить роли материалов; техническую проверку и эскиз готовит Codex.
+<!-- corridor-current:end -->
+
+[The scenography study](research/corridor-scenography.md) records material coverage
+and staging proposals. The selected deal's current rules are in
+[the book contract](rooms/book-deal-preview.md); the scenario does not choose prices again.
 
 [The device-transfer study](research/corridor-device-transfer.md) inspects existing
 website reuse, proposed phone/PC/Quest/TV profiles and new building/painting media.

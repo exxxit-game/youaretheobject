@@ -1,9 +1,12 @@
 # Progress
 
-The newest entry is read at the start of every session, with `git log --oneline -20` and docs/features.json
+The newest entry is read at the start of every session, with `git log --oneline -20`; docs/features.json is read for acceptance work
 (WORKFLOW.md, "Every session"). Newest entry on top. Each entry: done, not done and why, next. Anything outside the
 feature at hand goes to the end of docs/board.md, one line each.
 Entries of 14.10 and before: docs/progress-2026-10-14.md; the earlier ones of 15.10: docs/progress-2026-10-15.md; late entry: docs/progress-2026-10-15-late.md.
+
+## 2026-11-10 — Recover experience and reconcile current state
+The disk/GitHub audit and its reading boundaries are in perception-knowledge.md; both distinct owner journals and the verified Claude relocation are indexed. Current map/state fields now derive from one record and reject drift; the book contract owns trial rules, dated alternatives remain history. Native exact-prompt logging and read-only startup/compaction context are implemented and registered. Full npm test, live catalogue/brief checks and a fresh reader's recovery of purpose/T02h passed. Original-chat native hook trust/delivery remains unverified: the supported server connection failed (Windows 10050); no synthetic callbacks or acceptance records were created. Desktop Settings > Hooks is the documented inspection route. The original chat has read the brief in its new host discussion; its proposed TV-first choice is not owner approval. No device, acceptance or release result. Next: finish exact-version delivery, verify native hook activation, then the currently requested game work/T02h; preparation belongs to Codex.
 
 ## 2026-11-10 — Preserve the wider purpose on continuation
 The brief now displays and checks the existing author's purpose; T02h's reason connects choice and consequence to it. Three catalogue entries reuse world-library originals. Research and its limits are in perception-knowledge.md. Full npm test, live brief/catalogue checks and independent review passed. No foundation, game or acceptance change. Original-chat continuation, human impact and improved pace remain untested. Next: T02h's three artistic views; show the result and blockers in chat.

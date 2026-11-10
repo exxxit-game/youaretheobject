@@ -4,12 +4,11 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { withoutGitVars } from './secrets.mjs';
-import { ownText } from './owner-links.mjs';
-import { split } from './board.mjs';
+import { ownText, ownerMessages, OWNER_LOG } from './owner-links.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const FEATURES = 'docs/features.json';
-const mode = process.argv[2];
+const mode = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url) ? process.argv[2] : undefined;
 const input = mode ? await new Promise((done) => {
   let s = '';
   process.stdin.on('data', (c) => { s += c; }).on('end', () => done(s));
@@ -113,7 +112,7 @@ const WHY = {
   hooks: 'switches the git hooks off',
   browser: 'runs Playwright or Chromium, which run only on GitHub: the owner\'s laptop stays free',
   headset: 'restarts the headset or its browser past tools/quest-look.mjs, which first checks that the owner is not wearing it',
-  record: 'writes the practice review record, which only the native Codex hook writes when a reviewer run ends',
+  record: 'writes a native review or owner-prompt journal; assistant tools cannot fabricate callback records',
   recordEnv: 'points the headset tools at another practice review record',
   merge: 'merges into main, the live site: only the owner merges it, on GitHub',
   resolve: 'closes an outside reviewer\'s remark: only the reviewer closes its own, once its next review reads the fix; answer it and leave it open, so a remark never ends on my own word',
@@ -128,7 +127,7 @@ const DELETERS = /^(rm|del|erase|rd|rmdir|ri|remove-item|unlink|shred|truncate|c
 const DELETE_CALL = /\b(?:unlink|rm|rmdir|rmtree|remove|removedirs|truncate)\w*\s*\(/;
 const deletesLib = (code) => (LIB.test(code) && DELETE_CALL.test(code) ? WHY.library : null);
 const base = (w = '') => w.replace(/^.*[\\/]/, '').toLowerCase().replace(/\.(exe|cmd|bat|ps1)$/, '');
-const RECORD = /practice-reviews|OBJECT_REVIEW_RECORD/i;
+const RECORD = /practice-reviews|OBJECT_REVIEW_RECORD|owner-messages\.md/i;
 const NO_VERIFY = /^--no-veri(f|fy)?$/;
 const hooksAt = (v = '') => v.replace(/\\/g, '/').replace(/^\.\//, '').replace(/\/+$/, '').toLowerCase() === 'tools/hooks';
 const playwright = (a) => a.some((v) => /^(@playwright\/test|playwright)(@\S*)?$/.test(v));
@@ -192,7 +191,7 @@ function setsHooks(w, k) {
   return named >= 0 && /core\.hookspath/i.test(w[named + 1] ?? '');
 }
 
-function judge(words, stdin, ps, here = false) {
+function judge(words, stdin, ps, here = false, inspect) {
   const w = [...words];
   while (w.length) {
     if (/^(\$env:)?OBJECT_REVIEW_RECORD(=|$)/i.test(w[0]) && (w[0].includes('=') || /^=/.test(w[1] ?? ''))) return WHY.recordEnv;
@@ -206,16 +205,16 @@ function judge(words, stdin, ps, here = false) {
   if (Object.hasOwn(WRAPPERS, p)) {
     let k = 0;
     while (k < a.length && a[k].startsWith('-')) k += WRAPPERS[p]?.test(a[k]) ? 2 : 1;
-    return judge(a.slice(k + (p === 'timeout' ? 1 : 0)), stdin, ps, here);
+    return judge(a.slice(k + (p === 'timeout' ? 1 : 0)), stdin, ps, here, inspect);
   }
   if (/^(sh|bash|zsh|dash|ksh)$/.test(p)) {
     const c = a.findIndex((x) => /^-[a-z]*c[a-z]*$/.test(x));
-    if (c >= 0) return refusal(a[c + 1] ?? '', false, here);
-    if (!a.some((x) => !x.startsWith('-'))) return stdin.map((s) => refusal(s, false, here)).find(Boolean) ?? null;
+    if (c >= 0) return refusal(a[c + 1] ?? '', false, here, inspect);
+    if (!a.some((x) => !x.startsWith('-'))) return stdin.map((s) => refusal(s, false, here, inspect)).find(Boolean) ?? null;
   }
-  if (/^(powershell|pwsh)$/.test(p)) { const c = a.findIndex((x) => /^-(c|command)$/i.test(x)); if (c >= 0) return refusal(a.slice(c + 1).join(' '), true, here); }
-  if (p === 'cmd') { const c = a.findIndex((x) => /^\/[ck]$/i.test(x)); if (c >= 0) return refusal(a.slice(c + 1).join(' '), false, here); }
-  if (p === 'invoke-expression' || p === 'iex') return refusal(a.join(' '), true, here);
+  if (/^(powershell|pwsh)$/.test(p)) { const c = a.findIndex((x) => /^-(c|command)$/i.test(x)); if (c >= 0) return refusal(a.slice(c + 1).join(' '), true, here, inspect); }
+  if (p === 'cmd') { const c = a.findIndex((x) => /^\/[ck]$/i.test(x)); if (c >= 0) return refusal(a.slice(c + 1).join(' '), false, here, inspect); }
+  if (p === 'invoke-expression' || p === 'iex') return refusal(a.join(' '), true, here, inspect);
   if (p === 'git') return git(a);
   if (p === 'gh') {
     const g = [];
@@ -243,6 +242,7 @@ function judge(words, stdin, ps, here = false) {
       test ||= x === '--test';
       check ||= x === '--check' || x === '-c';
     }
+    if (!check && inspect?.(code ?? ((!files.length || files[0] === '-') ? stdin.join('\n') : ''), files[0], a[a.indexOf(files[0]) + 1])) return WHY.record;
     if (code !== null) return writesRecord(code) || deletesLib(code);
     if (!check && files.some((f) => /(^|[\\/])smoke\.mjs$/i.test(f) || /(^|[\\/])@?playwright([\\/]|$)/i.test(f))) return WHY.browser;
     if (!files.length || files[0] === '-') return writesRecord(stdin.join('\n')) || deletesLib(stdin.join('\n'));
@@ -294,10 +294,10 @@ function library(p, a, here) {
   return null;
 }
 
-export function refusal(line, ps = false, here = false) {
+export function refusal(line, ps = false, here = false, inspect) {
   for (const c of commands(line, ps)) {
     if (c.redirs.some((r) => r.op.includes('>') && RECORD.test(r.target))) return WHY.record;
-    const why = judge(c.words, c.stdin, ps, here);
+    const why = judge(c.words, c.stdin, ps, here, inspect);
     if (why) return why;
     if (/^(cd|chdir|pushd|set-location|sl|push-location)$/.test(base(c.words[0]))) {
       const to = c.words.slice(1).find((x) => !x.startsWith('-')) ?? '';
@@ -321,7 +321,7 @@ if (mode === 'pre') {
   process.exit(0);
 }
 
-const LOG = path.join(os.homedir(), 'Documents', 'objekt-files', 'notes', 'owner-messages.md');
+const LOG = OWNER_LOG;
 const gitHere = (...a) => { try { return execFileSync('git', a, { cwd: HERE, env: withoutGitVars(), encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim(); } catch { return null; } };
 
 if (mode === 'accepted') {
@@ -330,9 +330,9 @@ if (mode === 'accepted') {
   const order = (l) => (l || []).map((f) => f.id).filter((id) => was?.some((f) => f.id === id) && now?.some((f) => f.id === id)).join();
   const yes = new Set();
   try {
-    for (const m of fs.readFileSync(LOG, 'utf8').split('\n## ')) {
-      const said = m.slice(m.indexOf('\n') + 1);
-      if (!(Date.parse(m.split(' ')[0]) > Date.now() - 108e5)) continue;
+    for (const m of ownerMessages(fs.readFileSync(LOG, 'utf8'))) {
+      const said = m.prompt;
+      if (!(Date.parse(m.time) > Date.now() - 108e5)) continue;
       if (/^\s*(не\s+принимаю[\s,.!и\d]*|стоп[\s.!]*)$/i.test(said)) yes.clear();
       else for (const k of said.match(/^\s*принимаю[\s,.!и\d]*$/i)?.[0].match(/\d+/g) || []) yes.add(n[k - 1]?.id);
     }
@@ -346,36 +346,18 @@ if (mode === 'start') {
   const branch = gitHere('rev-parse', '--abbrev-ref', 'HEAD');
   if (gitHere('rev-parse', '--verify', '-q', 'room-polish') && gitHere('merge-base', '--is-ancestor', 'room-polish', 'HEAD') === null) {
     const behind = gitHere('rev-list', '--count', 'HEAD..room-polish');
-    const own = gitHere('rev-list', '--count', 'room-polish..HEAD');
-    if (own === '0' && gitHere('status', '--porcelain') === '' && gitHere('merge', '--ff-only', 'room-polish') !== null) {
-      out.push(`This window's copy (${branch}) was ${behind} commits behind room-polish and is now brought up to it: WORKFLOW.md and the files it imports loaded before that; read them again now.`);
-    } else {
-      out.push(`WARNING: this checkout (${branch}) lacks ${behind} commits of room-polish and has work of its own or unsaved changes: merge room-polish before anything else, then read WORKFLOW.md and every file it imports again.`);
-    }
+    out.push(`Baseline information: ${branch} lacks ${behind} commits of room-polish. Integration belongs to the current task; this legacy start changes nothing.`);
   }
   try {
     const next = JSON.parse(fs.readFileSync(path.join(HERE, FEATURES), 'utf8')).features.find((f) => !f.passes);
-    out.push(next ? `Current feature (${FEATURES}): ${next.id}: ${next.what}` : `Every feature in ${FEATURES} passes.`);
+    out.push(next ? `Historical pending acceptance (${FEATURES}): ${next.id}: ${next.what}` : `Every historical feature in ${FEATURES} passes.`);
   } catch { out.push(`WARNING: ${FEATURES} is missing or unreadable: the session has no list of features.`); }
   try {
     const runs = JSON.parse(execFileSync('gh', ['run', 'list', '--branch', 'room-polish', '--workflow', 'test.yml', '--limit', '1', '--json', 'conclusion,displayTitle,url,databaseId'], { cwd: HERE, encoding: 'utf8', timeout: 10000, windowsHide: true }));
     const red = ciLine(runs[0]);
     if (red) out.push(clip(red));
   } catch { /* GitHub out of reach: nothing to say */ }
-  let him = null;
-  if (event.source === 'startup' || event.source === 'fork') {
-    const day = (k) => { const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - k); return d.toISOString(); };
-    const { game, process: proc } = split(gitHere('log', '--all', '--no-merges', `--since=${day(1)}`, `--until=${day(0)}`, '--name-only', '--pretty=format:@@%h') || '');
-    const at = (r) => { try { return JSON.parse(gitHere('show', `${r}:${FEATURES}`)).features; } catch { return null; } };
-    let took = 0;
-    for (const c of (gitHere('log', '--since=7.days', '--format=%H', '--', FEATURES) || '').split('\n').filter(Boolean)) {
-      const was = at(`${c}^`) || [];
-      took += (at(c) || []).filter((f) => f.passes && was.some((w) => w.id === f.id && w.passes === false)).length;
-    }
-    him = `За 7 дней ты принял вещей из списка: ${took}. Вчера коммитов: в игру ${game}, в процесс ${proc}.`;
-    out.unshift(`Say to him first, word for word: «${him}»`);
-  }
-  process.stdout.write(JSON.stringify({ ...(him && { systemMessage: him }), hookSpecificOutput: { hookEventName: 'SessionStart', additionalContext: out.join('\n\n') } }));
+  process.stdout.write(JSON.stringify({ hookSpecificOutput: { hookEventName: 'SessionStart', additionalContext: out.join('\n\n') } }));
   process.exit(0);
 }
 

@@ -3,7 +3,7 @@
   "limit": 113224,
   "slack": 1000,
   "reserved": {
-    "../../.codex/": 1431
+    "../../.codex/": 1923
   },
   "count": [
     "AGENTS.md",

@@ -29,8 +29,9 @@ with individual cells available in the existing geometric data when needed.
 ## State and identity
 
 The logical floor, displayed number, door, episode and scene version are distinct.
-The current executable book episode is only `intro-book`: four offers
-100/250/500/1000, three voluntary raises, accept/refuse/leave at any open price.
+The current executable episode is only `intro-book`. Its selected finite offers
+are defined in [the book contract](../rooms/book-deal-preview.md); accept, refuse
+or leave at any open price.
 Entry, looking, bargaining and silence do not commit the act. Leaving an open
 offer preserves its price; refusal and acceptance are terminal. A completed act
 does not pay again through another floor, return, or reload.

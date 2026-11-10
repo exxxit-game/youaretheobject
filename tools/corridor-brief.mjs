@@ -8,6 +8,11 @@ import { buildIndex, MANIFEST_PATH } from './knowledge.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const FIELDS = ['id', 'title', 'why', 'in', 'out', 'bounds', 'owner', 'proof'];
+const STATE_START = '<!-- corridor-current:start -->';
+const STATE_END = '<!-- corridor-current:end -->';
+const escapeHtml = value => String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;')
+  .replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
+const oneLine = value => String(value).replace(/\s+/g, ' ').trim();
 function textValue(html) {
   const named = { amp: '&', AMP: '&', lt: '<', LT: '<', gt: '>', GT: '>',
     quot: '"', QUOT: '"', apos: "'", nbsp: ' ' };
@@ -65,6 +70,49 @@ export function briefFromHtml(html) {
     notice: 'Recorded state only: reading this brief does not run checks or approve the work.' };
 }
 
+// Only marked current views are derived. Historical decisions and receipts are untouched.
+export function renderMapFields(html) {
+  const records = [...html.matchAll(/<script\b[^>]*\bid="project-map-data"[^>]*>([\s\S]*?)<\/script>/g)];
+  if (records.length !== 1) throw new Error('Expected exactly one project-map-data record');
+  const data = JSON.parse(records[0][1]), task = data.active_step || data.next;
+  let visible = html.slice(0, records[0].index);
+  for (const [field, value] of Object.entries({ goal: data.goal, authorPurpose: data.authorPurpose,
+    ...Object.fromEntries(FIELDS.map(field => [field, task?.[field]])) })) {
+    if (typeof value !== 'string' || !value.trim()) throw new Error(`Missing source field ${field}`);
+    fieldValue(visible, field);
+    const expression = new RegExp(`(<([a-z][\\w-]*)\\b[^>]*\\bdata-brief-field="${field}"[^>]*>)[\\s\\S]*?(<\\/\\2>)`, 'i');
+    visible = visible.replace(expression, (_, open, tag, close) => open + escapeHtml(value) + close);
+  }
+  const result = visible + html.slice(records[0].index);
+  briefFromHtml(result);
+  return result;
+}
+
+export function renderCurrentState(brief) {
+  const t = brief.task;
+  const safe = value => oneLine(value).replace(/[\\`*_\[\]<>]/g, '\\$&');
+  return [STATE_START,
+    'Generated from the working map by `node tools/corridor-brief.mjs --sync`; edit its source, not this block.',
+    '', `**Goal:** ${safe(brief.goal)}`, `**Author purpose:** ${safe(brief.authorPurpose)}`,
+    `**Current step:** ${safe(t.id)} — ${safe(t.title)}`, `**Why:** ${safe(t.why)}`,
+    `**Result:** ${safe(t.out)}`, `**Completion:** ${safe(t.proof)}`,
+    `**Scope:** ${safe(t.bounds)}`, `**Owner action:** ${safe(t.owner)}`, STATE_END].join('\n');
+}
+
+function stateBlock(text) {
+  if (text.split(STATE_START).length !== 2 || text.split(STATE_END).length !== 2) {
+    throw new Error('Expected one current-state block in docs/state.md');
+  }
+  const start = text.indexOf(STATE_START), end = text.indexOf(STATE_END);
+  if (end < start) throw new Error('Invalid current-state block');
+  return { start, end: end + STATE_END.length };
+}
+
+export function updateCurrentState(text, brief) {
+  const block = stateBlock(text);
+  return text.slice(0, block.start) + renderCurrentState(brief) + text.slice(block.end);
+}
+
 // Hash only the named current receipt(s), never the library described inside them.
 export function checkEvidence(evidence, read = file => fs.readFileSync(file)) {
   return (Array.isArray(evidence) ? evidence : [evidence]).map(item => {
@@ -80,15 +128,36 @@ export function checkEvidence(evidence, read = file => fs.readFileSync(file)) {
   });
 }
 
-export function readBrief(repoRoot = ROOT) {
+function mapLocation(repoRoot) {
   const manifest = JSON.parse(fs.readFileSync(path.join(repoRoot, MANIFEST_PATH), 'utf8'));
   const entry = buildIndex(manifest, repoRoot).entries.find(item => item.id === 'corridor-project-map');
   if (!entry?.locations[0]?.exists) throw new Error('Working map is missing; locate it through the source catalogue');
-  const mapPath = entry.locations[0].path;
+  return entry.locations[0].path;
+}
+
+export function readBrief(repoRoot = ROOT) {
+  const mapPath = mapLocation(repoRoot);
   const html = fs.readFileSync(mapPath, 'utf8');
   const brief = briefFromHtml(html);
+  const state = fs.readFileSync(path.join(repoRoot, 'docs/state.md'), 'utf8').replaceAll('\r\n', '\n');
+  if (updateCurrentState(state, brief) !== state) {
+    throw new Error('Current state differs from the map; run node tools/corridor-brief.mjs --sync');
+  }
   return { mapPath, mapSha256: crypto.createHash('sha256').update(html).digest('hex'), ...brief,
     evidenceChecks: checkEvidence(brief.evidence) };
+}
+
+export function syncCurrentViews(repoRoot = ROOT) {
+  const mapPath = mapLocation(repoRoot), statePath = path.join(repoRoot, 'docs/state.md');
+  const html = fs.readFileSync(mapPath, 'utf8'), state = fs.readFileSync(statePath, 'utf8');
+  const rendered = renderMapFields(html);
+  const updated = updateCurrentState(state.replaceAll('\r\n', '\n'), briefFromHtml(rendered));
+  const changes = [[mapPath, html, rendered], [statePath, state, updated]].filter(([, old, next]) => old !== next);
+  for (const [file, old] of changes) {
+    if (fs.readFileSync(file, 'utf8') !== old) throw new Error(`Source changed during synchronization: ${file}`);
+  }
+  for (const [file, , next] of changes) fs.writeFileSync(file, next, 'utf8');
+  return { changed: changes.map(([file]) => file), ...readBrief(repoRoot) };
 }
 
 export function formatBrief(brief) {
@@ -110,9 +179,12 @@ export function formatBrief(brief) {
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
   try {
     const args = process.argv.slice(2);
-    if (args.some(arg => arg !== '--json')) throw new Error('Usage: node tools/corridor-brief.mjs [--json]');
-    const brief = readBrief();
-    console.log(args.includes('--json') ? JSON.stringify(brief, null, 2) : formatBrief(brief));
+    if (args.length > 1 || args.some(arg => !['--json', '--sync', '--check'].includes(arg))) {
+      throw new Error('Usage: node tools/corridor-brief.mjs [--json|--check|--sync]');
+    }
+    const brief = args.includes('--sync') ? syncCurrentViews() : readBrief();
+    console.log(args.includes('--json') ? JSON.stringify(brief, null, 2) : args.includes('--check')
+      ? 'Current map, state view and receipt checked.' : formatBrief(brief));
     if (brief.evidenceChecks.some(item => item.status !== 'matched')) process.exitCode = 1;
   } catch (error) {
     process.stderr.write(`corridor brief: ${error.message}\n`);

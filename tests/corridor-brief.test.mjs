@@ -1,6 +1,10 @@
 import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
-import { briefFromHtml, formatBrief, checkEvidence } from '../tools/corridor-brief.mjs';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { briefFromHtml, formatBrief, checkEvidence, renderMapFields, renderCurrentState,
+  updateCurrentState, readBrief, syncCurrentViews } from '../tools/corridor-brief.mjs';
 
 const next = { id: 'T01', title: 'Complete delivery', why: 'Check actual work',
   in: 'Current sources', out: 'Version verified', bounds: 'No publication',
@@ -76,4 +80,47 @@ assert.throws(() => checkEvidence({ ...evidence, sha256: '' }), /Invalid current
 const historical = briefFromHtml(page({ ...data, oldReview: { path: '/old', sha256: 'old', evidenceStatus: 'historical' } }));
 assert.deepEqual(historical.historicalEvidence, ['oldReview']);
 assert.match(formatBrief(historical), /Historical content review.*oldReview/);
+
+// Changing one source updates both current views; dates and history are not rewritten.
+const repaired = renderMapFields(page(data, next));
+assert.equal(briefFromHtml(repaired).task.id, active.id);
+assert.equal(renderMapFields(repaired), repaired);
+assert.equal(briefFromHtml(renderMapFields(page(quoted, next))).task.title, quoted.active_step.title);
+assert.throws(() => renderMapFields(page(data).replace('data-brief-field="proof"', 'data-brief-field="owner"')), /one visible owner/);
+const stateShell = '# State\n<!-- corridor-current:start -->\nstale\n<!-- corridor-current:end -->\nHistorical result stays here.\n';
+const state = updateCurrentState(stateShell, brief);
+assert.ok(state.includes(renderCurrentState(brief)));
+assert.ok(state.endsWith('Historical result stays here.\n'));
+assert.equal(updateCurrentState(state, brief), state);
+assert.throws(() => updateCurrentState(state + state, brief), /one current-state block/);
+
+const fixture = fs.mkdtempSync(path.join(os.tmpdir(), 'corridor-current-'));
+try {
+  fs.mkdirSync(path.join(fixture, 'docs/research'), { recursive: true });
+  const manifest = { version: 1, roots: { repo: '.', papers: '.' }, topics: [], entries: [
+    { id: 'corridor-project-map', title: 'Map', kind: 'map', purpose: 'Current work', reading: 'Fixture',
+      topics: [], expected: 'present', location: { root: 'repo', path: 'map.html' } }
+  ] };
+  fs.writeFileSync(path.join(fixture, 'docs/research/perception-knowledge.json'), JSON.stringify(manifest));
+  fs.writeFileSync(path.join(fixture, 'map.html'), page(data, next));
+  fs.writeFileSync(path.join(fixture, 'docs/state.md'), stateShell);
+  assert.throws(() => readBrief(fixture), /Visible next task differs/);
+  assert.equal(syncCurrentViews(fixture).changed.length, 2);
+  assert.equal(readBrief(fixture).task.id, active.id);
+  assert.equal(syncCurrentViews(fixture).changed.length, 0);
+  fs.writeFileSync(path.join(fixture, 'docs/state.md'), stateShell);
+  assert.throws(() => readBrief(fixture), /Current state differs/);
+  syncCurrentViews(fixture);
+  const changedGoal = { ...data, goal: 'A changed goal', active_step: { ...active, title: 'A changed step' } };
+  fs.writeFileSync(path.join(fixture, 'map.html'), page(changedGoal));
+  assert.throws(() => readBrief(fixture), /Current state differs/);
+  const synced = syncCurrentViews(fixture);
+  assert.equal(synced.goal, changedGoal.goal);
+  assert.equal(synced.task.title, changedGoal.active_step.title);
+  assert.ok(fs.readFileSync(path.join(fixture, 'docs/state.md'), 'utf8').includes('A changed step'));
+} finally {
+  const relative = path.relative(path.resolve(os.tmpdir()), path.resolve(fixture));
+  assert.ok(relative && !relative.startsWith('..') && !path.isAbsolute(relative));
+  fs.rmSync(fixture, { recursive: true, force: true });
+}
 console.log('corridor brief: explicit states, visible/data drift, current receipt integrity and historical scope pass');

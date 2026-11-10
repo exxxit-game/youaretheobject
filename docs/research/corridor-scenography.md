@@ -94,6 +94,12 @@ spectral simulation. Physically simple material does not establish cheap renderi
 
 ## Existing requirements and the real gap
 
+In the original chat on 10 November (turn `01a1c498-c48a-7431-8f24-b274e96a407e`),
+the owner asked for a visible host and a surface that can show actions/conditions:
+TV, projection or a digital face, rather than an unlocated whisper. The medium
+and appearance remain under discussion. Starting with a digital face on a TV is
+the assistant's proposal, not an accepted owner choice or a completed scene.
+
 The [book contract](../rooms/book-deal-preview.md) and `src/preview/deal-state.js`
 already define bounded quotes, terminal refusal, preserved unfinished quotes and
 one payment. Theatre sources are analogies for reuse, not proof of game storage.

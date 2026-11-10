@@ -19,7 +19,7 @@ His decisions load with this file: @docs/owner-decisions.md
 Science, philosophy and voluntary fictional deals share the corridor; docs/research/corridor-room-plan.md defines their distinct checks. Maps: ARCHITECTURE.md, docs/state.md.
 
 ## Every session (the process: Anthropic, "Effective harnesses for long-running agents", 26.11.2025)
-1. Read the newest entry of docs/progress.md, `git log --oneline -20`, then docs/features.json. The task is his message; if it names
+1. Read the newest docs/progress.md entry and `git log --oneline -20`; read docs/features.json for acceptance work. The task is his message; if it names
    none, use the active step in the corridor map. Nothing a hook prints is a task by itself.
 2. One result at a time; batch related actions and checks.
 3. Use evidence and professional practice to choose a step toward the goal, its consequences and verification.

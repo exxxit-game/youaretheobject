@@ -41,7 +41,7 @@ for (const f of code) {
   const RUSSIAN = [
     /^src\/(app|app\/lobby|preview|rooms\/[\w-]+)\/texts\.ru\.js$/,  // every word the player reads or hears
     /^(privacy\.html|README\.md|tools\/xr-probe(-input)?\.html|tools\/xr-room\.html)$/,     // pages people read: data, the project, the headset probes
-    /^(tests\/(structure|plaque|control-reveal|guard)\.test\.mjs|tools\/(check-voice|make-voice|quest-check|board|project-guard)\.mjs)$/,   // checks and tools of the Russian texts, the guard's lines to him
+    /^(tests\/(structure|plaque|control-reveal|guard|codex-review)\.test\.mjs|tools\/(check-voice|make-voice|quest-check|board|project-guard)\.mjs)$/,   // Russian player text and exact owner-prompt/acceptance fixtures
     /^(WORKFLOW\.md|docs\/audit\/claude-md-proposed\.md|docs\/(state|mistakes|decisions|owner-decisions|owner-decisions-history(-2)?|board)\.md|docs\/rooms\/01-control\.md|docs\/research\/vr\/06-science\.md|docs\/art\/corridor-plan\.svg)$/, // words quoted from the owner, and the player's text
     /^policy\/(agents\/(request-auditor|fact-checker)\.md|skills\/new-room\/SKILL\.md|rules\/(game|measures|data|setup)\.md)$/,   // the plan doc's Russian headings and status words, quoted
     /^docs\/cards\/agafonov-2016\.md$/,                                      // a Russian paper, cited in its own language

@@ -101,6 +101,35 @@ consciousness or a way to configure Codex. The video's whole-brain storage claim
 also exceeds the direct scope of [Bartol et al.](https://elifesciences.org/articles/10778),
 which measures synaptic structure in rat hippocampal tissue.
 
+## Experience audit and current safeguards, 10 November 2026
+
+The catalogue now reaches both full owner journals: F covers 9–14 October, C
+covers 22–28 October. They are different records, not interchangeable copies.
+Across their 1,364 entries, 1,276 distinct nonempty texts were classified;
+121 selected process-related entries were read fully. Embedded assistant reports
+are not automatically the owner's decisions. Claude's relocation log and current
+junctions confirm the 5 November transfer; complete historical coverage is unknown.
+The broader pass scanned 175 main JSONL logs and indexed 501 unique memory texts.
+GitHub coverage includes 46 PR descriptions and 709 Object discussion/review records;
+long bot summaries were not all read in full. Sources include the existing
+[Cosmogram incident journal](https://github.com/exxxit-game/cosmogram-app/blob/main/.claude/skills/razbor-promaha/zhurnal.md)
+and [process audit](process-audit-2026-10-15.md).
+
+| Recovered failure | Current treatment and limit |
+|---|---|
+| Current decisions copied into conflicting pages | One active map record; marked map/state views synchronise and reading rejects drift. The book contract owns trial rules; older proposals are labelled history. |
+| Context retained topics but lost the next result | The brief includes goal, author purpose, task and completion criterion. Read-only SessionStart delivery is implemented; native trust/delivery must be observed separately. |
+| The old provider's log was mistaken for every current owner message | Native UserPromptSubmit records exact scoped input, with deduplication and readback. Strict acceptance stays separate; callback registration alone is not proof of live delivery. |
+| A saved image or local check was called shown, accepted or published | The existing gates distinguish those events; exact-version delivery checks do not establish a human response or device result. |
+| A blocked technical step was left to the owner | The lead retains it, reports it immediately and prepares any necessary manual step. This remains observable conduct, not something a sentence can guarantee. |
+| Repeated checks and new rules displaced the result | Batch changes, check the changed uncertainty, preserve required delivery checks. No new pair of reviewers for every routine correction; future pace remains unmeasured. |
+| Old remedies were treated as timeless instructions | Preserve dated quotes, inspect changed assumptions, distinguish current mechanisms from historical proposals. No silent change to authorial decisions. |
+
+Native callback behavior follows [Codex Hooks](https://learn.chatgpt.com/docs/hooks).
+Tests use isolated temporary logs; they never create production acceptance records.
+The source catalogue is a route into the evidence, not a requirement to reread all
+history for every task. The owner sees results and material blockers directly in chat.
+
 ## Known gaps
 
 - The two September Cosmogram HTML originals were not found in checked locations.
