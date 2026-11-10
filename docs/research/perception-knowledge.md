@@ -65,6 +65,42 @@ code concerns the illuminated sign, not a validated lift-sound experiment.
 A paper's card or a site's historical status is not evidence that the new scene
 works in Quest with two eyes, free movement and different eye heights.
 
+## Continuity research checked on 10 November 2026
+
+The existing world collection's `proverka` PDFs are now searchable as
+`agent-memory-2609.05441` and `agent-instructions-2605.10039`; their records name
+the reading scope and limits. The relevant Cosmogram lessons are indexed as
+`cosmogram-continuity-lessons`. These are sources, not automatically adopted rules.
+
+Four primary human studies inform bounded workflow hypotheses:
+[Fougnie et al.](https://pmc.ncbi.nlm.nih.gov/articles/PMC3070178/) found lower
+visual-memory precision with feature load;
+[Altmann et al.](https://pubmed.ncbi.nlm.nih.gov/23294345/) found sequence-position
+errors after interruptions;
+[Gilbert](https://pmc.ncbi.nlm.nih.gov/articles/PMC4448673/) tested external reminders;
+[Roediger and Karpicke](https://pubmed.ncbi.nlm.nih.gov/16507066/) compared retrieval
+with rereading. Original articles were read. These laboratory tasks do not test
+Codex. The practical hypothesis is to restore the goal, current decision and next
+unfinished result, then check them against their sources; a buried document or a
+familiar-sounding recap does not establish correct continuation. No speed gain
+has yet been measured in the original chat. OpenAI's
+[long-task account](https://developers.openai.com/blog/run-long-horizon-tasks-with-codex)
+likewise uses persistent project state and observable completion checks; it is
+an example, not a guarantee for this project.
+
+The owner's [quantum-consciousness video](https://youtu.be/nDCZDy-UssM) was checked
+through its full Russian captions and primary papers, not visual scene analysis.
+[Fisher 2015](https://arxiv.org/abs/1508.05929) proposes a nuclear-spin mechanism;
+long coherence is an estimate, not an observation of brain computation.
+[Player and Hore 2018](https://pubmed.ncbi.nlm.nih.gov/30381344/) and
+[Agarwal et al. 2023](https://pubmed.ncbi.nlm.nih.gov/36876913/) give restrictive
+model results. [Straub et al. 2025](https://www.pnas.org/doi/10.1073/pnas.2423211122)
+measure lithium-isotope effects in calcium-phosphate solutions, not entanglement,
+neurons or consciousness. These sources do not establish a quantum mechanism of
+consciousness or a way to configure Codex. The video's whole-brain storage claim
+also exceeds the direct scope of [Bartol et al.](https://elifesciences.org/articles/10778),
+which measures synaptic structure in rat hippocampal tissue.
+
 ## Known gaps
 
 - The two September Cosmogram HTML originals were not found in checked locations.

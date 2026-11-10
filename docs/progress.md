@@ -5,6 +5,9 @@ The newest entry is read at the start of every session, with `git log --oneline 
 feature at hand goes to the end of docs/board.md, one line each.
 Entries of 14.10 and before: docs/progress-2026-10-14.md; the earlier ones of 15.10: docs/progress-2026-10-15.md; late entry: docs/progress-2026-10-15-late.md.
 
+## 2026-11-10 — Preserve the wider purpose on continuation
+The brief now displays and checks the existing author's purpose; T02h's reason connects choice and consequence to it. Three catalogue entries reuse world-library originals. Research and its limits are in perception-knowledge.md. Full npm test, live brief/catalogue checks and independent review passed. No foundation, game or acceptance change. Original-chat continuation, human impact and improved pace remain untested. Next: T02h's three artistic views; show the result and blockers in chat.
+
 ## 2026-11-10 — Independent repair of context and routine work
 The owner requests efficient work after the independent audit. Brief now requires explicit obstacle states, checks only the current receipt's integrity and exposes historical source reviews. B18 is closed; three older reviews keep their original hashes and do not cover today's text. Existing rules use native batches, visible results, checked helper starts and reassessment after five minutes without routine progress. Narrow regressions and full npm test passed; independent reading found two wording issues, corrected. No game or acceptance change. Next: T02h; external review and device limits remain open.
 

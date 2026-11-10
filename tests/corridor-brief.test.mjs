@@ -8,11 +8,13 @@ const next = { id: 'T01', title: 'Complete delivery', why: 'Check actual work',
 const active = { ...next, id: 'T01b', title: 'Adapt review', out: 'Current review completed' };
 const obstacle = { id: 'B01', open: true, status: 'Open', affected: 'Map visual inspection only', next: 'Needs supported access' };
 const data = { schema: 1, updated: '2026-11-07', goal: 'Discover another view', next,
+  authorPurpose: 'Personal meaning beyond the current scene',
   active_step: active, obstacles: [obstacle], authority: 'approved-plan.txt' };
 const encoded = text => String(text).replaceAll('&', '&amp;').replaceAll('<', '&lt;')
   .replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;');
 const page = (record, shown = record.active_step || record.next) =>
-  `<p data-brief-field="goal">${encoded(record.goal)}</p><section id="next">`
+  `<p data-brief-field="goal">${encoded(record.goal)}</p>`
+  + `<p data-brief-field="authorPurpose">${encoded(record.authorPurpose)}</p><section id="next">`
   + Object.entries(shown).map(([key, value]) => `<span data-brief-field="${key}">${encoded(value)}</span>`).join('')
   + '</section>'
   + `<script type="application/json" id="project-map-data">${JSON.stringify(record)}</script>`;
@@ -23,6 +25,11 @@ assert.equal(brief.task.id, 'T01b');
 assert.equal(brief.blockers[0].affects, 'Map visual inspection only');
 assert.equal(data.obstacles[0].status, 'Open');
 assert.match(formatBrief(brief), /Recorded state only/);
+// Restoring the current technical step must not drop the owner's wider purpose.
+assert.equal(brief.authorPurpose, data.authorPurpose);
+assert.match(formatBrief(brief), /Author's purpose: Personal meaning beyond the current scene/);
+assert.throws(() => briefFromHtml(page({ ...data, authorPurpose: undefined })), /missing authorPurpose/);
+assert.throws(() => briefFromHtml(page(data).replace(data.authorPurpose, 'A different purpose')), /Visible authorPurpose differs/);
 
 // Refuse the real drift case: structured status advanced while the visible card still shows the old task.
 assert.throws(() => briefFromHtml(page(data, next)), /Visible next task differs/);

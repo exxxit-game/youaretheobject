@@ -31,7 +31,7 @@ export function briefFromHtml(html) {
   if (data.schema !== 1 || typeof data.goal !== 'string' || !data.goal.trim()) {
     throw new Error('Expected map schema 1 and a goal');
   }
-  for (const field of ['updated', 'authority']) {
+  for (const field of ['updated', 'authority', 'authorPurpose']) {
     if (typeof data[field] !== 'string' || !data[field].trim()) throw new Error(`Map is missing ${field}`);
   }
   const task = data.active_step || data.next;
@@ -46,8 +46,10 @@ export function briefFromHtml(html) {
       throw new Error(`Visible next task differs from the structured task: ${field}`);
     }
   }
-  if (fieldValue(visible, 'goal') !== data.goal.replace(/\s+/g, ' ').trim()) {
-    throw new Error('Visible goal differs from the structured goal');
+  for (const field of ['goal', 'authorPurpose']) {
+    if (fieldValue(visible, field) !== data[field].replace(/\s+/g, ' ').trim()) {
+      throw new Error(`Visible ${field} differs from the structured ${field}`);
+    }
   }
   if (!Array.isArray(data.obstacles)) throw new Error('Expected an explicit obstacle list');
   for (const item of data.obstacles) {
@@ -56,7 +58,7 @@ export function briefFromHtml(html) {
   }
   const blockers = data.obstacles.filter(item => item.open).map(item =>
     ({ id: item.id, status: item.status, affects: item.affected, next: item.next }));
-  return { updated: data.updated, goal: data.goal, task, blockers,
+  return { updated: data.updated, goal: data.goal, authorPurpose: data.authorPurpose, task, blockers,
     queue: data.work_queue || [], evidence: data.latest_evidence || [],
     historicalEvidence: Object.entries(data).filter(([, value]) => value?.evidenceStatus === 'historical').map(([id]) => id),
     meaningSource: data.authority,
@@ -93,7 +95,8 @@ export function formatBrief(brief) {
   const t = brief.task;
   return [
     `Map: ${brief.mapPath}`, `Snapshot: ${brief.updated}; SHA-256: ${brief.mapSha256}`,
-    `Goal: ${brief.goal}`, `Current step: ${t.id} - ${t.title}`, `Why: ${t.why}`,
+    `Goal: ${brief.goal}`, `Author's purpose: ${brief.authorPurpose}`,
+    `Current step: ${t.id} - ${t.title}`, `Why: ${t.why}`,
     `Inputs: ${t.in}`, `Expected result: ${t.out}`, `Scope: ${t.bounds}`,
     `Owner: ${t.owner}`, `Completion check: ${t.proof}`,
     ...brief.blockers.map(b => `Open limitation ${b.id}: ${b.status}. Affects: ${b.affects}`),
