@@ -18,14 +18,11 @@ docs search), the W3C WebXR spec. The page read goes in the WHY comment.
 ## Which tool when
 - A claim about our setup: the thing itself first (the service through its connector, the vendored code, a fresh
   measure); a doc, the board or another window is a lead.
-- One narrow question per bounded helper; wider research needs an explicit scope and source ledger.
-- A whole system (GitHub, Supabase, the app): one general helper per system, in parallel.
-- A paper: docs/library.md, its card in docs/cards, its text in objekt-files/papers; searching: Consensus, PubMed,
-  the reference lookup; a PDF: PDF Tools; a page a fetch cannot read: the browser pane; Reddit: RSS by curl
-  with a user agent, a request per 45 s, until 13.11.2026 (RSS ends: Reddit's changelog of 8.10.2026;
-  docs/research/ai-and-vr-4.md); a page nothing opens: its link to him.
+- Helpers: one bounded question each; wider research needs scope and a source ledger. One helper per independent system, in parallel.
+- Papers: library/cards/text first; PubMed/alphaXiv for originals. PDFs: pdftotext/PDF skill; figures separately.
+  Context7: match our versions. Fetch gaps: existing Chrome, obeying denials. Failed access: exact link in chat;
+  prepare any manual step.
 - A new page before he sees it: the fact-checker, two runs that do not see each other; edits from their findings
   checked by me against them.
-- Building anything: a short script file in node, never long mixed shell lines; a command judged by its exit code,
-  not by its last line.
+- Building: a short node script file, never long mixed shell lines; judge the exit code, not the last line.
 - The headset: node tools/quest-look.mjs; frame rate and GPU: OVR Metrics, `metavr perf capture` read with Perfetto, RenderDoc for one draw.

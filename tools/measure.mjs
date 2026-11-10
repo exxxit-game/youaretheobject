@@ -16,7 +16,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { fileURLToPath } from 'node:url';
+import { isMain } from './is-main.mjs';
 
 // dumpsys thermalservice prints cached values first, then "Current temperatures from HAL" up to "Current
 // cooling devices" (whose lines look alike: CoolingDevice{mValue=...}); only that section is now
@@ -71,7 +72,7 @@ export function windowStats(dts, rate = 90) {
 }
 export const mean = (v) => (v.length ? Number((v.reduce((a, b) => a + b, 0) / v.length).toFixed(1)) : null);
 
-if (import.meta.url === pathToFileURL(process.argv[1] || '').href) await main();
+if (isMain(import.meta.url)) await main();
 
 async function main() {
   const { adb, serveToHeadset, localPort, openGame, page, wornByPerson, connected, noteScript } = await import('./headset.mjs');

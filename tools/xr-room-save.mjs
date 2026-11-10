@@ -2,7 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
-import { fileURLToPath } from 'node:url';
+import { isMain } from './is-main.mjs';
 
 export function saveGeometry(snapshot, target) {
   if (!target || !path.isAbsolute(target)) throw new Error('Supply an absolute output filename');
@@ -55,4 +55,4 @@ async function main() {
   finally { tab.close(); }
 }
 
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) await main();
+if (isMain(import.meta.url)) await main();

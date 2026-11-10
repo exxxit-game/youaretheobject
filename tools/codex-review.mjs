@@ -5,6 +5,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { isMain } from './is-main.mjs';
 import { OWNER_LOG, recordOwnerPrompt } from './owner-links.mjs';
 import { readBrief, formatBrief } from './corridor-brief.mjs';
 import { refusal } from './project-guard.mjs';
@@ -130,7 +131,7 @@ export function handleEvent(event, { root = ROOT, cwd = process.cwd(), record = 
     return { status: 'completed-review-recorded', verdict: evidence.verdict };
   } finally { fs.closeSync(fd); fs.unlinkSync(lock); }
 }
-if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+if (isMain(import.meta.url)) {
   try {
     if (process.argv.length !== 2 || process.env.OBJECT_REVIEW_RECORD) throw Error('No CLI overrides supported');
     let input = '';

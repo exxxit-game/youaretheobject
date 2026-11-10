@@ -15,6 +15,7 @@
     "policy/settings.json",
     "docs/tools.md",
     "tools/project-guard.mjs",
+    "tools/is-main.mjs",
     "tools/review-gate.mjs",
     "tools/codex-review.mjs",
     "../../.codex/",

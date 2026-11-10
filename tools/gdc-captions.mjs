@@ -8,7 +8,7 @@
 // an HLS playlist (RFC 8216) whose SUBTITLES media playlist lists WebVTT segments.
 // Usage: node tools/gdc-captions.mjs <gdcvault.com/play/... url> <out.txt>
 import fs from 'node:fs';
-import { pathToFileURL } from 'node:url';
+import { isMain } from './is-main.mjs';
 
 const TAIL = '/38549d9a185b445888c6fbc2e2e792e9/50413c5b8a95441e919f0a1579606e47/index.m3u8';
 const text = async (url) => { const r = await fetch(url); if (!r.ok) throw new Error(`${url}: ${r.status}`); return r.text(); };
@@ -29,7 +29,7 @@ export function vttToText(vtt) {
   return out.join(' ').trim();
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1] || '').href) {
+if (isMain(import.meta.url)) {
   const [page, outFile] = process.argv.slice(2);
   if (!page || !outFile) { console.log('usage: node tools/gdc-captions.mjs <gdcvault.com/play/... url> <out.txt>'); process.exit(1); }
   const html = await text(page);

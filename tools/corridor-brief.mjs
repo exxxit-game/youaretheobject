@@ -3,7 +3,8 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { fileURLToPath } from 'node:url';
+import { isMain } from './is-main.mjs';
 import { buildIndex, MANIFEST_PATH } from './knowledge.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -176,7 +177,7 @@ export function formatBrief(brief) {
   ].join('\n');
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) {
+if (isMain(import.meta.url)) {
   try {
     const args = process.argv.slice(2);
     if (args.length > 1 || args.some(arg => !['--json', '--sync', '--check'].includes(arg))) {

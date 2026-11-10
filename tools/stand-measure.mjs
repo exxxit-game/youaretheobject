@@ -15,13 +15,14 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
-import { fileURLToPath, pathToFileURL } from 'node:url';
+import { fileURLToPath } from 'node:url';
+import { isMain } from './is-main.mjs';
 import { thermalOf, gpuIds, gpuSamples, mean } from './measure.mjs';
 import { sandboxedPids, pssOf, proximityOf, verdicts, longSummary, flowSummary, heatStop, MARKS } from './stand-judge.mjs';
 import { player } from './stand-flow.mjs';
 
 
-if (import.meta.url === pathToFileURL(process.argv[1] || '').href) await main();
+if (isMain(import.meta.url)) await main();
 
 async function main() {
   const mode = process.argv[2];

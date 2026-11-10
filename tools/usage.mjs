@@ -24,7 +24,7 @@
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { isMain } from './is-main.mjs';
 
 const HOME = os.homedir();
 const PROJECTS = path.join(HOME, 'policy', 'projects');
@@ -275,7 +275,7 @@ export function snap(weeklyPct, fiveHourPct, at = Date.now(), acc = readAll(), f
   return entry;
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1] || '').href) {
+if (isMain(import.meta.url)) {
   const [cmd, ...rest] = process.argv.slice(2);
   if (cmd === 'snap') {
     const [weekly, five] = rest.map(Number), i = rest.indexOf('--at');

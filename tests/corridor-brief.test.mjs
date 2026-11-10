@@ -3,6 +3,9 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { spawnSync } from 'node:child_process';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+import { isMain } from '../tools/is-main.mjs';
 import { briefFromHtml, formatBrief, checkEvidence, renderMapFields, renderCurrentState,
   updateCurrentState, readBrief, syncCurrentViews } from '../tools/corridor-brief.mjs';
 
@@ -123,4 +126,50 @@ try {
   assert.ok(relative && !relative.startsWith('..') && !path.isAbsolute(relative));
   fs.rmSync(fixture, { recursive: true, force: true });
 }
-console.log('corridor brief: explicit states, visible/data drift, current receipt integrity and historical scope pass');
+// Real directory aliases must run the CLI, while eval/import must not inherit a foreign command.
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const cliFixture = fs.mkdtempSync(path.join(os.tmpdir(), 'corridor-cli-'));
+const alias = path.join(cliFixture, 'repo alias');
+try {
+  fs.symlinkSync(root, alias, process.platform === 'win32' ? 'junction' : 'dir');
+  assert.equal(fs.realpathSync.native(alias), fs.realpathSync.native(root));
+  assert.equal(isMain(import.meta.url), true);
+  if (process.platform === 'win32') assert.equal(isMain(import.meta.url, process.argv[1].toLowerCase()), true);
+  assert.equal(isMain(import.meta.url, ''), false);
+  assert.equal(isMain(import.meta.url, path.join(cliFixture, 'missing.mjs')), false);
+  assert.equal(isMain('data:text/javascript,', process.argv[1]), false);
+  const run = (args, input = '') => {
+    const result = spawnSync(process.execPath, args, { cwd: cliFixture, input, encoding: 'utf8', timeout: 15000 });
+    assert.ifError(result.error);
+    return result;
+  };
+  const entryRoots = [root, alias, ...(process.platform === 'win32' ? [alias.toLowerCase()] : [])];
+  for (const base of entryRoots) {
+    const invalid = run([path.join(base, 'tools/corridor-brief.mjs'), '--invalid']);
+    assert.equal(invalid.status, 1, invalid.stderr);
+    assert.match(invalid.stderr, /Usage: node tools\/corridor-brief\.mjs/);
+    const callback = run([path.join(base, 'tools/codex-review.mjs')],
+      JSON.stringify({ hook_event_name: 'SessionStart', source: 'compact', cwd: cliFixture }));
+    assert.equal(callback.status, 0, callback.stderr);
+    assert.equal(callback.stdout.trim(), '{}');
+  }
+  const guardUrl = pathToFileURL(path.join(alias, 'tools/project-guard.mjs')).href;
+  const helperUrl = pathToFileURL(path.join(alias, 'tools/is-main.mjs')).href;
+  const script = `const { isMain } = await import(${JSON.stringify(helperUrl)}); `
+    + `if (isMain(${JSON.stringify(guardUrl)})) throw Error('Foreign entry'); `
+    + `await import(${JSON.stringify(guardUrl)}); console.log('imported');`;
+  for (const args of [[], [path.join(cliFixture, 'missing.mjs'), 'start'], [path.join(root, 'tests/corridor-brief.test.mjs'), 'start']]) {
+    const imported = run(['--input-type=module', '-e', script, ...args]);
+    assert.equal(imported.status, 0, imported.stderr);
+    assert.equal(imported.stdout.trim(), 'imported');
+  }
+} finally {
+  const relative = path.relative(path.resolve(os.tmpdir()), path.resolve(cliFixture));
+  assert.ok(relative && !relative.startsWith('..') && !path.isAbsolute(relative));
+  if (fs.existsSync(alias)) {
+    assert.ok(fs.lstatSync(alias).isSymbolicLink());
+    fs.unlinkSync(alias); // Remove the link itself before recursively deleting its TEMP parent.
+  }
+  fs.rmSync(cliFixture, { recursive: true, force: true });
+}
+console.log('corridor brief: state/evidence integrity, real alias CLI and import isolation pass');

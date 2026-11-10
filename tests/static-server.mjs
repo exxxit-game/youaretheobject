@@ -3,6 +3,7 @@ import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { isMain } from '../tools/is-main.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 // Only what the game page and the headset probe need. The preview can be opened through a
@@ -43,7 +44,7 @@ export function startServer(port = 0, host) {
   return new Promise(resolve => server.listen(port, host, () => resolve(server)));
 }
 
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
+if (isMain(import.meta.url)) {
   const host = process.env.OBJECT_PREVIEW_HOST;
   const server = await startServer(Number(process.env.PORT) || 3000, host);
   console.log(`http://${host || 'localhost'}:${server.address().port}`);

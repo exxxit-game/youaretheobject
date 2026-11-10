@@ -3,7 +3,7 @@
 import assert from 'node:assert/strict';
 import crypto from 'node:crypto';
 import fs from 'node:fs';
-import { fileURLToPath } from 'node:url';
+import { isMain } from './is-main.mjs';
 
 export const PRIOR_SHA256 = '0fd9768440300b116af76343ab9d7bfb4699758ed236bdcda5be56f316d3709f';
 export const digest = text => crypto.createHash('sha256').update(text).digest('hex');
@@ -67,7 +67,7 @@ export function vertexPrefixAssignment(build) {
   return build.slice(start+'y>0&&('.length,end);
 }
 
-if(process.argv[1]===fileURLToPath(import.meta.url)) {
+if (isMain(import.meta.url)) {
   assert.ok(process.argv.length===3&&['--apply','--check'].includes(process.argv[2]),'use --check or --apply');
   const file=new URL('../vendor/aframe-1.8.0.min.js',import.meta.url);
   let text=fs.readFileSync(file,'utf8');

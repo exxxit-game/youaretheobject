@@ -3,12 +3,13 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { isMain } from './is-main.mjs';
 import { withoutGitVars } from './secrets.mjs';
 import { ownText, ownerMessages, OWNER_LOG } from './owner-links.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const FEATURES = 'docs/features.json';
-const mode = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url) ? process.argv[2] : undefined;
+const mode = isMain(import.meta.url) ? process.argv[2] : undefined;
 const input = mode ? await new Promise((done) => {
   let s = '';
   process.stdin.on('data', (c) => { s += c; }).on('end', () => done(s));
