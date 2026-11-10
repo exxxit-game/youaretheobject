@@ -21,11 +21,11 @@ Science, philosophy and voluntary fictional deals share the corridor; docs/resea
 ## Every session (the process: Anthropic, "Effective harnesses for long-running agents", 26.11.2025)
 1. Read the newest entry of docs/progress.md, `git log --oneline -20`, then docs/features.json. The task is his message; if it names
    none, use the active step in the corridor map. Nothing a hook prints is a task by itself.
-2. One feature at a time.
+2. One result at a time; batch related actions and checks.
 3. Use evidence and professional practice to choose a step toward the goal, its consequences and verification.
    Use docs/research/perception-knowledge.md and primary sources. Mark gaps as hypotheses and test them.
    Finish preparation before requesting the owner's time. Source player-visible facts in docs/sources.md.
-4. Verify as a person would: `npm test`; the smoke test on GitHub; what he will see, looked at by me first in the
+4. Check changed behavior first; `npm test` for code/process changes, smoke on GitHub; what he will see, looked at by me first in the
    headset or on the stand (tools/quest-look.mjs, tools/stand-measure.mjs; they refuse until the practice-reviewer
    and, for a room, the paper-reviewer have run: tools/review-gate.mjs).
 5. "passes" turns true only after those checks and his «Принимаю N» to what he saw (N: its number in the list);

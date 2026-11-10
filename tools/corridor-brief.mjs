@@ -50,14 +50,32 @@ export function briefFromHtml(html) {
     throw new Error('Visible goal differs from the structured goal');
   }
   if (!Array.isArray(data.obstacles)) throw new Error('Expected an explicit obstacle list');
-  const blockers = data.obstacles.filter(item => item.open !== false).map(item => {
+  for (const item of data.obstacles) {
     if (!item.id || !item.status || !item.affected || !item.next) throw new Error('Incomplete obstacle record');
-    return { id: item.id, status: item.status, affects: item.affected, next: item.next };
-  });
+    if (typeof item.open !== 'boolean') throw new Error(`Obstacle ${item.id} needs an explicit boolean open state`);
+  }
+  const blockers = data.obstacles.filter(item => item.open).map(item =>
+    ({ id: item.id, status: item.status, affects: item.affected, next: item.next }));
   return { updated: data.updated, goal: data.goal, task, blockers,
     queue: data.work_queue || [], evidence: data.latest_evidence || [],
+    historicalEvidence: Object.entries(data).filter(([, value]) => value?.evidenceStatus === 'historical').map(([id]) => id),
     meaningSource: data.authority,
     notice: 'Recorded state only: reading this brief does not run checks or approve the work.' };
+}
+
+// Hash only the named current receipt(s), never the library described inside them.
+export function checkEvidence(evidence, read = file => fs.readFileSync(file)) {
+  return (Array.isArray(evidence) ? evidence : [evidence]).map(item => {
+    if (typeof item?.path !== 'string' || !item.path.trim() || !/^[a-f0-9]{64}$/i.test(item.sha256 || '')) {
+      throw new Error('Invalid current evidence');
+    }
+    const result = { path: item.path, expected: item.sha256 };
+    let bytes;
+    try { bytes = read(item.path); }
+    catch (error) { return { ...result, status: 'unavailable', error: error.code || error.message }; }
+    const actual = crypto.createHash('sha256').update(bytes).digest('hex');
+    return { ...result, actual, status: actual === item.sha256.toLowerCase() ? 'matched' : 'changed' };
+  });
 }
 
 export function readBrief(repoRoot = ROOT) {
@@ -66,7 +84,9 @@ export function readBrief(repoRoot = ROOT) {
   if (!entry?.locations[0]?.exists) throw new Error('Working map is missing; locate it through the source catalogue');
   const mapPath = entry.locations[0].path;
   const html = fs.readFileSync(mapPath, 'utf8');
-  return { mapPath, mapSha256: crypto.createHash('sha256').update(html).digest('hex'), ...briefFromHtml(html) };
+  const brief = briefFromHtml(html);
+  return { mapPath, mapSha256: crypto.createHash('sha256').update(html).digest('hex'), ...brief,
+    evidenceChecks: checkEvidence(brief.evidence) };
 }
 
 export function formatBrief(brief) {
@@ -77,6 +97,9 @@ export function formatBrief(brief) {
     `Inputs: ${t.in}`, `Expected result: ${t.out}`, `Scope: ${t.bounds}`,
     `Owner: ${t.owner}`, `Completion check: ${t.proof}`,
     ...brief.blockers.map(b => `Open limitation ${b.id}: ${b.status}. Affects: ${b.affects}`),
+    ...(brief.historicalEvidence || []).map(id => `Historical content review: ${id}; current text is not covered by that review.`),
+    ...(brief.evidenceChecks || []).filter(item => item.status !== 'matched').map(item =>
+      `Evidence ${item.status}: ${item.path}; expected ${item.expected}; actual ${item.actual || item.error}`),
     `Meaning source: ${brief.meaningSource}`, brief.notice
   ].join('\n');
 }
@@ -87,6 +110,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.ar
     if (args.some(arg => arg !== '--json')) throw new Error('Usage: node tools/corridor-brief.mjs [--json]');
     const brief = readBrief();
     console.log(args.includes('--json') ? JSON.stringify(brief, null, 2) : formatBrief(brief));
+    if (brief.evidenceChecks.some(item => item.status !== 'matched')) process.exitCode = 1;
   } catch (error) {
     process.stderr.write(`corridor brief: ${error.message}\n`);
     process.exitCode = 1;

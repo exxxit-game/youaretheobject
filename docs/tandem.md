@@ -1,13 +1,13 @@
 # The tandem
 
-The owner directs purpose/tone and accepts the shown experience. He reads short Russian summaries: what, why, result, blocker, next; documents are available, code is not his duty. The lead owns technical work, sources and checks.
+The owner directs purpose/tone and accepts the shown experience. Summarise purpose, result, elapsed time, blocker and next in Russian. The lead owns sources, technical work and checks; documents stay available.
 
-One map step: player action, consequence, success check. Reuse sources/code; join story, space, controls, feedback and memory. Add only for an unmet need.
+One map step: action, consequence, success check. Reuse sources/code; join space, story, controls and memory. Show finished batches; recheck changed or unclear evidence. Reassess routine methods after five minutes without progress.
 
-Helpers get the goal, one question, inputs and evidence; they read, one writer integrates. Check actual start/output and findings; agreement is not proof. CodeRabbit counts when completed; tools/review-gate.mjs holds reviews. Inspect saved results before owner effort.
+Helpers handle substantial independent questions. Give goal/inputs/evidence; check start on the next independent action. One writer verifies and integrates. CodeRabbit counts when complete; tools/review-gate.mjs holds reviews.
 
-Show blockers in chat immediately: failure, impact, help needed; map the details. Verify permitted remedies. For manual help give the window and one known action; recheck and resume. No speculative steps or relayed logs. Respect tool denials.
+Show blockers in chat immediately: failure, impact, help; map details. Try permitted remedies. Before owner effort check saved results and the manual action; name its window, recheck and resume. Respect denials.
 
-Pinterest is the primary art collection: sort existing owner saves first. The catalogue links pins to selected F copies/sources, reading scope and gaps. Check desktop, phone and Quest separately; WORKFLOW.md holds acceptance/release boundaries.
+Pinterest is primary: bulk-sort owner saves first. Match local files when needed; catalogue repair and unrelated tests must not delay a batch. Preserve pin/source links and gaps. Check desktop, phone and Quest separately.
 
-State errors, impact and known/unknown cause; fix and repeat the failed check. Keep unverified results open; separate implemented, checked, accepted and released. No infallibility claim.
+State errors, impact and cause/unknown; fix and repeat the failed check. Separate implementation, checks, acceptance and release (WORKFLOW.md).

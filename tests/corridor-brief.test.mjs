@@ -1,11 +1,12 @@
 import assert from 'node:assert/strict';
-import { briefFromHtml, formatBrief } from '../tools/corridor-brief.mjs';
+import crypto from 'node:crypto';
+import { briefFromHtml, formatBrief, checkEvidence } from '../tools/corridor-brief.mjs';
 
 const next = { id: 'T01', title: 'Complete delivery', why: 'Check actual work',
   in: 'Current sources', out: 'Version verified', bounds: 'No publication',
   owner: 'Lead', proof: 'Rerun the original failing check' };
 const active = { ...next, id: 'T01b', title: 'Adapt review', out: 'Current review completed' };
-const obstacle = { id: 'B01', status: 'Open', affected: 'Map visual inspection only', next: 'Needs supported access' };
+const obstacle = { id: 'B01', open: true, status: 'Open', affected: 'Map visual inspection only', next: 'Needs supported access' };
 const data = { schema: 1, updated: '2026-11-07', goal: 'Discover another view', next,
   active_step: active, obstacles: [obstacle], authority: 'approved-plan.txt' };
 const encoded = text => String(text).replaceAll('&', '&amp;').replaceAll('<', '&lt;')
@@ -34,6 +35,14 @@ assert.throws(() => briefFromHtml(page({ ...data, obstacles: [{ id: 'B01' }] }))
 assert.throws(() => briefFromHtml(page(data) + page(data)), /exactly one/);
 assert.throws(() => briefFromHtml(page({ ...data, authority: '' })), /missing authority/);
 assert.equal(briefFromHtml(page({ ...data, obstacles: [{ ...obstacle, open: false }] })).blockers.length, 0);
+// The real B18 failure: a missing flag must not silently reopen a closed record.
+for (const open of [undefined, null, 'false', 0]) {
+  assert.throws(() => briefFromHtml(page({ ...data, obstacles: [{ ...obstacle, open }] })), /explicit boolean/);
+}
+const closed = { ...obstacle, id: 'B18', open: false, status: 'Closed: original update verified' };
+const mixed = briefFromHtml(page({ ...data, obstacles: [closed, { ...obstacle, id: 'B16' }] }));
+assert.deepEqual(mixed.blockers.map(item => item.id), ['B16']);
+assert.doesNotMatch(formatBrief(mixed), /Open limitation B18/);
 const quoted = { ...data, active_step: { ...active, title: "Owner's <task> & review" } };
 for (const quote of ['&#39;', '&#x27;', "'"]) {
   assert.equal(briefFromHtml(page(quoted).replaceAll('&#39;', quote)).task.title, quoted.active_step.title);
@@ -45,4 +54,19 @@ assert.throws(() => briefFromHtml(page(data).replace('data-brief-field="proof"',
 assert.equal(globalThis.mapExecuted, undefined);
 briefFromHtml(page(data) + '<script>globalThis.mapExecuted = true;</script>');
 assert.equal(globalThis.mapExecuted, undefined);
-console.log('corridor brief: active step, visible/data drift, scope and non-execution pass');
+
+// Only the explicitly current receipt is checked; changing its bytes invalidates its proof.
+const receipt = Buffer.from('verified receipt');
+const evidence = { path: '/current/receipt.json', sha256: crypto.createHash('sha256').update(receipt).digest('hex') };
+assert.deepEqual(checkEvidence([], () => assert.fail('No library scan expected')), []);
+assert.equal(checkEvidence(evidence, () => receipt)[0].status, 'matched');
+const changed = checkEvidence(evidence, () => Buffer.from('verified receipt!'));
+assert.equal(changed[0].status, 'changed');
+assert.equal(evidence.sha256, crypto.createHash('sha256').update(receipt).digest('hex'));
+assert.match(formatBrief({ ...brief, evidenceChecks: changed }), /Evidence changed.*receipt\.json/);
+assert.equal(checkEvidence(evidence, () => { throw Object.assign(new Error('missing'), { code: 'ENOENT' }); })[0].status, 'unavailable');
+assert.throws(() => checkEvidence({ ...evidence, sha256: '' }), /Invalid current evidence/);
+const historical = briefFromHtml(page({ ...data, oldReview: { path: '/old', sha256: 'old', evidenceStatus: 'historical' } }));
+assert.deepEqual(historical.historicalEvidence, ['oldReview']);
+assert.match(formatBrief(historical), /Historical content review.*oldReview/);
+console.log('corridor brief: explicit states, visible/data drift, current receipt integrity and historical scope pass');
