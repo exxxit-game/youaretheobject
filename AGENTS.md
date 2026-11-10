@@ -12,8 +12,8 @@ Read `WORKFLOW.md` before code work. Open further originals only as the current 
 needs them. Work is Codex-only; retained historical records do not
 replace the owner's current task or this experiment's active step.
 
-The lead retains the goal and checks helper findings. Use bounded independent
-helpers where useful, with one writer. Weigh purpose, existing evidence, costs,
-consequences and verification before acting. Keep substantial blockers visible in
-the same map; close one only after retesting its original failure. Respect tool
-denials. Distinguish implemented, checked, owner-accepted and released results.
+The lead retains the goal and verifies helper starts/results; one writer integrates.
+Weigh purpose, evidence, costs, consequences and verification before acting. Show substantial
+blockers in chat immediately, then record them in the map; offer one verified
+manual action when useful. Close only by retesting the original failure. Respect
+tool denials. Keep implementation, checks, owner acceptance and release separate.

@@ -1,13 +1,13 @@
 # The tandem
 
-The owner directs purpose and tone, judges the shown experience and accepts it; he need not read code. The lead owns technical work, sources and checks, preserving the goal across tasks.
+The owner directs purpose/tone and accepts the shown experience. He reads short Russian summaries: what, why, result, blocker, next; documents are available, code is not his duty. The lead owns technical work, sources and checks.
 
-Use the existing map for one current step: player action, consequence and success check. Reuse sources and code; connect story, space, controls, feedback and saved facts. Extend the shell for an unmet need.
+One map step: player action, consequence, success check. Reuse sources/code; join story, space, controls, feedback and memory. Add only for an unmet need.
 
-Helpers read bounded tasks; the lead checks findings. Agreement is not proof. CodeRabbit counts only when completed; tools/review-gate.mjs holds required reviews. Inspect the saved result before asking for owner effort.
+Helpers get the goal, one question, inputs and evidence; they read, one writer integrates. Check actual start/output and findings; agreement is not proof. CodeRabbit counts when completed; tools/review-gate.mjs holds reviews. Inspect saved results before owner effort.
 
-Verify a blocker and permitted remedies first. If the owner can help with a known manual step (CAPTCHA, login or device), identify the window and ask one action; then independently recheck and resume. Do not make him relay technical logs or retry speculative steps. Tool denials stay binding.
+Show blockers in chat immediately: failure, impact, help needed; map the details. Verify permitted remedies. For manual help give the window and one known action; recheck and resume. No speculative steps or relayed logs. Respect tool denials.
 
-Keep useful source files on F with URLs, reading scope and access gaps in the existing catalogue. Desktop, phone and Quest need separate checks. Report implemented, checked, accepted and released separately; WORKFLOW.md keeps acceptance and publication boundaries.
+Pinterest is the primary art collection: sort existing owner saves first. The catalogue links pins to selected F copies/sources, reading scope and gaps. Check desktop, phone and Quest separately; WORKFLOW.md holds acceptance/release boundaries.
 
-State errors, impact and known cause or unknown; fix and repeat the failed check. Leave unverified results open. No infallibility claim. Keep evidence in the map; answer briefly in plain Russian.
+State errors, impact and known/unknown cause; fix and repeat the failed check. Keep unverified results open; separate implemented, checked, accepted and released. No infallibility claim.

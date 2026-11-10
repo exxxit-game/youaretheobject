@@ -5,6 +5,9 @@ The newest entry is read at the start of every session, with `git log --oneline 
 feature at hand goes to the end of docs/board.md, one line each.
 Entries of 14.10 and before: docs/progress-2026-10-14.md; the earlier ones of 15.10: docs/progress-2026-10-15.md; late entry: docs/progress-2026-10-15-late.md.
 
+## 2026-11-10 — Tandem clarification and original owner saves
+The owner reads short Russian summaries and may open documents; code is not his duty. Existing AGENTS/tandem wording now requires immediate chat blockers and checked helper starts/results. Two read-only helpers completed after their first tasks stayed pending_init; cause unknown, not evidence of 48 simultaneous workers. The lead rechecked the diff and image matches; review caught two omitted reminders, restored before shortening repeated wording to satisfy the existing process-size limit. No new guard/configuration. Pinterest is the primary visual art collection:25 original owner saves were visually matched, moved to six sections and linked to existing local IDs. Board 56/16, three empty sections; other profile saves remain unreviewed. F retains selected copies, sources and evidence. The catalogue builder preserves pin links. No game code, foundation, acceptance or release change. Exact checks/delivery: art-collection-2026-11-09/verification.json. Next remains T02h's entrance/close/return artistic book views; this organisational repair does not fulfil that criterion.
+
 ## 2026-11-09 — Base layout, sources and connected interaction map
 T02h joins all 288 supplied images in one 285-copy, 16-folder library; originals and copies were hash-checked. The public Pinterest board has 31 pins (30 lead saves plus one owner pin); online expansion remains partial. Twelve technical and eleven artistic cards use 22 URLs: 17 local responses saved, five URLs returned403 twice, affecting six cards (B21). Screen curvature is only a proposal; its formula example and explanatory PNG do not establish a working room. An owner-facing audit of all 30 original visible map sections and the room contract found conflicting current tasks, an outdated unapproved price ladder, an obsolete empty-room/undo description, and overconfident reusable-director/device wording. These were corrected; historical CI/tasks are labelled by stage, the three-view artistic criterion is explicitly unmet, and a current state/consequence table plus actual image overview was shown directly in chat. Independent text rechecks confirmed the distinctions; no game code or acceptance changed. The selected book trial remains finite and terminal, with unfinished departure preserved. Its artistic views, B19/B17 geometry, B01/B16, original B20 and device work remain open. Checks and exact delivery belong in art-collection-2026-11-09/verification.json. Next visible result: one coherent book-scene sketch from entrance, close and return views; video and phone direct entry remain separate proposals.
 
@@ -263,37 +266,3 @@ called unverified (CodeRabbit on #24; corrected).
 Next (a new window, his choice): the whole building from a real university building of the period (outside photos,
 plans, stairs, elevators, entrance) and the fire rules of the time, shown to him as pictures with options; then the
 directories in their places (the main one at the entrance, a floor one at the stairs and elevators); feature 3.
-
-## 2026-10-15, night — the counted process files one by one
-A window opened by "Old problems one by one" (step 3 of its brief); his order here: the process files, then the floor
-directory, then every other link one by one (the board's end).
-Done:
-- His measure came to me at this window's start; his screenshot shows no line from the machine, only my repeat
-  (row 69: the desktop checked, the phone not).
-- His approval: the monthly update check gone, the scheduled task and two setup lines (58631a0); he reminds me.
-- Four read-only helpers reviewed every counted file (notes: the shared notes folder, review-*.md). The guard refused
-  47 real calls since 09.10: 2 right, 2 arguable, 38 false, 5 from a removed mode.
-- Cuts, one change a commit, each with its expected effect: the prover's 9 cases that only repeated the tests
-  (62b5848); stale comments in the gate, prover and hooks (4ab897c); two false-stop kinds of the guard, a raw -f
-  "@" field (c780fea) and one-liners naming review-gate (1c93161); the guard's stale text and dead code (052bc1c);
-  the helpers and the skill (10d299b); CLAUDE.md, the tools page, settings (c889c07); stale CLAUDE.md citations
-  (016ab5c). On his yes: the guard's SQL check, after the connector was read as supabase_read_only_user with no
-  write grants (7a25902); database changes stay a file he pastes and runs. His approval of 1, 2 and 3: three stale lines
-  of his rules (e52f656). Process size 129 981 to 116 872.
-- His doc: rows 21, 39, 40, 42, 43, 52 closed with their commits; 69 and 74 noted as checked.
-Kept on purpose: the start's feature line (a machine bringing it beats a text telling me to fetch it); imports() not
-moved into the test (text moved where the limit does not count, row 22); the library guard's wide path match
-(narrowing adds code); systemMessage until the phone is checked; the deny rules as the spare lock.
-Checked: npm test green after every commit; tools/prove-guards.mjs CRLF and LF: 39 of 39 after the first cut, 37 of
-37 at e52f656.
-- PR #23: CodeRabbit's two findings: the record rule narrowed, not dropped (ea41abd, it agreed); assets/ shown never
-  to have existed (it withdrew). The app's auto-mode classifier refused my fast-forward push to room-polish ("CI
-  Bypass"), so he merged with the button (15a7615); the main folder pulled.
-Not checked: the start without its first line (the next window's start shows it).
-Errors of mine: a node one-liner of mine was stopped by the guard's false rule (fixed in 1c93161); a script of mine
-failed on CRLF lines in docs/tools.md (nothing written there; redone); the allow rule for a push to room-polish
-removed as unused (c889c07), then my push refused (whether the two are linked: not checked); the LoC link held back
-"for the end" instead of given to him at once.
-For him later: "never advised against" in his decisions (row 34); the circles' header said twice; rare setup lines
-out of what loads, by his principle of this window.
-Next: the floor directory (the entry above).

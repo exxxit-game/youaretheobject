@@ -39,9 +39,13 @@ Independent review found missing alias search, 79 untagged cards and six misplac
 contemporary/symbolic images. These were corrected and rechecked. All 288 originals
 and 285 copies passed size/hash comparison; the six moved copies were rechecked.
 The public Pinterest board is named only "Theatres and materials" in Russian, as
-requested. Its interface and saved screenshot show 31 pins and 16 sections:
-30 saves by the lead and one additional owner pin. Several online sections remain
-empty; this is not completion of worldwide discovery or 285 new Pinterest saves.
+requested. On 10 November its interface shows 56 pins in 16 sections, three empty:
+30 prior lead saves, one prior owner pin and 25 existing owner saves moved and sorted
+this pass. Pinterest is the primary visual collection; selected local copies,
+sources and evidence stay on F. Lead and independent visual review matched those
+25 pins to local IDs; collection cards now link to the saved pins and sections.
+Other profile saves remain unreviewed. Matching images establishes neither their
+creator/rights nor a working mechanism. This is not worldwide discovery completed.
 
 `screen-room.html` / `.json` add 12 technical and 11 artistic source cards using
 22 original URLs. Reading boundaries are explicit, including helper-only Sony
