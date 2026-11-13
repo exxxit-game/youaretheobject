@@ -19,6 +19,7 @@ export const CHROME = { color: '#cfd2d5', metalness: 0.35, roughness: 0.3 };
 const PLATE = 'material="color: #b9bcbe; metalness: .7; roughness: .3"';
 const HINGE = 'material="color: #9a9c9e; metalness: .7; roughness: .35"';
 export const LEAF = { w: 0.914, h: 2.134, t: 0.045 };
+export const FRAME_TOP = 2.2042;
 const OPENING = 1.0;
 // a sign stands this far off the leaf: two faces closer than 5 mm flicker in a headset, worst at the
 // far end of the corridor (docs/vr-checklist.md)
@@ -49,9 +50,9 @@ export function doorHTML({ x, room = 1.6, corridor = 1.8, latch = 1, leaf = '', 
       <a-box position="${lx(0.22)} 2.09 ${lz(-0.032)}" width="0.28" height="0.055" depth="0.06" color="#5b5d60"></a-box>
       <a-box position="${lx(0.33)} 2.13 ${lz(-0.045)}" width="0.22" height="0.012" depth="0.012" color="#5b5d60"></a-box>` : '';
   return `
-    <a-box position="${f(x - jamb)} 1.1021 ${mid}" width="0.051" height="2.2042" depth="${depth}" ${FRAME}></a-box>
-    <a-box position="${f(x + jamb)} 1.1021 ${mid}" width="0.051" height="2.2042" depth="${depth}" ${FRAME}></a-box>
-    <a-box position="${f(x)} 2.1787 ${mid}" width="1.0224" height="0.051" depth="${depth}" ${FRAME}></a-box>
+    <a-box position="${f(x - jamb)} ${f(FRAME_TOP / 2)} ${mid}" width="0.051" height="${FRAME_TOP}" depth="${depth}" ${FRAME}></a-box>
+    <a-box position="${f(x + jamb)} ${f(FRAME_TOP / 2)} ${mid}" width="0.051" height="${FRAME_TOP}" depth="${depth}" ${FRAME}></a-box>
+    <a-box position="${f(x)} ${f(FRAME_TOP - 0.051 / 2)} ${mid}" width="1.0224" height="0.051" depth="${depth}" ${FRAME}></a-box>
     <a-box position="${f(x - stop)} 1.0766 ${f(room + s * 0.063)}" width="0.016" height="2.1532" depth="0.016" ${FRAME}></a-box>
     <a-box position="${f(x + stop)} 1.0766 ${f(room + s * 0.063)}" width="0.016" height="2.1532" depth="0.016" ${FRAME}></a-box>
     <a-box position="${f(x)} 2.1452 ${f(room + s * 0.063)}" width="0.9204" height="0.016" depth="0.016" ${FRAME}></a-box>

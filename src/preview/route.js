@@ -1,18 +1,40 @@
 import { inside } from '../engine/locomotion-math.js';
-import { HALL, ROOM, OPEN_LEAF, BOOK_STAND } from './layout.js';
+import { HALL, ROOM, OPEN_LEAF } from './layout.js';
 
 const steps = 8;
 const rise = 0.18;
-const run = 0.38;
+const going = 0.29;
+const lowApproach = 0.22;
 const halfRise = steps * rise;
-const turnZ = -steps * run;
+const turnZ = -3.04;
+const landing = { minX: 0, maxX: 2.68, minZ: -4.42, maxZ: turnZ };
+const centre = landing.maxX / 2;
+const innerLeft = centre - 0.08;
+const innerRight = centre + 0.08;
+const flightEdges = [0, ...Array.from({ length: steps }, (_, i) => lowApproach + i * going), -turnZ];
+export const FLIGHT = flightEdges.slice(0, -1).map((from, i) => ({
+  from, to: flightEdges[i + 1], height: i * rise, depth: i === 0 || i === steps ? 0.24 : 0.32
+}));
+const blendStart = lowApproach - going / 2;
+const blendEnd = flightEdges.at(-2) + going / 2;
+export const FLIGHT_RAMP = [0, blendStart, blendEnd, -turnZ];
+
+export function flightViewHeight(distance) {
+  return Math.max(0, Math.min(halfRise, (distance - blendStart) * rise / going));
+}
+
+function treadHeight(distance) {
+  return FLIGHT.findLast(tread => distance >= tread.from - 1e-9)?.height ?? 0;
+}
 
 export const PLAN = {
   hall: HALL,
-  right: { minX: 1.4, maxX: 2.68, minZ: turnZ, maxZ: 0 },
-  left: { minX: 0, maxX: 1.24, minZ: turnZ, maxZ: 0 },
-  landing: { minX: 0, maxX: 2.68, minZ: -4.42, maxZ: turnZ },
-  steps, rise, run, halfRise, floorRise: 2 * halfRise
+  right: { minX: innerRight, maxX: landing.maxX, minZ: turnZ, maxZ: 0 },
+  left: { minX: 0, maxX: innerLeft, minZ: turnZ, maxZ: 0 },
+  landing,
+  sill: { x: landing.maxX / 2, z: landing.minZ + 0.079, y: 0.38, width: 1.38, depth: 0.24, height: 0.06 },
+  handrail: { width: 0.055, depth: 0.054 },
+  rise, halfRise, floorRise: 2 * halfRise
 };
 
 export const ANCHORS = {
@@ -33,6 +55,11 @@ export function floorNumber(floor, search) {
 
 const MARGIN = 0.14;
 const MAX_STEP = 0.05;
+const railHalfWidth = PLAN.handrail.width / 2;
+const sill = PLAN.sill;
+const sillMinX = sill.x - sill.width / 2 - MARGIN;
+const sillMaxX = sill.x + sill.width / 2 + MARGIN;
+const sillFront = sill.z + sill.depth / 2 + MARGIN;
 
 // Keep coordinates small while retaining the visited floor. Rebase only after reaching
 // a full hall, never on the half landing. Repeated geometry stays fixed (Epic, World
@@ -43,23 +70,52 @@ export function recenter(position) {
   return { ...position, y: position.y - floors * PLAN.floorRise, floor: (position.floor ?? 0) + floors };
 }
 
-function withinLane(x, lane) {
-  return x >= lane.minX + MARGIN && x <= lane.maxX - MARGIN;
+export function viewHeight(position) {
+  const { x, y, z } = position;
+  if (z <= turnZ || z >= 0) return y;
+  const distance = x >= centre ? -z : z - turnZ;
+  return y + flightViewHeight(distance) - treadHeight(distance);
+}
+
+function withinLane(x, lane, innerLeft = 0, innerRight = 0) {
+  return x >= lane.minX + MARGIN + innerLeft && x <= lane.maxX - MARGIN - innerRight;
+}
+
+function hitsSill(from, x, z) {
+  if (from.z >= sillFront && z >= sillFront) return false;
+
+  if (from.z < sillFront && from.x > sillMinX && from.x < sillMaxX) {
+    // A pose already in the sill margin can leave along a nearest edge, even in small steps.
+    const left = from.x - sillMinX;
+    const right = sillMaxX - from.x;
+    const front = sillFront - from.z;
+    const nearest = Math.min(left, right, front);
+    return !((left === nearest && x < from.x) || (right === nearest && x > from.x) ||
+      (front === nearest && z > from.z));
+  }
+
+  // Test the portion of the move behind the front edge. The back of the sill
+  // extends past the walkable area, so only the front and side edges are reachable.
+  let startX = from.x;
+  let endX = x;
+  if (from.z >= sillFront || z >= sillFront) {
+    const atFront = from.x + (x - from.x) * (sillFront - from.z) / (z - from.z);
+    if (from.z >= sillFront) startX = atFront;
+    else endX = atFront;
+  }
+  return Math.max(startX, endX) > sillMinX && Math.min(startX, endX) < sillMaxX;
 }
 
 function floorHeight(x, z, previousY, doorOpen) {
   const { hall, right, left, landing, floorRise } = PLAN;
-  const onRight = withinLane(x, right);
-  const onLeft = withinLane(x, left);
+  const onRight = withinLane(x, right, railHalfWidth);
+  const onLeft = withinLane(x, left, 0, railHalfWidth);
   let height;
 
   if (doorOpen && inside(x, z, { minX: OPEN_LEAF.minX - MARGIN, maxX: OPEN_LEAF.maxX + MARGIN,
     minZ: OPEN_LEAF.minZ - MARGIN, maxZ: OPEN_LEAF.maxZ + MARGIN })) return null;
 
   if (doorOpen && z > hall.maxZ - MARGIN) {
-    const b = BOOK_STAND;
-    if (inside(x, z, { minX: b.x - b.width / 2 - MARGIN, maxX: b.x + b.width / 2 + MARGIN,
-      minZ: b.z - b.depth / 2 - MARGIN, maxZ: b.z + b.depth / 2 + MARGIN })) return null;
     // A narrow overlapping passage joins the two areas (locomotion-math.js).
     // The rest of the dividing wall stays solid from either side.
     const passage = Math.abs(x - ROOM.doorX) <= ROOM.clearWidth / 2 - MARGIN;
@@ -76,16 +132,16 @@ function floorHeight(x, z, previousY, doorOpen) {
     if (!onRight && !onLeft && z > turnZ - MARGIN) return null;
     height = halfRise;
   } else {
-    // Follow a slope through the steps. Each hall opens onto an ascent and a descent.
     if (!onRight && !onLeft) return null;
-    height = z * rise / run * (onRight ? -1 : 1);
+    height = onRight ? treadHeight(-z) : treadHeight(z - turnZ) - halfRise;
   }
   return height + Math.round((previousY - height) / floorRise) * floorRise;
 }
 
 function step(position, x, z, doorOpen) {
+  if (hitsSill(position, x, z)) return position;
   const y = floorHeight(x, z, position.y, doorOpen);
-  return y !== null && Math.abs(y - position.y) <= PLAN.rise
+  return y !== null && Math.abs(y - position.y) <= rise + 1e-9
     ? recenter({ ...position, x, y, z, floor: position.floor ?? 0 }) : position;
 }
 

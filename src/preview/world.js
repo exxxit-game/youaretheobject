@@ -1,10 +1,13 @@
-import { PLAN } from './route.js';
+import { FLIGHT, FLIGHT_RAMP, PLAN, flightViewHeight } from './route.js';
 import { GRID, jointOrigin } from '../engine/tile-math.js';
 import { DOORS, ROOM } from './layout.js';
 
-const { hall, left, right, landing, steps, rise, run, halfRise, floorRise } = PLAN;
+const { hall, left, right, landing, sill, handrail, halfRise, floorRise } = PLAN;
 const mid = (a, b) => (a + b) / 2;
 const material = (color, roughness = 0.85) => new THREE.MeshStandardMaterial({ color, roughness });
+const landingDepth = 0.24;
+const fixtureHeight = 0.041;
+const landingLampCentre = floorRise - landingDepth - fixtureHeight / 2;
 
 // The dimensions are provisional. Keep the fixed landmarks from the footage: a short vestibule,
 // two visible flights, a window at the half landing, dark bars and the pale edge of the flight.
@@ -48,7 +51,7 @@ export function buildWorld(root) {
   }
 
   function lamp(x, y, z, strength) {
-    box(x, y, z, 0.57, 0.041, 0.12, lightFace);
+    box(x, y, z, 0.57, fixtureHeight, 0.12, lightFace);
     lightAt(x, y, z, strength);
   }
 
@@ -128,7 +131,9 @@ export function buildWorld(root) {
     wallX(right.maxX, hall.maxX, y, y + 0.085, 0.045, trim);
     box(hall.minX, mid(y, top), 0.9, 0.08, top - y, 1.8, plaster);
     box(hall.maxX, mid(y, top), 0.9, 0.08, top - y, 1.8, plaster);
-    box(mid(hall.minX, hall.maxX), top, 0.9, hall.maxX - hall.minX, 0.13, 1.8, plaster);
+    const soffit = top - 0.065;
+    const slabTop = y + floorRise;
+    box(mid(hall.minX, hall.maxX), mid(soffit, slabTop), 0.9, hall.maxX - hall.minX, slabTop - soffit, 1.8, plaster);
     for (const d of DOORS) if (!d.working) entryDoor(d.x, y, d.side === 'south');
     for (const x of [-5.6, -2.4, 1.7, 4.1]) lamp(x, top - 0.08, 0.9, 2.2);
     // A shallow beam and side pier reveal the stairwell after the turn.
@@ -143,36 +148,45 @@ export function buildWorld(root) {
   for (const y of [-2 * floorRise, 2 * floorRise]) {
     for (const x of [-5.6, -2.4, 1.7, 4.1]) lightAt(x, y + floorRise - 0.21, 0.9, 2.2);
   }
-  lightAt(0.55, -3 * floorRise + halfRise + 2.1, landing.minZ + 0.32, 3.6);
+  lightAt(0.55, -3 * floorRise + halfRise + landingLampCentre, landing.minZ + 0.32, 3.6);
 
-  function flight(lane, y, from, to, railX) {
-    const direction = Math.sign(to - from);
+  function flight(lane, y, startZ, direction, railX) {
+    const zAt = distance => startZ + distance * direction;
     const width = lane.maxX - lane.minX;
     const center = mid(lane.minX, lane.maxX);
-    beam([center, y - 0.13, from], [center, y + halfRise - 0.13, to], width, 0.16, plaster);
-    for (let i = 0; i < steps; i++) {
-      const z = from + (i + 0.5) * run * direction;
-      const top = y + (i + 1) * rise;
-      box(center, top - 0.16, z, width, 0.32, run, concrete);
-      box(railX, top - 0.139, z, 0.045, 0.28, run, pale);
-      box(center, top - 0.018, z - direction * (run / 2 - 0.026),
-        width, 0.033, 0.045, pale);
-      box(railX, top + 0.41, z, 0.021, 0.9, 0.021, metal);
-      const nextZ = z + 0.12 * direction;
-      box(railX, top + 0.425, nextZ, 0.018, 0.88, 0.018, metal);
+    for (const tread of FLIGHT) {
+      const length = tread.to - tread.from;
+      const top = y + tread.height;
+      box(center, top - tread.depth / 2, zAt(mid(tread.from, tread.to)), width, tread.depth, length, concrete);
+      box(railX, top - 0.119, zAt(mid(tread.from, tread.to)), 0.045, 0.24, length, pale);
+      if (tread.height > 0) {
+        box(center, top - 0.018, zAt(tread.from + 0.026), width, 0.033, 0.045, pale);
+      }
+      const posts = Math.ceil(length / 0.16);
+      for (let i = 0; i < posts; i++) {
+        const distance = tread.from + (i + 0.5) * length / posts;
+        const postTop = y + flightViewHeight(distance) + 0.93;
+        box(railX, mid(top, postTop), zAt(distance), 0.021, postTop - top, 0.021, metal);
+      }
     }
-    beam([railX, y + 0.93, from], [railX, y + halfRise + 0.93, to], 0.055, 0.054, metal);
-    beam([railX, y + 0.24, from], [railX, y + halfRise + 0.24, to], 0.026, 0.027, metal);
+    for (let i = 1; i < FLIGHT_RAMP.length; i++) {
+      const from = FLIGHT_RAMP[i - 1];
+      const to = FLIGHT_RAMP[i];
+      const railPoint = (distance, offset) => [railX, y + flightViewHeight(distance) + offset, zAt(distance)];
+      beam(railPoint(from, 0.93), railPoint(to, 0.93), handrail.width, handrail.depth, metal);
+      beam(railPoint(from, 0.24), railPoint(to, 0.24), 0.026, 0.027, metal);
+    }
   }
 
   const stairBottom = -2 * floorRise - 0.2;
   const stairTop = 3 * floorRise - 0.12;
   const zBack = landing.minZ;
+  const rearWallFace = zBack - 0.02;
   for (const x of [-0.04, right.maxX + 0.04]) {
-    box(x, mid(stairBottom, stairTop), zBack / 2, 0.08, stairTop - stairBottom, -zBack, plaster);
+    box(x, mid(stairBottom, stairTop), rearWallFace / 2, 0.08, stairTop - stairBottom, -rearWallFace, plaster);
   }
-  wallX(0, right.maxX, stairBottom, stairTop, zBack - 0.06);
-  box(right.maxX / 2, stairTop, zBack / 2, right.maxX, 0.12, -zBack, plaster);
+  wallX(0, right.maxX, stairBottom, stairTop, rearWallFace - 0.04);
+  box(right.maxX / 2, stairTop, rearWallFace / 2, right.maxX, 0.12, -rearWallFace, plaster);
 
   function windowAt(y) {
     const x = right.maxX / 2;
@@ -180,17 +194,17 @@ export function buildWorld(root) {
     box(x, y + 1.23, zBack + 0.018, 1.12, 1.57, 0.03, windowDark);
     box(x, y + 1.23, zBack + 0.04, 0.055, 1.61, 0.026, pale);
     box(x, y + 0.96, zBack + 0.04, 1.17, 0.058, 0.026, pale);
-    box(x, y + 0.38, zBack + 0.079, 1.38, 0.06, 0.24, pale);
+    box(sill.x, y + sill.y, sill.z, sill.width, sill.height, sill.depth, pale);
   }
 
   for (const y of [-2 * floorRise, -floorRise, 0, floorRise]) {
     const h = y + halfRise;
     const zFar = right.minZ;
-    flight(right, y, right.maxZ, zFar, right.minX);
-    flight(left, h, left.minZ, left.maxZ, left.maxX);
-    box(right.maxX / 2, h - 0.12, mid(zBack, zFar), right.maxX, 0.24, zFar - zBack, concrete);
+    flight(right, y, right.maxZ, -1, right.minX);
+    flight(left, h, left.minZ, 1, left.maxX);
+    box(right.maxX / 2, h - landingDepth / 2, mid(rearWallFace, zFar), right.maxX, landingDepth, zFar - rearWallFace, concrete);
     windowAt(h);
-    lamp(0.55, h + 2.1, zBack + 0.32, 3.6);
+    lamp(0.55, h + landingLampCentre, zBack + 0.32, 3.6);
   }
 
   // The repeated steps, rails and walls are fixed, so render each material in one batch.

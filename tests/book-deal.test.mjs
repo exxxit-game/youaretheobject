@@ -1,7 +1,5 @@
 import assert from 'node:assert/strict';
 import { balance, changeDeal, DEAL_KEY, dealStore, episode, freshDeal, OFFERS, readDeal } from '../src/preview/deal-state.js';
-import { BOOK_STAND } from '../src/preview/layout.js';
-import { walk } from '../src/preview/route.js';
 
 assert.deepEqual(OFFERS, [100, 250, 500, 1000]);
 let state = freshDeal();
@@ -60,7 +58,4 @@ let inside = true;
 const pending = waiting.act('accept', 0, () => inside);
 inside = false; delayed[0](); await pending;
 assert.equal(values.has(DEAL_KEY), false, 'leaving before lock acquisition cancels the action');
-const b = BOOK_STAND, position = { x: b.x - 0.9, z: b.z, y: 0, floor: 0 };
-const stopped = walk(position, 1, 0, true);
-assert.ok(stopped.x < b.x - b.width / 2, 'the player cannot walk through the book stand');
-console.log('book deal: finite offers, refusal, stable episode/payment, corrupt/blocked saves, late input and stand collision pass');
+console.log('book deal: finite offers, refusal, stable episode/payment, corrupt/blocked saves, and late input pass');

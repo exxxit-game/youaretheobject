@@ -1,11 +1,11 @@
-import { LEAF } from '../engine/door.js';
+import { FRAME_TOP, LEAF } from '../engine/door.js';
 
 // Topology from the owner's sketch, not a measured survey. Door construction reuses
 // engine/door.js; only the first south door has a room in this technical slice.
 export const HALL = { minX: -7.6, maxX: 5.3, minZ: 0, maxZ: 1.8 };
 export const ROOM = {
   minX: -7.6, maxX: -5.4, minZ: HALL.maxZ, maxZ: 4.7,
-  doorX: -6.5, doorWidth: 1, doorHeight: 2.21,
+  doorX: -6.5, doorWidth: 1, doorHeight: FRAME_TOP,
   clearWidth: 0.88 // Clear of the stops and open leaf in engine/door.js.
 };
 export const DOORS = [
@@ -26,10 +26,6 @@ export function nearDoor(p) {
 }
 export const inRoom = p => p.z > ROOM.minZ + 0.14 &&
   p.x >= ROOM.minX && p.x <= ROOM.maxX && p.z <= ROOM.maxZ;
-
-export const BOOK_STAND = {
-  x: ROOM.maxX - 0.43, z: ROOM.minZ + 1.9, width: 0.48, depth: 0.68
-};
 
 export function beginVisit(position, yaw, pitch) {
   if (!nearDoor(position) || !Number.isFinite(yaw) || !Number.isFinite(pitch)) return null;

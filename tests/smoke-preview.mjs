@@ -2,10 +2,9 @@
 import assert from 'node:assert/strict';
 import { chromium } from 'playwright';
 import { startServer } from './static-server.mjs';
-import { ANCHORS } from '../src/preview/route.js';
+import { ANCHORS, PLAN } from '../src/preview/route.js';
 import { ROOM } from '../src/preview/layout.js';
 import { T } from '../src/preview/texts.ru.js';
-import { DEAL_KEY } from '../src/preview/deal-state.js';
 
 if (!process.env.CI) throw Error('Run this browser check in CI; no laptop browser installation is needed.');
 let server, browser, page, base;
@@ -82,7 +81,8 @@ try {
     const canvas=document.querySelector('a-scene').canvas;
     return {width:canvas.width,height:canvas.height,cssWidth:innerWidth,cssHeight:innerHeight,dpr:devicePixelRatio};
   }));
-  assert.equal(await page.title(), T.title);
+  assert.equal(await page.title(), 'URZ Object');
+  assert.equal(await page.getByRole('heading', { name: 'URZ Object' }).count(), 1);
   for (const id of ['top','below','start']) {
     await page.getByRole('button', { name: T.views[id], exact: true }).click();
     const p = await pose(), a = ANCHORS[id];
@@ -115,72 +115,15 @@ try {
   await settled(); await page.keyboard.up('ArrowUp');
   await page.getByRole('button', { name:T.views.start, exact:true }).click();
   await walkAxis('ArrowUp','x',ROOM.doorX - 0.05);
-  let beforeDoor = await pose();
+  const beforeDoor = await pose();
   // Synthetic Russian-key regression; not a claim of a physical keyboard-layout test.
   await page.evaluate(() => window.dispatchEvent(new KeyboardEvent('keydown',
     {code:'KeyE',key:String.fromCodePoint(0x443),bubbles:true})));
   await page.getByRole('button',{name:T.returnDoor,exact:true}).waitFor();
   await walkAxis('KeyD','z',ROOM.minZ+1.4);
   await page.getByRole('status').filter({hasText:T.room}).waitFor();
-  const book = () => page.evaluate(() => {
-    const group = document.querySelector('#preview-world').object3D.getObjectByName('intro-book');
-    return { outcome:group.userData.outcome, intact:group.getObjectByName('book-intact').visible,
-      remains:group.getObjectByName('book-remains').visible };
-  });
-  await page.getByRole('button',{name:T.inspectBook,exact:true}).click();
-  await settled();
-  assert.equal(await page.evaluate(() => {
-    const el = document.querySelector('#preview-camera'), cam = el.getObject3D('camera');
-    const cover = document.querySelector('#preview-world').object3D.getObjectByName('book-cover');
-    const center = cover.getWorldPosition(new THREE.Vector3()).project(cam);
-    return Math.abs(center.x)<1 && Math.abs(center.y)<1 && Math.abs(center.z)<1;
-  }), true, 'inspect view places the actual book cover in the camera frustum');
-  const optionBoxes = await page.locator('#preview-deal .preview-buttons button').evaluateAll(nodes =>
-    nodes.map(node=>({width:node.getBoundingClientRect().width,height:node.getBoundingClientRect().height})));
-  assert.ok(optionBoxes.every(box=>Math.abs(box.width-optionBoxes[0].width)<1 && Math.abs(box.height-optionBoxes[0].height)<1), 'deal choices have equal-size targets');
-  const enterBook = async () => {
-    await page.getByRole('button', {name:T.views.start,exact:true}).click();
-    await walkAxis('ArrowUp','x',ROOM.doorX-0.05);
-    beforeDoor = await pose();
-    await page.getByRole('button',{name:T.openDoor,exact:true}).click();
-    await walkAxis('KeyD','z',ROOM.minZ+1.4);
-    await page.locator('#preview-deal').waitFor();
-  };
-  await page.getByRole('button',{name:T.bargain,exact:true}).click();
-  await page.getByRole('status').filter({hasText:T.offer(250)}).waitFor();
-  await page.getByRole('button',{name:T.returnDoor,exact:true}).click();
-  // Outside inputs cannot accept, and an unanswered exit preserves the quote.
-  await page.locator('#preview-deal-accept').dispatchEvent('click');
-  await enterBook();
-  await page.getByRole('status').filter({hasText:T.offer(250)}).waitFor();
-  await page.getByRole('button',{name:T.refuse,exact:true}).click();
-  await page.getByRole('status').filter({hasText:T.refused}).waitFor();
-  assert.deepEqual(await book(),{outcome:'refused',intact:true,remains:false});
-  await page.getByRole('button',{name:T.returnDoor,exact:true}).click();
-  await enterBook();
-  await page.getByRole('status').filter({hasText:T.refused}).waitFor();
-  assert.equal(await page.locator('#preview-balance').textContent(),T.balance(0));
-  // Fresh isolated test attempt; this is not an in-game restart feature.
-  await page.evaluate(key=>localStorage.removeItem(key),DEAL_KEY);
-  await page.reload();
-  await page.getByRole('status').filter({hasText:T.instruction}).waitFor();
-  await enterBook();
-  for (const amount of [250,500,1000]) {
-    await page.getByRole('button',{name:T.bargain,exact:true}).click();
-    await page.getByRole('status').filter({hasText:T.offer(amount)}).waitFor();
-  }
-  assert.equal(await page.getByRole('button',{name:T.lastOffer,exact:true}).isDisabled(),true);
-  await page.getByRole('button',{name:T.accept(1000),exact:true}).click();
-  await page.getByRole('status').filter({hasText:T.burned(1000)}).waitFor();
-  assert.deepEqual(await book(),{outcome:'burned',intact:false,remains:true});
-  await page.locator('#preview-deal-accept').dispatchEvent('click');
-  assert.equal(await page.locator('#preview-balance').textContent(),T.balance(1000));
-  await page.reload();
-  await page.getByRole('status').filter({hasText:T.instruction}).waitFor();
-  await enterBook();
-  await page.getByRole('status').filter({hasText:T.burned(1000)}).waitFor();
-  assert.deepEqual(await book(),{outcome:'burned',intact:false,remains:true});
-  assert.equal(await page.locator('#preview-balance').textContent(),T.balance(1000));
+  assert.equal(await page.locator('#preview-deal, #preview-balance, a[href="./book.html"]').count(), 0,
+    'entering the room does not restore the canceled scene');
   // Returning while a movement key remains held must not restart on its auto-repeat.
   const roomX = (await pose()).x;
   await page.keyboard.down('KeyW'); await moved('x',roomX);
@@ -189,6 +132,22 @@ try {
   samePose(await pose(),beforeDoor);
   assert.equal(await shownFloor(),'8');
   await page.getByRole('button',{name:T.openDoor,exact:true}).waitFor();
+
+  console.log('corridor smoke: walking to the first half landing and back');
+  await page.getByRole('button', { name: T.views.start, exact: true }).click();
+  const lowerPose = await pose();
+  await walkAxis('ArrowUp', 'x', ANCHORS.turn.x);
+  await walkAxis('KeyA', 'z', ANCHORS.overlap.z);
+  assert.ok(Math.abs((await pose()).y - lowerPose.y - PLAN.halfRise) < 1e-6,
+    'walking reaches the half landing above the starting floor');
+  assert.equal(await shownFloor(), '8', 'the half landing keeps the starting floor number');
+  await walkAxis('KeyD', 'z', lowerPose.z);
+  await walkAxis('ArrowDown', 'x', lowerPose.x);
+  const returned = await pose();
+  assert.ok(Math.abs(returned.x - lowerPose.x) < 0.24 && Math.abs(returned.z - lowerPose.z) < 0.24,
+    'the reverse walk reaches the starting area');
+  assert.ok(Math.abs(returned.y - lowerPose.y) < 1e-6, 'the reverse walk returns to the starting height');
+  assert.equal(await shownFloor(), '8');
 
   console.log('corridor smoke: walking the stairs, not selecting a floor anchor');
   await walkAxis('ArrowUp','x',ANCHORS.turn.x);
@@ -202,8 +161,6 @@ try {
   await page.getByRole('button',{name:T.returnDoor,exact:true}).waitFor();
   await walkAxis('KeyD','z',ROOM.minZ+1.4);
   await page.getByRole('status').filter({hasText:T.room}).waitFor();
-  await page.getByRole('status').filter({hasText:T.burned(1000)}).waitFor();
-  assert.equal(await page.locator('#preview-balance').textContent(),T.balance(1000), 'another floor cannot pay the same episode again');
   await page.getByRole('button',{name:T.returnDoor,exact:true}).click();
   await settled(); samePose(await pose(),upperDoor);
   assert.equal(await shownFloor(),'9','room return does not reset the floor to the origin');
@@ -213,7 +170,7 @@ try {
   await walkAxis('KeyD','z',ANCHORS.turn.z);
   assert.equal(await shownFloor(),'8','walking back returns to the original floor');
   assert.deepEqual(failures, [], 'the corridor boots and responds without errors or outside requests');
-  console.log('corridor smoke: boot, controls, book/refusal/bargain/payment/return/reload, held-input stop and walked ascent/descent pass; Quest untested');
+  console.log('corridor smoke: boot, controls, room return, held-input stop, half-landing return and full-floor walk pass; Quest untested');
 } finally {
   try { await browser?.close(); }
   finally { if(server) { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); } }
