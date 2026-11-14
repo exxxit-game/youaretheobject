@@ -19,15 +19,26 @@ export function buildWorld(root) {
   const trim = material('#3e3e3c');
   const door = material('#555451');
   const windowDark = material('#20272d', 0.27);
+  const frame = material('#4c3b31');
+  const pictureWidth = 0.42;
+  const pictureShape = new THREE.PlaneGeometry(pictureWidth, pictureWidth * 1360 / 1024);
+  const pictureMap = new THREE.TextureLoader().load(new URL('../../vendor/art/arcimboldo-vegetable-gardener.jpg', import.meta.url).href);
+  pictureMap.colorSpace = THREE.SRGBColorSpace;
+  pictureMap.anisotropy = 8;
+  const pictureMaterial = new THREE.MeshStandardMaterial({ map: pictureMap, roughness: 1 });
   const lightFace = new THREE.MeshBasicMaterial({ color: '#f2eee3' });
   const boxes = new Map();
+  const coveredSlabs = [];
 
-  function box(x, y, z, w, h, d, mat) {
+  function box(x, y, z, w, h, d, mat, covered = false) {
     const transform = new THREE.Object3D();
     transform.position.set(x, y, z);
     transform.scale.set(w, h, d);
-    if (!boxes.has(mat)) boxes.set(mat, []);
-    boxes.get(mat).push(transform);
+    if (covered) coveredSlabs.push(transform);
+    else {
+      if (!boxes.has(mat)) boxes.set(mat, []);
+      boxes.get(mat).push(transform);
+    }
     return transform;
   }
 
@@ -117,6 +128,23 @@ export function buildWorld(root) {
     lamp(x, top - 0.08, z, 2.2);
   }
 
+  function hallSide(end, stairEdge, y, top) {
+    const minX = Math.min(end, stairEdge), maxX = Math.max(end, stairEdge);
+    const inward = Math.sign(stairEdge - end);
+    const middle = mid(hall.minZ, hall.maxZ);
+    wallX(minX, maxX, y, top, hall.minZ);
+    wallX(minX, maxX, y, y + 0.085, hall.minZ + 0.045, trim);
+    box(end, mid(y, top), middle, 0.08, top - y, hall.maxZ - hall.minZ, plaster);
+    box(end + inward * 0.053, y + 1.58, middle, 0.026, 0.64, 0.50, frame);
+    const picture = new THREE.Mesh(pictureShape, pictureMaterial);
+    picture.name = 'end-picture';
+    picture.position.set(end + inward * 0.067, y + 1.58, middle);
+    picture.rotation.y = inward * Math.PI / 2;
+    // Compare the two orientations in a single walk, as in the old lobby's first visit.
+    if (inward < 0) picture.rotateZ(Math.PI);
+    root.add(picture);
+  }
+
   function hallLevel(y) {
     const top = y + floorRise - 0.13;
     floor(y);
@@ -125,15 +153,12 @@ export function buildWorld(root) {
     wallX(b, hall.maxX, y, top, hall.maxZ);
     wallX(a, b, y + ROOM.doorHeight, top, hall.maxZ);
     roomLevel(y, top);
-    wallX(hall.minX, 0, y, top, 0);
-    wallX(right.maxX, hall.maxX, y, top, 0);
-    wallX(hall.minX, 0, y, y + 0.085, 0.045, trim);
-    wallX(right.maxX, hall.maxX, y, y + 0.085, 0.045, trim);
-    box(hall.minX, mid(y, top), 0.9, 0.08, top - y, 1.8, plaster);
-    box(hall.maxX, mid(y, top), 0.9, 0.08, top - y, 1.8, plaster);
+    hallSide(hall.minX, left.minX, y, top);
+    hallSide(hall.maxX, right.maxX, y, top);
     const soffit = top - 0.065;
     const slabTop = y + floorRise;
-    box(mid(hall.minX, hall.maxX), mid(soffit, slabTop), 0.9, hall.maxX - hall.minX, slabTop - soffit, 1.8, plaster);
+    box(mid(hall.minX, hall.maxX), mid(soffit, slabTop), 0.9,
+      hall.maxX - hall.minX, slabTop - soffit, 1.8, plaster, y < floorRise);
     for (const d of DOORS) if (!d.working) entryDoor(d.x, y, d.side === 'south');
     for (const x of [-5.6, -2.4, 1.7, 4.1]) lamp(x, top - 0.08, 0.9, 2.2);
     // A shallow beam and side pier reveal the stairwell after the turn.
@@ -208,13 +233,23 @@ export function buildWorld(root) {
   }
 
   // The repeated steps, rails and walls are fixed, so render each material in one batch.
-  const unit = new THREE.BoxGeometry(1, 1, 1);
-  for (const [mat, transforms] of boxes) {
-    const mesh = new THREE.InstancedMesh(unit, mat, transforms.length);
+  function addBoxes(geometry, mat, transforms) {
+    const mesh = new THREE.InstancedMesh(geometry, mat, transforms.length);
     transforms.forEach((transform, index) => {
       transform.updateMatrix();
       mesh.setMatrixAt(index, transform.matrix);
     });
     root.add(mesh);
   }
+  const unit = new THREE.BoxGeometry(1, 1, 1);
+  for (const [mat, transforms] of boxes) addBoxes(unit, mat, transforms);
+
+  // The next hall's tile plane is already the top face of each covered slab.
+  const slab = unit.clone();
+  const top = slab.groups[2]; // +Y in BoxGeometry
+  const indices = Array.from(slab.index.array);
+  indices.splice(top.start, top.count);
+  slab.setIndex(indices);
+  slab.clearGroups();
+  addBoxes(slab, plaster, coveredSlabs);
 }

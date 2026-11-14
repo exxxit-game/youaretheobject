@@ -7,6 +7,22 @@ import { doorHTML } from '../src/engine/door.js';
 const close = (actual, expected) => assert.ok(Math.abs(actual - expected) < 1e-8, `${actual} differs from ${expected}`);
 const moveTo = (position, x, z) => walk(position, x - position.x, z - position.z);
 
+const mount = PLAN.extinguisher;
+for (const floor of [-1, 0, 1]) {
+  const centre = { ...ANCHORS.start, x: mount.x, floor };
+  const beside = moveTo(centre, mount.x + 0.6, centre.z);
+  close(beside.x, mount.x + 0.6);
+  const inFront = moveTo(centre, mount.x, PLAN.hall.maxZ - 0.05);
+  assert.ok(inFront.z > 1.30 && inFront.z <= mount.wall - mount.depth - 0.14,
+    'the wall fixture stops an approach before the body reaches the shell');
+  const alongWall = moveTo(beside, beside.x, 1.6);
+  close(alongWall.z, 1.6);
+  const besideMount = moveTo(alongWall, mount.x, 1.6);
+  assert.ok(besideMount.x >= mount.x + mount.halfWidth + 0.14,
+    'the shell also stops a side approach at the wall');
+  close(moveTo(inFront, centre.x, centre.z).z, centre.z);
+}
+
 const emptyRoomZ = ROOM.minZ + 1.9;
 const acrossFormerStand = walk({ x: ROOM.maxX - 1.33, z: emptyRoomZ, y: 0, floor: 0 }, 1, 0, true);
 close(acrossFormerStand.x, ROOM.maxX - 0.33);

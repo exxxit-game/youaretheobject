@@ -1,12 +1,16 @@
-import { FONT } from '../engine/panel.js';
+import '../engine/panel.js';
 import { ANCHORS, PLAN, floorNumber, recenter, viewHeight, walk } from './route.js';
 import { T } from './texts.ru.js';
 import { buildWorld } from './world.js';
 import { ROOM, nearDoor, inRoom, beginVisit, returnVisit } from './layout.js';
 import { doorHTML } from '../engine/door.js';
+import { extinguisher } from '../app/lobby/extinguisher.js';
+import { paintExtinguisherLabel, paintGauge } from '../app/lobby/extinguisher-label.js';
 import '../engine/shapes.js';
+import '../engine/cable.js';
 import '../engine/decal.js';
 import '../engine/merge-static.js';
+import '../engine/reflect-env.js';
 
 const STEP_SPEED = 1.5;
 const TURN_SPEED = 1.65;
@@ -78,13 +82,16 @@ function drawSigns() {
   const signs = document.querySelectorAll('[data-floor-offset]');
   signs.forEach(sign => {
     const offset = Number(sign.dataset.floorOffset);
-    sign.object3D.position.set(-0.5, offset * PLAN.floorRise + 1.66, 0.055);
+    const x = (PLAN.left.minX + PLAN.right.maxX) / 2;
+    sign.object3D.position.set(x, offset * PLAN.floorRise + 1.66, PLAN.hall.maxZ - 0.055);
+    sign.object3D.rotation.y = Math.PI;
     const number = floorNumber((position.floor ?? 0) + offset, location.search);
     sign.dataset.number = number;
     const panel = sign.components.panel;
-    panel.ctx.font = `600 178px ${FONT}`;
-    const size = Math.min(178, 178 * panel.c.width * 0.88 / panel.ctx.measureText(number).width);
-    panel.write([{ t: number, size, weight: 600, color: '#2c2722' }]);
+    panel.write([
+      { t: document.title, size: 106, weight: 700 },
+      { t: T.floorLabel(number), size: 68, weight: 600, gap: 16 }
+    ]);
   });
 }
 
@@ -128,8 +135,29 @@ function controlKey(event) {
   return event.key.length === 1 ? `Key${event.key.toUpperCase()}` : event.key;
 }
 
+function mountExtinguisher(world, height) {
+  const holder = document.createElement('template');
+  const { x, wall } = PLAN.extinguisher;
+  holder.innerHTML = extinguisher(x, wall);
+  const model = holder.content.firstElementChild;
+  const label = model.querySelector('#extLabel'), gauge = model.querySelector('#extGauge');
+  label.removeAttribute('id');
+  gauge.removeAttribute('id');
+  label.dataset.part = 'extinguisher-label';
+  gauge.dataset.part = 'extinguisher-gauge';
+  model.setAttribute('position', `0 ${height} 0`);
+  // Limit the initial reflection work for three copies of the static shell.
+  model.setAttribute('reflect-env', 'size: 64; times: 1');
+  model.addEventListener('loaded', () => {
+    paintExtinguisherLabel(label);
+    paintGauge(gauge);
+  }, { once: true });
+  world.append(model);
+}
+
 function start() {
-  buildWorld(document.querySelector('#preview-world').object3D);
+  const world = document.querySelector('#preview-world');
+  buildWorld(world.object3D);
   for (const offset of [-1, 0, 1]) {
     const frame = document.createElement('a-entity');
     frame.id = `preview-door-frame-${offset}`;
@@ -137,7 +165,8 @@ function start() {
     frame.setAttribute('merge-static', '');
     frame.innerHTML = doorHTML({ x: ROOM.doorX, room: ROOM.minZ + 0.1, corridor: ROOM.minZ - 0.1,
       leaf: `id="preview-door-leaf-${offset}" data-dynamic`, inside: true });
-    document.querySelector('#preview-world').append(frame);
+    world.append(frame);
+    mountExtinguisher(world, offset * PLAN.floorRise);
   }
   leaf = document.querySelector('#preview-door-leaf-0');
   place(ANCHORS.start);
@@ -181,8 +210,12 @@ function start() {
 
 async function ready() {
   try {
-    // Match the main entry point: draw the numbered plates in the vendored font.
-    const font = document.fonts.load('600 16px Inter', '0123456789-').catch(() => []);
+    // Load the Latin title and Cyrillic wall lettering before drawing their textures.
+    const font = Promise.all([
+      document.fonts.load('700 16px Inter', `${document.title} ${T.floorLabel('0123456789-')}`),
+      document.fonts.load('600 16px Inter', T.floorLabel('0123456789-')),
+      document.fonts.load('500 16px Inter', T.floorLabel('0123456789-'))
+    ]).catch(() => []);
     await Promise.race([font, new Promise(resolve => setTimeout(resolve, 6000))]);
     start();
   } catch (error) {

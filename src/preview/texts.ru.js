@@ -21,6 +21,7 @@ export const T = {
   balanceUnknown: 'Сумма не восстановлена',
   saveError: 'Не удалось подтвердить сохранение. Сделка приостановлена. Можно вернуться в коридор.',
   eyeLabel: 'Высота глаз',
+  floorLabel: number => `Этаж ${number}`,
   eyeValue: height => `${height.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} м`,
   views: {
     start: 'А · У двери',

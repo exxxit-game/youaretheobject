@@ -77,6 +77,67 @@ try {
   await page.waitForFunction(() => document.querySelector('a-scene')?.hasLoaded &&
     document.querySelector('#preview-world')?.object3D.children.length > 0, null, {timeout:120000});
   await page.getByRole('status').filter({ hasText: T.instruction }).waitFor();
+  const floorHits = await page.evaluate(({ floorRise }) => {
+    const world = document.querySelector('#preview-world').object3D;
+    return [-floorRise, 0, floorRise].map(y => {
+      const ray = new THREE.Raycaster(new THREE.Vector3(-2.27, y + 0.1, 0.91), new THREE.Vector3(0, -1, 0), 0, 0.12);
+      return ray.intersectObjects(world.children).length;
+    });
+  }, { floorRise: PLAN.floorRise });
+  assert.deepEqual(floorHits, [1, 1, 1], 'each tiled hall has one visible surface at walking height');
+  await page.waitForFunction(() => document.querySelector('#preview-world').object3D.children
+    .some(object => object.name === 'end-picture' && object.material.map.image?.naturalWidth === 1024));
+  const hallViews = await page.evaluate(({ hall, left, right }) => {
+    const world = document.querySelector('#preview-world').object3D;
+    const z = (hall.minZ + hall.maxZ) / 2;
+    const centre = (left.minX + right.maxX) / 2;
+    const cast = (from, to) => {
+      const direction = to.clone().sub(from);
+      return new THREE.Raycaster(from, direction.clone().normalize(), 0, direction.length() + 0.002);
+    };
+    const sign = document.querySelector('#preview-lower-sign');
+    const signFace = sign.getObject3D('mesh');
+    const ends = [hall.minX, hall.maxX].map(x => cast(new THREE.Vector3(centre, 1.57, z),
+      new THREE.Vector3(x, 1.57, z)).intersectObjects(world.children)[0]?.object);
+    return {
+      ends: ends.map(end => end?.name),
+      pictureUp: ends.map(end => end && Math.round(new THREE.Vector3(0, 1, 0).applyQuaternion(end.quaternion).y)),
+      samePicture: Boolean(ends[0]?.material?.map) && ends[0].material.map === ends[1]?.material?.map,
+      mouths: [left, right].map(lane => {
+        const x = (lane.minX + lane.maxX) / 2;
+        return cast(new THREE.Vector3(x, 1.6, z), new THREE.Vector3(x, 1.6, -0.12))
+          .intersectObjects(world.children).length;
+      }),
+      sign: [left.minX - 1.5, right.maxX + 1.5].map(x => {
+        const ray = cast(new THREE.Vector3(x, 1.6, z), sign.object3D.position);
+        return ray.intersectObjects([...world.children, signFace])[0]?.object === signFace;
+      }),
+      signFits: !sign.components.panel.overflow
+    };
+  }, { hall: PLAN.hall, left: PLAN.left, right: PLAN.right });
+  assert.deepEqual(hallViews.ends, ['end-picture', 'end-picture'], 'the pictures face into the hall');
+  assert.deepEqual(hallViews.pictureUp, [1, -1], 'the east picture turns the same subject upside down');
+  assert.equal(hallViews.samePicture, true, 'both ends use the same source texture');
+  assert.deepEqual(hallViews.mouths, [0, 0], 'both stair mouths remain open');
+  assert.deepEqual(hallViews.sign, [true, true], 'the central sign faces both approaches');
+  assert.equal(hallViews.signFits, true, 'the name and floor fit on the shared sign');
+  await page.waitForFunction(() => {
+    const objects = [...document.querySelectorAll('#preview-world > .extinguisher')];
+    return objects.length === 3 && objects.every(model => ['label', 'gauge'].every(part =>
+      model.querySelector(`[data-part="extinguisher-${part}"]`).getObject3D('mesh')?.material.map));
+  });
+  const mountBounds = await page.locator('#preview-world > .extinguisher').evaluateAll(models => models.map(model => {
+    const bounds = new THREE.Box3().setFromObject(model.object3D, true);
+    return { min: bounds.min.toArray(), max: bounds.max.toArray() };
+  }));
+  const mount = PLAN.extinguisher;
+  for (const [i, { min, max }] of mountBounds.entries()) {
+    assert.ok(min[0] >= mount.x - mount.halfWidth && max[0] <= mount.x + mount.halfWidth);
+    assert.ok(min[2] >= mount.wall - mount.depth && Math.abs(max[2] - mount.wall) < 0.005,
+      'the mounted model fits its clearance and meets the wall');
+    assert.ok(Math.abs(min[1] - (i - 1) * PLAN.floorRise - 0.853) < 0.01,
+      'each copy keeps its original mounting height');
+  }
   console.log('corridor smoke: software route raster (not hardware FPS)',await page.evaluate(() => {
     const canvas=document.querySelector('a-scene').canvas;
     return {width:canvas.width,height:canvas.height,cssWidth:innerWidth,cssHeight:innerHeight,dpr:devicePixelRatio};

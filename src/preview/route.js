@@ -33,6 +33,7 @@ export const PLAN = {
   left: { minX: 0, maxX: innerLeft, minZ: turnZ, maxZ: 0 },
   landing,
   sill: { x: landing.maxX / 2, z: landing.minZ + 0.079, y: 0.38, width: 1.38, depth: 0.24, height: 0.06 },
+  extinguisher: { x: centre - 0.8, wall: HALL.maxZ - 0.04, halfWidth: 0.16, depth: 0.22 },
   handrail: { width: 0.055, depth: 0.054 },
   rise, halfRise, floorRise: 2 * halfRise
 };
@@ -56,6 +57,9 @@ export function floorNumber(floor, search) {
 const MARGIN = 0.14;
 const MAX_STEP = 0.05;
 const railHalfWidth = PLAN.handrail.width / 2;
+const mount = PLAN.extinguisher;
+const mountClearance = { minX: mount.x - mount.halfWidth - MARGIN, maxX: mount.x + mount.halfWidth + MARGIN,
+  minZ: mount.wall - mount.depth - MARGIN, maxZ: HALL.maxZ };
 const sill = PLAN.sill;
 const sillMinX = sill.x - sill.width / 2 - MARGIN;
 const sillMaxX = sill.x + sill.width / 2 + MARGIN;
@@ -111,6 +115,8 @@ function floorHeight(x, z, previousY, doorOpen) {
   const onRight = withinLane(x, right, railHalfWidth);
   const onLeft = withinLane(x, left, 0, railHalfWidth);
   let height;
+
+  if (inside(x, z, mountClearance)) return null;
 
   if (doorOpen && inside(x, z, { minX: OPEN_LEAF.minX - MARGIN, maxX: OPEN_LEAF.maxX + MARGIN,
     minZ: OPEN_LEAF.minZ - MARGIN, maxZ: OPEN_LEAF.maxZ + MARGIN })) return null;
