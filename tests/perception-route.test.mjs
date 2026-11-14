@@ -183,8 +183,31 @@ assert.equal(crossed.pitch, -0.2);
 const stopAtWall = walk(ANCHORS.start, -12, 0);
 assert.ok(stopAtWall.x > PLAN.hall.minX && stopAtWall.x < ANCHORS.start.x, 'large input cannot tunnel through the end wall');
 
+const shared = ANCHORS.start;
+close(shared.x, (PLAN.left.minX + PLAN.right.maxX) / 2);
+assert.equal(shared.yaw, 180, 'initial view faces the south wall sign');
+for (const end of [PLAN.hall.minX + 0.4, PLAN.hall.maxX - 0.4]) {
+  const reached = moveTo(shared, end, shared.z);
+  close(reached.x, end);
+  assert.equal(reached.floor, 0);
+  close(moveTo(reached, shared.x, shared.z).x, shared.x);
+}
+for (const [go, back, floor] of [[ascend, descend, 1], [descend, ascend, -1]]) {
+  const reached = go(shared);
+  assert.equal(reached.floor, floor);
+  const returned = moveTo(back(reached), shared.x, shared.z);
+  assert.equal(returned.floor, 0);
+  close(returned.x, shared.x);
+  close(returned.y, shared.y);
+  close(returned.z, shared.z);
+}
+for (const side of ['north', 'south']) {
+  const wall = DOORS.filter(door => door.side === side);
+  assert.equal(wall.length, 4);
+  assert.equal(wall.filter(door => door.x < PLAN.left.minX).length, 2);
+  assert.equal(wall.filter(door => door.x > PLAN.right.maxX).length, 2);
+}
 assert.equal(new Set(DOORS.map(d => d.id)).size, DOORS.length, 'door identity is stable across the repeated floor');
-assert.ok(DOORS.some(d => d.side === 'north') && DOORS.some(d => d.side === 'south'));
 const doorHeader = doorHTML({ x: ROOM.doorX, room: ROOM.minZ + 0.1, corridor: ROOM.minZ - 0.1 })
   .match(/position="[^ ]+ ([^ ]+) [^"]+" width="1\.0224" height="([^"]+)"/);
 assert.ok(doorHeader, 'the shared door has a header');
@@ -219,4 +242,4 @@ for (const floor of [-123, 0, 321]) {
 }
 assert.equal(beginVisit(ANCHORS.turn, 0, 0), null, 'a door cannot be opened from across the corridor');
 assert.equal(beginVisit({ ...ANCHORS.start, y: PLAN.halfRise }, 0, 0), null, 'the half landing is not a room entrance');
-console.log('perception route: 4000 floor transitions, room/door boundaries and floor-preserving return pass');
+console.log('perception route: 4+4 doors, both wings, 0/+1/-1 returns, 4000 transitions and door boundaries pass');

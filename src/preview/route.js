@@ -39,7 +39,8 @@ export const PLAN = {
 };
 
 export const ANCHORS = {
-  start: { x: -6.9, y: 0, z: 0.9, yaw: -90, pitch: 0 },
+  start: { x: centre, y: 0, z: 0.60, yaw: 180, pitch: 0 },
+  door: { x: -6.9, y: 0, z: 0.90, yaw: -90, pitch: 0 },
   turn: { x: 2.02, y: 0, z: 0.62, yaw: 0, pitch: 0 },
   overlap: { x: 0.98, y: PLAN.halfRise, z: -3.73, yaw: -152, pitch: -29 },
   top: { x: 0.62, y: PLAN.floorRise, z: 0.62, yaw: 36, pitch: -12 },

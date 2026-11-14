@@ -9,8 +9,9 @@ export const ROOM = {
   clearWidth: 0.88 // Clear of the stops and open leaf in engine/door.js.
 };
 export const DOORS = [
-  ...[-6.5, -3.8, -1.1, 4.1].map((x, i) => ({ id: `south-${i}`, x, side: 'south', working: i === 0 })),
-  ...[-6.5, -3.8, -1.3, 4.1].map((x, i) => ({ id: `north-${i}`, x, side: 'north', working: false }))
+  // Two doors on each wall in each wing. Positions on the short wing are model dimensions.
+  ...[-6.5, -3.8, 3.30, 4.64].map((x, i) => ({ id: `south-${i}`, x, side: 'south', working: i === 0 })),
+  ...[-6.5, -3.8, 3.30, 4.64].map((x, i) => ({ id: `north-${i}`, x, side: 'north', working: false }))
 ];
 // The south leaf at +90 degrees, including the knob's 0.0587 m projection.
 // Keep geometry and collision derived from the same old door construction.

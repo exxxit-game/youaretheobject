@@ -142,9 +142,30 @@ try {
     const canvas=document.querySelector('a-scene').canvas;
     return {width:canvas.width,height:canvas.height,cssWidth:innerWidth,cssHeight:innerHeight,dpr:devicePixelRatio};
   }));
-  assert.equal(await page.title(), 'URZ Object');
-  assert.equal(await page.getByRole('heading', { name: 'URZ Object' }).count(), 1);
-  for (const id of ['top','below','start']) {
+  assert.equal(await page.title(), 'You are the object');
+  assert.equal(await page.getByRole('heading', { name: 'You are the object' }).count(), 1);
+  const initial = await pose();
+  assert.ok(Math.abs(initial.x - ANCHORS.start.x) < 1e-6 && Math.abs(initial.z - ANCHORS.start.z) < 1e-6);
+  assert.ok(Math.abs(initial.yaw - Math.PI) < 1e-6, 'initial view faces the shared sign');
+  const walkX = async x => walkAxis(x > (await pose()).x ? 'KeyA' : 'KeyD', 'x', x);
+  await walkX(PLAN.hall.minX + 0.4);
+  await walkX(PLAN.hall.maxX - 0.4);
+  const crossLanding = async (firstLane, secondLane) => {
+    await walkX(firstLane);
+    await walkAxis('ArrowDown', 'z', ANCHORS.overlap.z);
+    await walkX(secondLane);
+    await walkAxis('ArrowUp', 'z', ANCHORS.start.z);
+  };
+  await crossLanding(ANCHORS.turn.x, ANCHORS.top.x);
+  assert.equal(await shownFloor(), '9');
+  await crossLanding(ANCHORS.top.x, ANCHORS.turn.x);
+  assert.equal(await shownFloor(), '8');
+  await crossLanding(ANCHORS.top.x, ANCHORS.turn.x);
+  assert.equal(await shownFloor(), '7');
+  await crossLanding(ANCHORS.turn.x, ANCHORS.top.x);
+  assert.equal(await shownFloor(), '8');
+  await walkX(ANCHORS.start.x);
+  for (const id of ['top','below','door','start']) {
     await page.getByRole('button', { name: T.views[id], exact: true }).click();
     const p = await pose(), a = ANCHORS[id];
     assert.ok(Math.abs(p.x-a.x)<1e-6 && Math.abs(p.z-a.z)<1e-6, 'view button changes the actual camera anchor');
@@ -155,7 +176,7 @@ try {
   await page.keyboard.press('End');
   assert.equal(await page.locator('#preview-eye').inputValue(), '1.9');
   assert.ok(Math.abs((await pose()).y-oldHeight-0.3)<1e-6, 'height control changes the real camera');
-  await page.getByRole('button', { name: T.views.start, exact: true }).click();
+  await page.getByRole('button', { name: T.views.door, exact: true }).click();
   for (const [key,axis] of [['ArrowUp','x'],['ArrowLeft','yaw'],['KeyR','pitch'],['KeyF','pitch']]) {
     console.log('corridor smoke: checking '+key);
     const before = (await pose())[axis];
@@ -164,17 +185,17 @@ try {
     await page.keyboard.up(key);
     await settled();
   }
-  await page.getByRole('button', { name: T.views.start, exact: true }).click();
+  await page.getByRole('button', { name: T.views.door, exact: true }).click();
   let before = (await pose()).x;
   await page.keyboard.down('ArrowUp'); await moved('x',before);
   await page.locator('#preview-eye').focus(); await settled(); await page.keyboard.up('ArrowUp');
-  await page.getByRole('button', { name: T.views.start, exact: true }).click();
+  await page.getByRole('button', { name: T.views.door, exact: true }).click();
   before = (await pose()).x;
   await page.keyboard.down('ArrowUp'); await moved('x',before);
   // Exercise the blur handler; this is not a physical window-focus or headset test.
   await page.evaluate(() => window.dispatchEvent(new Event('blur')));
   await settled(); await page.keyboard.up('ArrowUp');
-  await page.getByRole('button', { name:T.views.start, exact:true }).click();
+  await page.getByRole('button', { name:T.views.door, exact:true }).click();
   await walkAxis('ArrowUp','x',ROOM.doorX - 0.05);
   const beforeDoor = await pose();
   // Synthetic Russian-key regression; not a claim of a physical keyboard-layout test.
@@ -195,7 +216,7 @@ try {
   await page.getByRole('button',{name:T.openDoor,exact:true}).waitFor();
 
   console.log('corridor smoke: walking to the first half landing and back');
-  await page.getByRole('button', { name: T.views.start, exact: true }).click();
+  await page.getByRole('button', { name: T.views.door, exact: true }).click();
   const lowerPose = await pose();
   await walkAxis('ArrowUp', 'x', ANCHORS.turn.x);
   await walkAxis('KeyA', 'z', ANCHORS.overlap.z);
