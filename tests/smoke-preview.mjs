@@ -147,6 +147,61 @@ try {
   const initial = await pose();
   assert.ok(Math.abs(initial.x - ANCHORS.start.x) < 1e-6 && Math.abs(initial.z - ANCHORS.start.z) < 1e-6);
   assert.ok(Math.abs(initial.yaw - Math.PI) < 1e-6, 'initial view faces the shared sign');
+  await page.waitForFunction(() => document.querySelector('#preview-door-leaf-0')?.hasLoaded);
+  const visibleLayout = await page.evaluate(({ hall, left, right, floorRise, doorX }) => {
+    const scene = document.querySelector('a-scene');
+    const world = document.querySelector('#preview-world').object3D;
+    scene.object3D.updateMatrixWorld(true);
+    const ray = new THREE.Raycaster();
+    const visibleHit = objects => ray.intersectObjects(objects, true).find(hit => {
+      for (let object = hit.object; object; object = object.parent) {
+        if (!object.visible) return false;
+      }
+      return true;
+    });
+    const sign = document.querySelector('#preview-lower-sign').getObject3D('mesh');
+    ray.setFromCamera(new THREE.Vector2(0, 0), scene.camera);
+    const facesSign = visibleHit([world, sign])?.object === sign;
+    const leaves = world.getObjectByName('fixed-door-leaves');
+    const working = document.querySelector('#preview-door-leaf-0').object3D;
+    const middleZ = (hall.minZ + hall.maxZ) / 2;
+    const castToWall = (x, y, south) => {
+      ray.set(new THREE.Vector3(x, y, middleZ), new THREE.Vector3(0, 0, south ? 1 : -1));
+      ray.far = (hall.maxZ - hall.minZ) / 2 + 0.1;
+      return visibleHit([world]);
+    };
+    const tally = { leftNorth: 0, leftSouth: 0, rightNorth: 0, rightSouth: 0, outsideWings: 0 };
+    const addDoor = (x, south) => {
+      const side = south ? 'South' : 'North';
+      const group = x < left.minX ? 'left' + side : x > right.maxX ? 'right' + side : 'outsideWings';
+      tally[group]++;
+    };
+    const matrix = new THREE.Matrix4();
+    let fixedOnFloor = 0;
+    for (let i = 0; i < leaves.count; i++) {
+      leaves.getMatrixAt(i, matrix);
+      const centre = new THREE.Vector3().setFromMatrixPosition(matrix.premultiply(leaves.matrixWorld));
+      if (centre.y < 0 || centre.y >= floorRise) continue;
+      fixedOnFloor++;
+      const south = centre.z > middleZ;
+      const hit = castToWall(centre.x, centre.y, south);
+      if (hit?.object === leaves && hit.instanceId === i) addDoor(centre.x, south);
+    }
+    let workingVisible = false;
+    for (let object = castToWall(doorX, 1.1, true)?.object; object; object = object.parent) {
+      if (object === working) {
+        addDoor(doorX, true);
+        workingVisible = true;
+        break;
+      }
+    }
+    return { tally, fixedOnFloor, workingVisible, facesSign };
+  }, { hall: PLAN.hall, left: PLAN.left, right: PLAN.right, floorRise: PLAN.floorRise, doorX: ROOM.doorX });
+  assert.equal(visibleLayout.facesSign, true, 'first camera ray hits the shared sign');
+  assert.equal(visibleLayout.fixedOnFloor, 7, 'the current floor has seven fixed leaves');
+  assert.equal(visibleLayout.workingVisible, true, 'the eighth leaf is visible from the hall');
+  assert.deepEqual(visibleLayout.tally, { leftNorth: 2, leftSouth: 2, rightNorth: 2, rightSouth: 2, outsideWings: 0 },
+    'each corridor wing has two visible leaves on each wall');
   const walkX = async x => walkAxis(x > (await pose()).x ? 'KeyA' : 'KeyD', 'x', x);
   await walkX(PLAN.hall.minX + 0.4);
   await walkX(PLAN.hall.maxX - 0.4);

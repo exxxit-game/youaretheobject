@@ -235,6 +235,7 @@ export function buildWorld(root) {
   // The repeated steps, rails and walls are fixed, so render each material in one batch.
   function addBoxes(geometry, mat, transforms) {
     const mesh = new THREE.InstancedMesh(geometry, mat, transforms.length);
+    if (mat === door) mesh.name = 'fixed-door-leaves';
     transforms.forEach((transform, index) => {
       transform.updateMatrix();
       mesh.setMatrixAt(index, transform.matrix);
