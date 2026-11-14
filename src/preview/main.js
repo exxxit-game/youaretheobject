@@ -3,6 +3,7 @@ import { ANCHORS, PLAN, floorNumber, recenter, viewHeight, walk } from './route.
 import { T } from './texts.ru.js';
 import { buildWorld } from './world.js';
 import { ROOM, nearDoor, inRoom, beginVisit, returnVisit } from './layout.js';
+import { mountTouchControls } from './touch.js';
 import { doorHTML } from '../engine/door.js';
 import { extinguisher } from '../app/lobby/extinguisher.js';
 import { paintExtinguisherLabel, paintGauge } from '../app/lobby/extinguisher-label.js';
@@ -31,6 +32,7 @@ const pressed = new Set();
 let position = ANCHORS.start;
 let eyeHeight = Number(eye.value);
 let visit = null, leaf;
+let touch;
 
 hint.textContent = T.loading;
 
@@ -39,7 +41,7 @@ function moveCamera() {
 }
 
 function applyPose(anchor) {
-  pressed.clear();
+  clearInput();
   const look = camera.components['look-controls'];
   look.yawObject.rotation.y = anchor.yaw;
   look.pitchObject.rotation.x = anchor.pitch;
@@ -62,7 +64,7 @@ function useDoor() {
     applyPose(restored);
   } else {
     visit = beginVisit(position, camera.object3D.rotation.y, camera.object3D.rotation.x);
-    pressed.clear();
+    clearInput();
   }
   updateDoor();
 }
@@ -70,8 +72,9 @@ function useDoor() {
 function updateDoor() {
   const angle = visit ? Math.PI / 2 : 0;
   const hidden = !visit && !nearDoor(position);
-  const label = visit ? T.returnDoor : T.openDoor;
-  const text = visit ? (inRoom(position) ? T.room : T.doorOpen) : T.instruction;
+  const labels = touch ? T.touch : T;
+  const label = visit ? labels.returnDoor : labels.openDoor;
+  const text = visit ? (inRoom(position) ? labels.room : labels.doorOpen) : labels.instruction;
   if (leaf.object3D.rotation.y !== angle) leaf.object3D.rotation.y = angle;
   if (doorButton.hidden !== hidden) doorButton.hidden = hidden;
   if (doorButton.textContent !== label) doorButton.textContent = label;
@@ -95,25 +98,33 @@ function drawSigns() {
   });
 }
 
+function clearInput() {
+  pressed.clear();
+  touch?.clear();
+}
+
+function turnCamera(yaw, pitch) {
+  const look = camera.components['look-controls'];
+  look.yawObject.rotation.y += yaw;
+  if (pitch) {
+    const tilt = look.pitchObject.rotation;
+    tilt.x = THREE.MathUtils.clamp(tilt.x + pitch, -PITCH_LIMIT, PITCH_LIMIT);
+  }
+  look.updateOrientation();
+}
+
 function animate() {
   let last = performance.now();
-  const look = camera.components['look-controls'];
   const held = (key, arrow) => Number(pressed.has(key) || pressed.has(arrow));
   function frame(now) {
     const seconds = Math.min((now - last) / 1000, 0.05);
     last = now;
     const turn = held('ArrowLeft') - held('ArrowRight');
     const tilt = held('KeyR', 'PageUp') - held('KeyF', 'PageDown');
-    if (turn || tilt) {
-      look.yawObject.rotation.y += turn * seconds * TURN_SPEED;
-      if (tilt) {
-        const pitch = look.pitchObject.rotation;
-        pitch.x = THREE.MathUtils.clamp(pitch.x + tilt * seconds * TILT_SPEED, -PITCH_LIMIT, PITCH_LIMIT);
-      }
-      look.updateOrientation();
-    }
-    const front = held('KeyW', 'ArrowUp') - held('KeyS', 'ArrowDown');
-    const right = held('KeyD') - held('KeyA');
+    if (turn || tilt) turnCamera(turn * seconds * TURN_SPEED, tilt * seconds * TILT_SPEED);
+    const front = (held('KeyW', 'ArrowUp') || touch?.direction === 'forward')
+      - (held('KeyS', 'ArrowDown') || touch?.direction === 'back');
+    const right = (held('KeyD') || touch?.direction === 'right') - (held('KeyA') || touch?.direction === 'left');
     if (front || right) {
       const yaw = camera.object3D.rotation.y;
       const distance = seconds * STEP_SPEED / Math.hypot(front, right);
@@ -186,7 +197,7 @@ function start() {
     moveCamera();
   }
   eye.addEventListener('input', changeHeight);
-  eye.addEventListener('focus', () => pressed.clear());
+  eye.addEventListener('focus', clearInput);
   changeHeight();
   addEventListener('keydown', event => {
     if (event.key === 'Escape' && visit) { event.preventDefault(); useDoor(); return; }
@@ -202,9 +213,12 @@ function start() {
     if (!event.repeat) pressed.add(key);
   });
   addEventListener('keyup', event => pressed.delete(controlKey(event)));
-  addEventListener('blur', () => pressed.clear());
-  document.addEventListener('visibilitychange', () => pressed.clear());
-  hint.textContent = T.instruction;
+  touch = mountTouchControls(scene.canvas, document.querySelector('#preview-touch'), turnCamera);
+  addEventListener('blur', clearInput);
+  addEventListener('pagehide', clearInput);
+  document.addEventListener('visibilitychange', clearInput);
+  matchMedia('(orientation: portrait)').addEventListener('change', clearInput);
+  updateDoor();
   animate();
 }
 

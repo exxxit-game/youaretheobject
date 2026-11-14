@@ -34,7 +34,6 @@
   display: grid;
   gap: 8px;
   max-width: 100%;
-  pointer-events: auto;
 }
 
 .preview-eye {
@@ -47,6 +46,7 @@
   background: rgba(13, 15, 18, .88);
   color: #f4f2ec;
   font-size: 14px;
+  pointer-events: auto;
 }
 
 .preview-eye input {
@@ -64,7 +64,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  pointer-events: auto;
 }
 
 .preview-buttons button {
@@ -76,6 +75,7 @@
   font: inherit;
   font-size: 14px;
   cursor: pointer;
+  pointer-events: auto;
 }
 
 .preview-buttons button:hover {
@@ -88,4 +88,30 @@
 }
 
 .preview-buttons button:disabled { cursor: default; opacity: .6; }
+
+#preview-touch {
+  display: grid;
+  grid-template-columns: repeat(3, 44px);
+}
+
+#preview-touch button {
+  padding: 0;
+  font-size: 20px;
+  user-select: none;
+  touch-action: none;
+}
+
+#preview-touch button[data-direction="forward"] { grid-column: 2; }
+#preview-touch button[data-direction="left"] { grid-column: 1; }
+.preview-touch-canvas { touch-action: none; }
+
+@media (orientation: landscape) and (max-height: 460px) {
+  .preview-controls:has(#preview-touch:not([hidden])) {
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+  }
+
+  #preview-touch { grid-row: span 3; }
+}
+
 [hidden] { display: none !important; }

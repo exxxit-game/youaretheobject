@@ -17,7 +17,8 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # Leave time for both bounded browser steps after setup and guard checks.
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
         with:
@@ -46,6 +47,8 @@ jobs:
         run: node tools/prove-guards.mjs        # and with Windows line ends, as on the laptop
       - run: npm run test:smoke:shaders
         timeout-minutes: 2
+      - run: node tests/smoke-preview-touch.mjs
+        timeout-minutes: 3
       - run: npm run test:smoke:preview
         # Software rendering took over six minutes for the corridor and stairs on run 43613131615.
         timeout-minutes: 18
