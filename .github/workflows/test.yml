@@ -47,6 +47,7 @@ jobs:
       - run: npm run test:smoke:shaders
         timeout-minutes: 2
       - run: npm run test:smoke:preview
-        timeout-minutes: 8
+        # Software rendering took over six minutes for the corridor and stairs on run 43613131615.
+        timeout-minutes: 18
       - run: npm run test:smoke
         timeout-minutes: 15

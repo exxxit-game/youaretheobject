@@ -203,8 +203,11 @@ try {
   assert.deepEqual(visibleLayout.tally, { leftNorth: 2, leftSouth: 2, rightNorth: 2, rightSouth: 2, outsideWings: 0 },
     'each corridor wing has two visible leaves on each wall');
   const walkX = async x => walkAxis(x > (await pose()).x ? 'KeyA' : 'KeyD', 'x', x);
+  const hallStart = await motionState();
   await walkX(PLAN.hall.minX + 0.4);
   await walkX(PLAN.hall.maxX - 0.4);
+  const stairStart = await motionState();
+  console.log('corridor smoke: both ends reached', { ms: Math.round(stairStart.at - hallStart.at) });
   const crossLanding = async (firstLane, secondLane) => {
     await walkX(firstLane);
     await walkAxis('ArrowDown', 'z', ANCHORS.overlap.z);
@@ -220,6 +223,11 @@ try {
   await crossLanding(ANCHORS.turn.x, ANCHORS.top.x);
   assert.equal(await shownFloor(), '8');
   await walkX(ANCHORS.start.x);
+  const stairFinish = await motionState();
+  console.log('corridor smoke: ascended, descended and returned', {
+    ms: Math.round(stairFinish.at - stairStart.at),
+    frames: stairFinish.renderedFrame - stairStart.renderedFrame
+  });
   for (const id of ['top','below','door','start']) {
     await page.getByRole('button', { name: T.views[id], exact: true }).click();
     const p = await pose(), a = ANCHORS[id];
@@ -270,7 +278,7 @@ try {
   assert.equal(await shownFloor(),'8');
   await page.getByRole('button',{name:T.openDoor,exact:true}).waitFor();
 
-  console.log('corridor smoke: walking to the first half landing and back');
+  console.log('corridor smoke: room return and held input pass; walking to the first half landing and back');
   await page.getByRole('button', { name: T.views.door, exact: true }).click();
   const lowerPose = await pose();
   await walkAxis('ArrowUp', 'x', ANCHORS.turn.x);
